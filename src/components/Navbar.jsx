@@ -1,6 +1,8 @@
 import { cn } from "@/lib/utils";
-import { Menu, X } from "lucide-react";
+import { Download, Github, Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
+
+const resumeUrl = "/Harsh_Gavand_Resume.pdf";
 
 const navItems = [
   { name: "About", href: "#about" },
@@ -16,13 +18,14 @@ export const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 40);
+    const handleScroll = () => setScrolled(window.scrollY > 32);
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    const ids = navItems.map((i) => i.href.slice(1));
+    const ids = ["hero", ...navItems.map((i) => i.href.slice(1))];
     const observers = ids.map((id) => {
       const el = document.getElementById(id);
       if (!el) return null;
@@ -30,7 +33,7 @@ export const Navbar = () => {
         ([entry]) => {
           if (entry.isIntersecting) setActiveSection(id);
         },
-        { rootMargin: "-40% 0px -55% 0px" }
+        { rootMargin: "-42% 0px -50% 0px" }
       );
       obs.observe(el);
       return obs;
@@ -40,115 +43,131 @@ export const Navbar = () => {
 
   return (
     <>
-      {/* Desktop floating nav */}
-      <nav
-        className="fixed top-5 left-1/2 z-50 hidden md:flex"
-        style={{ transform: "translateX(-50%)" }}
-        aria-label="Main navigation"
-      >
+      <nav className="fixed left-0 right-0 top-4 z-50 hidden px-6 md:block" aria-label="Main navigation">
         <div
           className={cn(
-            "flex items-center gap-1 px-2 py-2 rounded-full transition-all duration-500",
-            scrolled
-              ? "border border-[#27272A] shadow-[0_0_0_1px_rgba(255,255,255,0.04),0_8px_40px_rgba(0,0,0,0.6)] backdrop-blur-2xl"
-              : "border border-transparent"
+            "mx-auto flex max-w-6xl items-center justify-between rounded-full px-3 py-2 transition-all duration-300",
+            scrolled ? "glass-card" : "border border-transparent bg-transparent"
           )}
-          style={{
-            backgroundColor: scrolled ? "rgba(17,17,19,0.85)" : "transparent",
-          }}
         >
-          {navItems.map((item) => {
-            const isActive = activeSection === item.href.slice(1);
-            return (
-              <a
-                key={item.name}
-                href={item.href}
-                className={cn(
-                  "relative px-4 py-1.5 rounded-full text-sm font-medium transition-all duration-200",
-                  isActive
-                    ? "text-white"
-                    : "text-[#A1A1AA] hover:text-white"
-                )}
-              >
-                {isActive && (
-                  <span
-                    className="absolute inset-0 rounded-full"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, rgba(99,102,241,0.9) 0%, rgba(139,92,246,0.7) 100%)",
-                    }}
-                    aria-hidden="true"
-                  />
-                )}
-                <span className="relative z-10">{item.name}</span>
-              </a>
-            );
-          })}
+          <a href="#hero" className="group flex items-center gap-2 pl-2">
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-xs font-black text-[#09090B] transition-transform duration-200 group-hover:scale-105">
+              HG
+            </span>
+            <span className="font-heading text-sm font-semibold text-white">Harsh Gavand</span>
+          </a>
+
+          <div className="flex items-center gap-1 rounded-full border border-white/5 bg-white/[0.03] p-1">
+            {navItems.map((item) => {
+              const isActive = activeSection === item.href.slice(1);
+              return (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className={cn(
+                    "relative rounded-full px-4 py-2 text-sm font-medium transition-all duration-200",
+                    isActive ? "text-white" : "text-[#A1A1AA] hover:text-white"
+                  )}
+                >
+                  {isActive && (
+                    <span
+                      className="absolute inset-0 rounded-full"
+                      style={{
+                        background: "linear-gradient(135deg, rgba(99,102,241,0.95), rgba(34,211,238,0.45))",
+                        boxShadow: "0 8px 24px rgba(99,102,241,0.22)",
+                      }}
+                    />
+                  )}
+                  <span className="relative z-10">{item.name}</span>
+                </a>
+              );
+            })}
+          </div>
+
+          <div className="flex items-center gap-2">
+            <a
+              href="https://github.com/harshgavandit"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="magnetic-button flex h-9 w-9 items-center justify-center rounded-full border border-white/10 text-[#A1A1AA] hover:border-indigo-400/50 hover:text-white"
+              aria-label="GitHub profile"
+            >
+              <Github size={16} />
+            </a>
+            <a
+              href={resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="magnetic-button inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#09090B] shadow-[0_10px_28px_rgba(255,255,255,0.14)]"
+            >
+              Resume <Download size={14} />
+            </a>
+          </div>
         </div>
       </nav>
 
-      {/* Mobile — logo + hamburger */}
       <nav
-        className="fixed top-0 left-0 right-0 z-50 md:hidden flex items-center justify-between px-6 py-4"
+        className="fixed left-0 right-0 top-0 z-50 flex items-center justify-between px-5 py-4 md:hidden"
         style={{
-          backgroundColor: scrolled
-            ? "rgba(9,9,11,0.9)"
-            : "transparent",
-          backdropFilter: scrolled ? "blur(16px)" : "none",
-          borderBottom: scrolled ? "1px solid #1F1F23" : "none",
-          transition: "all 0.3s",
+          backgroundColor: scrolled ? "rgba(9,9,11,0.82)" : "transparent",
+          backdropFilter: scrolled ? "blur(18px)" : "none",
+          borderBottom: scrolled ? "1px solid rgba(255,255,255,0.08)" : "none",
         }}
       >
-        <a
-          href="#hero"
-          className="font-heading font-bold text-white text-lg tracking-tight"
-        >
-          HG
+        <a href="#hero" className="flex items-center gap-2 font-heading font-bold text-white">
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-xs text-[#09090B]">HG</span>
+          <span>Harsh</span>
         </a>
         <button
           onClick={() => setIsMenuOpen((p) => !p)}
-          className="p-2 rounded-lg text-[#A1A1AA] hover:text-white transition-colors"
+          className="rounded-full border border-white/10 bg-white/[0.04] p-2 text-[#A1A1AA] transition-colors hover:text-white"
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          aria-expanded={isMenuOpen}
         >
           {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
       </nav>
 
-      {/* Mobile overlay */}
       <div
         className={cn(
-          "fixed inset-0 z-40 md:hidden flex flex-col items-center justify-center gap-8 transition-all duration-300",
-          isMenuOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
+          "fixed inset-0 z-40 flex flex-col justify-center px-6 transition-all duration-300 md:hidden",
+          isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         )}
-        style={{ backgroundColor: "rgba(9,9,11,0.97)", backdropFilter: "blur(24px)" }}
+        style={{ backgroundColor: "rgba(9,9,11,0.96)", backdropFilter: "blur(24px)" }}
       >
-        {navItems.map((item) => (
-          <a
-            key={item.name}
-            href={item.href}
-            onClick={() => setIsMenuOpen(false)}
-            className="text-3xl font-heading font-semibold text-[#A1A1AA] hover:text-white transition-colors duration-200"
-          >
-            {item.name}
-          </a>
-        ))}
-        <div className="mt-4 flex items-center gap-6">
-          <a
-            href="https://github.com/harshgavandit"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-[#71717A] hover:text-white transition-colors"
-          >
-            GitHub
-          </a>
-          <a
-            href="mailto:harshgavand2@gmail.com"
-            className="text-sm text-[#71717A] hover:text-white transition-colors"
-          >
-            Email
-          </a>
+        <div className="glass-card rounded-3xl p-6">
+          <div className="mb-8">
+            <p className="section-kicker mb-2">Navigation</p>
+            <p className="font-heading text-3xl font-bold text-white">Explore the portfolio</p>
+          </div>
+          <div className="grid gap-3">
+            {navItems.map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                onClick={() => setIsMenuOpen(false)}
+                className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 font-heading text-xl font-semibold text-[#D4D4D8] transition-all hover:border-indigo-400/40 hover:bg-indigo-500/10 hover:text-white"
+              >
+                {item.name}
+              </a>
+            ))}
+          </div>
+          <div className="mt-6 grid grid-cols-2 gap-3">
+            <a
+              href={resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="rounded-2xl bg-white px-4 py-3 text-center text-sm font-semibold text-[#09090B]"
+            >
+              Resume
+            </a>
+            <a
+              href="mailto:harshgavand2@gmail.com"
+              className="rounded-2xl border border-white/10 px-4 py-3 text-center text-sm font-semibold text-white"
+            >
+              Email
+            </a>
+          </div>
         </div>
       </div>
     </>

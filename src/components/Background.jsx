@@ -1,7 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export const Background = () => {
-  const [mouse, setMouse] = useState({ x: 50, y: 50 });
+  const rootRef = useRef(null);
   const rafRef = useRef(null);
   const currentRef = useRef({ x: 50, y: 50 });
   const targetRef = useRef({ x: 50, y: 50 });
@@ -19,7 +19,10 @@ export const Background = () => {
     function animate() {
       currentRef.current.x = lerp(currentRef.current.x, targetRef.current.x, 0.05);
       currentRef.current.y = lerp(currentRef.current.y, targetRef.current.y, 0.05);
-      setMouse({ x: currentRef.current.x, y: currentRef.current.y });
+      if (rootRef.current) {
+        rootRef.current.style.setProperty("--mouse-x", `${currentRef.current.x}%`);
+        rootRef.current.style.setProperty("--mouse-y", `${currentRef.current.y}%`);
+      }
       rafRef.current = requestAnimationFrame(animate);
     }
 
@@ -34,8 +37,9 @@ export const Background = () => {
 
   return (
     <div
+      ref={rootRef}
       className="fixed inset-0 overflow-hidden"
-      style={{ zIndex: -1, pointerEvents: "none" }}
+      style={{ zIndex: -1, pointerEvents: "none", "--mouse-x": "50%", "--mouse-y": "50%" }}
       aria-hidden="true"
     >
       {/* Base */}
@@ -96,8 +100,8 @@ export const Background = () => {
           position: "absolute",
           width: "700px",
           height: "700px",
-          left: `${mouse.x}%`,
-          top: `${mouse.y}%`,
+          left: "var(--mouse-x)",
+          top: "var(--mouse-y)",
           transform: "translate(-50%, -50%)",
           background:
             "radial-gradient(circle, rgba(99,102,241,0.07) 0%, transparent 60%)",
@@ -126,7 +130,7 @@ export const Background = () => {
 
       {/* Subtle dot grid */}
       <div
-        className="absolute inset-0"
+        className="absolute inset-0 soft-grid"
         style={{
           backgroundImage:
             "radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px)",

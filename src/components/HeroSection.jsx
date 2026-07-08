@@ -1,13 +1,23 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { ArrowDown, ArrowRight, Download } from "lucide-react";
 import { useEffect, useState } from "react";
 
+const resumeUrl = "/Harsh_Gavand_Resume.pdf";
+
 const roles = [
   "Full-Stack Engineer",
-  "MERN Stack Developer",
   "AI Systems Builder",
-  "Product Engineer",
+  "MERN + Python Developer",
+  "SaaS Product Engineer",
 ];
+
+const metrics = [
+  { value: "26", label: "Projects shipped" },
+  { value: "1K+", label: "Concurrent users supported" },
+  { value: "30%", label: "Performance improvement" },
+];
+
+const highlights = ["MERN", "Python", "Django", "FastAPI", "AI Agents", "WebRTC"];
 
 const fadeUp = (delay = 0) => ({
   initial: { opacity: 0, y: 28 },
@@ -21,179 +31,113 @@ export const HeroSection = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setRoleIndex((i) => (i + 1) % roles.length);
-    }, 3000);
+    }, 2800);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <section
-      id="hero"
-      className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-20"
-    >
-      <div className="max-w-4xl mx-auto w-full text-center">
+    <section id="hero" className="relative flex min-h-screen items-center overflow-hidden px-6 pb-20 pt-32">
+      <div className="soft-grid absolute inset-0 opacity-60" aria-hidden="true" />
+      <motion.div
+        className="absolute right-[-8rem] top-24 h-72 w-72 rounded-full bg-cyan-400/10 blur-3xl"
+        animate={{ y: [0, 24, 0], scale: [1, 1.08, 1] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+        aria-hidden="true"
+      />
+      <motion.div
+        className="absolute bottom-24 left-[-9rem] h-80 w-80 rounded-full bg-indigo-500/15 blur-3xl"
+        animate={{ y: [0, -22, 0], scale: [1, 1.05, 1] }}
+        transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+        aria-hidden="true"
+      />
 
-        {/* Availability badge */}
-        <motion.div {...fadeUp(0)} className="flex justify-center mb-8">
-          <span
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium tracking-wide"
-            style={{
-              border: "1px solid #27272A",
-              backgroundColor: "rgba(17,17,19,0.8)",
-              color: "#A1A1AA",
-            }}
+      <div className="mx-auto w-full max-w-5xl text-center">
+        <div>
+          <motion.div {...fadeUp(0)} className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3.5 py-1.5 text-xs font-semibold text-[#D4D4D8] backdrop-blur-xl">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
+            </span>
+            Available for full-stack, AI, and SaaS roles
+          </motion.div>
+
+          <motion.h1
+            {...fadeUp(0.08)}
+            className="font-heading text-balance text-5xl font-black leading-[0.95] text-white sm:text-6xl lg:text-7xl"
           >
-            <span
-              className="w-1.5 h-1.5 rounded-full"
-              style={{
-                backgroundColor: "#22C55E",
-                boxShadow: "0 0 6px #22C55E",
-                animation: "glow 3s ease-in-out infinite",
-              }}
-            />
-            Available for opportunities
-          </span>
-        </motion.div>
+            I build premium web products with <span className="gradient-text">full-stack depth.</span>
+          </motion.h1>
 
-        {/* Name */}
-        <motion.h1
-          {...fadeUp(0.1)}
-          className="font-heading font-bold text-white mb-4 leading-none"
-          style={{ fontSize: "clamp(3rem, 8vw, 6.5rem)", letterSpacing: "-0.03em" }}
-        >
-          Harsh Gavand
-        </motion.h1>
+          <motion.div {...fadeUp(0.18)} className="mt-5 flex min-h-9 items-center overflow-hidden">
+            <span className="mr-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#71717A]">Harsh Gavand</span>
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={roleIndex}
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -18 }}
+                transition={{ duration: 0.42, ease: [0.16, 1, 0.3, 1] }}
+                className="font-heading text-xl font-bold text-[#A5B4FC]"
+              >
+                {roles[roleIndex]}
+              </motion.span>
+            </AnimatePresence>
+          </motion.div>
 
-        {/* Animated role */}
-        <motion.div
-          {...fadeUp(0.2)}
-          className="flex items-center justify-center mb-6 overflow-hidden"
-          style={{ height: "2.5rem" }}
-        >
-          <AnimatePresence mode="wait">
-            <motion.span
-              key={roleIndex}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              className="font-heading font-semibold"
-              style={{
-                fontSize: "clamp(1.1rem, 2.5vw, 1.6rem)",
-                background: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-              }}
+          <motion.p {...fadeUp(0.28)} className="mt-6 max-w-2xl text-lg leading-8 text-[#A1A1AA]">
+            Full-stack developer building scalable MERN, Python, SaaS, and AI systems with clean APIs,
+            polished interfaces, deployment discipline, and measurable product outcomes.
+          </motion.p>
+
+          <motion.div {...fadeUp(0.36)} className="mt-7 flex flex-wrap justify-center gap-2">
+            {highlights.map((item) => (
+              <span key={item} className="chip rounded-full px-3 py-1 text-xs font-semibold">
+                {item}
+              </span>
+            ))}
+          </motion.div>
+
+          <motion.div {...fadeUp(0.46)} className="mt-9 flex flex-wrap items-center justify-center gap-4">
+            <a
+              href="#projects"
+              className="magnetic-button inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#09090B] shadow-[0_16px_40px_rgba(255,255,255,0.13)]"
             >
-              {roles[roleIndex]}
-            </motion.span>
-          </AnimatePresence>
-        </motion.div>
+              Explore Projects <ArrowRight size={16} />
+            </a>
+            <a
+              href={resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="magnetic-button inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-6 py-3 text-sm font-semibold text-white backdrop-blur-xl hover:border-indigo-400/50"
+            >
+              <Download size={16} /> View Resume
+            </a>
+          </motion.div>
 
-        {/* Description */}
-        <motion.p
-          {...fadeUp(0.3)}
-          className="text-lg md:text-xl leading-relaxed max-w-2xl mx-auto mb-10"
-          style={{ color: "#A1A1AA" }}
-        >
-          Building production-grade web systems — from REST APIs to real-time
-          interfaces. Specializing in MERN stack, Python backends, and
-          AI-powered applications shipped across two startups.
-        </motion.p>
+          <motion.div {...fadeUp(0.56)} className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-3 sm:grid-cols-3">
+            {metrics.map((metric) => (
+              <div key={metric.label} className="premium-card rounded-2xl p-4">
+                <div className="font-heading text-3xl font-black text-white">{metric.value}</div>
+                <div className="mt-1 text-xs leading-5 text-[#A1A1AA]">{metric.label}</div>
+              </div>
+            ))}
+          </motion.div>
+        </div>
 
-        {/* Code snippet detail */}
-        <motion.div {...fadeUp(0.35)} className="flex justify-center mb-10">
-          <span
-            className="font-mono text-sm px-4 py-2 rounded-lg"
-            style={{
-              backgroundColor: "#111113",
-              border: "1px solid #1F1F23",
-              color: "#71717A",
-            }}
-          >
-            <span style={{ color: "#818CF8" }}>const</span>{" "}
-            <span style={{ color: "#22C55E" }}>engineer</span>{" "}
-            <span style={{ color: "#A1A1AA" }}>=</span>{" "}
-            <span style={{ color: "#A1A1AA" }}>{"{ "}</span>
-            <span style={{ color: "#F59E0B" }}>stack</span>
-            <span style={{ color: "#A1A1AA" }}>: </span>
-            <span style={{ color: "#6EE7B7" }}>"MERN + Python + AI"</span>
-            <span style={{ color: "#A1A1AA" }}>{" }"}</span>
-          </span>
-        </motion.div>
-
-        {/* CTAs */}
-        <motion.div
-          {...fadeUp(0.45)}
-          className="flex flex-wrap items-center justify-center gap-4"
-        >
-          <a
-            href="#projects"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-sm text-white transition-all duration-200"
-            style={{
-              background: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)",
-              boxShadow: "0 0 0 1px rgba(99,102,241,0.3), 0 8px 20px rgba(99,102,241,0.25)",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-2px)";
-              e.currentTarget.style.boxShadow =
-                "0 0 0 1px rgba(99,102,241,0.5), 0 12px 32px rgba(99,102,241,0.35)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow =
-                "0 0 0 1px rgba(99,102,241,0.3), 0 8px 20px rgba(99,102,241,0.25)";
-            }}
-          >
-            View Projects <ArrowRight size={15} />
-          </a>
-          <a
-            href=""
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-sm transition-all duration-200"
-            style={{
-              border: "1px solid #27272A",
-              backgroundColor: "transparent",
-              color: "#A1A1AA",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "translateY(-2px)";
-              e.currentTarget.style.borderColor = "#6366F1";
-              e.currentTarget.style.color = "#FAFAFA";
-              e.currentTarget.style.backgroundColor = "rgba(99,102,241,0.08)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.borderColor = "#27272A";
-              e.currentTarget.style.color = "#A1A1AA";
-              e.currentTarget.style.backgroundColor = "transparent";
-            }}
-          >
-            <Download size={15} /> Resume
-          </a>
-        </motion.div>
       </div>
 
-      {/* Scroll indicator */}
-      <motion.div
+      <motion.a
+        href="#about"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.4, duration: 0.6 }}
-        className="absolute bottom-10 left-1/2 flex flex-col items-center gap-2"
-        style={{ transform: "translateX(-50%)" }}
+        transition={{ delay: 1.2, duration: 0.6 }}
+        className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-[#71717A] md:flex"
       >
-        <span
-          className="text-[10px] font-medium tracking-[0.2em] uppercase"
-          style={{ color: "#52525B" }}
-        >
-          Scroll
-        </span>
-        <motion.div
-          animate={{ y: [0, 7, 0] }}
-          transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <ArrowDown size={14} style={{ color: "#52525B" }} />
-        </motion.div>
-      </motion.div>
+        <span className="text-[10px] font-semibold uppercase tracking-[0.22em]">Scroll</span>
+        <motion.span animate={{ y: [0, 7, 0] }} transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}>
+          <ArrowDown size={15} />
+        </motion.span>
+      </motion.a>
     </section>
   );
 };
