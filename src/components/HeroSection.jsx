@@ -68,7 +68,7 @@ export const HeroSection = () => {
             I build premium web products with <span className="gradient-text">full-stack depth.</span>
           </motion.h1>
 
-          <motion.div {...fadeUp(0.18)} className="mt-5 flex min-h-9 items-center overflow-hidden">
+          <motion.div {...fadeUp(0.18)} className="mt-5 flex min-h-9 items-center justify-center overflow-hidden">
             <span className="mr-3 text-sm font-semibold uppercase tracking-[0.18em] text-[#71717A]">Harsh Gavand</span>
             <AnimatePresence mode="wait">
               <motion.span
@@ -84,7 +84,7 @@ export const HeroSection = () => {
             </AnimatePresence>
           </motion.div>
 
-          <motion.p {...fadeUp(0.28)} className="mt-6 max-w-2xl text-lg leading-8 text-[#A1A1AA]">
+          <motion.p {...fadeUp(0.28)} className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-[#A1A1AA]">
             Full-stack developer building scalable MERN, Python, SaaS, and AI systems with clean APIs,
             polished interfaces, deployment discipline, and measurable product outcomes.
           </motion.p>

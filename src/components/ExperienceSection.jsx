@@ -13,9 +13,6 @@ const experiences = [
       "Designing and optimizing relational database schemas; writing efficient, reusable SQL queries to support features and reporting pipelines.",
       "Collaborating with product and design to ship features fast while keeping codebases maintainable and scalable.",
       "Conducting code reviews and enforcing coding standards across shared repositories.",
-      "Built and maintained responsive UI components using HTML, CSS, and JavaScript — supporting 1,000+ concurrent users with zero reported cross-browser compatibility issues.",
-      "Collaborated with the backend team to integrate REST APIs into frontend views, handling async data flows and dynamic rendering across 10+ pages and reducing average page load time by 30%.",
-      "Identified and resolved 20+ UI bugs across devices and screen sizes, improving load performance and ensuring a consistent user experience across the entire product.",
     ],
     tech: ["Django", "React", "Python", "JavaScript", "REST APIs", "SQL"],
   },
@@ -23,8 +20,12 @@ const experiences = [
     company: "HRP Enterprises",
     role: "Frontend Developer",
     period: "Jan 2024 – Nov 2025",
-    achievements: [],
-    tech: [],
+    achievements: [
+      "Built and maintained responsive UI components using HTML, CSS, and JavaScript — supporting 1,000+ concurrent users with zero reported cross-browser compatibility issues.",
+      "Collaborated with the backend team to integrate REST APIs into frontend views, handling async data flows and dynamic rendering across 10+ pages and reducing average page load time by 30%.",
+      "Identified and resolved 20+ UI bugs across devices and screen sizes, improving load performance and ensuring a consistent user experience across the entire product.",
+    ],
+    tech: ["HTML", "CSS", "JavaScript", "React", "REST APIs"],
   },
 ];
 
