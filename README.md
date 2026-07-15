@@ -2,6 +2,10 @@
 
 <div align="center">
   <br />
+<<<<<<< HEAD
+=======
+  <a href="https://youtu.be/YOUR_VIDEO_ID" target="_blank">
+>>>>>>> 54d2a55 (fix)
   </a>
   <br />
   <div>
@@ -19,9 +23,15 @@
   <br />
 </div>
 
+<<<<<<< HEAD
 Live Link - https://harsh-gavand-portfolio-website.onrender.com/
 
 
+=======
+
+
+
+>>>>>>> 54d2a55 (fix)
 
 ## ⚙️ Tech Stack
 
@@ -81,3 +91,28 @@ Your app will be available at: [http://localhost:5173](http://localhost:5173)
 
 
 
+<<<<<<< HEAD
+=======
+### Deploy on Vercel
+
+1. Push your code to GitHub
+2. Go to [vercel.com](https://vercel.com)
+3. Import your repository
+4. Click **Deploy**
+
+Your live website will be hosted on a custom subdomain (e.g. `https://your-name.vercel.app`)
+
+---
+
+## 🔗 Useful Links
+
+* [React Documentation](https://reactjs.org/)
+* [Tailwind CSS Docs](https://tailwindcss.com/)
+* [Lucide Icons](https://lucide.dev/)
+* [Radix UI](https://www.radix-ui.com/)
+* [Vite](https://vitejs.dev/)
+* [Vercel](https://vercel.com/)
+
+---
+
+>>>>>>> 54d2a55 (fix)
