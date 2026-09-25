@@ -1,0 +1,18 @@
+{
+  "desktop": {
+    "manualReview": [
+      "color-contrast"
+    ],
+    "passes": 31,
+    "viewport": 1280,
+    "violations": []
+  },
+  "mobile": {
+    "manualReview": [
+      "color-contrast"
+    ],
+    "passes": 31,
+    "viewport": 375,
+    "violations": []
+  }
+}

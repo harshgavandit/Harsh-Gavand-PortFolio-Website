@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://harsh-gavand-portfolio-website.onrender.com/sitemap.xml

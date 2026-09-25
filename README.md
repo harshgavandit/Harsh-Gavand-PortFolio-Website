@@ -1,118 +1,48 @@
-# Build a Modern Portfolio Website with React & TailwindCSS
+# Harsh Gavand — Portfolio
 
-<div align="center">
-  <br />
-<<<<<<< HEAD
-=======
-  <a href="https://youtu.be/YOUR_VIDEO_ID" target="_blank">
->>>>>>> 54d2a55 (fix)
-  </a>
-  <br />
-  <div>
-    <img src="https://img.shields.io/badge/-React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
-    <img src="https://img.shields.io/badge/-TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss" alt="Tailwind CSS" />
-    <img src="https://img.shields.io/badge/-Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
-    <img src="https://img.shields.io/badge/-Lucide Icons-FD4D4D?style=for-the-badge&logo=lucide" alt="Lucide Icons" />
-    <img src="https://img.shields.io/badge/-Radix UI-9D4EDD?style=for-the-badge&logo=data:image/svg+xml;base64..." alt="Radix UI" />
-  </div>
-  <h3 align="center">Create a Stunning Developer Portfolio with Animations, Dark Mode, and Projects Showcase</h3>
-  <div align="center">
-    Follow the full video tutorial on 
-    <a href="https://youtu.be/YOUR_VIDEO_ID" target="_blank"><b>YouTube</b></a>
-  </div>
-  <br />
-</div>
+Project-first React + TypeScript portfolio built with Vite. Features four detailed case studies, all 26 original projects, an engineering profile, experience timeline, categorized skills, workflow, and contact draft preparation.
 
-<<<<<<< HEAD
-Live Link - https://harsh-gavand-portfolio-website.onrender.com/
+## Development
 
+Use Node.js 22 LTS or newer.
 
-=======
-
-
-
->>>>>>> 54d2a55 (fix)
-
-## ⚙️ Tech Stack
-
-* **React** – Component-based UI development
-* **Vite** – Lightning-fast build tool
-* **TailwindCSS** – Utility-first CSS for styling
-* **Lucide Icons** – Clean and beautiful icon pack
-* **Radix UI** – Accessible component primitives
-* **TypeScript (optional)** – Type safety and tooling
-* **GitHub & Vercel** – Deployment
-
----
-
-## ⚡️ Features
-
-* 🌑 **Light/Dark Mode Toggle**
-  Save theme preference in local storage with beautiful transitions
-
-* 💫 **Animated Backgrounds**
-  Stars, meteors, scroll effects, and glowing UI elements
-
-* 📱 **Responsive Navigation**
-  Desktop and mobile menus with glassmorphism
-
-* 👨‍💻 **Hero & About Sections**
-  Showcase who you are with smooth intro animations and buttons
-
-* 📊 **Skills Grid**
-  Filterable progress bars and categories with animated width
-
-* 🖼️ **Projects Showcase**
-  Display screenshots, tech stacks, and GitHub/demo links
-
-* 📩 **Contact Section**
-  Social icons + responsive contact form with toast notifications
-
-* 🚀 **One-Click Deployment**
-  Easily host your site with Vercel and GitHub
-
----
-
-## 👌 Quick Start
-
-
-### Clone and Run
-
-```bash
-
-npm install
+```sh
+npm ci
 npm run dev
 ```
 
-Your app will be available at: [http://localhost:5173](http://localhost:5173)
+## Validation
 
----
+```sh
+npm run lint
+npm run type-check
+npm test
+npm run build
+npm run preview
+```
 
+The tests verify preservation of the original project catalog, valid project URLs, resume and image assets, and SEO metadata. Browser verification results and external-link limitations are recorded in `verification/README.md`.
 
+## Content and assets
 
+- `src/data/projects.json`: preserved original project descriptions, contributions, technologies, and links.
+- `src/data/portfolio.ts`: typed case studies and profile content. Current personal details come from the updated September 2026 resume.
+- `public/Harsh_Gavand_Resume.pdf`: exact copy of the supplied updated resume. All resume links use this stable URL.
+- `public/projects`: actual captured public demo pages in responsive WebP sizes. Diagrams in other case studies are clearly labeled implementation maps, not screenshots.
+- `src/index.css`: design tokens, responsive layouts, focus styles, and reduced-motion behavior.
 
-<<<<<<< HEAD
-=======
-### Deploy on Vercel
+Fonts are self-hosted. There are no analytics, external font requests, or image services required at runtime.
 
-1. Push your code to GitHub
-2. Go to [vercel.com](https://vercel.com)
-3. Import your repository
-4. Click **Deploy**
+## Contact behavior
 
-Your live website will be hosted on a custom subdomain (e.g. `https://your-name.vercel.app`)
+The form prepares a `mailto:` draft. It does not claim to send a message. The visitor reviews and sends the draft through their email application. Copy-email and direct email links are available when no default mail client is configured.
 
----
+## Hosting
 
-## 🔗 Useful Links
+Build command: `npm ci && npm run build`
 
-* [React Documentation](https://reactjs.org/)
-* [Tailwind CSS Docs](https://tailwindcss.com/)
-* [Lucide Icons](https://lucide.dev/)
-* [Radix UI](https://www.radix-ui.com/)
-* [Vite](https://vitejs.dev/)
-* [Vercel](https://vercel.com/)
+Publish directory: `dist`
 
----
+For Render Static Sites, add a rewrite from `/*` to `/index.html` so direct navigation supports the client-side 404 page. `public/_redirects` supports hosts that read that convention; Render requires the dashboard rewrite setting. Existing site URL is used for canonical, social, sitemap, and structured data metadata.
 
->>>>>>> 54d2a55 (fix)
+No deployment is performed by local development or validation commands.
