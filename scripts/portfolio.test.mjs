@@ -62,3 +62,13 @@ test("SEO files use the canonical production origin and valid structured data", 
       ).includes(schema.url),
     );
 });
+
+test("published portrait is the user's unaltered supplied photograph", () => {
+  const portrait = readFileSync(
+    new URL("../public/portrait/harsh.jpeg", import.meta.url),
+  );
+  assert.equal(
+    createHash("sha256").update(portrait).digest("hex"),
+    "cf722b0070f9634cd864ac056994766102892c4675d831147a0c6007d91bdf96",
+  );
+});

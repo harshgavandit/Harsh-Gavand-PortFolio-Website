@@ -22,7 +22,12 @@ export interface CaseStudy {
   contributions: { label: string; description: string }[];
   image?: string;
   imageAlt?: string;
-  diagram?: { title: string; nodes: string[]; caption: string };
+  diagram?: {
+    title: string;
+    nodes: string[];
+    caption: string;
+    chapterNodes: number[][];
+  };
 }
 
 export const profile = {
@@ -63,6 +68,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     diagram: {
       title: "The content creation pipeline",
+      chapterNodes: [[0, 1], [2], [3, 4]],
       nodes: [
         "Product + model assets",
         "React creation workspace",
@@ -152,6 +158,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     diagram: {
       title: "From signal to inbox",
+      chapterNodes: [[0, 1, 2], [3], [4]],
       nodes: [
         "Articles + transcripts",
         "Collect + normalize",

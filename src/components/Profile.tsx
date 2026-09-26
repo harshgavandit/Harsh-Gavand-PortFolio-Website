@@ -7,7 +7,7 @@ import {
   Terminal,
   Cloud,
 } from "lucide-react";
-import { experience, profile, skills, workflow } from "../data/portfolio";
+import { experience, profile, skills } from "../data/portfolio";
 import { ActionLink, Reveal, SectionHeading, Tags } from "./Primitives";
 
 export function About() {
@@ -193,32 +193,6 @@ export function Skills() {
             </Reveal>
           );
         })}
-      </div>
-    </section>
-  );
-}
-
-export function Workflow() {
-  return (
-    <section id="workflow" className="section workflow-section">
-      <div className="section-container">
-        <SectionHeading
-          number="06"
-          label="How I work"
-          title="Thoughtful at every step."
-          description="A deliberate path from understanding a problem to delivering a working product."
-        />
-        <ol className="workflow-grid">
-          {workflow.map(([title, detail], i) => (
-            <li key={title}>
-              <Reveal delay={i * 0.04}>
-                <span className="workflow-number">0{i + 1}</span>
-                <h3>{title}</h3>
-                <p>{detail}</p>
-              </Reveal>
-            </li>
-          ))}
-        </ol>
       </div>
     </section>
   );

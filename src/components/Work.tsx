@@ -1,12 +1,5 @@
-import { useMemo, useState } from "react";
-import {
-  ArrowDown,
-  ArrowRight,
-  ArrowUpRight,
-  Check,
-  Code2,
-  Search,
-} from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { ArrowDown, ArrowRight, ArrowUpRight, Search } from "lucide-react";
 import {
   caseStudies,
   projects,
@@ -14,74 +7,7 @@ import {
   type Project,
 } from "../data/portfolio";
 import { ActionLink, Reveal, SectionHeading, Tags } from "./Primitives";
-
-function ProjectVisual({
-  study,
-  project,
-}: {
-  study: CaseStudy;
-  project: Project;
-}) {
-  return (
-    <figure
-      className={`project-visual ${study.image ? "has-screenshot" : "has-diagram"}`}
-    >
-      <div className="browser-frame">
-        <div className="browser-chrome">
-          <span className="window-dots" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-          </span>
-          <span>
-            {study.image
-              ? new URL(project.demoUrl!).hostname
-              : "ENGINEERING / SYSTEM OVERVIEW"}
-          </span>
-          <ArrowUpRight size={13} aria-hidden="true" />
-        </div>
-        {study.image ? (
-          <img
-            src={`/projects/${study.image}-1280.webp`}
-            srcSet={`/projects/${study.image}-640.webp 640w, /projects/${study.image}-1280.webp 1280w`}
-            sizes="(min-width: 1000px) 55vw, 100vw"
-            width="1280"
-            height="722"
-            alt={study.imageAlt}
-            loading="lazy"
-            decoding="async"
-          />
-        ) : (
-          <div className="pipeline-visual">
-            <div className="pipeline-heading">
-              <Code2 size={22} aria-hidden="true" />
-              <span>{study.diagram?.title}</span>
-            </div>
-            <ol>
-              {study.diagram?.nodes.map((node, i) => (
-                <li key={node}>
-                  <span className="pipeline-step">0{i + 1}</span>
-                  <span>{node}</span>
-                  {i < (study.diagram?.nodes.length ?? 0) - 1 ? (
-                    <ArrowDown size={14} aria-hidden="true" />
-                  ) : (
-                    <Check size={15} aria-hidden="true" />
-                  )}
-                </li>
-              ))}
-            </ol>
-            <span className="pipeline-note">CONNECTED BY DESIGN.</span>
-          </div>
-        )}
-      </div>
-      <figcaption>
-        {study.image
-          ? `Actual project screenshot${project.id === 1 ? " · sign-in required" : " · public landing page"}`
-          : study.diagram?.caption}
-      </figcaption>
-    </figure>
-  );
-}
+import { ProjectWalkthrough } from "./ProjectWalkthrough";
 
 function ProjectDetails({ project }: { project: Project }) {
   return (
@@ -109,6 +35,84 @@ function ProjectDetails({ project }: { project: Project }) {
   );
 }
 
+export function ProjectCaseStudy({
+  study,
+  project,
+  index,
+}: {
+  study: CaseStudy;
+  project: Project;
+  index: number;
+}) {
+  return (
+    <Reveal>
+      <article
+        className="case-study"
+        id={`project-${project.id}`}
+        aria-labelledby={`project-title-${project.id}`}
+      >
+        <div className="case-topline">
+          <span className="project-number">0{index + 1}</span>
+          <span className="eyebrow">{project.category}</span>
+          <span
+            className={`project-status ${project.demoUrl ? "status-live" : ""}`}
+          >
+            <span />
+            {project.demoUrl ? "Live demo available" : "Source available"}
+          </span>
+        </div>
+        <div className="case-layout">
+          <div className="case-copy">
+            <h3 id={`project-title-${project.id}`}>{study.shortName}</h3>
+            <p className="project-problem">{study.problem}</p>
+            <p className="project-summary">{study.summary}</p>
+            <dl className="role-meta">
+              <div>
+                <dt>ROLE</dt>
+                <dd>
+                  {project.id === 17
+                    ? "Backend & AI Developer"
+                    : "Full-Stack Developer"}
+                </dd>
+              </div>
+              <div>
+                <dt>FOCUS</dt>
+                <dd>
+                  {project.id === 17
+                    ? "Pipeline · Data · AI · Delivery"
+                    : "Frontend · APIs · Integrations"}
+                </dd>
+              </div>
+            </dl>
+            <Tags items={project.technologies} />
+            <div className="actions">
+              {project.demoUrl && (
+                <ActionLink href={project.demoUrl} primary external>
+                  Live demo
+                </ActionLink>
+              )}
+              <ActionLink href={project.githubUrl} external>
+                Source code
+              </ActionLink>
+            </div>
+          </div>
+          <ProjectWalkthrough study={study} project={project} />
+        </div>
+        <div className="contribution-grid">
+          {study.contributions.map((item, i) => (
+            <div key={item.label}>
+              <span className="contribution-number">0{i + 1}</span>
+              <h4>{item.label}</h4>
+              <p>{item.description}</p>
+            </div>
+          ))}
+        </div>
+        <ProjectDetails project={project} />
+      </article>
+    </Reveal>
+  );
+}
+
 export function FeaturedWork() {
   return (
     <section
@@ -129,79 +133,25 @@ export function FeaturedWork() {
         }
         description="A closer look at the products, systems, and decisions that turn an idea into something useful."
       />
+      <nav className="case-study-index" aria-label="Featured project index">
+        {caseStudies.map((study, index) => (
+          <a key={study.projectId} href={`#project-${study.projectId}`}>
+            <span>0{index + 1}</span>
+            <strong>{study.shortName}</strong>
+            <ArrowUpRight size={14} aria-hidden="true" />
+          </a>
+        ))}
+      </nav>
       <div className="case-study-list">
         {caseStudies.map((study, index) => {
           const project = projects.find((p) => p.id === study.projectId)!;
           return (
-            <Reveal key={project.id}>
-              <article
-                className="case-study"
-                id={`project-${project.id}`}
-                aria-labelledby={`project-title-${project.id}`}
-              >
-                <div className="case-topline">
-                  <span className="project-number">0{index + 1}</span>
-                  <span className="eyebrow">{project.category}</span>
-                  <span
-                    className={`project-status ${project.demoUrl ? "status-live" : ""}`}
-                  >
-                    <span />
-                    {project.demoUrl
-                      ? "Live demo available"
-                      : "Source available"}
-                  </span>
-                </div>
-                <div className="case-layout">
-                  <div className="case-copy">
-                    <h3 id={`project-title-${project.id}`}>
-                      {study.shortName}
-                    </h3>
-                    <p className="project-problem">{study.problem}</p>
-                    <p className="project-summary">{study.summary}</p>
-                    <dl className="role-meta">
-                      <div>
-                        <dt>ROLE</dt>
-                        <dd>
-                          {project.id === 17
-                            ? "Backend & AI Developer"
-                            : "Full-Stack Developer"}
-                        </dd>
-                      </div>
-                      <div>
-                        <dt>FOCUS</dt>
-                        <dd>
-                          {project.id === 17
-                            ? "Pipeline · Data · AI · Delivery"
-                            : "Frontend · APIs · Integrations"}
-                        </dd>
-                      </div>
-                    </dl>
-                    <Tags items={project.technologies} />
-                    <div className="actions">
-                      {project.demoUrl && (
-                        <ActionLink href={project.demoUrl} primary external>
-                          Live demo
-                        </ActionLink>
-                      )}
-                      <ActionLink href={project.githubUrl} external>
-                        Source code
-                      </ActionLink>
-                    </div>
-                  </div>
-                  <ProjectVisual study={study} project={project} />
-                </div>
-                <div className="contribution-grid">
-                  {study.contributions.map((item, i) => (
-                    <div key={item.label}>
-                      <span className="contribution-number">0{i + 1}</span>
-                      <h4>{item.label}</h4>
-                      <p>{item.description}</p>
-                    </div>
-                  ))}
-                </div>
-                <ProjectDetails project={project} />
-              </article>
-            </Reveal>
+            <ProjectCaseStudy
+              key={project.id}
+              study={study}
+              project={project}
+              index={index}
+            />
           );
         })}
       </div>
@@ -231,6 +181,16 @@ export function MoreWork() {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<string>("All");
   const [limit, setLimit] = useState(6);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const projectHeadingRefs = useRef(new Map<number, HTMLHeadingElement>());
+  const pendingProjectFocus = useRef<number | null>(null);
+  useEffect(() => {
+    if (pendingProjectFocus.current === null) return;
+    const heading = projectHeadingRefs.current.get(pendingProjectFocus.current);
+    pendingProjectFocus.current = null;
+    heading?.focus({ preventScroll: true });
+    heading?.scrollIntoView({ block: "center" });
+  }, [limit]);
   const secondary = useMemo(
     () =>
       projects.filter((p) => !caseStudies.some((c) => c.projectId === p.id)),
@@ -281,6 +241,7 @@ export function MoreWork() {
           <Search size={17} aria-hidden="true" />
           <span className="sr-only">Search projects</span>
           <input
+            ref={searchRef}
             value={query}
             onChange={(e) => {
               setQuery(e.target.value);
@@ -302,7 +263,16 @@ export function MoreWork() {
               <span className="eyebrow">{project.category}</span>
               <ArrowUpRight size={20} aria-hidden="true" />
             </div>
-            <h3>{project.title}</h3>
+            <h3
+              tabIndex={-1}
+              ref={(heading) => {
+                if (heading)
+                  projectHeadingRefs.current.set(project.id, heading);
+                else projectHeadingRefs.current.delete(project.id);
+              }}
+            >
+              {project.title}
+            </h3>
             <p>{project.overview.split(". ")[0]}.</p>
             <div className="archive-contribution">
               <span>MY CONTRIBUTION</span>
@@ -340,7 +310,10 @@ export function MoreWork() {
           <button
             className="button button-secondary"
             aria-controls="archive-results"
-            onClick={() => setLimit((n) => n + 6)}
+            onClick={() => {
+              pendingProjectFocus.current = filtered[limit]?.id ?? null;
+              setLimit((n) => n + 6);
+            }}
           >
             Show more projects <ArrowDown size={16} aria-hidden="true" />
           </button>
@@ -355,6 +328,8 @@ export function MoreWork() {
             onClick={() => {
               setFilter("All");
               setQuery("");
+              setLimit(6);
+              searchRef.current?.focus();
             }}
           >
             Reset filters <ArrowRight size={16} aria-hidden="true" />

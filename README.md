@@ -46,3 +46,11 @@ Publish directory: `dist`
 For Render Static Sites, add a rewrite from `/*` to `/index.html` so direct navigation supports the client-side 404 page. `public/_redirects` supports hosts that read that convention; Render requires the dashboard rewrite setting. Existing site URL is used for canonical, social, sitemap, and structured data metadata.
 
 No deployment is performed by local development or validation commands.
+
+## Cinematic presentation
+
+The hero uses the supplied real portrait with CSS framing and Framer Motion depth. `DepthSurface` shares pointer tilt and lighting across the portrait and project browser mockups. `ProjectWalkthrough` presents existing contributions as selectable chapters; playback starts only when requested. `Workflow` combines a conceptual layered build scene with the original six workflow descriptions.
+
+`MotionPreferences` coordinates the header motion control and OS reduced-motion preference. `BlueprintLight` is an optional lazy WebGL enhancement with a CSS fallback; it is not required for navigation or content. No Three.js runtime or external asset service is required.
+
+Current cinematic verification and any outstanding checks are recorded in `verification/cinematic-2026-09-26.md`.

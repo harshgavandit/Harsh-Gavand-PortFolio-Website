@@ -4,73 +4,73 @@
     "status": 200,
     "resolved": "https://github.com/harshgavandit/GitHub_Replica",
     "renderWakeup": false,
-    "seconds": 1.5
+    "seconds": 1.0
   },
   {
     "url": "https://github-replica.onrender.com",
     "status": 200,
     "resolved": "https://github-replica.onrender.com",
     "renderWakeup": false,
-    "seconds": 0.7
+    "seconds": 0.5
   },
   {
     "url": "https://github.com/harshgavandit/Zoom_Clone.git",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/Zoom_Clone",
     "renderWakeup": false,
-    "seconds": 1.5
+    "seconds": 1.1
   },
   {
     "url": "https://zoom-clone-xkdj.onrender.com/",
     "error": "The read operation timed out",
-    "seconds": 25.4
+    "seconds": 25.2
   },
   {
     "url": "https://github.com/harshgavandit/Banking_App_SaaS.git",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/Banking_App_SaaS",
     "renderWakeup": false,
-    "seconds": 1.4
+    "seconds": 1.1
   },
   {
     "url": "https://banking-app-saas.onrender.com/",
     "status": 200,
     "resolved": "https://banking-app-saas.onrender.com/",
     "renderWakeup": false,
-    "seconds": 0.8
+    "seconds": 0.6
   },
   {
     "url": "https://github.com/harshgavandit/PERN_STACK_SaaS_Project.git",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/PERN_STACK_SaaS_Project",
     "renderWakeup": false,
-    "seconds": 1.5
+    "seconds": 1.1
   },
   {
     "url": "https://pern-stack-saas-project.onrender.com/",
     "error": "The read operation timed out",
-    "seconds": 25.4
+    "seconds": 25.2
   },
   {
     "url": "https://github.com/harshgavandit/SaaS_E-commerce_Website-.git",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/SaaS_E-commerce_Website-",
     "renderWakeup": false,
-    "seconds": 1.2
+    "seconds": 0.9
   },
   {
     "url": "https://saas-e-commerce-website-1.onrender.com",
     "status": 200,
     "resolved": "https://saas-e-commerce-website-1.onrender.com",
     "renderWakeup": false,
-    "seconds": 0.4
+    "seconds": 0.3
   },
   {
     "url": "https://github.com/harshgavandit/Zerodha_Clone.git",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/Zerodha_Clone",
     "renderWakeup": false,
-    "seconds": 1.1
+    "seconds": 0.9
   },
   {
     "url": "https://zerodha-clone-qdgb.onrender.com/",
@@ -84,139 +84,139 @@
     "status": 200,
     "resolved": "https://github.com/harshgavandit/Agentic-AI_SYSTEM",
     "renderWakeup": false,
-    "seconds": 0.8
+    "seconds": 0.6
   },
   {
     "url": "https://github.com/harshgavandit/API_ISSUES_DEBUGGING_AGENT",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/API_ISSUES_DEBUGGING_AGENT",
     "renderWakeup": false,
-    "seconds": 0.8
+    "seconds": 0.6
   },
   {
     "url": "https://github.com/harshgavandit/Deep-Learning-Project",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/Deep-Learning-Project",
     "renderWakeup": false,
-    "seconds": 0.8
+    "seconds": 0.6
   },
   {
     "url": "https://github.com/harshgavandit/Multi-Agent-Research-System",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/Multi-Agent-Research-System",
     "renderWakeup": false,
-    "seconds": 0.8
+    "seconds": 0.6
   },
   {
     "url": "https://github.com/harshgavandit/AI_VIDEO_ASSISTANT",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/AI_VIDEO_ASSISTANT",
     "renderWakeup": false,
-    "seconds": 1.2
+    "seconds": 0.6
   },
   {
     "url": "https://github.com/harshgavandit/whatsapp-automation-api",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/whatsapp-automation-api",
     "renderWakeup": false,
-    "seconds": 1.2
+    "seconds": 0.6
   },
   {
     "url": "https://github.com/harshgavandit/MERN_AUTHENTICATION_Practice",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/MERN_AUTHENTICATION_Practice",
     "renderWakeup": false,
-    "seconds": 1.8
+    "seconds": 0.7
   },
   {
     "url": "https://github.com/harshgavandit/ugc-project",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/ugc-project",
     "renderWakeup": false,
-    "seconds": 1.6
+    "seconds": 0.7
   },
   {
     "url": "https://github.com/harshgavandit/OpenAI_Project-",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/OpenAI_Project-",
     "renderWakeup": false,
-    "seconds": 1.1
+    "seconds": 0.6
   },
   {
     "url": "https://github.com/harshgavandit/VidSNAP_AI_Flask",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/VidSNAP_AI_Flask",
     "renderWakeup": false,
-    "seconds": 1.3
+    "seconds": 0.5
   },
   {
     "url": "https://github.com/harshgavandit/AI_News_To_Email_Generator",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/AI_News_To_Email_Generator",
     "renderWakeup": false,
-    "seconds": 1.5
+    "seconds": 0.6
   },
   {
     "url": "https://github.com/harshgavandit/AI_image_Enhancer-",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/AI_image_Enhancer-",
     "renderWakeup": false,
-    "seconds": 3.3
+    "seconds": 0.6
   },
   {
     "url": "https://github.com/harshgavandit/SigmaGPT",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/SigmaGPT",
     "renderWakeup": false,
-    "seconds": 1.4
+    "seconds": 0.6
   },
   {
     "url": "https://github.com/harshgavandit/Stock-Prediction_Portal_Python_ML",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/Stock-Prediction_Portal_Python_ML",
     "renderWakeup": false,
-    "seconds": 2.5
+    "seconds": 0.7
   },
   {
     "url": "https://github.com/harshgavandit/ASP.NET-CORE_Project",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/ASP.NET-CORE_Project",
     "renderWakeup": false,
-    "seconds": 2.9
+    "seconds": 0.6
   },
   {
     "url": "https://github.com/harshgavandit/RailTrackerUTS_PHP",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/RailTrackerUTS_PHP",
     "renderWakeup": false,
-    "seconds": 2.5
+    "seconds": 0.6
   },
   {
     "url": "https://github.com/harshgavandit/DRF_Advanced_Project",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/DRF_Advanced_Project",
     "renderWakeup": false,
-    "seconds": 2.3
+    "seconds": 0.7
   },
   {
     "url": "https://github.com/harshgavandit/WebHook_API_Integration",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/WebHook_API_Integration",
     "renderWakeup": false,
-    "seconds": 3.7
+    "seconds": 0.6
   },
   {
     "url": "https://github.com/harshgavandit/DjangoResumeBuilder",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/DjangoResumeBuilder",
     "renderWakeup": false,
-    "seconds": 2.4
+    "seconds": 0.6
   },
   {
     "url": "https://github.com/harshgavandit/Office-Employee-Management-System",
     "status": 200,
     "resolved": "https://github.com/harshgavandit/Office-Employee-Management-System",
     "renderWakeup": false,
-    "seconds": 1.0
+    "seconds": 0.6
   }
 ]

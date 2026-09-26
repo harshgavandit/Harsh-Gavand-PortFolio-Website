@@ -1,6 +1,5 @@
 [
   {
-    "width": 320,
     "clientWidth": 305,
     "scrollWidth": 305,
     "sectionOrder": [
@@ -13,19 +12,9 @@
       "workflow",
       "contact"
     ],
-    "images": [
-      {
-        "loaded": false,
-        "alt": true
-      },
-      {
-        "loaded": false,
-        "alt": true
-      }
-    ]
+    "width": 320
   },
   {
-    "width": 375,
     "clientWidth": 360,
     "scrollWidth": 360,
     "sectionOrder": [
@@ -38,19 +27,9 @@
       "workflow",
       "contact"
     ],
-    "images": [
-      {
-        "loaded": false,
-        "alt": true
-      },
-      {
-        "loaded": false,
-        "alt": true
-      }
-    ]
+    "width": 375
   },
   {
-    "width": 430,
     "clientWidth": 415,
     "scrollWidth": 415,
     "sectionOrder": [
@@ -63,19 +42,9 @@
       "workflow",
       "contact"
     ],
-    "images": [
-      {
-        "loaded": false,
-        "alt": true
-      },
-      {
-        "loaded": false,
-        "alt": true
-      }
-    ]
+    "width": 430
   },
   {
-    "width": 768,
     "clientWidth": 753,
     "scrollWidth": 753,
     "sectionOrder": [
@@ -88,19 +57,9 @@
       "workflow",
       "contact"
     ],
-    "images": [
-      {
-        "loaded": false,
-        "alt": true
-      },
-      {
-        "loaded": false,
-        "alt": true
-      }
-    ]
+    "width": 768
   },
   {
-    "width": 1024,
     "clientWidth": 1009,
     "scrollWidth": 1009,
     "sectionOrder": [
@@ -113,19 +72,9 @@
       "workflow",
       "contact"
     ],
-    "images": [
-      {
-        "loaded": false,
-        "alt": true
-      },
-      {
-        "loaded": false,
-        "alt": true
-      }
-    ]
+    "width": 1024
   },
   {
-    "width": 1440,
     "clientWidth": 1425,
     "scrollWidth": 1425,
     "sectionOrder": [
@@ -138,19 +87,9 @@
       "workflow",
       "contact"
     ],
-    "images": [
-      {
-        "loaded": false,
-        "alt": true
-      },
-      {
-        "loaded": false,
-        "alt": true
-      }
-    ]
+    "width": 1440
   },
   {
-    "width": 1920,
     "clientWidth": 1905,
     "scrollWidth": 1905,
     "sectionOrder": [
@@ -163,15 +102,6 @@
       "workflow",
       "contact"
     ],
-    "images": [
-      {
-        "loaded": false,
-        "alt": true
-      },
-      {
-        "loaded": false,
-        "alt": true
-      }
-    ]
+    "width": 1920
   }
 ]

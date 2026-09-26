@@ -1,4 +1,5 @@
-import { m, useReducedMotion } from "framer-motion";
+import { m } from "framer-motion";
+import { useMotionEnabled } from "./MotionPreferences";
 import { ArrowUpRight } from "lucide-react";
 import { useRef, type ReactNode, type MouseEvent } from "react";
 
@@ -11,7 +12,7 @@ export function Reveal({
   className?: string;
   delay?: number;
 }) {
-  const reduce = useReducedMotion();
+  const reduce = !useMotionEnabled();
   return (
     <m.div
       className={className}
@@ -63,7 +64,7 @@ export function ActionLink({
   className?: string;
 }) {
   const ref = useRef<HTMLAnchorElement>(null);
-  const reduce = useReducedMotion();
+  const reduce = !useMotionEnabled();
   function move(event: MouseEvent<HTMLAnchorElement>) {
     if (reduce || !window.matchMedia("(pointer:fine)").matches) return;
     const rect = event.currentTarget.getBoundingClientRect();

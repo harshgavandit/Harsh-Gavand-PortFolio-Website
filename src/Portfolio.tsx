@@ -1,9 +1,11 @@
-import { LazyMotion, MotionConfig, domAnimation } from "framer-motion";
+import { LazyMotion, domAnimation } from "framer-motion";
 import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
 import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
 import { FeaturedWork, MoreWork } from "./components/Work";
-import { About, Experience, Skills, Workflow } from "./components/Profile";
+import { About, Experience, Skills } from "./components/Profile";
+import { Workflow } from "./components/Workflow";
+import { MotionPreferencesProvider } from "./components/MotionPreferences";
 import { Contact, Footer } from "./components/Contact";
 
 function Home() {
@@ -48,14 +50,14 @@ function NotFound() {
 export default function Portfolio() {
   return (
     <LazyMotion features={domAnimation} strict>
-      <MotionConfig reducedMotion="user">
+      <MotionPreferencesProvider>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
-      </MotionConfig>
+      </MotionPreferencesProvider>
     </LazyMotion>
   );
 }

@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { m, useScroll } from "framer-motion";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { profile } from "../data/portfolio";
+import { MotionToggle } from "./MotionPreferences";
 
 const links = ["Projects", "About", "Experience", "Skills", "Contact"];
 export function Navigation() {
@@ -119,6 +120,7 @@ export function Navigation() {
               </a>
             ))}
           </nav>
+          <MotionToggle />
           <a
             className="nav-resume"
             href={profile.resume}
