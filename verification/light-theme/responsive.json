@@ -1,0 +1,296 @@
+[
+  {
+    "width": 320,
+    "documentWidth": 320,
+    "background": "rgb(255, 255, 255)",
+    "heroBackground": "rgb(255, 255, 255)",
+    "text": "rgb(36, 52, 73)",
+    "sections": [
+      {
+        "id": "hero",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "projects",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "about",
+        "background": "rgb(243, 247, 252)"
+      },
+      {
+        "id": "experience",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "all-projects",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "skills",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "workflow",
+        "background": "rgb(243, 247, 252)"
+      },
+      {
+        "id": "contact",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "overflow": []
+  },
+  {
+    "width": 375,
+    "documentWidth": 375,
+    "background": "rgb(255, 255, 255)",
+    "heroBackground": "rgb(255, 255, 255)",
+    "text": "rgb(36, 52, 73)",
+    "sections": [
+      {
+        "id": "hero",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "projects",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "about",
+        "background": "rgb(243, 247, 252)"
+      },
+      {
+        "id": "experience",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "all-projects",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "skills",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "workflow",
+        "background": "rgb(243, 247, 252)"
+      },
+      {
+        "id": "contact",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "overflow": []
+  },
+  {
+    "width": 430,
+    "documentWidth": 430,
+    "background": "rgb(255, 255, 255)",
+    "heroBackground": "rgb(255, 255, 255)",
+    "text": "rgb(36, 52, 73)",
+    "sections": [
+      {
+        "id": "hero",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "projects",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "about",
+        "background": "rgb(243, 247, 252)"
+      },
+      {
+        "id": "experience",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "all-projects",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "skills",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "workflow",
+        "background": "rgb(243, 247, 252)"
+      },
+      {
+        "id": "contact",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "overflow": []
+  },
+  {
+    "width": 768,
+    "documentWidth": 768,
+    "background": "rgb(255, 255, 255)",
+    "heroBackground": "rgb(255, 255, 255)",
+    "text": "rgb(36, 52, 73)",
+    "sections": [
+      {
+        "id": "hero",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "projects",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "about",
+        "background": "rgb(243, 247, 252)"
+      },
+      {
+        "id": "experience",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "all-projects",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "skills",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "workflow",
+        "background": "rgb(243, 247, 252)"
+      },
+      {
+        "id": "contact",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "overflow": []
+  },
+  {
+    "width": 1024,
+    "documentWidth": 1024,
+    "background": "rgb(255, 255, 255)",
+    "heroBackground": "rgb(255, 255, 255)",
+    "text": "rgb(36, 52, 73)",
+    "sections": [
+      {
+        "id": "hero",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "projects",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "about",
+        "background": "rgb(243, 247, 252)"
+      },
+      {
+        "id": "experience",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "all-projects",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "skills",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "workflow",
+        "background": "rgb(243, 247, 252)"
+      },
+      {
+        "id": "contact",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "overflow": []
+  },
+  {
+    "width": 1440,
+    "documentWidth": 1440,
+    "background": "rgb(255, 255, 255)",
+    "heroBackground": "rgb(255, 255, 255)",
+    "text": "rgb(36, 52, 73)",
+    "sections": [
+      {
+        "id": "hero",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "projects",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "about",
+        "background": "rgb(243, 247, 252)"
+      },
+      {
+        "id": "experience",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "all-projects",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "skills",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "workflow",
+        "background": "rgb(243, 247, 252)"
+      },
+      {
+        "id": "contact",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "overflow": []
+  },
+  {
+    "width": 1920,
+    "documentWidth": 1920,
+    "background": "rgb(255, 255, 255)",
+    "heroBackground": "rgb(255, 255, 255)",
+    "text": "rgb(36, 52, 73)",
+    "sections": [
+      {
+        "id": "hero",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "projects",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "about",
+        "background": "rgb(243, 247, 252)"
+      },
+      {
+        "id": "experience",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "all-projects",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "skills",
+        "background": "rgba(0, 0, 0, 0)"
+      },
+      {
+        "id": "workflow",
+        "background": "rgb(243, 247, 252)"
+      },
+      {
+        "id": "contact",
+        "background": "rgba(0, 0, 0, 0)"
+      }
+    ],
+    "overflow": []
+  }
+]

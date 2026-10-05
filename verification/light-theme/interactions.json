@@ -1,0 +1,41 @@
+{
+  "interactions": [
+    {
+      "name": "Project search, empty state, reset and category filters",
+      "passed": true
+    },
+    {
+      "name": "Show more reveals all 22 archive projects and preserves focus",
+      "passed": true
+    },
+    {
+      "name": "Implementation details open and close by keyboard",
+      "passed": true
+    },
+    {
+      "name": "Walkthrough chapters and playback controls work",
+      "passed": true
+    },
+    {
+      "name": "Workflow stage selection and keyboard navigation work",
+      "passed": true
+    },
+    {
+      "name": "Contact validates required fields and generates the original email draft",
+      "passed": true
+    },
+    {
+      "name": "Mobile navigation traps focus, closes with Escape and links to sections",
+      "passed": true
+    },
+    {
+      "name": "Motion toggle and system reduced motion preserve manual exploration",
+      "passed": true
+    },
+    {
+      "name": "Unknown route returns to the portfolio and resume is served",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

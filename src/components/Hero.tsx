@@ -1,5 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from "react";
-import { m, useScroll, useTransform } from "framer-motion";
+import { m } from "framer-motion";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import { profile, projects } from "../data/portfolio";
 import { ActionLink } from "./Primitives";
@@ -7,39 +6,15 @@ import { Portrait } from "./Portrait";
 import { useMotionEnabled } from "./MotionPreferences";
 import "./cinematic.css";
 
-const BlueprintLight = lazy(() => import("./BlueprintLight"));
-
 export function Hero() {
   const enabled = useMotionEnabled();
-  const heroRef = useRef<HTMLElement>(null);
-  const [showLight, setShowLight] = useState(false);
-  useEffect(() => {
-    const timer = window.setTimeout(() => setShowLight(true), 1400);
-    return () => clearTimeout(timer);
-  }, []);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const meshY = useTransform(scrollYProgress, [0, 1], [0, 65]);
   return (
     <section
-      ref={heroRef}
       id="hero"
       className="hero section-container cinematic-hero"
       tabIndex={-1}
       aria-labelledby="hero-title"
     >
-      <m.div
-        className="hero-grid"
-        aria-hidden="true"
-        style={{ y: enabled ? meshY : 0 }}
-      />
-      {showLight && enabled && (
-        <Suspense fallback={null}>
-          <BlueprintLight />
-        </Suspense>
-      )}
       <div className="hero-topline">
         <span className="eyebrow">
           Independent thinking. End-to-end engineering.
@@ -63,10 +38,12 @@ export function Hero() {
                   <m.span
                     className={index ? "accent-text" : undefined}
                     initial={false}
-                    animate={enabled ? { y: ["105%", "0%"] } : undefined}
+                    animate={
+                      enabled ? { y: [6, 0], opacity: [0.85, 1] } : undefined
+                    }
                     transition={{
-                      duration: 0.9,
-                      delay: index * 0.12,
+                      duration: 0.35,
+                      delay: index * 0.06,
                       ease: [0.22, 1, 0.36, 1],
                     }}
                   >

@@ -3,9 +3,10 @@ import {
   useContext,
   useEffect,
   useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
-import { MotionConfig, useReducedMotion } from "framer-motion";
+import { MotionConfig } from "framer-motion";
 import { Pause, Play } from "lucide-react";
 
 const MotionPreferences = createContext({
@@ -14,12 +15,26 @@ const MotionPreferences = createContext({
   toggle: () => {},
 });
 
+function subscribeReducedMotion(onChange: () => void) {
+  const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+  preference.addEventListener("change", onChange);
+  return () => preference.removeEventListener("change", onChange);
+}
+
+function getReducedMotion() {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
 export function MotionPreferencesProvider({
   children,
 }: {
   children: ReactNode;
 }) {
-  const systemReduced = Boolean(useReducedMotion());
+  const systemReduced = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotion,
+    () => false,
+  );
   const [paused, setPaused] = useState(false);
   const enabled = !paused && !systemReduced;
   useEffect(() => {

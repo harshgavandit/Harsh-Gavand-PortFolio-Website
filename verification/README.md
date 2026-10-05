@@ -1,6 +1,6 @@
 # Implementation verification
 
-> Current cinematic revision: see [cinematic-2026-09-26.md](cinematic-2026-09-26.md) for the latest implementation and partial browser-verification status. The results below describe the earlier redesign.
+> Current light-theme revision: see [light-theme-2026-10-05.md](light-theme-2026-10-05.md) for the latest implementation, screenshots, responsive checks, and browser verification. The results below describe the earlier redesign.
 
 Implemented and verified locally on 25 September 2026, with a fresh brief audit, keyboard improvements, and production-browser recheck on 26 September 2026. Environment: Node 26.5.0, npm 12.0.1, and the Codex in-app Chromium browser. Production preview: http://127.0.0.1:4173/. This is local verification; no deployment was performed.
 
@@ -66,4 +66,3 @@ npm run preview -- --host 127.0.0.1 --port 4173
 ```
 
 Optional external-link recheck: `python scripts/check-links.py`. Hosting availability can change after this verification.
-
