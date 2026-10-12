@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { aboutProfile, experience, profile, skills } from "../data/portfolio";
 import { ActionLink, Reveal, SectionHeading, Tags } from "./Primitives";
+import { Portrait } from "./Portrait";
 
 export function About() {
   return (
@@ -31,6 +32,9 @@ export function About() {
           }
         />
         <div className="about-layout">
+          <Reveal className="about-portrait">
+            <Portrait />
+          </Reveal>
           <Reveal>
             <p className="about-lead">
               I’m Harsh — a full-stack developer working at the intersection of{" "}

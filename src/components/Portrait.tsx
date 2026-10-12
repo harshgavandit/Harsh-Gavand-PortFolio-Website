@@ -9,11 +9,11 @@ export function Portrait() {
       <div className="portrait-depth depth-surface">
         <figure className="portrait-frame">
           <img
-            src="/portrait/harsh.jpeg"
-            width="522"
-            height="1160"
+            src="/portrait/harsh-studio.jpg"
+            width="335"
+            height="745"
             alt="Harsh Gavand"
-            fetchPriority="high"
+            loading="lazy"
           />
           <figcaption>
             <span>Harsh Gavand</span>

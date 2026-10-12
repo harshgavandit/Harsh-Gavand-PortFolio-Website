@@ -17,6 +17,7 @@ import {
 } from "../data/portfolio";
 import { ActionLink, Reveal, SectionHeading, Tags } from "./Primitives";
 import { ProjectWalkthrough } from "./ProjectWalkthrough";
+import { DepthCard } from "./DepthCard";
 
 function ProjectDetails({ project }: { project: Project }) {
   return (
@@ -147,7 +148,7 @@ export function FeaturedWork() {
           const project = projects.find((p) => p.id === study.projectId)!;
           const Icon = study.projectId === 17 ? Mail : Sparkles;
           return (
-            <article className="gallery-card" key={study.projectId}>
+            <DepthCard className="gallery-card" key={study.projectId}>
               <a
                 className={`gallery-preview ${study.image ? "preview-screenshot" : "preview-architecture"}`}
                 href={`#project-${study.projectId}`}
@@ -235,7 +236,7 @@ export function FeaturedWork() {
                   </a>
                 </div>
               </div>
-            </article>
+            </DepthCard>
           );
         })}
       </div>

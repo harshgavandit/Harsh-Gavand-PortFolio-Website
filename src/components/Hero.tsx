@@ -2,7 +2,7 @@ import { m } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Sparkles } from "lucide-react";
 import { profile, projects } from "../data/portfolio";
 import { ActionLink } from "./Primitives";
-import { Portrait } from "./Portrait";
+import { StudioScene } from "./StudioScene";
 import { useMotionEnabled } from "./MotionPreferences";
 import "./cinematic.css";
 
@@ -17,7 +17,7 @@ export function Hero() {
     >
       <div className="hero-topline">
         <span className="eyebrow">
-          Independent thinking. End-to-end engineering.
+          DIGITAL CRAFT / FULL-STACK ENGINEERING / APPLIED AI
         </span>
         <span className="location">
           Mumbai, India <span>↗</span>
@@ -28,22 +28,20 @@ export function Hero() {
           <div className="availability">
             <span /> Open to full-stack & AI opportunities
           </div>
-          <p className="hero-intro">
-            Harsh Gavand <span>/ Full-Stack & AI Engineer</span>
-          </p>
+          <p className="hero-intro">Hi, I’m Harsh Gavand.</p>
           <h1 id="hero-title">
-            {["Built with purpose.", "Engineered to work."].map(
+            {["Ideas into", "intelligent", "experiences."].map(
               (line, index) => (
                 <span className="text-mask" key={line}>
                   <m.span
-                    className={index ? "accent-text" : undefined}
+                    className={index === 1 ? "accent-text" : undefined}
                     initial={false}
                     animate={
-                      enabled ? { y: [6, 0], opacity: [0.85, 1] } : undefined
+                      enabled ? { y: [24, 0], opacity: [0.4, 1] } : undefined
                     }
                     transition={{
-                      duration: 0.35,
-                      delay: index * 0.06,
+                      duration: 0.85,
+                      delay: index * 0.1,
                       ease: [0.22, 1, 0.36, 1],
                     }}
                   >
@@ -54,8 +52,9 @@ export function Hero() {
             )}
           </h1>
           <p className="hero-description">
-            I turn complex ideas into considered digital products — from
-            responsive interfaces and reliable APIs to practical AI systems.
+            Full-Stack & AI Developer turning complex ideas into considered
+            digital products — from responsive interfaces and reliable APIs to
+            practical AI systems.
           </p>
           <div className="actions">
             <ActionLink href="#projects" primary>
@@ -92,7 +91,7 @@ export function Hero() {
             <span>Applied AI</span>
           </div>
         </div>
-        <Portrait />
+        <StudioScene />
       </div>
       <div className="hero-bottom">
         <a href="#projects">

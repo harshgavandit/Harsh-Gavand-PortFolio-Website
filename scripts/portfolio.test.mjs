@@ -63,12 +63,22 @@ test("SEO files use the canonical production origin and valid structured data", 
     );
 });
 
-test("published portrait is the user's unaltered supplied photograph", () => {
+test("original supplied portrait remains unaltered", () => {
   const portrait = readFileSync(
     new URL("../public/portrait/harsh.jpeg", import.meta.url),
   );
   assert.equal(
     createHash("sha256").update(portrait).digest("hex"),
     "cf722b0070f9634cd864ac056994766102892c4675d831147a0c6007d91bdf96",
+  );
+});
+
+test("new studio portrait matches the user's supplied photograph", () => {
+  const photo = readFileSync(
+    new URL("../public/portrait/harsh-studio.jpg", import.meta.url),
+  );
+  assert.equal(
+    createHash("sha256").update(photo).digest("hex"),
+    "d588f408c446e4cef1588f8bf0ae3cf1f2cb6a0ef5b052ee910903c51d5c2686",
   );
 });

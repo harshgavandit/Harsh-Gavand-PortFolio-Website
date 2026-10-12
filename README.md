@@ -1,6 +1,6 @@
 # Harsh Gavand — Portfolio
 
-React + TypeScript portfolio with a calm white/soft-blue design, visual selected-project gallery, four detailed case studies, all 26 original projects, and a Gemini portfolio assistant. Includes an engineering profile, experience timeline, categorized skills, workflow, and contact draft preparation.
+React + TypeScript portfolio with a light, immersive 3D engineering-studio design, visual selected-project gallery, four detailed case studies, all 26 original projects, and a Gemini portfolio assistant. Includes an engineering profile, experience timeline, categorized skills, workflow, and contact draft preparation.
 
 ## Development
 
@@ -56,7 +56,7 @@ The form prepares a `mailto:` draft. It does not claim to send a message. The vi
 
 For the complete portfolio **including the assistant**, use a Node web service:
 
-- Build command: `npm ci && npm run build`
+- Build command: `npm ci --include=dev && npm run build`
 - Start command: `npm start`
 - Environment: `NODE_ENV=production`, `GEMINI_API_KEY` (secret), `GEMINI_MODEL=gemini-3.5-flash-lite`, and `ALLOWED_ORIGINS` set to the exact public origin (no trailing slash). Include comma-separated aliases only if they actually serve this site.
 - Let the host provide `PORT`. For a Render service behind its single trusted reverse proxy, set `TRUST_PROXY=1`; leave it `0` when directly exposing Node.
@@ -70,4 +70,10 @@ No deployment is performed by local development or validation commands.
 
 ## Presentation and motion
 
-The selected-work gallery combines real demo captures with clearly labeled architecture snapshots. It links to the existing full case studies and manual walkthroughs. The hero retains the supplied portrait and adds an assistant entry. `MotionPreferences` retains the manual control and OS reduced-motion subscription. Earlier cinematic assets remain in the repository, but the current light design uses stable surfaces and restrained transitions.
+The hero uses a procedural Three.js sculpture with orbital rings, satellites, and stacked system layers. Pointer movement changes the viewpoint; keyboard-accessible Interface, Systems, and Applied AI controls change the composition and description. The page combines subtle hero parallax, scroll-triggered reveals, perspective project previews, pointer tilt, skill micro-interactions, and a dimensional workflow. Native scrolling is preserved.
+
+The new supplied photograph appears in About at `public/portrait/harsh-studio.jpg`; the original photograph is retained. All 26 project records, case studies, experience, resume, contact draft behavior, and Gemini assistant remain intact. `src/studio.css` is the final visual layer after the existing styles.
+
+The WebGL engine loads separately when the hero approaches the viewport. Pixel ratio is capped at 1.5, with no downloaded models, textures, or postprocessing. Rendering stops offscreen, in a hidden tab, or when motion is paused. Resources and listeners are disposed on unmount. A CSS composition remains available if WebGL fails or loses its context. System reduced-motion settings and the manual motion control apply across the experience; discipline selection works without animation.
+
+See [the studio verification report](verification/studio-2026-10-12/README.md) for evidence and remaining limits.
