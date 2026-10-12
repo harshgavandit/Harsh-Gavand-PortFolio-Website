@@ -1,4 +1,5 @@
-import { m } from "framer-motion";
+import { useRef } from "react";
+import { m, useScroll, useTransform } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Sparkles } from "lucide-react";
 import { profile, projects } from "../data/portfolio";
 import { ActionLink } from "./Primitives";
@@ -8,10 +9,17 @@ import "./cinematic.css";
 
 export function Hero() {
   const enabled = useMotionEnabled();
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+  const wordmarkY = useTransform(scrollYProgress, [0, 1], [0, 90]);
   return (
     <section
+      ref={ref}
       id="hero"
-      className="hero section-container cinematic-hero"
+      className="hero section-container cinematic-hero atelier-hero"
       tabIndex={-1}
       aria-labelledby="hero-title"
     >
@@ -20,62 +28,46 @@ export function Hero() {
         <div className="hero-orbit-line" />
       </div>
       <div className="hero-topline">
-        <span className="eyebrow">
-          DIGITAL CRAFT / FULL-STACK ENGINEERING / APPLIED AI
-        </span>
+        <span className="eyebrow">INDEPENDENT MIND. FULL-STACK THINKING.</span>
         <span className="location">
-          Mumbai, India <span>↗</span>
+          {profile.location} <span>↗</span>
         </span>
       </div>
       <div className="hero-layout">
         <div className="hero-copy">
           <div className="availability">
-            <span /> Open to full-stack & AI opportunities
+            <span /> Open to new opportunities
           </div>
-          <p className="hero-intro">
-            <span className="hero-name">Harsh Gavand</span>
-            <span className="hero-role">Full-Stack & AI Developer</span>
-          </p>
+          <p className="atelier-kicker">FULL-STACK & AI DEVELOPER</p>
           <h1 id="hero-title">
-            {["Ideas into", "intelligent", "experiences."].map(
-              (line, index) => (
-                <span className="text-mask" key={line}>
-                  <m.span
-                    className={index === 1 ? "accent-text" : undefined}
-                    initial={false}
-                    animate={
-                      enabled ? { y: [24, 0], opacity: [0.4, 1] } : undefined
-                    }
-                    transition={{
-                      duration: 0.85,
-                      delay: index * 0.1,
-                      ease: [0.22, 1, 0.36, 1],
-                    }}
-                  >
-                    {line}
-                  </m.span>
-                </span>
-              ),
-            )}
+            {["Engineering", "with", "imagination."].map((line, i) => (
+              <span className={`text-mask hero-line-${i}`} key={line}>
+                <m.span
+                  initial={false}
+                  animate={
+                    enabled ? { y: [28, 0], opacity: [0.3, 1] } : undefined
+                  }
+                  transition={{
+                    duration: 0.9,
+                    delay: i * 0.12,
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className={i === 2 ? "accent-text" : undefined}
+                >
+                  {line}
+                </m.span>
+              </span>
+            ))}
           </h1>
           <p className="hero-description">
-            Full-Stack & AI Developer turning complex ideas into considered
-            digital products — from responsive interfaces and reliable APIs to
-            practical AI systems.
+            I’m Harsh. I connect thoughtful interfaces, reliable systems, and
+            applied AI to turn ambitious ideas into useful products.
           </p>
           <div className="actions">
             <ActionLink href="#projects" primary>
-              View projects
+              Explore my work
             </ActionLink>
             <ActionLink href="#contact">Let’s talk</ActionLink>
-            <a
-              className="text-link hero-resume"
-              href={profile.resume}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Resume <ArrowUpRight size={16} aria-hidden="true" />
-            </a>
           </div>
           <button
             className="hero-assistant-link"
@@ -84,31 +76,37 @@ export function Hero() {
             }
             aria-haspopup="dialog"
           >
-            <Sparkles size={17} aria-hidden="true" />
+            <Sparkles size={16} aria-hidden="true" />
             <span>
-              Curious about my work? <strong>Ask my AI assistant</strong>
+              Meet the work. <strong>Ask my AI assistant</strong>
             </span>
-            <ArrowUpRight size={16} aria-hidden="true" />
+            <ArrowUpRight size={15} aria-hidden="true" />
           </button>
-          <div className="hero-disciplines">
-            <span>Interface</span>
-            <i />
-            <span>Systems</span>
-            <i />
-            <span>Applied AI</span>
-          </div>
         </div>
         <StudioScene />
       </div>
+      <div className="hero-signature">
+        <span className="signature-index">
+          DESIGNED TO CONNECT.
+          <br />
+          BUILT TO WORK.
+        </span>
+        <m.p style={{ y: enabled ? wordmarkY : 0 }} className="hero-wordmark">
+          Harsh Gavand<span aria-hidden="true">↗</span>
+        </m.p>
+      </div>
       <div className="hero-bottom">
-        <a href="#projects">
-          <ArrowDown size={17} aria-hidden="true" /> Explore the work
+        <a href="#engineering">
+          <span className="scroll-disc">
+            <ArrowDown size={17} aria-hidden="true" />
+          </span>{" "}
+          Scroll to discover
         </a>
         <p>
-          <strong>{projects.length}</strong> projects <span>/</span> Full-stack
-          · AI · SaaS · Automation
+          <strong>{projects.length}</strong> projects <span>/</span> Infinite
+          curiosity
         </p>
-        <span className="edition">PORTFOLIO / 2026</span>
+        <span className="edition">SELECTED WORK / 2026</span>
       </div>
     </section>
   );

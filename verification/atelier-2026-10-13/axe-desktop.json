@@ -1,0 +1,216 @@
+{
+  "result": {
+    "type": "object",
+    "value": {
+      "incomplete": [
+        {
+          "id": "aria-valid-attr-value",
+          "targets": [
+            [
+              ".assistant-launcher"
+            ]
+          ]
+        },
+        {
+          "id": "color-contrast",
+          "targets": [
+            [
+              ".hero-topline > .eyebrow"
+            ],
+            [
+              ".location"
+            ],
+            [
+              ".availability"
+            ],
+            [
+              ".atelier-kicker"
+            ],
+            [
+              ".hero-line-0 > span"
+            ],
+            [
+              ".hero-line-1 > span"
+            ],
+            [
+              ".hero-line-2 > .accent-text"
+            ],
+            [
+              ".hero-description"
+            ],
+            [
+              ".button-secondary.button[href$=\"#contact\"]"
+            ],
+            [
+              ".hero-assistant-link > span"
+            ],
+            [
+              "span > strong"
+            ],
+            [
+              ".studio-topline > span:nth-child(1)"
+            ],
+            [
+              ".studio-topline > span:nth-child(2)"
+            ],
+            [
+              ".label-top"
+            ],
+            [
+              ".label-bottom"
+            ],
+            [
+              ".label-right"
+            ],
+            [
+              ".studio-coordinate"
+            ],
+            [
+              ".studio-controls > button:nth-child(1) > span"
+            ],
+            [
+              ".studio-controls > button:nth-child(2) > span"
+            ],
+            [
+              ".studio-controls > button:nth-child(3) > span"
+            ],
+            [
+              ".studio-caption > strong"
+            ],
+            [
+              ".studio-caption > span"
+            ],
+            [
+              ".studio-hint"
+            ],
+            [
+              ".signature-index"
+            ],
+            [
+              ".hero-wordmark"
+            ],
+            [
+              ".edition"
+            ],
+            [
+              ".plate-2 > span"
+            ],
+            [
+              ".plate-1 > span"
+            ],
+            [
+              ".plate-0 > span"
+            ],
+            [
+              ".gallery-card.depth-card:nth-child(2) > .gallery-copy > .gallery-meta > .eyebrow"
+            ],
+            [
+              ".gallery-card.depth-card:nth-child(4) > .gallery-copy > .gallery-meta > .eyebrow"
+            ],
+            [
+              "#project-3 > .case-layout > .has-screenshot.project-visual.project-walkthrough > .walkthrough-depth.depth-surface > .browser-frame.walkthrough-frame > .walkthrough-screen > .walkthrough-capture-label"
+            ],
+            [
+              "#project-1 > .case-layout > .has-screenshot.project-visual.project-walkthrough > .walkthrough-depth.depth-surface > .browser-frame.walkthrough-frame > .walkthrough-screen > .walkthrough-capture-label"
+            ],
+            [
+              "figcaption > span:nth-child(1)"
+            ],
+            [
+              "figcaption > span:nth-child(2)"
+            ],
+            [
+              ".skill-explorer-top > .eyebrow"
+            ],
+            [
+              ".skill-explorer-top > span:nth-child(2)"
+            ],
+            [
+              ".skill-core > span"
+            ],
+            [
+              ".skill-map-caption"
+            ],
+            [
+              "#skill-tab-1 > span"
+            ],
+            [
+              "#skill-tab-1 > small"
+            ],
+            [
+              "#skill-tab-2 > span"
+            ],
+            [
+              "#skill-tab-2 > small"
+            ],
+            [
+              "#skill-tab-3 > span"
+            ],
+            [
+              "#skill-tab-3 > small"
+            ],
+            [
+              "#skill-tab-4 > span"
+            ],
+            [
+              "#skill-tab-4 > small"
+            ],
+            [
+              "#skill-tab-5 > span"
+            ],
+            [
+              "#skill-tab-5 > small"
+            ],
+            [
+              "#skill-panel-0 > .skill-panel-icon > span"
+            ],
+            [
+              "#skill-panel-0 > .eyebrow"
+            ],
+            [
+              "#skill-panel-0 > h3"
+            ],
+            [
+              "#skill-panel-0 > .skill-panel-description"
+            ],
+            [
+              "#skill-panel-0 > .text-link[href$=\"#projects\"]"
+            ],
+            [
+              ".skill-inventory > summary"
+            ],
+            [
+              ".build-scene-origin"
+            ],
+            [
+              ".build-data-layer > span:nth-child(1)"
+            ],
+            [
+              ".build-api-layer > span:nth-child(1)"
+            ],
+            [
+              ".build-contract"
+            ],
+            [
+              ".build-browser-bar > span:nth-child(2)"
+            ],
+            [
+              ".build-quality-note > span"
+            ],
+            [
+              ".build-scene-caption > span:nth-child(2)"
+            ],
+            [
+              ".build-scene-caption > span:nth-child(3)"
+            ],
+            [
+              "li:nth-child(1) > div > .eyebrow"
+            ]
+          ]
+        }
+      ],
+      "passes": 32,
+      "violations": []
+    }
+  }
+}

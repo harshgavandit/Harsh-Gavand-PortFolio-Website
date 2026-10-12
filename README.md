@@ -2,6 +2,8 @@
 
 React + TypeScript portfolio with a light, immersive 3D engineering-studio design, visual selected-project gallery, four detailed case studies, all 26 original projects, and a Gemini portfolio assistant. Includes an engineering profile, experience timeline, categorized skills, workflow, and contact draft preparation.
 
+The Engineering Atelier presentation adds a cobalt kinetic sculpture, scroll-reactive typography, an interactive exploded engineering exhibit, and alternating project showcases. Its final theme is isolated in `src/atelier.css`. See [redesign research and verification](verification/atelier-2026-10-13/README.md) for screenshots, responsive checks, accessibility results, bundle sizes, and limitations.
+
 ## Development
 
 Use Node.js **22.18 or newer** (built-in TypeScript stripping is required by the server's shared portfolio data). Use a currently maintained Node LTS release.

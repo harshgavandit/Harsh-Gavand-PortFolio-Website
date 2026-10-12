@@ -146,7 +146,11 @@ export function FeaturedWork() {
         }
         description="A closer look at the products, systems, and decisions that turn an idea into something useful."
       />
-      <div className="project-gallery" aria-label="Featured project gallery">
+      <div
+        className="project-gallery"
+        role="group"
+        aria-label="Featured project gallery"
+      >
         {caseStudies.map((study, index) => {
           const project = projects.find((p) => p.id === study.projectId)!;
           const Icon = study.projectId === 17 ? Mail : Sparkles;

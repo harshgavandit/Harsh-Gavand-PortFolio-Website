@@ -8,6 +8,7 @@ import "./enhancements.css";
 import "./studio.css";
 import "./exploration.css";
 import "./immersive.css";
+import "./atelier.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

@@ -56,14 +56,6 @@ export function SpatialAtmosphere() {
           style={{ y: enabled ? drift : 0, rotate: enabled ? rotation : -22 }}
         />
         <div className="atmosphere-wash" />
-        <m.img
-          className="atmosphere-sculpture"
-          src="/studio/orbital-poster.png"
-          alt=""
-          width={848}
-          height={586}
-          style={{ y: enabled ? drift : 0, rotate: enabled ? rotation : -22 }}
-        />
         <div className="atmosphere-grain" />
       </div>
       <nav className="chapter-rail" aria-label="Page chapters">

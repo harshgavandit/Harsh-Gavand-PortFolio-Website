@@ -108,19 +108,19 @@ export function StudioScene() {
     >
       <div className="studio-topline">
         <span>
-          <i /> AN INTERACTIVE ENGINEERING WORLD
+          <i /> THE SHAPE OF AN IDEA
         </span>
-        <span>EXPLORE / 0{active + 1}</span>
+        <span>OBJECT / 0{active + 1}</span>
       </div>
       <div className="studio-visual">
         <div className="studio-grid" aria-hidden="true" />
         <div className="studio-fallback" aria-hidden="true">
           <img
-            src="/studio/orbital-poster.png"
+            src="/studio/atelier-sculpture.svg"
             alt=""
             width={848}
             height={586}
-            fetchPriority="high"
+            loading="eager"
           />
         </div>
         <div className="studio-canvas" ref={host} aria-hidden="true" />
@@ -134,7 +134,7 @@ export function StudioScene() {
           <Sparkles size={15} /> Intelligence
         </span>
         <div className="studio-coordinate" aria-hidden="true">
-          IDEA → SYSTEM → EXPERIENCE
+          INTERFACE × SYSTEMS × INTELLIGENCE
         </div>
         <div
           className="scene-view-controls"

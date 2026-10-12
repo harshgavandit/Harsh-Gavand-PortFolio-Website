@@ -10,7 +10,7 @@ export type StudioRenderer = {
   dispose: () => void;
 };
 
-/** Procedural orbital architecture. One canvas, shared geometry, no downloaded models. */
+/** Procedural kinetic sculpture. One canvas, shared geometry, no downloaded models. */
 export function createStudio(
   host: HTMLElement,
   onLost: () => void,
@@ -29,7 +29,7 @@ export function createStudio(
   renderer.toneMappingExposure = 1.2;
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 60);
-  camera.position.set(0, 1.5, 11.2);
+  camera.position.set(0, 1.3, 10.4);
   camera.lookAt(0, 0, 0);
   const environment = new RoomEnvironment();
   const generator = new THREE.PMREMGenerator(renderer);
@@ -46,9 +46,9 @@ export function createStudio(
   scene.add(rim);
 
   const blue = new THREE.MeshPhysicalMaterial({
-    color: 0x2259e6,
-    metalness: 0.65,
-    roughness: 0.19,
+    color: 0x234bff,
+    metalness: 0.72,
+    roughness: 0.16,
     clearcoat: 1,
   });
   const pearl = new THREE.MeshPhysicalMaterial({
@@ -81,24 +81,24 @@ export function createStudio(
   scene.add(assembly);
 
   const orbit = new THREE.Group();
-  orbit.position.y = 0.42;
+  orbit.position.y = 0.3;
   assembly.add(orbit);
   const mainRing = new THREE.Mesh(
-    new THREE.TorusGeometry(1.42, 0.21, 20, 112),
+    new THREE.TorusKnotGeometry(1.05, 0.29, 180, 20, 2, 3),
     blue,
   );
-  mainRing.rotation.set(0.2, 0.5, -0.1);
+  mainRing.rotation.set(0.15, 0.5, -0.35);
   orbit.add(mainRing);
   const innerRing = new THREE.Mesh(
-    new THREE.TorusGeometry(1.12, 0.065, 12, 96),
+    new THREE.TorusGeometry(1.78, 0.035, 12, 96),
     silver,
   );
   innerRing.rotation.set(-0.62, -0.42, 0.5);
   orbit.add(innerRing);
-  const core = new THREE.Mesh(new THREE.IcosahedronGeometry(0.65, 4), pearl);
+  const core = new THREE.Mesh(new THREE.IcosahedronGeometry(0.46, 3), pearl);
   orbit.add(core);
   const coreGrid = new THREE.LineSegments(
-    new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(0.67, 1)),
+    new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(0.48, 1)),
     new THREE.LineBasicMaterial({
       color: 0x7198df,
       transparent: true,
@@ -247,7 +247,11 @@ export function createStudio(
     core.rotation.y = time * 0.13;
     core.scale.lerp(targetScale.setScalar(active === 2 ? 1.15 : 1), ease);
     mainRing.rotation.y +=
-      ((active === 1 ? 1.06 : 0.5) - mainRing.rotation.y) * ease;
+      ((active === 1 ? 1.3 : active === 2 ? -0.55 : 0.5) -
+        mainRing.rotation.y) *
+      ease;
+    mainRing.rotation.z = -0.35 + (enabled ? Math.sin(time * 0.22) * 0.18 : 0);
+    orbit.position.y += ((active === 1 ? 0.8 : 0.3) - orbit.position.y) * ease;
     layers.forEach((layer, i) => {
       layer.position.y +=
         (-1.6 - i * (active === 1 ? 0.36 : 0.22) - layer.position.y) * ease;
@@ -274,7 +278,7 @@ export function createStudio(
     if (!width || !height) return;
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
-    camera.position.z = camera.aspect < 1 ? 11.2 / camera.aspect : 11.2;
+    camera.position.z = camera.aspect < 1 ? 10.4 / camera.aspect : 10.4;
     camera.updateProjectionMatrix();
     request();
   };
