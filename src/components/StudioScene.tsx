@@ -1,6 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { m, useScroll, useTransform } from "framer-motion";
-import { Braces, Layers3, Sparkles, RotateCcw } from "lucide-react";
+import { m, useScroll, useTransform, useMotionValueEvent } from "framer-motion";
+import {
+  Braces,
+  Layers3,
+  Sparkles,
+  RotateCcw,
+  ChevronLeft,
+  ChevronRight,
+  Move,
+} from "lucide-react";
 import { useMotionEnabled } from "./MotionPreferences";
 import type { StudioRenderer } from "./studioRenderer";
 
@@ -34,6 +42,9 @@ export function StudioScene() {
   });
   const parallax = useTransform(scrollYProgress, [0, 1], [0, 45]);
   const renderer = useRef<StudioRenderer>();
+  useMotionValueEvent(scrollYProgress, "change", (value) =>
+    renderer.current?.setProgress(value),
+  );
   const enabled = useMotionEnabled();
   const [active, setActive] = useState(0);
   const [ready, setReady] = useState(false);
@@ -93,22 +104,24 @@ export function StudioScene() {
       className="studio"
       style={{ y: enabled ? parallax : 0 }}
       data-scene={ready ? "webgl" : "fallback"}
+      data-discipline={active}
     >
       <div className="studio-topline">
         <span>
-          <i /> THE ENGINEERING STUDIO
+          <i /> AN INTERACTIVE ENGINEERING WORLD
         </span>
-        <span>HG / 01</span>
+        <span>EXPLORE / 0{active + 1}</span>
       </div>
       <div className="studio-visual">
         <div className="studio-grid" aria-hidden="true" />
         <div className="studio-fallback" aria-hidden="true">
-          <div className="fallback-orbit" />
-          <div className="fallback-core">
-            hg<span>.</span>
-          </div>
-          <div className="fallback-slab slab-one" />
-          <div className="fallback-slab slab-two" />
+          <img
+            src="/studio/orbital-poster.png"
+            alt=""
+            width={848}
+            height={586}
+            fetchPriority="high"
+          />
         </div>
         <div className="studio-canvas" ref={host} aria-hidden="true" />
         <span className="studio-label label-top" aria-hidden="true">
@@ -123,14 +136,33 @@ export function StudioScene() {
         <div className="studio-coordinate" aria-hidden="true">
           IDEA → SYSTEM → EXPERIENCE
         </div>
-        <button
-          className="studio-reset"
-          onClick={() => renderer.current?.reset()}
-          aria-label="Reset 3D view"
-          disabled={!ready}
+        <div
+          className="scene-view-controls"
+          role="group"
+          aria-label="3D viewpoint"
         >
-          <RotateCcw size={15} />
-        </button>
+          <button
+            onClick={() => renderer.current?.turn(-1)}
+            aria-label="Rotate 3D view left"
+            disabled={!ready}
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <button
+            onClick={() => renderer.current?.reset()}
+            aria-label="Reset 3D view"
+            disabled={!ready}
+          >
+            <RotateCcw size={15} />
+          </button>
+          <button
+            onClick={() => renderer.current?.turn(1)}
+            aria-label="Rotate 3D view right"
+            disabled={!ready}
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
       </div>
       <div
         className="studio-controls"
@@ -153,8 +185,9 @@ export function StudioScene() {
         <span>{disciplines[active].stack}</span>
       </div>
       <p className="studio-hint">
+        <Move size={12} aria-hidden="true" />
         {ready && enabled
-          ? "Move your pointer to explore · Select a layer above"
+          ? "Drag to rotate · Choose a discipline to explore"
           : "Explore the layers of my work"}
       </p>
     </m.div>

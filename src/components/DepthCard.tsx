@@ -1,4 +1,5 @@
 import { useRef, type ReactNode, type PointerEvent } from "react";
+import { m, useScroll, useTransform, type MotionStyle } from "framer-motion";
 import { useMotionEnabled } from "./MotionPreferences";
 
 export function DepthCard({
@@ -10,6 +11,16 @@ export function DepthCard({
 }) {
   const ref = useRef<HTMLElement>(null);
   const enabled = useMotionEnabled();
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"],
+  });
+  const rise = useTransform(scrollYProgress, [0, 0.45, 1], [24, 0, -16]);
+  const inclination = useTransform(
+    scrollYProgress,
+    [0, 0.45, 1],
+    [2.5, 0, -1.5],
+  );
   function move(event: PointerEvent<HTMLElement>) {
     if (!enabled || event.pointerType !== "mouse") return;
     const box = event.currentTarget.getBoundingClientRect();
@@ -23,13 +34,19 @@ export function DepthCard({
     ref.current?.style.setProperty("--tilt-y", "0deg");
   }
   return (
-    <article
+    <m.article
       ref={ref}
       className={`${className} depth-card`}
+      style={
+        {
+          "--scroll-rise": enabled ? rise : 0,
+          "--scroll-inclination": enabled ? inclination : 0,
+        } as MotionStyle
+      }
       onPointerMove={move}
       onPointerLeave={reset}
     >
       {children}
-    </article>
+    </m.article>
   );
 }

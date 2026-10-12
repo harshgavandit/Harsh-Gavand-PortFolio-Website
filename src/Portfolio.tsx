@@ -9,6 +9,7 @@ import { MotionPreferencesProvider } from "./components/MotionPreferences";
 import { Contact, Footer } from "./components/Contact";
 import { Assistant } from "./components/Assistant";
 import { EngineeringBridge } from "./components/EngineeringBridge";
+import { SpatialAtmosphere } from "./components/SpatialAtmosphere";
 
 function Home() {
   return (
@@ -17,6 +18,7 @@ function Home() {
         Skip to content
       </a>
       <Navigation />
+      <SpatialAtmosphere />
       <main id="main" tabIndex={-1}>
         <Hero />
         <EngineeringBridge />

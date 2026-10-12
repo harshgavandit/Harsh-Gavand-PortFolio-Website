@@ -70,16 +70,18 @@ No deployment is performed by local development or validation commands.
 
 ## Presentation and motion
 
-The hero uses a procedural Three.js sculpture with orbital rings, satellites, and stacked system layers. Pointer movement changes the viewpoint; keyboard-accessible Interface, Systems, and Applied AI controls change the composition and description. The page combines subtle hero parallax, scroll-triggered reveals, perspective project previews, pointer tilt, skill micro-interactions, and a dimensional workflow. Native scrolling is preserved.
+The hero uses an open procedural Three.js scene with a reflective blue orbital sculpture, pearl core, satellites, floating interface panels, and stacked system layers. Mouse dragging and keyboard-accessible rotation controls change the viewpoint; Interface, Systems, and Applied AI controls change the composition and description. A light atmospheric background, chapter navigation, scroll-driven card perspective, project previews, skill interactions, and a dimensional workflow connect the sections. Native touch scrolling is preserved.
 
-The new supplied photograph appears in About at `public/portrait/harsh-studio.jpg`; the original photograph is retained. All 26 project records, case studies, experience, resume, contact draft behavior, and Gemini assistant remain intact. `src/studio.css` is the final visual layer after the existing styles.
+The new supplied photograph appears in About at `public/portrait/harsh-studio.jpg`; the original photograph is retained. All 26 project records, case studies, experience, resume, contact draft behavior, and Gemini assistant remain intact. `src/immersive.css` is the final visual layer after the studio and exploration styles.
 
-The WebGL engine loads separately when the hero approaches the viewport. Pixel ratio is capped at 1.5, with no downloaded models, textures, or postprocessing. Rendering stops offscreen, in a hidden tab, or when motion is paused. Resources and listeners are disposed on unmount. A CSS composition remains available if WebGL fails or loses its context. System reduced-motion settings and the manual motion control apply across the experience; discipline selection works without animation.
+The WebGL engine loads separately when the hero approaches the viewport. Pixel ratio is capped at 1.5 (1.25 on small screens), with no downloaded models, environment textures, or postprocessing. Rendering stops offscreen, in a hidden tab, or when motion is paused. Resources and listeners are disposed on unmount. A 162 KB still captured from the original scene appears during loading and if WebGL fails or loses its context; a page reload can restore a lost context. System reduced-motion settings and the manual motion control apply across the experience; discipline selection and discrete rotation remain usable without continuous animation.
 
 See [the studio verification report](verification/studio-2026-10-12/README.md) for evidence and remaining limits.
 
 ## Interactive exploration
 
-The project gallery includes a keyboard-accessible Project Studio viewer with previous/next navigation, full-case-study links, Escape dismissal, focus containment, and restored focus. The six-category skills map supports arrow keys and Home/End, and keeps a complete toolkit disclosure available. An experience chapter rail tracks the visible role; a dimensional engineering bridge connects the hero to the work. These sections use CSS perspective and Framer Motion. `src/exploration.css` is the final presentation layer.
+The project gallery includes a keyboard-accessible Project Studio viewer with previous/next navigation, full-case-study links, Escape dismissal, focus containment, and restored focus. The six-category skills map supports arrow keys and Home/End, and keeps a complete toolkit disclosure available. An experience chapter rail tracks the visible role; a dimensional engineering bridge connects the hero to the work. These sections use CSS perspective and Framer Motion, with `src/immersive.css` extending the exploration styles.
 
 See [interactive exploration validation](verification/exploration-2026-10-12/README.md) for desktop/mobile screenshots, accessibility scans, responsive checks, and scope limits.
+
+See [the latest immersive design evidence](verification/immersive-2026-10-12/README.md) for reference research, final desktop/mobile captures, WebGL fallback, and current validation results.

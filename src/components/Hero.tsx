@@ -15,6 +15,10 @@ export function Hero() {
       tabIndex={-1}
       aria-labelledby="hero-title"
     >
+      <div className="hero-environment" aria-hidden="true">
+        <div className="hero-horizon" />
+        <div className="hero-orbit-line" />
+      </div>
       <div className="hero-topline">
         <span className="eyebrow">
           DIGITAL CRAFT / FULL-STACK ENGINEERING / APPLIED AI
@@ -28,7 +32,10 @@ export function Hero() {
           <div className="availability">
             <span /> Open to full-stack & AI opportunities
           </div>
-          <p className="hero-intro">Hi, I’m Harsh Gavand.</p>
+          <p className="hero-intro">
+            <span className="hero-name">Harsh Gavand</span>
+            <span className="hero-role">Full-Stack & AI Developer</span>
+          </p>
           <h1 id="hero-title">
             {["Ideas into", "intelligent", "experiences."].map(
               (line, index) => (
