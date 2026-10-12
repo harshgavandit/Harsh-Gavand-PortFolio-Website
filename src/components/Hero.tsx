@@ -1,5 +1,4 @@
-import { useRef } from "react";
-import { m, useScroll, useTransform } from "framer-motion";
+import { m } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Sparkles } from "lucide-react";
 import { profile, projects } from "../data/portfolio";
 import { ActionLink } from "./Primitives";
@@ -9,15 +8,8 @@ import "./cinematic.css";
 
 export function Hero() {
   const enabled = useMotionEnabled();
-  const ref = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-  });
-  const wordmarkY = useTransform(scrollYProgress, [0, 1], [0, 90]);
   return (
     <section
-      ref={ref}
       id="hero"
       className="hero section-container cinematic-hero atelier-hero"
       tabIndex={-1}
@@ -85,26 +77,16 @@ export function Hero() {
         </div>
         <StudioScene />
       </div>
-      <div className="hero-signature">
-        <span className="signature-index">
-          DESIGNED TO CONNECT.
-          <br />
-          BUILT TO WORK.
-        </span>
-        <m.p style={{ y: enabled ? wordmarkY : 0 }} className="hero-wordmark">
-          Harsh Gavand<span aria-hidden="true">↗</span>
-        </m.p>
-      </div>
       <div className="hero-bottom">
-        <a href="#engineering">
+        <a href="#projects">
           <span className="scroll-disc">
             <ArrowDown size={17} aria-hidden="true" />
           </span>{" "}
-          Scroll to discover
+          Explore selected work
         </a>
         <p>
-          <strong>{projects.length}</strong> projects <span>/</span> Infinite
-          curiosity
+          <strong>{projects.length}</strong> projects <span>/</span> Code, demos &
+          walkthroughs
         </p>
         <span className="edition">SELECTED WORK / 2026</span>
       </div>

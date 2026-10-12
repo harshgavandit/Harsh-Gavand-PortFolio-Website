@@ -208,32 +208,6 @@ body {
   width: 34px;
   height: 34px;
 }
-.hero-signature {
-  position: relative;
-  overflow: hidden;
-  padding-top: 28px;
-}
-.signature-index {
-  display: block;
-  font: 8px/1.6 var(--font-body);
-  letter-spacing: 0.13em;
-  color: #69717a;
-  margin-bottom: 10px;
-}
-.hero-wordmark {
-  font: 500 clamp(66px, 12vw, 175px)/1.06 var(--font-display);
-  letter-spacing: -0.085em;
-  margin: 0 0 -7px;
-  white-space: nowrap;
-  color: #1f2834;
-}
-.hero-wordmark > span {
-  display: inline-block;
-  vertical-align: top;
-  font-size: 0.29em;
-  margin: 0.4em 0 0 0.5em;
-  color: var(--accent);
-}
 .hero-bottom {
   position: relative;
   z-index: 1;
@@ -640,9 +614,6 @@ body {
   .atelier-hero .studio-visual {
     height: 390px;
   }
-  .hero-wordmark {
-    font-size: 11.7vw;
-  }
   .engineering-bridge {
     padding-block: 85px;
     gap: 35px;
@@ -758,16 +729,6 @@ body {
   .scene-view-controls button {
     width: 36px;
     height: 36px;
-  }
-  .hero-signature {
-    padding-top: 25px;
-  }
-  .signature-index {
-    font-size: 6px;
-  }
-  .hero-wordmark {
-    font-size: 11.1vw;
-    letter-spacing: -0.075em;
   }
   .hero-bottom {
     margin-top: 12px;
