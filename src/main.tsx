@@ -6,6 +6,7 @@ import "./index.css";
 import "./calm.css";
 import "./enhancements.css";
 import "./studio.css";
+import "./exploration.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

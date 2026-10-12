@@ -18,6 +18,7 @@ import {
 import { ActionLink, Reveal, SectionHeading, Tags } from "./Primitives";
 import { ProjectWalkthrough } from "./ProjectWalkthrough";
 import { DepthCard } from "./DepthCard";
+import { ProjectFocus } from "./ProjectFocus";
 
 function ProjectDetails({ project }: { project: Project }) {
   return (
@@ -59,6 +60,7 @@ export function ProjectCaseStudy({
       <article
         className="case-study"
         id={`project-${project.id}`}
+        tabIndex={-1}
         aria-labelledby={`project-title-${project.id}`}
       >
         <div className="case-topline">
@@ -124,6 +126,7 @@ export function ProjectCaseStudy({
 }
 
 export function FeaturedWork() {
+  const [selected, setSelected] = useState<number | null>(null);
   return (
     <section
       id="projects"
@@ -220,6 +223,16 @@ export function FeaturedWork() {
                 </h3>
                 <p>{study.summary}</p>
                 <Tags items={project.technologies.slice(0, 4)} />
+                <button
+                  type="button"
+                  className="project-focus-trigger"
+                  onClick={() => setSelected(index)}
+                  aria-haspopup="dialog"
+                  aria-label={`Open ${study.shortName} in project viewer`}
+                >
+                  Enter project studio{" "}
+                  <ArrowUpRight size={17} aria-hidden="true" />
+                </button>
                 <div className="gallery-actions">
                   <a href={`#project-${study.projectId}`}>
                     Explore case study{" "}
@@ -240,6 +253,11 @@ export function FeaturedWork() {
           );
         })}
       </div>
+      <ProjectFocus
+        selected={selected}
+        onSelect={setSelected}
+        onClose={() => setSelected(null)}
+      />
       <div className="case-study-divider">
         <span className="eyebrow">Behind the builds</span>
         <p>The decisions, contributions, and details.</p>

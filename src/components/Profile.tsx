@@ -1,15 +1,9 @@
-import {
-  ArrowUpRight,
-  Braces,
-  Database,
-  Layers3,
-  Sparkles,
-  Terminal,
-  Cloud,
-} from "lucide-react";
-import { aboutProfile, experience, profile, skills } from "../data/portfolio";
-import { ActionLink, Reveal, SectionHeading, Tags } from "./Primitives";
+import { ArrowUpRight } from "lucide-react";
+import { aboutProfile, profile } from "../data/portfolio";
+import { ActionLink, Reveal, SectionHeading } from "./Primitives";
 import { Portrait } from "./Portrait";
+import { SkillExplorer } from "./SkillExplorer";
+import { ExperienceJourney } from "./ExperienceJourney";
 
 export function About() {
   return (
@@ -129,35 +123,11 @@ export function Experience() {
         title={<span id="experience-title">Built in the real world.</span>}
         description="Hands-on ownership, collaborative delivery, and attention to the details that matter in production."
       />
-      <div className="timeline">
-        {experience.map((item, i) => (
-          <Reveal key={item.company}>
-            <article className="timeline-item">
-              <div className="timeline-period">
-                <span className="timeline-marker" />
-                <span className="eyebrow">
-                  0{i + 1} / {item.period}
-                </span>
-                <p>{item.company}</p>
-              </div>
-              <div>
-                <h3>{item.role}</h3>
-                <ul>
-                  {item.points.map((point) => (
-                    <li key={point}>{point}</li>
-                  ))}
-                </ul>
-                <Tags items={item.tech} />
-              </div>
-            </article>
-          </Reveal>
-        ))}
-      </div>
+      <ExperienceJourney />
     </section>
   );
 }
 
-const icons = [Layers3, Braces, Database, Sparkles, Cloud, Terminal];
 export function Skills() {
   return (
     <section
@@ -178,26 +148,7 @@ export function Skills() {
         }
         description="A practical stack that supports the work — chosen for the product, not the trend."
       />
-      <div className="skills-grid">
-        {skills.map((skill, i) => {
-          const Icon = icons[i];
-          return (
-            <Reveal
-              key={skill.title}
-              delay={(i % 3) * 0.06}
-              className="skill-card"
-            >
-              <div>
-                <Icon size={21} aria-hidden="true" />
-                <span className="eyebrow">0{i + 1}</span>
-              </div>
-              <h3>{skill.title}</h3>
-              <p>{skill.description}</p>
-              <Tags items={skill.items} />
-            </Reveal>
-          );
-        })}
-      </div>
+      <SkillExplorer />
     </section>
   );
 }

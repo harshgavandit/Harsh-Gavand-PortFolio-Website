@@ -1,0 +1,10 @@
+{
+  "result": {
+    "type": "object",
+    "value": {
+      "incomplete": [],
+      "passes": 18,
+      "violations": []
+    }
+  }
+}

@@ -77,3 +77,9 @@ The new supplied photograph appears in About at `public/portrait/harsh-studio.jp
 The WebGL engine loads separately when the hero approaches the viewport. Pixel ratio is capped at 1.5, with no downloaded models, textures, or postprocessing. Rendering stops offscreen, in a hidden tab, or when motion is paused. Resources and listeners are disposed on unmount. A CSS composition remains available if WebGL fails or loses its context. System reduced-motion settings and the manual motion control apply across the experience; discipline selection works without animation.
 
 See [the studio verification report](verification/studio-2026-10-12/README.md) for evidence and remaining limits.
+
+## Interactive exploration
+
+The project gallery includes a keyboard-accessible Project Studio viewer with previous/next navigation, full-case-study links, Escape dismissal, focus containment, and restored focus. The six-category skills map supports arrow keys and Home/End, and keeps a complete toolkit disclosure available. An experience chapter rail tracks the visible role; a dimensional engineering bridge connects the hero to the work. These sections use CSS perspective and Framer Motion. `src/exploration.css` is the final presentation layer.
+
+See [interactive exploration validation](verification/exploration-2026-10-12/README.md) for desktop/mobile screenshots, accessibility scans, responsive checks, and scope limits.

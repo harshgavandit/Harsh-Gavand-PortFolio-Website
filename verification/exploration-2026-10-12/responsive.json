@@ -1,0 +1,268 @@
+[
+  {
+    "client": 305,
+    "content": 305,
+    "overflow": false,
+    "skillTabs": [
+      {
+        "height": 44,
+        "text": "Frontend01",
+        "width": 109.0999984741211
+      },
+      {
+        "height": 44,
+        "text": "Backend02",
+        "width": 109.0999984741211
+      },
+      {
+        "height": 44,
+        "text": "Databases03",
+        "width": 109.0999984741211
+      },
+      {
+        "height": 44,
+        "text": "AI / LLM04",
+        "width": 109.0999984741211
+      },
+      {
+        "height": 45.60000228881836,
+        "text": "DevOps / Cloud05",
+        "width": 109.0999984741211
+      },
+      {
+        "height": 45.60000228881836,
+        "text": "Tools06",
+        "width": 109.0999984741211
+      }
+    ],
+    "width": 320
+  },
+  {
+    "client": 360,
+    "content": 360,
+    "overflow": false,
+    "skillTabs": [
+      {
+        "height": 44,
+        "text": "Frontend01",
+        "width": 136.6999969482422
+      },
+      {
+        "height": 44,
+        "text": "Backend02",
+        "width": 136.6999969482422
+      },
+      {
+        "height": 44,
+        "text": "Databases03",
+        "width": 136.6999969482422
+      },
+      {
+        "height": 44,
+        "text": "AI / LLM04",
+        "width": 136.6999969482422
+      },
+      {
+        "height": 44,
+        "text": "DevOps / Cloud05",
+        "width": 136.6999969482422
+      },
+      {
+        "height": 44,
+        "text": "Tools06",
+        "width": 136.6999969482422
+      }
+    ],
+    "width": 375
+  },
+  {
+    "client": 415,
+    "content": 415,
+    "overflow": false,
+    "skillTabs": [
+      {
+        "height": 44,
+        "text": "Frontend01",
+        "width": 164.3000030517578
+      },
+      {
+        "height": 44,
+        "text": "Backend02",
+        "width": 164.3000030517578
+      },
+      {
+        "height": 44,
+        "text": "Databases03",
+        "width": 164.3000030517578
+      },
+      {
+        "height": 44,
+        "text": "AI / LLM04",
+        "width": 164.3000030517578
+      },
+      {
+        "height": 44,
+        "text": "DevOps / Cloud05",
+        "width": 164.3000030517578
+      },
+      {
+        "height": 44,
+        "text": "Tools06",
+        "width": 164.3000030517578
+      }
+    ],
+    "width": 430
+  },
+  {
+    "client": 753,
+    "content": 753,
+    "overflow": false,
+    "skillTabs": [
+      {
+        "height": 52,
+        "text": "Frontend01",
+        "width": 96.9749984741211
+      },
+      {
+        "height": 52,
+        "text": "Backend02",
+        "width": 95.70000457763672
+      },
+      {
+        "height": 52,
+        "text": "Databases03",
+        "width": 105.5999984741211
+      },
+      {
+        "height": 52,
+        "text": "AI / LLM04",
+        "width": 93.6750030517578
+      },
+      {
+        "height": 52,
+        "text": "DevOps / Cloud05",
+        "width": 132.5625
+      },
+      {
+        "height": 52,
+        "text": "Tools06",
+        "width": 78.51250457763672
+      }
+    ],
+    "width": 768
+  },
+  {
+    "client": 1009,
+    "content": 1009,
+    "overflow": false,
+    "skillTabs": [
+      {
+        "height": 52,
+        "text": "Frontend01",
+        "width": 86.75
+      },
+      {
+        "height": 52,
+        "text": "Backend02",
+        "width": 85.5999984741211
+      },
+      {
+        "height": 52,
+        "text": "Databases03",
+        "width": 94.5999984741211
+      },
+      {
+        "height": 52,
+        "text": "AI / LLM04",
+        "width": 83.76250457763672
+      },
+      {
+        "height": 52,
+        "text": "DevOps / Cloud05",
+        "width": 119.1125030517578
+      },
+      {
+        "height": 52,
+        "text": "Tools06",
+        "width": 69.9749984741211
+      }
+    ],
+    "width": 1024
+  },
+  {
+    "client": 1425,
+    "content": 1425,
+    "overflow": false,
+    "skillTabs": [
+      {
+        "height": 52,
+        "text": "Frontend01",
+        "width": 129.28750610351562
+      },
+      {
+        "height": 52,
+        "text": "Backend02",
+        "width": 129.6374969482422
+      },
+      {
+        "height": 52,
+        "text": "Databases03",
+        "width": 139.60000610351562
+      },
+      {
+        "height": 52,
+        "text": "AI / LLM04",
+        "width": 127.9000015258789
+      },
+      {
+        "height": 52,
+        "text": "DevOps / Cloud05",
+        "width": 166.3625030517578
+      },
+      {
+        "height": 52,
+        "text": "Tools06",
+        "width": 112.5250015258789
+      }
+    ],
+    "width": 1440
+  },
+  {
+    "client": 1905,
+    "content": 1905,
+    "overflow": false,
+    "skillTabs": [
+      {
+        "height": 52,
+        "text": "Frontend01",
+        "width": 129.28750610351562
+      },
+      {
+        "height": 52,
+        "text": "Backend02",
+        "width": 129.6374969482422
+      },
+      {
+        "height": 52,
+        "text": "Databases03",
+        "width": 139.60000610351562
+      },
+      {
+        "height": 52,
+        "text": "AI / LLM04",
+        "width": 127.9000015258789
+      },
+      {
+        "height": 52,
+        "text": "DevOps / Cloud05",
+        "width": 166.3625030517578
+      },
+      {
+        "height": 52,
+        "text": "Tools06",
+        "width": 112.5250015258789
+      }
+    ],
+    "width": 1920
+  }
+]
