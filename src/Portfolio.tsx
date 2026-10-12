@@ -7,6 +7,7 @@ import { About, Experience, Skills } from "./components/Profile";
 import { Workflow } from "./components/Workflow";
 import { MotionPreferencesProvider } from "./components/MotionPreferences";
 import { Contact, Footer } from "./components/Contact";
+import { Assistant } from "./components/Assistant";
 
 function Home() {
   return (
@@ -26,6 +27,7 @@ function Home() {
         <Contact />
       </main>
       <Footer />
+      <Assistant />
     </>
   );
 }

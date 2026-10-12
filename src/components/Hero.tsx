@@ -1,5 +1,5 @@
 import { m } from "framer-motion";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Sparkles } from "lucide-react";
 import { profile, projects } from "../data/portfolio";
 import { ActionLink } from "./Primitives";
 import { Portrait } from "./Portrait";
@@ -71,6 +71,19 @@ export function Hero() {
               Resume <ArrowUpRight size={16} aria-hidden="true" />
             </a>
           </div>
+          <button
+            className="hero-assistant-link"
+            onClick={() =>
+              window.dispatchEvent(new Event("open-portfolio-assistant"))
+            }
+            aria-haspopup="dialog"
+          >
+            <Sparkles size={17} aria-hidden="true" />
+            <span>
+              Curious about my work? <strong>Ask my AI assistant</strong>
+            </span>
+            <ArrowUpRight size={16} aria-hidden="true" />
+          </button>
           <div className="hero-disciplines">
             <span>Interface</span>
             <i />

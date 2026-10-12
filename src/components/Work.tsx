@@ -1,5 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowDown, ArrowRight, ArrowUpRight, Search } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowRight,
+  ArrowUpRight,
+  Search,
+  Layers3,
+  Sparkles,
+  Database,
+  Mail,
+} from "lucide-react";
 import {
   caseStudies,
   projects,
@@ -133,15 +142,107 @@ export function FeaturedWork() {
         }
         description="A closer look at the products, systems, and decisions that turn an idea into something useful."
       />
-      <nav className="case-study-index" aria-label="Featured project index">
-        {caseStudies.map((study, index) => (
-          <a key={study.projectId} href={`#project-${study.projectId}`}>
-            <span>0{index + 1}</span>
-            <strong>{study.shortName}</strong>
-            <ArrowUpRight size={14} aria-hidden="true" />
-          </a>
-        ))}
-      </nav>
+      <div className="project-gallery" aria-label="Featured project gallery">
+        {caseStudies.map((study, index) => {
+          const project = projects.find((p) => p.id === study.projectId)!;
+          const Icon = study.projectId === 17 ? Mail : Sparkles;
+          return (
+            <article className="gallery-card" key={study.projectId}>
+              <a
+                className={`gallery-preview ${study.image ? "preview-screenshot" : "preview-architecture"}`}
+                href={`#project-${study.projectId}`}
+                aria-label={`Explore ${study.shortName} case study`}
+              >
+                {study.image ? (
+                  <img
+                    src={`/projects/${study.image}-640.webp`}
+                    srcSet={`/projects/${study.image}-640.webp 640w, /projects/${study.image}-1280.webp 1280w`}
+                    sizes="(max-width: 680px) 100vw, 550px"
+                    alt={study.imageAlt}
+                    loading="lazy"
+                    width={640}
+                    height={360}
+                  />
+                ) : (
+                  <div className="gallery-system" aria-hidden="true">
+                    <div className="system-caption">
+                      <span>ARCHITECTURE SNAPSHOT</span>
+                      <span>0{index + 1}</span>
+                    </div>
+                    <div className="system-flow">
+                      <span>
+                        <Layers3 size={25} />
+                        <small>
+                          {study.projectId === 17 ? "Collect" : "Create"}
+                        </small>
+                      </span>
+                      <ArrowRight size={20} />
+                      <span className="system-core">
+                        <Icon size={30} />
+                        <small>
+                          {study.projectId === 17 ? "Summarize" : "Generate"}
+                        </small>
+                      </span>
+                      <ArrowRight size={20} />
+                      <span>
+                        <Database size={25} />
+                        <small>
+                          {study.projectId === 17 ? "Deliver" : "Manage"}
+                        </small>
+                      </span>
+                    </div>
+                    <p>{study.diagram?.title}</p>
+                    <span className="system-caption-bottom">
+                      Implementation map ·{" "}
+                      {project.technologies.slice(0, 3).join(" / ")}
+                    </span>
+                  </div>
+                )}
+                <span className="preview-open">
+                  <ArrowUpRight size={17} aria-hidden="true" />
+                </span>
+              </a>
+              <div className="gallery-copy">
+                <div className="gallery-meta">
+                  <span className="eyebrow">
+                    0{index + 1} /{" "}
+                    {project.id === 17
+                      ? "AI & Automation"
+                      : project.id === 14
+                        ? "Applied AI"
+                        : "Full-stack"}
+                  </span>
+                  <span>{project.demoUrl ? "Live demo" : "Open source"}</span>
+                </div>
+                <h3>
+                  <a href={`#project-${study.projectId}`}>{study.shortName}</a>
+                </h3>
+                <p>{study.summary}</p>
+                <Tags items={project.technologies.slice(0, 4)} />
+                <div className="gallery-actions">
+                  <a href={`#project-${study.projectId}`}>
+                    Explore case study{" "}
+                    <ArrowRight size={16} aria-hidden="true" />
+                  </a>
+                  <a
+                    href={project.demoUrl || project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${project.demoUrl ? "Live demo" : "Source code"} for ${study.shortName}`}
+                  >
+                    {project.demoUrl ? "Live demo" : "Source code"}
+                    <ArrowUpRight size={15} aria-hidden="true" />
+                  </a>
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </div>
+      <div className="case-study-divider">
+        <span className="eyebrow">Behind the builds</span>
+        <p>The decisions, contributions, and details.</p>
+      </div>
       <div className="case-study-list">
         {caseStudies.map((study, index) => {
           const project = projects.find((p) => p.id === study.projectId)!;

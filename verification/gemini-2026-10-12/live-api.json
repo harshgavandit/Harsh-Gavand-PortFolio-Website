@@ -1,0 +1,17 @@
+{
+  "date": "2026-10-12",
+  "model": "gemini-3.5-flash-lite",
+  "httpStatus": 200,
+  "latencyMs": 1706,
+  "answer": "The AI News To Email Generator project demonstrates automated news collection, LLM-powered summarization, and scheduled email delivery pipelines.",
+  "sources": [
+    {
+      "label": "AI News To Email Generator · source",
+      "href": "https://github.com/harshgavandit/AI_News_To_Email_Generator"
+    },
+    {
+      "label": "Selected work",
+      "href": "/#projects"
+    }
+  ]
+}

@@ -7,7 +7,7 @@ import {
   Terminal,
   Cloud,
 } from "lucide-react";
-import { experience, profile, skills } from "../data/portfolio";
+import { aboutProfile, experience, profile, skills } from "../data/portfolio";
 import { ActionLink, Reveal, SectionHeading, Tags } from "./Primitives";
 
 export function About() {
@@ -54,7 +54,7 @@ export function About() {
           <Reveal className="profile-facts">
             <div>
               <span>EXPERIENCE</span>
-              <strong>2+ years</strong>
+              <strong>{aboutProfile.experience}</strong>
               <p>Building and maintaining web applications.</p>
             </div>
             <div>
@@ -64,8 +64,8 @@ export function About() {
             </div>
             <div>
               <span>EDUCATION</span>
-              <strong>B.Tech · Information Technology</strong>
-              <p>Pillai University, Mumbai · July 2025 · CGPA 8.6</p>
+              <strong>{aboutProfile.education.degree}</strong>
+              <p>{aboutProfile.education.details}</p>
             </div>
           </Reveal>
         </div>

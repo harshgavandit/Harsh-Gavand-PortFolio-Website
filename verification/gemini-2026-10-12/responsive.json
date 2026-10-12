@@ -1,0 +1,44 @@
+[
+  {
+    "requested": 320,
+    "galleryColumns": "264.8px",
+    "pageWidth": 305,
+    "width": 320
+  },
+  {
+    "requested": 375,
+    "galleryColumns": "320px",
+    "pageWidth": 360,
+    "width": 375
+  },
+  {
+    "requested": 430,
+    "galleryColumns": "375.2px",
+    "pageWidth": 415,
+    "width": 430
+  },
+  {
+    "requested": 768,
+    "galleryColumns": "330.4px 330.4px",
+    "pageWidth": 753,
+    "width": 768
+  },
+  {
+    "requested": 1024,
+    "galleryColumns": "458.4px 458.4px",
+    "pageWidth": 1009,
+    "width": 1024
+  },
+  {
+    "requested": 1440,
+    "galleryColumns": "566px 566px",
+    "pageWidth": 1425,
+    "width": 1440
+  },
+  {
+    "requested": 1920,
+    "galleryColumns": "566px 566px",
+    "pageWidth": 1905,
+    "width": 1920
+  }
+]

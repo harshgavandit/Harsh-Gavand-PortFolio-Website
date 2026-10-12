@@ -4,6 +4,7 @@ import Portfolio from "./Portfolio";
 
 import "./index.css";
 import "./calm.css";
+import "./enhancements.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

@@ -4,12 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "node scripts/dev.mjs",
+    "dev:ui": "vite",
+    "dev:api": "node --watch server/index.mjs",
+    "start": "node server/index.mjs",
     "build": "vite build",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
-    "test": "node --test scripts/portfolio.test.mjs",
+    "test": "node --test scripts/portfolio.test.mjs scripts/chat.test.mjs scripts/gemini.test.mjs",
     "format": "prettier --write src scripts/*.mjs index.html vite.config.js tsconfig.json .eslintrc.cjs"
   },
   "dependencies": {
@@ -38,6 +41,6 @@
     "vite": "^7.3.6"
   },
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=22.18.0"
   }
 }

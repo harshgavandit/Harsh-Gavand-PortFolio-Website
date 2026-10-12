@@ -1,4 +1,4 @@
-import sourceProjects from "./projects.json";
+import sourceProjects from "./projects.json" with { type: "json" };
 
 export interface Project {
   id: number;
@@ -42,6 +42,21 @@ export const profile = {
 };
 
 export const projects: Project[] = sourceProjects;
+// Shared published About content for the page and assistant knowledge.
+export const aboutProfile = {
+  summary:
+    "Harsh is a full-stack developer working at the intersection of useful software and applied AI. He builds SaaS dashboards, real-time applications, AI tools, and data-backed platforms, connecting React interfaces with JavaScript and Python backends, data models, and deployment workflows.",
+  experience: "2+ years",
+  education: {
+    degree: "B.Tech · Information Technology",
+    details: "Pillai University, Mumbai · July 2025 · CGPA 8.6",
+  },
+  recognition: [
+    "Top 5 — Supervity AI Hackathon, 500+ participants, built in 24 hours",
+    "Top 10 — OpenAI Builders Hackathon, Memory Graph AI, 500+ builders",
+    "Top 100 — Smart India Hackathon 2025, national level, 500+ teams",
+  ],
+};
 export const caseStudies: CaseStudy[] = [
   {
     projectId: 14,
