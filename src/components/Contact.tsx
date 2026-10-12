@@ -171,7 +171,7 @@ export function Footer() {
       <a href="#hero" className="footer-brand">
         Harsh Gavand<span>Full-Stack & AI Engineer</span>
       </a>
-      <p>© {new Date().getFullYear()} · Thoughtfully built with React.</p>
+      <p>© {new Date().getFullYear()} · Built by Harsh Gavand</p>
       <a href="#hero">
         Back to top <ArrowUpRight size={16} aria-hidden="true" />
       </a>
