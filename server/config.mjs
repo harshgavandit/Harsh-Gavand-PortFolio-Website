@@ -11,11 +11,11 @@ export function loadConfig() {
     const path = fileURLToPath(new URL(relative, import.meta.url));
     if (existsSync(path)) loadEnvFile(path);
   }
-  const model = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
-  if (!/^gemini-[a-z0-9.-]+$/.test(model))
-    throw new Error("Invalid GEMINI_MODEL configuration.");
+  const model = process.env.OPENAI_MODEL || "gpt-6-luna";
+  if (model !== "gpt-6-luna")
+    throw new Error("OPENAI_MODEL must be gpt-6-luna for this assistant.");
   return {
-    apiKey: process.env.GEMINI_API_KEY || "",
+    apiKey: process.env.OPENAI_API_KEY || "",
     model,
     port: Number(process.env.PORT || 3001),
     allowedOrigins: (

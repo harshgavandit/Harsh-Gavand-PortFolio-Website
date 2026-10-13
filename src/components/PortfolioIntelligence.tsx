@@ -73,7 +73,7 @@ export function PortfolioIntelligence() {
           <i />
           <span>
             <Sparkles size={20} />
-            Gemini
+            GPT-6 Luna
           </span>
         </div>
         <h3>Curiosity is a good starting point.</h3>
@@ -101,7 +101,7 @@ export function PortfolioIntelligence() {
             <ArrowUp size={18} />
           </button>
         </form>
-        <small>Powered by Gemini · review and send in the assistant</small>
+        <small>Powered by GPT-6 Luna · review and send in the assistant</small>
       </div>
     </section>
   );

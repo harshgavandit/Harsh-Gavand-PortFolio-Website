@@ -153,7 +153,7 @@ test("production serving supports assets and SPA paths while hiding source and e
   assert.equal(pdf.headers.get("content-type"), "application/pdf");
   for (const path of [
     "/.env",
-    "/server/gemini.mjs",
+    "/server/openai.mjs",
     "/src/data/portfolio.ts",
     "/%2e%2e%2fpackage.json",
     "/assets/missing.js",

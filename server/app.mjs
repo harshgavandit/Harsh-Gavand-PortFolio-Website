@@ -7,7 +7,7 @@ import {
   validateMessages,
   generateReply,
   sourceLinks,
-} from "./gemini.mjs";
+} from "./openai.mjs";
 
 const defaultDist = resolve(
   fileURLToPath(new URL("../dist/", import.meta.url)),

@@ -341,8 +341,9 @@ export function Assistant() {
               </button>
             </div>
             <p id="assistant-disclosure">
-              Powered by Gemini. Messages are sent to Google; this site keeps
-              chat only until you clear it or reload. AI can make mistakes.
+              Powered by OpenAI GPT-6 Luna. Messages are sent to OpenAI; this
+              site keeps chat only until you clear it or reload. AI can make
+              mistakes.
             </p>
           </footer>
         </div>
