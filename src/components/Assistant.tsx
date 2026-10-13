@@ -44,6 +44,7 @@ export function Assistant() {
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [retryAllowed, setRetryAllowed] = useState(true);
 
   useEffect(() => {
     const show = (event: Event) => {
@@ -91,6 +92,7 @@ export function Assistant() {
     setMessages([]);
     setInput("");
     setError("");
+    setRetryAllowed(true);
     setBusy(false);
     inputRef.current?.focus();
   }
@@ -116,6 +118,7 @@ export function Assistant() {
     setMessages(next);
     setInput("");
     setError("");
+    setRetryAllowed(true);
     setBusy(true);
     try {
       const response = await fetch("/api/chat", {
@@ -129,10 +132,13 @@ export function Assistant() {
           "The assistant service is unavailable. Please contact Harsh directly.",
         );
       const data = await response.json();
-      if (!response.ok)
+      if (generation !== generationRef.current) return;
+      if (!response.ok) {
+        setRetryAllowed(!["daily_limit", "monthly_budget"].includes(data.code));
         throw new Error(
           data.error || "The assistant is unavailable. Please try again.",
         );
+      }
       if (typeof data.answer !== "string")
         throw new Error("The answer could not be loaded. Please try again.");
       if (generation !== generationRef.current) return;
@@ -276,9 +282,11 @@ export function Assistant() {
             {error && (
               <div className="assistant-error" role="alert">
                 <p>{error}</p>
-                <button onClick={() => void send(undefined, true)}>
-                  <RotateCcw size={14} aria-hidden="true" /> Retry question
-                </button>
+                {retryAllowed && (
+                  <button onClick={() => void send(undefined, true)}>
+                    <RotateCcw size={14} aria-hidden="true" /> Retry question
+                  </button>
+                )}
                 <a href={`mailto:${profile.email}`}>Email Harsh</a>
               </div>
             )}

@@ -14,9 +14,23 @@ export function loadConfig() {
   const model = process.env.OPENAI_MODEL || "gpt-6-luna";
   if (model !== "gpt-6-luna")
     throw new Error("OPENAI_MODEL must be gpt-6-luna for this assistant.");
+  const dailyLimit = Number(process.env.AI_DAILY_REQUEST_LIMIT || 200);
+  const monthlyBudget = process.env.AI_MONTHLY_BUDGET_USD || "1.00";
+  if (
+    !Number.isSafeInteger(dailyLimit) ||
+    dailyLimit < 1 ||
+    dailyLimit > 10000 ||
+    !/^(?:0|[1-9][0-9]{0,3})(?:\.[0-9]{1,2})?$/.test(monthlyBudget) ||
+    Number(monthlyBudget) <= 0
+  )
+    throw new Error("Invalid AI usage allowance configuration.");
   return {
     apiKey: process.env.OPENAI_API_KEY || "",
     model,
+    quotaUrl: process.env.UPSTASH_REDIS_REST_URL || "",
+    quotaToken: process.env.UPSTASH_REDIS_REST_TOKEN || "",
+    dailyLimit,
+    monthlyBudgetMicros: Math.round(Number(monthlyBudget) * 1000000),
     port: Number(process.env.PORT || 3001),
     allowedOrigins: (
       process.env.ALLOWED_ORIGINS ||

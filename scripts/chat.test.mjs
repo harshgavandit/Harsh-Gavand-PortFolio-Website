@@ -9,7 +9,14 @@ async function fixture(t, options = {}) {
   const calls = [];
   const server = createServer({
     apiKey: "test-key-never-forward-to-browser",
-    model: "test-model",
+    model: "gpt-6-luna",
+    quota: {
+      configured: true,
+      dailyLimit: 200,
+      monthlyBudgetMicros: 1000000,
+      reserve: async (amount) => ({ amount }),
+      settle: async () => {},
+    },
     allowedOrigins: ["http://localhost:5173"],
     generate: async (messages) => {
       calls.push(messages);
@@ -161,4 +168,101 @@ test("production serving supports assets and SPA paths while hiding source and e
   ]) {
     assert.equal((await fetch(origin + path)).status, 404);
   }
+});
+
+for (const [code, status] of [
+  ["daily_limit", 429],
+  ["monthly_budget", 429],
+  ["quota_unavailable", 503],
+]) {
+  test(`HTTP ${code} never invokes OpenAI`, async (t) => {
+    const { ChatError } = await import("../server/openai.mjs");
+    const { request, calls } = await fixture(t, {
+      quota: {
+        configured: true,
+        dailyLimit: 200,
+        monthlyBudgetMicros: 1000000,
+        reserve: async () => {
+          throw new ChatError(status, code, "Assistant paused.", 60);
+        },
+        settle: async () => {
+          throw new Error("Must not settle rejected admission");
+        },
+      },
+    });
+    const response = await request({
+      messages: [{ role: "user", content: "Hello" }],
+    });
+    assert.equal(response.status, status);
+    assert.equal((await response.json()).code, code);
+    assert.equal(calls.length, 0);
+  });
+}
+
+test("HTTP generation waits for reservation and settles usage without exposing accounting", async (t) => {
+  const events = [];
+  const { request } = await fixture(t, {
+    quota: {
+      configured: true,
+      dailyLimit: 200,
+      monthlyBudgetMicros: 1000000,
+      reserve: async (amount) => {
+        events.push("reserve");
+        return { amount };
+      },
+      settle: async (reservation, actual) => {
+        events.push("settle");
+        assert.equal(actual, 300);
+        assert.ok(reservation.amount > actual);
+      },
+    },
+    generate: async () => {
+      events.push("generate");
+      return {
+        answer: "Harsh develops full-stack applications.",
+        projectIds: [],
+        sections: [],
+        usage: { input_tokens: 1000, output_tokens: 100 },
+      };
+    },
+  });
+  const response = await request({
+    messages: [{ role: "user", content: "Hello" }],
+  });
+  assert.equal(response.status, 200);
+  assert.deepEqual(events, ["reserve", "generate", "settle"]);
+  assert.ok(!JSON.stringify(await response.json()).includes("input_tokens"));
+});
+
+test("provider failure keeps its reservation; failed settlement still returns a generated answer", async (t) => {
+  let settlements = 0;
+  const quota = {
+    configured: true,
+    dailyLimit: 200,
+    monthlyBudgetMicros: 1000000,
+    reserve: async (amount) => ({ amount }),
+    settle: async () => {
+      settlements++;
+      throw new Error("store temporarily down");
+    },
+  };
+  const failed = await fixture(t, {
+    quota,
+    generate: async () => {
+      throw new Error("provider failure");
+    },
+  });
+  assert.equal(
+    (await failed.request({ messages: [{ role: "user", content: "Hello" }] }))
+      .status,
+    502,
+  );
+  assert.equal(settlements, 0);
+  const success = await fixture(t, { quota });
+  assert.equal(
+    (await success.request({ messages: [{ role: "user", content: "Hello" }] }))
+      .status,
+    200,
+  );
+  assert.equal(settlements, 1);
 });

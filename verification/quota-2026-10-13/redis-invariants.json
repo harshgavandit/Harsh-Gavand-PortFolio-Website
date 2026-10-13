@@ -1,0 +1,11 @@
+{
+  "verifiedAt": "2026-10-13T17:01:20.621Z",
+  "concurrentAttempts": 24,
+  "admitted": 5,
+  "separateInstancesShareQuota": true,
+  "reconstructedInstancePreservesQuota": true,
+  "monthlyCutoff": true,
+  "idempotentSettlement": true,
+  "utcMonthRollover": true,
+  "openAiCalls": 0
+}

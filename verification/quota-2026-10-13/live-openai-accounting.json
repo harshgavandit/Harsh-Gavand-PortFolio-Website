@@ -1,0 +1,18 @@
+{
+  "status": 200,
+  "elapsedMs": 3277,
+  "requestIncrement": 1,
+  "budgetIncrementUsd": 0.000719,
+  "reservedMaximumUsd": 0.005056,
+  "answer": "Harsh’s AI News To Email Generator is a Python pipeline that collects and normalizes news content, stores it through a SQLAlchemy database layer, and uses the OpenAI API to create concise summaries. It then formats and sends the digest by email, with Docker supporting a repeatable setup.",
+  "sources": [
+    {
+      "label": "AI News To Email Generator · source",
+      "href": "https://github.com/harshgavandit/AI_News_To_Email_Generator"
+    },
+    {
+      "label": "Selected work",
+      "href": "/#projects"
+    }
+  ]
+}

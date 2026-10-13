@@ -6,7 +6,7 @@ server.requestTimeout = 35000;
 server.headersTimeout = 10000;
 server.listen(config.port, config.production ? "0.0.0.0" : "127.0.0.1", () => {
   console.log(
-    `Portfolio server listening on port ${config.port}; OpenAI ${config.apiKey ? "configured" : "not configured"}; model ${config.model}`,
+    `Portfolio server listening on port ${config.port}; OpenAI ${config.apiKey ? "configured" : "not configured"}; model ${config.model}; persistent quota ${config.quotaUrl && config.quotaToken ? "configured" : "not configured"}`,
   );
 });
 for (const signal of ["SIGINT", "SIGTERM"])

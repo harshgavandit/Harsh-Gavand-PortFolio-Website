@@ -7,7 +7,10 @@ import {
   validateMessages,
   generateReply,
   sourceLinks,
+  buildRequest,
 } from "./openai.mjs";
+
+import { RedisQuota, reservationFor, usageCost } from "./quota.mjs";
 
 const defaultDist = resolve(
   fileURLToPath(new URL("../dist/", import.meta.url)),
@@ -39,9 +42,18 @@ export function createServer(config) {
     globalLimit = 60,
     windowMs = 600000,
   } = config;
+  const quota =
+    config.quota ||
+    new RedisQuota({
+      url: config.quotaUrl,
+      token: config.quotaToken,
+      dailyLimit: config.dailyLimit,
+      monthlyBudgetMicros: config.monthlyBudgetMicros,
+    });
   const generate =
     config.generate ||
-    ((messages, signal) => generateReply(messages, { apiKey, model, signal }));
+    ((messages, signal, request) =>
+      generateReply(messages, { apiKey, model, signal, request }));
   const clients = new Map();
   let global = { count: 0, reset: Date.now() + windowMs };
   let concurrent = 0;
@@ -70,6 +82,12 @@ export function createServer(config) {
         status: "ok",
         assistantConfigured: Boolean(apiKey),
         model,
+        usageProtection: {
+          configured: quota.configured,
+          dailyLimit: quota.dailyLimit,
+          monthlyBudgetUsd: quota.monthlyBudgetMicros / 1000000,
+          resetTimezone: "UTC",
+        },
       });
     if (pathname === "/api/chat") {
       if (req.method !== "POST") {
@@ -151,7 +169,23 @@ export function createServer(config) {
         clients.set(ip, client);
         concurrent++;
         inFlight = true;
-        const result = await generate(messages, controller.signal);
+        const request = buildRequest(messages, model);
+        const estimate = reservationFor(request);
+        const reservation = await quota.reserve(estimate.amount);
+        // Keep the full reservation after cancellations, timeouts or provider
+        // failures: these may already have incurred a charge. Never retry a
+        // provider request automatically when its outcome is unknown.
+        if (controller.signal.aborted) return;
+        const result = await generate(messages, controller.signal, request);
+        try {
+          await quota.settle(reservation, usageCost(result.usage, estimate));
+        } catch {
+          // Reservation is already durable. A failed settlement keeps the
+          // conservative amount charged to the allowance, so it stays safe.
+          console.warn(
+            "AI quota settlement unavailable; reservation retained.",
+          );
+        }
         if (typeof result.answer !== "string" || !result.answer.trim())
           throw new Error("Invalid response");
         json(res, 200, { answer: result.answer, sources: sourceLinks(result) });
