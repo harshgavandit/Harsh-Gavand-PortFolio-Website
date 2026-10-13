@@ -105,6 +105,9 @@ export function knowledgeFor(messages) {
       technologies,
     })),
     projectDetails: ranked.slice(0, 5).map(({ project }) => project),
+    caseStudyNotes: caseStudies.filter((study) =>
+      ranked.slice(0, 5).some(({ project }) => project.id === study.projectId),
+    ),
     note: "Only facts published in the portfolio are available. Employment dates are as published; do not turn a completed position into current employment. Private information, compensation and up-to-date availability are not established by this context. Direct those questions to the resume or contact link.",
   };
 }

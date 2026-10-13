@@ -46,7 +46,11 @@ export function Assistant() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const show = () => setOpen(true);
+    const show = (event: Event) => {
+      const prompt = (event as CustomEvent<{ prompt?: string }>).detail?.prompt;
+      if (typeof prompt === "string" && prompt) setInput(prompt.slice(0, 2000));
+      setOpen(true);
+    };
     window.addEventListener("open-portfolio-assistant", show);
     return () => {
       window.removeEventListener("open-portfolio-assistant", show);
@@ -184,8 +188,8 @@ export function Assistant() {
               <Sparkles size={20} />
             </span>
             <div>
-              <h2 id="assistant-title">Harsh’s assistant</h2>
-              <p>Get to know the work behind the profile.</p>
+              <h2 id="assistant-title">Portfolio intelligence</h2>
+              <p>Explore Harsh’s work, with sources.</p>
             </div>
             <button
               className="assistant-icon"

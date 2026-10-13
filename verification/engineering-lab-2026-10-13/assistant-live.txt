@@ -1,0 +1,19 @@
+Portfolio intelligence
+
+Explore Harsh’s work, with sources.
+
+You
+
+Explain Harsh's contribution and engineering challenges in UGC Project. Use the published project notes and identify anything not documented.
+
+Harsh’s assistant
+
+In the UGC Project, Harsh implemented creator workflows, media integration, authentication-aware screens, and reusable product UI components. The primary engineering challenge was connecting AI generation and media storage into a smooth workflow while keeping user actions clear and recoverable. All key details regarding his role, features, and challenges are documented in the portfolio case study notes; no further unmentioned aspects are recorded.
+
+UGC Project · source
+Selected work
+Your question about Harsh
+0/2,000
+Clear chat
+
+Powered by Gemini. Messages are sent to Google; this site keeps chat only until you clear it or reload. AI can make mistakes.

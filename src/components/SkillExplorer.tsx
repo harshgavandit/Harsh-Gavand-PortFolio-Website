@@ -9,7 +9,7 @@ import {
   Terminal,
   ArrowUpRight,
 } from "lucide-react";
-import { skills } from "../data/portfolio";
+import { projects, skills } from "../data/portfolio";
 import { useMotionEnabled } from "./MotionPreferences";
 import { Tags } from "./Primitives";
 
@@ -122,6 +122,34 @@ export function SkillExplorer() {
               <h3>{skill.title}</h3>
               <p className="skill-panel-description">{skill.description}</p>
               <Tags items={skill.items} />
+              <div className="skill-evidence">
+                <span className="lab-micro">IN THE PROJECTS</span>
+                {projects
+                  .filter((project) =>
+                    project.technologies.some((tech) =>
+                      skill.items.some(
+                        (item) => item.toLowerCase() === tech.toLowerCase(),
+                      ),
+                    ),
+                  )
+                  .slice(0, 3)
+                  .map((project) => (
+                    <a
+                      key={project.id}
+                      href="#projects"
+                      onClick={() =>
+                        window.dispatchEvent(
+                          new CustomEvent("explore-project", {
+                            detail: { projectId: project.id },
+                          }),
+                        )
+                      }
+                    >
+                      {project.title}
+                      <ArrowUpRight size={14} aria-hidden="true" />
+                    </a>
+                  ))}
+              </div>
               <a className="text-link" href="#projects">
                 See the tools in practice{" "}
                 <ArrowUpRight size={16} aria-hidden="true" />

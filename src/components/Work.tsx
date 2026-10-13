@@ -1,14 +1,6 @@
+import { projectGroup } from "../lib/portfolioActions";
 import { useEffect, useMemo, useRef, useState } from "react";
-import {
-  ArrowDown,
-  ArrowRight,
-  ArrowUpRight,
-  Search,
-  Layers3,
-  Sparkles,
-  Database,
-  Mail,
-} from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowUpRight, Search } from "lucide-react";
 import {
   caseStudies,
   projects,
@@ -17,8 +9,7 @@ import {
 } from "../data/portfolio";
 import { ActionLink, Reveal, SectionHeading, Tags } from "./Primitives";
 import { ProjectWalkthrough } from "./ProjectWalkthrough";
-import { DepthCard } from "./DepthCard";
-import { ProjectFocus } from "./ProjectFocus";
+import { DeveloperLab } from "./DeveloperLab";
 
 function ProjectDetails({ project }: { project: Project }) {
   return (
@@ -126,7 +117,6 @@ export function ProjectCaseStudy({
 }
 
 export function FeaturedWork() {
-  const [selected, setSelected] = useState<number | null>(null);
   return (
     <section
       id="projects"
@@ -139,129 +129,14 @@ export function FeaturedWork() {
         label="Selected work"
         title={
           <span id="featured-title">
-            The work.
+            Explore the engineering.
             <br />
-            <span className="muted-heading">The thinking behind it.</span>
+            <span className="muted-heading">Follow the evidence.</span>
           </span>
         }
-        description="A closer look at the products, systems, and decisions that turn an idea into something useful."
+        description="A hands-on workspace for the products I build. Choose a project. Inspect the architecture. Read the code."
       />
-      <div
-        className="project-gallery"
-        role="group"
-        aria-label="Featured project gallery"
-      >
-        {caseStudies.map((study, index) => {
-          const project = projects.find((p) => p.id === study.projectId)!;
-          const Icon = study.projectId === 17 ? Mail : Sparkles;
-          return (
-            <DepthCard className="gallery-card" key={study.projectId}>
-              <a
-                className={`gallery-preview ${study.image ? "preview-screenshot" : "preview-architecture"}`}
-                href={`#project-${study.projectId}`}
-                aria-label={`Explore ${study.shortName} case study`}
-              >
-                {study.image ? (
-                  <img
-                    src={`/projects/${study.image}-640.webp`}
-                    srcSet={`/projects/${study.image}-640.webp 640w, /projects/${study.image}-1280.webp 1280w`}
-                    sizes="(max-width: 680px) 100vw, 550px"
-                    alt={study.imageAlt}
-                    loading="lazy"
-                    width={640}
-                    height={360}
-                  />
-                ) : (
-                  <div className="gallery-system" aria-hidden="true">
-                    <div className="system-caption">
-                      <span>ARCHITECTURE SNAPSHOT</span>
-                      <span>0{index + 1}</span>
-                    </div>
-                    <div className="system-flow">
-                      <span>
-                        <Layers3 size={25} />
-                        <small>
-                          {study.projectId === 17 ? "Collect" : "Create"}
-                        </small>
-                      </span>
-                      <ArrowRight size={20} />
-                      <span className="system-core">
-                        <Icon size={30} />
-                        <small>
-                          {study.projectId === 17 ? "Summarize" : "Generate"}
-                        </small>
-                      </span>
-                      <ArrowRight size={20} />
-                      <span>
-                        <Database size={25} />
-                        <small>
-                          {study.projectId === 17 ? "Deliver" : "Manage"}
-                        </small>
-                      </span>
-                    </div>
-                    <p>{study.diagram?.title}</p>
-                    <span className="system-caption-bottom">
-                      Implementation map ·{" "}
-                      {project.technologies.slice(0, 3).join(" / ")}
-                    </span>
-                  </div>
-                )}
-                <span className="preview-open">
-                  <ArrowUpRight size={17} aria-hidden="true" />
-                </span>
-              </a>
-              <div className="gallery-copy">
-                <div className="gallery-meta">
-                  <span className="eyebrow">
-                    0{index + 1} /{" "}
-                    {project.id === 17
-                      ? "AI & Automation"
-                      : project.id === 14
-                        ? "Applied AI"
-                        : "Full-stack"}
-                  </span>
-                  <span>{project.demoUrl ? "Live demo" : "Open source"}</span>
-                </div>
-                <h3>
-                  <a href={`#project-${study.projectId}`}>{study.shortName}</a>
-                </h3>
-                <p>{study.summary}</p>
-                <Tags items={project.technologies.slice(0, 4)} />
-                <button
-                  type="button"
-                  className="project-focus-trigger"
-                  onClick={() => setSelected(index)}
-                  aria-haspopup="dialog"
-                  aria-label={`Open ${study.shortName} in project viewer`}
-                >
-                  Enter project studio{" "}
-                  <ArrowUpRight size={17} aria-hidden="true" />
-                </button>
-                <div className="gallery-actions">
-                  <a href={`#project-${study.projectId}`}>
-                    Explore case study{" "}
-                    <ArrowRight size={16} aria-hidden="true" />
-                  </a>
-                  <a
-                    href={project.demoUrl || project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`${project.demoUrl ? "Live demo" : "Source code"} for ${study.shortName}`}
-                  >
-                    {project.demoUrl ? "Live demo" : "Source code"}
-                    <ArrowUpRight size={15} aria-hidden="true" />
-                  </a>
-                </div>
-              </div>
-            </DepthCard>
-          );
-        })}
-      </div>
-      <ProjectFocus
-        selected={selected}
-        onSelect={setSelected}
-        onClose={() => setSelected(null)}
-      />
+      <DeveloperLab />
       <div className="case-study-divider">
         <span className="eyebrow">Behind the builds</span>
         <p>The decisions, contributions, and details.</p>
@@ -289,18 +164,6 @@ export function FeaturedWork() {
 }
 
 const filters = ["All", "AI & ML", "Web & SaaS", "APIs & Tools"] as const;
-function group(project: Project) {
-  if (/AI|Learning|Prediction|GPT/.test(project.title + project.category))
-    return "AI & ML";
-  if (
-    /API|Automation|Authentication|Django|Employee/.test(
-      project.title + project.category,
-    )
-  )
-    return "APIs & Tools";
-  return "Web & SaaS";
-}
-
 export function MoreWork() {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<string>("All");
@@ -322,7 +185,7 @@ export function MoreWork() {
   );
   const filtered = secondary.filter(
     (p) =>
-      (filter === "All" || group(p) === filter) &&
+      (filter === "All" || projectGroup(p) === filter) &&
       `${p.title} ${p.category} ${p.technologies.join(" ")}`
         .toLowerCase()
         .includes(query.toLowerCase().trim()),

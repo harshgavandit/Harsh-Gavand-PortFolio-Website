@@ -10,6 +10,7 @@ import { Contact, Footer } from "./components/Contact";
 import { Assistant } from "./components/Assistant";
 import { EngineeringBridge } from "./components/EngineeringBridge";
 import { SpatialAtmosphere } from "./components/SpatialAtmosphere";
+import { PortfolioIntelligence } from "./components/PortfolioIntelligence";
 
 function Home() {
   return (
@@ -21,12 +22,13 @@ function Home() {
       <SpatialAtmosphere />
       <main id="main" tabIndex={-1}>
         <Hero />
-        <EngineeringBridge />
         <FeaturedWork />
-        <About />
+        <PortfolioIntelligence />
         <Experience />
-        <MoreWork />
         <Skills />
+        <About />
+        <MoreWork />
+        <EngineeringBridge />
         <Workflow />
         <Contact />
       </main>

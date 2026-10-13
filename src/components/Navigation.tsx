@@ -4,7 +4,14 @@ import { ArrowUpRight, Menu, X } from "lucide-react";
 import { profile } from "../data/portfolio";
 import { MotionToggle } from "./MotionPreferences";
 
-const links = ["Projects", "About", "Experience", "Skills", "Contact"];
+const links = [
+  "Projects",
+  "Intelligence",
+  "Experience",
+  "Skills",
+  "About",
+  "Contact",
+];
 export function Navigation() {
   const [active, setActive] = useState("");
   const [open, setOpen] = useState(false);

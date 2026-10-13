@@ -1,8 +1,8 @@
 # Harsh Gavand — Portfolio
 
-React + TypeScript portfolio with a light, immersive 3D engineering-studio design, visual selected-project gallery, four detailed case studies, all 26 original projects, and a Gemini portfolio assistant. Includes an engineering profile, experience timeline, categorized skills, workflow, and contact draft preparation.
+React + TypeScript portfolio with a light, interactive engineering-lab design, a 3D hero, a searchable 26-project dashboard, four detailed case studies, and a Gemini portfolio assistant. Includes an engineering profile, experience timeline, project-linked skills, workflow, and contact draft preparation.
 
-The Engineering Atelier presentation adds a cobalt kinetic sculpture, scroll-reactive typography, an interactive exploded engineering exhibit, and alternating project showcases. Its final theme is isolated in `src/atelier.css`. See [redesign research and verification](verification/atelier-2026-10-13/README.md) for screenshots, responsive checks, accessibility results, bundle sizes, and limitations.
+The Engineering Lab presentation puts proof of work first. Its dashboard offers category filters, search, Overview / Architecture / Engineering tabs, selectable system nodes, and project-specific assistant prompts. The final theme is `src/lab.css`, layered after the existing styles. See [current research and verification](verification/engineering-lab-2026-10-13/README.md) for reference observations, screenshots, responsive checks, accessibility results, bundle sizes, and limitations. Earlier redesign reports remain historical evidence.
 
 ## Development
 
@@ -23,7 +23,7 @@ Set `GEMINI_API_KEY` in the service environment or an ignored `.env.local` / `.e
 
 Use [.env.example](.env.example) for non-secret configuration. Never prefix the key with `VITE_` or put it in browser code. Production deliberately does not load the parent-directory env file.
 
-The browser sends bounded conversation history to same-origin `/api/chat`. The server supplies published profile, About, experience, skills, all 26 project index entries, and the five most relevant project details. Gemini returns text and references; the server maps references to existing portfolio links. Chat is held in page memory only. This service has no conversation logging or database. Messages and portfolio context are sent to Google, whose handling is governed by the selected Gemini service terms.
+The browser sends bounded conversation history to same-origin `/api/chat`. The server supplies published profile, About, experience, skills, all 26 project index entries, and the five most relevant project details, including existing case-study architecture and contribution notes. Gemini returns text and references; the server maps references to existing portfolio links. Chat is held in page memory only. This service has no conversation logging or database. Messages and portfolio context are sent to Google, whose handling is governed by the selected Gemini service terms.
 
 Controls include suggestions, follow-up questions, a 2,000-character input limit, loading, stop, retry, clear, résumé/contact references, and keyboard dismissal. Provider quota, invalid configuration, timeout, and incomplete output become clear user-facing errors. Default server limits are ten requests per client and sixty globally per ten minutes, with at most three simultaneous generations. Limits are in memory and reset on server restart; scale-out hosting requires a shared limiter.
 
@@ -74,15 +74,15 @@ No deployment is performed by local development or validation commands.
 
 The hero uses an open procedural Three.js scene with a reflective blue orbital sculpture, pearl core, satellites, floating interface panels, and stacked system layers. Mouse dragging and keyboard-accessible rotation controls change the viewpoint; Interface, Systems, and Applied AI controls change the composition and description. A light atmospheric background, chapter navigation, scroll-driven card perspective, project previews, skill interactions, and a dimensional workflow connect the sections. Native touch scrolling is preserved.
 
-The new supplied photograph appears in About at `public/portrait/harsh-studio.jpg`; the original photograph is retained. All 26 project records, case studies, experience, resume, contact draft behavior, and Gemini assistant remain intact. `src/immersive.css` is the final visual layer after the studio and exploration styles.
+The supplied photograph appears in About at `public/portrait/harsh-studio.jpg`; the original photograph is retained. All 26 project records, case studies, experience, resume, contact draft behavior, and Gemini assistant remain intact. `src/lab.css` is the final visual layer.
 
-The WebGL engine loads separately when the hero approaches the viewport. Pixel ratio is capped at 1.5 (1.25 on small screens), with no downloaded models, environment textures, or postprocessing. Rendering stops offscreen, in a hidden tab, or when motion is paused. Resources and listeners are disposed on unmount. A 162 KB still captured from the original scene appears during loading and if WebGL fails or loses its context; a page reload can restore a lost context. System reduced-motion settings and the manual motion control apply across the experience; discipline selection and discrete rotation remain usable without continuous animation.
+The WebGL engine loads separately when the hero approaches the viewport. Devices reporting data-saving mode, at most 2 GB memory, or at most two logical cores use the illustration without loading the engine. Pixel ratio is capped at 1.5 (1.25 on small screens), with no downloaded models, environment textures, or postprocessing. Rendering stops offscreen, in a hidden tab, or when motion is paused. Resources and listeners are disposed on unmount. A local SVG illustration appears during loading and if WebGL fails or loses its context; a page reload can restore a lost context. System reduced-motion settings and the manual motion control apply across the experience. Discrete rotation remains usable with paused motion when WebGL is available; rotation controls are disabled in fallback mode.
 
 See [the studio verification report](verification/studio-2026-10-12/README.md) for evidence and remaining limits.
 
 ## Interactive exploration
 
-The project gallery includes a keyboard-accessible Project Studio viewer with previous/next navigation, full-case-study links, Escape dismissal, focus containment, and restored focus. The six-category skills map supports arrow keys and Home/End, and keeps a complete toolkit disclosure available. An experience chapter rail tracks the visible role; a dimensional engineering bridge connects the hero to the work. These sections use CSS perspective and Framer Motion, with `src/immersive.css` extending the exploration styles.
+The embedded engineering dashboard replaces the earlier project-gallery modal. Its detail tabs support arrow keys and Home/End. Featured projects have implementation maps based on existing notes; other projects have explicitly labeled technology maps without invented request sequences. The six-category skills map supports keyboard navigation, links to matching projects in the dashboard, and keeps a complete toolkit disclosure available. An experience chapter rail tracks the visible role; a dimensional engineering bridge connects the hero to the work. These sections use CSS perspective and Framer Motion.
 
 See [interactive exploration validation](verification/exploration-2026-10-12/README.md) for desktop/mobile screenshots, accessibility scans, responsive checks, and scope limits.
 

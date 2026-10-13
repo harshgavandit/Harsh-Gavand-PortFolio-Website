@@ -9,6 +9,13 @@ test("retrieval includes the relevant project and complete public project index"
   const knowledge = knowledgeFor(messages);
   assert.equal(knowledge.projectIndex.length, 26);
   assert.ok(knowledge.projectDetails.some((p) => p.id === 17));
+  const digestStudy = knowledge.caseStudyNotes.find(
+    (study) => study.projectId === 17,
+  );
+  assert.ok(digestStudy.diagram.nodes.includes("SQLAlchemy repository"));
+  assert.ok(
+    digestStudy.contributions.some((item) => item.label === "Pipeline / AI"),
+  );
   assert.ok(!JSON.stringify(knowledge).includes("GEMINI_API_KEY"));
 });
 test("Gemini request uses server headers, trusted context and multi-turn role mapping", async () => {

@@ -54,6 +54,18 @@ export function StudioScene() {
     renderer.current?.update(enabled, active);
   }, [enabled, active]);
   useEffect(() => {
+    const device = navigator as Navigator & {
+      connection?: { saveData?: boolean };
+      deviceMemory?: number;
+    };
+    // Keep the local illustration on constrained devices; the content and
+    // discipline controls remain usable without loading the WebGL bundle.
+    if (
+      device.connection?.saveData ||
+      (device.deviceMemory && device.deviceMemory <= 2) ||
+      (device.hardwareConcurrency && device.hardwareConcurrency <= 2)
+    )
+      return;
     let cancelled = false;
     let cleanup: (() => void) | undefined;
     let timer: number | undefined;

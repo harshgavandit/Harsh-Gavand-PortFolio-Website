@@ -9,6 +9,7 @@ import "./studio.css";
 import "./exploration.css";
 import "./immersive.css";
 import "./atelier.css";
+import "./lab.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
