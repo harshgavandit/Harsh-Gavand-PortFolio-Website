@@ -15,7 +15,7 @@ export function About() {
     >
       <div className="section-container">
         <SectionHeading
-          number="02"
+          number="05"
           label="The engineer"
           title={
             <span id="about-title">
@@ -137,7 +137,7 @@ export function Skills() {
       aria-labelledby="skills-title"
     >
       <SectionHeading
-        number="05"
+        number="04"
         label="The toolkit"
         title={
           <span id="skills-title">

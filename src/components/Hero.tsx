@@ -14,7 +14,7 @@ import {
   projects,
 } from "../data/portfolio";
 import { ActionLink } from "./Primitives";
-import { StudioScene } from "./StudioScene";
+import { SystemArtifact } from "./SystemArtifact";
 import { useMotionEnabled } from "./MotionPreferences";
 import { openPortfolioAssistant } from "../lib/portfolioActions";
 import "./cinematic.css";
@@ -48,17 +48,18 @@ export function Hero() {
             animate={enabled ? { opacity: [0.4, 1], y: [16, 0] } : undefined}
             transition={{ duration: 0.65 }}
           >
-            From complex ideas
+            Good software,
             <br />
-            to <span>working systems.</span>
+            <span>all the way down.</span>
           </m.h1>
           <p className="hero-description">
-            I build full-stack products and applied AI workflows. Explore the
-            interfaces, architecture, and engineering decisions behind the work.
+            I’m Harsh. I connect React interfaces, Python and JavaScript
+            backends, and practical AI workflows. Here’s the work — and how it
+            fits together.
           </p>
           <div className="actions">
             <ActionLink href="#projects" primary>
-              Enter the engineering lab
+              Explore selected work
             </ActionLink>
             <ActionLink href={profile.github} external>
               GitHub
@@ -84,22 +85,7 @@ export function Hero() {
             </span>
           </div>
         </div>
-        <div className="hero-system-window">
-          <div className="system-window-title">
-            <span>
-              <i /> SYSTEMS IN MOTION
-            </span>
-            <span>INTERACTIVE / 3D</span>
-          </div>
-          <StudioScene />
-          <div className="system-window-footer">
-            <span>interface</span>
-            <i />
-            <span>logic</span>
-            <i />
-            <span>intelligence</span>
-          </div>
-        </div>
+        <SystemArtifact />
       </div>
       <div
         className="lab-facts"
@@ -133,7 +119,7 @@ export function Hero() {
         <a href="#projects">
           <ArrowDown size={15} /> Inspect the work
         </a>
-        <span className="lab-micro">BUILT WITH INTENT. OPEN TO EXPLORE.</span>
+        <span className="lab-micro">INTERFACES / SYSTEMS / APPLIED AI</span>
         <a href="#contact">
           Let’s build something <ArrowUpRight size={14} />
         </a>

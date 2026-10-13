@@ -1,8 +1,8 @@
 # Harsh Gavand — Portfolio
 
-React + TypeScript portfolio with a light, interactive engineering-lab design, a 3D hero, a searchable 26-project dashboard, four detailed case studies, and a Gemini portfolio assistant. Includes an engineering profile, experience timeline, project-linked skills, workflow, and contact draft preparation.
+React + TypeScript portfolio with a light, interactive engineering-lab design, an interactive CSS 3D model of real project layers, a searchable 26-project dashboard, four detailed case studies, and a Gemini portfolio assistant. Includes an engineering profile, experience timeline, project-linked skills, workflow, and contact draft preparation.
 
-The Engineering Lab presentation puts proof of work first. Its dashboard offers category filters, search, Overview / Architecture / Engineering tabs, selectable system nodes, and project-specific assistant prompts. The final theme is `src/lab.css`, layered after the existing styles. See [current research and verification](verification/engineering-lab-2026-10-13/README.md) for reference observations, screenshots, responsive checks, accessibility results, bundle sizes, and limitations. Earlier redesign reports remain historical evidence.
+The current craft refinement puts proof of work first: selected builds lead the index, a physical-looking implementation model replaces the abstract hero sculpture, and editorial case studies reduce repeated card framing. See [the critique and current verification](verification/craft-2026-10-13/README.md). The underlying Engineering Lab presentation offers category filters, search, Overview / Architecture / Engineering tabs, selectable system nodes, and project-specific assistant prompts. The final theme is `src/lab.css`, layered after the existing styles. See [current research and verification](verification/engineering-lab-2026-10-13/README.md) for reference observations, screenshots, responsive checks, accessibility results, bundle sizes, and limitations. Earlier redesign reports remain historical evidence.
 
 ## Development
 
@@ -72,11 +72,11 @@ No deployment is performed by local development or validation commands.
 
 ## Presentation and motion
 
-The hero uses an open procedural Three.js scene with a reflective blue orbital sculpture, pearl core, satellites, floating interface panels, and stacked system layers. Mouse dragging and keyboard-accessible rotation controls change the viewpoint; Interface, Systems, and Applied AI controls change the composition and description. A light atmospheric background, chapter navigation, scroll-driven card perspective, project previews, skill interactions, and a dimensional workflow connect the sections. Native touch scrolling is preserved.
+The hero uses a CSS 3D implementation model derived from the existing AI digest and UGC case-study diagrams. Visitors can assemble or separate its layers, switch the build, and select a layer to read its published contribution notes. Layer controls support clicks, arrow keys, Home and End. Pointer movement produces a small damped perspective response on mouse devices only. Native touch scrolling is preserved; no automatic rotation, scroll hijacking, or WebGL is required.
 
 The supplied photograph appears in About at `public/portrait/harsh-studio.jpg`; the original photograph is retained. All 26 project records, case studies, experience, resume, contact draft behavior, and Gemini assistant remain intact. `src/lab.css` is the final visual layer.
 
-The WebGL engine loads separately when the hero approaches the viewport. Devices reporting data-saving mode, at most 2 GB memory, or at most two logical cores use the illustration without loading the engine. Pixel ratio is capped at 1.5 (1.25 on small screens), with no downloaded models, environment textures, or postprocessing. Rendering stops offscreen, in a hidden tab, or when motion is paused. Resources and listeners are disposed on unmount. A local SVG illustration appears during loading and if WebGL fails or loses its context; a page reload can restore a lost context. System reduced-motion settings and the manual motion control apply across the experience. Discrete rotation remains usable with paused motion when WebGL is available; rotation controls are disabled in fallback mode.
+The current page does not import the earlier Three.js scene or its renderer. Those source files remain for reference, but Vite excludes them from the production output. The new model uses five DOM layers and only animates in response to interaction. System reduced motion and the manual motion toggle disable layer transitions and pointer response while preserving all information and controls.
 
 See [the studio verification report](verification/studio-2026-10-12/README.md) for evidence and remaining limits.
 

@@ -129,12 +129,12 @@ export function FeaturedWork() {
         label="Selected work"
         title={
           <span id="featured-title">
-            Explore the engineering.
+            A few things I’ve built.
             <br />
-            <span className="muted-heading">Follow the evidence.</span>
+            <span className="muted-heading">Open them up.</span>
           </span>
         }
-        description="A hands-on workspace for the products I build. Choose a project. Inspect the architecture. Read the code."
+        description="Start with four selected builds. Explore the product, trace its architecture, or go straight to the source."
       />
       <DeveloperLab />
       <div className="case-study-divider">
@@ -198,7 +198,7 @@ export function MoreWork() {
       aria-labelledby="archive-title"
     >
       <SectionHeading
-        number="04"
+        number="06"
         label="Project archive"
         title={
           <span id="archive-title">

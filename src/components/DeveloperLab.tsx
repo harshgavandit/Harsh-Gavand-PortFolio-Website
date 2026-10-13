@@ -19,12 +19,18 @@ import { ProjectArchitecture } from "./ProjectArchitecture";
 import { Tags } from "./Primitives";
 import { useMotionEnabled } from "./MotionPreferences";
 
-const categories = ["All projects", "AI & ML", "Web & SaaS", "APIs & Tools"];
-const categoryIcons = [Boxes, Sparkles, Layers3, Braces];
+const categories = [
+  "Selected work",
+  "All projects",
+  "AI & ML",
+  "Web & SaaS",
+  "APIs & Tools",
+];
+const categoryIcons = [FileCode2, Boxes, Sparkles, Layers3, Braces];
 const views = ["Overview", "Architecture", "Engineering"] as const;
 
 export function DeveloperLab() {
-  const [category, setCategory] = useState("All projects");
+  const [category, setCategory] = useState("Selected work");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(14);
   const [view, setView] = useState<(typeof views)[number]>("Overview");
@@ -36,7 +42,10 @@ export function DeveloperLab() {
   });
   const filtered = ordered.filter(
     (p) =>
-      (category === "All projects" || projectGroup(p) === category) &&
+      (category === "All projects" ||
+        (category === "Selected work"
+          ? caseStudies.some((study) => study.projectId === p.id)
+          : projectGroup(p) === category)) &&
       `${p.title} ${p.category} ${p.technologies.join(" ")}`
         .toLowerCase()
         .includes(query.toLowerCase().trim()),
@@ -66,7 +75,7 @@ export function DeveloperLab() {
           <i />
         </span>
         <span>
-          workspace / <strong>project-explorer</strong>
+          THE WORK / <strong>project index</strong>
         </span>
         <span className="lab-window-status">
           <span /> PUBLIC WORK
@@ -76,7 +85,7 @@ export function DeveloperLab() {
         <aside className="lab-sidebar" aria-label="Project collections">
           <div className="lab-sidebar-title">
             <Code2 size={18} />
-            <strong>Engineering lab</strong>
+            <strong>Browse the builds</strong>
           </div>
           <span className="lab-micro">COLLECTIONS</span>
           <div
@@ -98,10 +107,12 @@ export function DeveloperLab() {
                   <Icon size={16} />
                   <span>{label}</span>
                   <small>
-                    {label === "All projects"
-                      ? projects.length
-                      : projects.filter((p) => projectGroup(p) === label)
-                          .length}
+                    {label === "Selected work"
+                      ? caseStudies.length
+                      : label === "All projects"
+                        ? projects.length
+                        : projects.filter((p) => projectGroup(p) === label)
+                            .length}
                   </small>
                 </button>
               );
@@ -109,10 +120,8 @@ export function DeveloperLab() {
           </div>
           <div className="lab-sidebar-note">
             <GitBranch size={22} />
-            <strong>Follow the evidence.</strong>
-            <p>
-              Source code, project notes, and working demos. Start anywhere.
-            </p>
+            <strong>Start with a question.</strong>
+            <p>What did I build? How does it work? What did I learn?</p>
             <a href="#all-projects">
               Full archive <ArrowUpRight size={14} />
             </a>
@@ -131,15 +140,20 @@ export function DeveloperLab() {
                 type="search"
                 placeholder="Find a project or technology…"
                 value={query}
-                onChange={(event) => setQuery(event.target.value)}
+                onChange={(event) => {
+                  setQuery(event.target.value);
+                  if (event.target.value.trim() && category === "Selected work")
+                    setCategory("All projects");
+                }}
               />
             </label>
           </div>
           <p className="lab-result-count" role="status">
-            {filtered.length} projects · select a project to inspect
+            {filtered.length} {filtered.length === 1 ? "project" : "projects"} ·
+            select a project to inspect
           </p>
           <div
-            className="lab-project-list"
+            className={`lab-project-list ${category === "Selected work" ? "is-curated" : ""}`}
             role="group"
             aria-label="Choose a project"
           >
@@ -153,8 +167,11 @@ export function DeveloperLab() {
                 }}
               >
                 <span>{String(i + 1).padStart(2, "0")}</span>
-                {caseStudies.find((s) => s.projectId === p.id)?.shortName ??
-                  p.title}
+                <span className="lab-project-label">
+                  {caseStudies.find((s) => s.projectId === p.id)?.shortName ??
+                    p.title}
+                  <small>{p.category}</small>
+                </span>
                 {p.id === project?.id && <Check size={14} aria-hidden="true" />}
               </button>
             ))}
@@ -267,33 +284,45 @@ export function DeveloperLab() {
                             />
                           ) : (
                             <div
-                              className="lab-mini-blueprint"
-                              aria-hidden="true"
+                              className="lab-project-map"
+                              role="group"
+                              aria-label={
+                                study?.diagram
+                                  ? "Published implementation sequence"
+                                  : "Published project technologies"
+                              }
                             >
-                              <div>
-                                <Code2 size={25} />
-                                <span>INPUT</span>
-                              </div>
-                              <i />
-                              <div>
-                                <Boxes size={30} />
-                                <span>
-                                  {projectGroup(project) === "AI & ML"
-                                    ? "INTELLIGENCE"
-                                    : "APPLICATION"}
-                                </span>
-                              </div>
-                              <i />
-                              <div>
-                                <Layers3 size={25} />
-                                <span>EXPERIENCE</span>
-                              </div>
+                              <span className="lab-micro">
+                                {study?.diagram
+                                  ? "FROM INPUT TO OUTPUT"
+                                  : "BUILT WITH"}
+                              </span>
+                              <ol>
+                                {(
+                                  study?.diagram?.nodes ??
+                                  project.technologies.slice(0, 5)
+                                ).map((node, i) => (
+                                  <li key={node}>
+                                    <span>0{i + 1}</span>
+                                    <strong>{node}</strong>
+                                    {study?.diagram &&
+                                      i < study.diagram.nodes.length - 1 && (
+                                        <ArrowRight
+                                          size={13}
+                                          aria-hidden="true"
+                                        />
+                                      )}
+                                  </li>
+                                ))}
+                              </ol>
                             </div>
                           )}
                           <span>
                             {study?.image
                               ? "PROJECT CAPTURE"
-                              : "CONCEPTUAL PRODUCT VIEW"}
+                              : study?.diagram
+                                ? "PROJECT IMPLEMENTATION NOTES"
+                                : "PROJECT TECHNOLOGY STACK"}
                           </span>
                         </div>
                       </div>

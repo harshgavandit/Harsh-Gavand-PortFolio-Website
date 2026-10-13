@@ -17,11 +17,9 @@ export function Reveal({
     <m.div
       className={className}
       initial={false}
-      whileInView={
-        reduce ? undefined : { y: [30, 0], opacity: [0.55, 1], rotateX: [3, 0] }
-      }
+      whileInView={reduce ? undefined : { y: [14, 0], opacity: [0.8, 1] }}
       viewport={{ once: true, amount: 0.08 }}
-      transition={{ duration: 0.75, delay, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
     >
       {children}
     </m.div>

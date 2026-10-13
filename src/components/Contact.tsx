@@ -33,7 +33,7 @@ export function Contact() {
       aria-labelledby="contact-title"
     >
       <div className="section-container">
-        <div className="eyebrow">07 / Let’s connect</div>
+        <div className="eyebrow">08 / Let’s connect</div>
         <div className="contact-layout">
           <Reveal>
             <h2 id="contact-title">

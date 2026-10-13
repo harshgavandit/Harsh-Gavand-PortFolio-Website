@@ -225,7 +225,7 @@ export function Workflow() {
     >
       <div className="section-container">
         <SectionHeading
-          number="06"
+          number="07"
           label="How I work"
           title={
             <span id="workflow-title">
