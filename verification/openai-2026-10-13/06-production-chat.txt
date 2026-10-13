@@ -1,0 +1,19 @@
+Portfolio intelligence
+
+Explore Harsh’s work, with sources.
+
+You
+
+How did Harsh build the AI news digest? Keep it brief.
+
+Harsh’s assistant
+
+Harsh built it as an automated pipeline: collect and normalize news articles and transcripts, generate concise summaries with an LLM, store content and digests using SQLAlchemy, then format and send email digests. He also added structured logging and Docker-based orchestration.
+
+AI News To Email Generator · source
+Selected work
+Your question about Harsh
+0/2,000
+Clear chat
+
+Powered by OpenAI GPT-6 Luna. Messages are sent to OpenAI; this site keeps chat only until you clear it or reload. AI can make mistakes.

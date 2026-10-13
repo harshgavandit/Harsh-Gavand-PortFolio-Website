@@ -26,7 +26,15 @@ Verified on 13 October 2026. This migration replaces the active Gemini integrati
 
 ## Production
 
-The existing Render Node service has `OPENAI_API_KEY` and `OPENAI_MODEL` variable names configured. Its secrets were not revealed or copied. Production deployment and generation verification will be recorded after the code push.
+The existing Render Node service already had `OPENAI_API_KEY` and `OPENAI_MODEL` configured. Its secrets were not revealed or copied. Pushing application commit `6d074a110556edb32e9ec9099d245ccfd28c524f` triggered the existing automatic deployment.
+
+- Public origin: `https://harsh-gavand-portfolio-website-ai.onrender.com`.
+- Hosted `/api/health`: HTTP 200, `assistantConfigured=true`, `model=gpt-6-luna`.
+- Hosted `/api/chat` with the public Origin header: HTTP 200 in 5,818 ms, returning the experience summary and canonical project/section links. See `04-production-api.json`.
+- Production browser chat: submitted an AI news digest architecture question through the deployed UI; returned the published pipeline and working source links. See `05-production-chat.png` and `06-production-chat.txt`.
+- No browser console errors during this production check.
+- Final production bundle: JS 375.47 kB (121.68 kB gzip), CSS 177.86 kB (36.60 kB gzip).
+- This service uses a free Render instance. Its dashboard states idle instances may take 50 seconds or more to wake; these tests used a warm instance. No hosting plan changes were made.
 
 ## Official references
 

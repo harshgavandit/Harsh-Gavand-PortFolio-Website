@@ -1,0 +1,24 @@
+{
+  "origin": "https://harsh-gavand-portfolio-website-ai.onrender.com",
+  "status": 200,
+  "elapsedMs": 5818,
+  "answer": "Harsh has 2+ years of experience across full-stack development and applied AI. At Globetrek Engineering Corporation, he built and maintained Django and React applications, REST APIs, async tasks, integrations, and SQL-backed features. Previously, at HRP Enterprises, he developed responsive interfaces, integrated REST APIs across 10+ pages, and improved average page load time by 30%. His published profile also notes recognition in AI hackathons.\n\nTwo relevant projects:\n• Agentic AI System — Python, FastAPI, LangChain, and OpenAI API; explores tool-using, multi-step AI workflows.\n• AI News To Email Generator — Python, SQLAlchemy, Docker, and OpenAI API; collects content, generates summaries, and delivers email digests.",
+  "sources": [
+    {
+      "label": "Agentic AI System · source",
+      "href": "https://github.com/harshgavandit/Agentic-AI_SYSTEM"
+    },
+    {
+      "label": "AI News To Email Generator · source",
+      "href": "https://github.com/harshgavandit/AI_News_To_Email_Generator"
+    },
+    {
+      "label": "Experience",
+      "href": "/#experience"
+    },
+    {
+      "label": "Selected work",
+      "href": "/#projects"
+    }
+  ]
+}
