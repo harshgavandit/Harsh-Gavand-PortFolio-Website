@@ -10,25 +10,24 @@ import { heroArchitecture, productionCode } from "../data/recruiter";
 import { projectSlug } from "../data/portfolio";
 import { RequestTrace } from "./RequestTrace";
 import { Tabs } from "./Tabs";
+import { codeTokens } from "../lib/codeTokens";
 function HighlightedLine({ text }: { text: string }) {
   return (
     <>
-      {text
-        .split(/(const|await|if|return|try|catch|"(?:[^"]*)")/g)
-        .map((part, index) => (
-          <span
-            key={index}
-            className={
-              /^(const|await|if|return|try|catch)$/.test(part)
-                ? "code-keyword"
-                : part.startsWith('"')
-                  ? "code-string"
-                  : undefined
-            }
-          >
-            {part}
-          </span>
-        ))}
+      {codeTokens(text).map((part, index) => (
+        <span
+          key={index}
+          className={
+            part.kind === "keyword"
+              ? "code-keyword"
+              : part.kind === "string"
+                ? "code-string"
+                : undefined
+          }
+        >
+          {part.text}
+        </span>
+      ))}
     </>
   );
 }

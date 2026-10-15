@@ -69,14 +69,14 @@ The tests cover original project identities and assets, source metadata, assista
 - `src/data/portfolio.ts`: shared profile, experience, skills, and four source-reviewed case studies.
 - `src/data/recruiter.ts`: chapter numbers, curated archive, architecture widget, code excerpt, prompts, and principles.
 - `src/recruiter.css`: graphite, ivory, and citrus tokens; high-contrast text; responsive layouts; focus states; 180ms transitions and reduced-motion support.
-- `src/components/RequestTrace.tsx` and `src/lib/requestTrace.ts`: illustrative Gemini success/timeout scenarios with no network requests or real balance changes. The live assistant uses OpenAI and conservative cost accounting.
+- `src/components/RequestTrace.tsx` and `src/lib/requestTrace.ts`: a completed happy path, pre-dispatch rollback, and uncertain upstream timeout scenarios. Token values and timings are illustrative; the accounting decisions match the live lifecycle without making network requests or changing balances.
 - `server/quota-lifecycle.mjs`: shared executed lifecycle for release-before-dispatch and settlement recovery.
 - `server/vercel.mjs` and `api/index.mjs`: directly awaited Vercel API handler and authenticated recovery endpoint.
 - `server/admission.mjs`: atomic shared request counters and expiring concurrency leases for serverless instances.
 - `src/components/Tabs.tsx`: shared ARIA tablist with arrow-key, Home/End, and roving-tabindex behavior.
 - `src/components/ProjectArchive.tsx`: searchable full catalog; initial HTML includes every record.
 - `src/entry-server.tsx` and `scripts/prerender.mjs`: build-time rendering and route metadata.
-- `public/projects`: responsive banking/repository landing-page captures and a UGC gallery image from the project's asset directory. The digest preview describes its email format rather than claiming a live inbox capture.
+- `public/projects`: responsive banking/repository landing-page captures and a UGC gallery asset composed into a labelled studio interface study. Its displayed 5-credit image and 10-credit video generation costs come from the source; it is not a captured live account balance. The digest preview describes its email format rather than claiming a live inbox capture.
 - `verification/recruiter-2026-10-15/sources.json`: reviewed flagship commit IDs, paths, and corrections.
 
 Fonts are self-hosted Latin subsets. Images reserve dimensions and load lazily below the fold. The retired Three.js and Framer Motion implementations and dependencies were removed. There is no scroll interception or delayed text reveal. Native scrolling, system reduced motion, and the manual motion control remain supported.
@@ -120,6 +120,12 @@ Earlier verification directories document earlier designs and are retained as hi
 Vercel Web Analytics uses `@vercel/analytics/react`, mounted once in the shared `Portfolio` component. React Router's pathname supplies page views for the homepage, archive and other routes; hash-only chapter navigation does not send another page view. Development uses the SDK's debug mode, and production uses its hosted collection script. The component renders no HTML, preserving pre-rendering and hydration.
 
 Enable Web Analytics in the Vercel project's Analytics panel, then deploy. No additional application environment variable or tracking ID is required. Visit the production site normally to generate real traffic and view visitors/page views in the Vercel dashboard. The integration adds page-view tracking only; contact fields and AI conversations are not sent as custom analytics events.
+
+## Speed Insights
+
+Vercel Speed Insights uses `@vercel/speed-insights/react`, mounted once beside Web Analytics in the shared `Portfolio` component. React Router's pathname identifies the route for performance measurements on the homepage, archive and other routes. The component renders no HTML, preserving pre-rendering and hydration.
+
+Enable Speed Insights in the Vercel project's Speed Insights panel, then deploy the updated application. Visit the deployed site and navigate between pages to collect real performance measurements, then view them in the Vercel dashboard. No additional application environment variable or tracking ID is required. Local build checks do not verify hosted data collection.
 
 ## Dependency and deployment tooling
 

@@ -10,7 +10,7 @@ export async function generateWithQuota({ request, quota, signal, generate }) {
   try {
     signal.throwIfAborted();
     providerDispatched = true;
-    result = await generate();
+    result = await generate(request, { signal });
     actual = usageCost(result.usage, estimate);
     await quota.settle(reservation, actual);
   } catch (error) {

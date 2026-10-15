@@ -1,9 +1,9 @@
 [
   {
     "id": 1,
-    "title": "DevGraph — Repository Discovery & Issue Platform",
+    "title": "DevGraph — Repository Discovery & Issue Indexing Platform",
     "category": "Developer Tools & Document Relations",
-    "overview": "Developer collaboration depends on clear relationships between accounts, repositories, and issues. I built repository discovery and management workflows around Mongoose document references, validated Express controllers, and independently managed discovery and search state.",
+    "overview": "Developer collaboration depends on traversable relationships between accounts, repositories, and issues. Engineered a repository explorer backed by Mongoose document references, Express mutation handlers, and independent personal/discovery feed state.",
     "features": [
       "Personal and suggested repository listings",
       "MongoDB repository ownership and issue relationships",
@@ -11,9 +11,9 @@
       "Client-side repository name filtering and account login"
     ],
     "technologies": ["React", "Node.js", "Express", "MongoDB", "REST API"],
-    "role": "I implemented repository controllers, document relationship queries, account views, and separate personal/discovery feed state.",
-    "challenges": "Preserving ownership and issue relationships across repository mutations while keeping personal and suggested discovery feeds independently manageable.",
-    "impact": "I implemented owner and issue resolution through Mongoose references, validated repository mutations, and local discovery filtering without a request for each keystroke.",
+    "role": "Designed repository relationships and owner/issue population queries, added creation-time name and owner validation, and separated personal repositories from discovery and local search state.",
+    "challenges": "Resolving owner and issue references while keeping repository mutations and independent client feeds inspectable without refetching on each search keystroke.",
+    "impact": "Resolved owner and issue relationships through Mongoose population and filtered loaded repository names locally without a network request per keystroke.",
     "githubUrl": "https://github.com/harshgavandit/GitHub_Replica",
     "demoUrl": "https://github-replica.onrender.com",
     "slug": "github-replica",
@@ -39,9 +39,9 @@
   },
   {
     "id": 3,
-    "title": "LendFlow — Multi-Role Lending Platform",
+    "title": "LendFlow — Multi-Role Lending & Underwriting Platform",
     "category": "FinTech & Lending Workflows",
-    "overview": "Borrower applications, lender review, and administrative oversight need distinct product flows. I built role-oriented lending screens and Express loan handlers backed by Sequelize models with explicit approval states.",
+    "overview": "Lending workflows span borrower origination, lender review, and administrative oversight. Engineered a role-oriented platform with Sequelize borrower/loan relations, decimal principal and interest fields, explicit approval values, and React dashboards.",
     "features": [
       "Borrower, lender, and admin dashboard views",
       "Express loan creation and approve/reject endpoints",
@@ -57,9 +57,9 @@
       "JWT",
       "Chart.js"
     ],
-    "role": "I implemented loan application and approval handlers, relational loan records, and borrower, lender, and administrative product views.",
-    "challenges": "Keeping loan records and role-oriented interfaces consistent across application, approval, rejection, and repayment views.",
-    "impact": "I modeled loan records and approval states in SQL and implemented application, review, and repayment interfaces for three user roles.",
+    "role": "Modeled relational loan records and implemented Express application, lookup, approval, and rejection handlers alongside JWT account authentication and role-oriented React views.",
+    "challenges": "Keeping borrower relations, principal and interest precision, and explicit pending / approved / rejected values consistent across application and review screens.",
+    "impact": "Represented loan principal and interest with DECIMAL fields, linked applications to borrower records, and persisted explicit approval/rejection outcomes for lending and repayment interfaces.",
     "githubUrl": "https://github.com/harshgavandit/Banking_App_SaaS",
     "demoUrl": "https://banking-app-saas.onrender.com/",
     "slug": "banking-saas",
@@ -254,7 +254,7 @@
     "id": 14,
     "title": "UGC Content Studio — AI Media Generation Pipeline",
     "category": "Applied AI & Media Pipeline",
-    "overview": "Marketing teams need product and model variations without repeated manual shoots. I built a multimodal generation workflow spanning authenticated uploads, Google AI image/video requests, Cloudinary media delivery, and Prisma/PostgreSQL project and credit records.",
+    "overview": "Marketing teams need rapid product and model variations without repeated manual shoots. Engineered a multimodal workflow coordinating Clerk-authenticated uploads, Google AI image/video synthesis, Cloudinary CDN delivery, and Prisma/PostgreSQL project and credit records.",
     "features": [
       "Clerk-authenticated image and video generation requests",
       "Google AI generation and Cloudinary image/video storage",
@@ -272,9 +272,9 @@
       "Cloudinary",
       "Google AI"
     ],
-    "role": "I implemented authenticated generation endpoints, provider request lifecycles, media persistence, and credit restoration after generation errors.",
-    "challenges": "Coordinating provider operations, media uploads, and credit updates while retaining generation errors and project status.",
-    "impact": "I implemented project-scoped generation, persisted image/video results, and credit restoration on generation failures across the creator workflow.",
+    "role": "Engineered authenticated generation endpoints, provider-operation polling, Cloudinary persistence, and failure-path credit restoration around account-scoped project records.",
+    "challenges": "Coordinating generation, media uploads, and credit mutations while persisting output URLs, processing flags, and caught provider errors.",
+    "impact": "Persisted generated image/video URLs and project error state in PostgreSQL, with Prisma credit updates and restoration paths for caught generation failures.",
     "githubUrl": "https://github.com/harshgavandit/ugc-project",
     "demoUrl": "https://ugc-project-harsh.vercel.app/",
     "slug": "ugc-platform",
@@ -324,7 +324,7 @@
     "id": 17,
     "title": "AI News Automation — Ingestion-to-Email Pipeline",
     "category": "AI Automation & Delivery Pipelines",
-    "overview": "AI news sources span articles and video transcripts that can be collected repeatedly. I built a Python ingestion-to-digest workflow with source identity checks, local Ollama inference, SQLAlchemy persistence, and multipart SMTP delivery.",
+    "overview": "Repeated article and transcript collection needs stable source identity and inspectable delivery stages. Engineered a Python pipeline with GUID/video-ID checks, local Ollama inference, SQLAlchemy persistence, and multipart SMTP output.",
     "features": [
       "Article and video collection with duplicate checks",
       "Local Ollama / llama3 summarization",
@@ -339,9 +339,9 @@
       "Pydantic",
       "SMTP"
     ],
-    "role": "I implemented source ingestion, duplicate identity checks, local-model summarization, digest repositories, and plaintext/HTML SMTP formatting.",
-    "challenges": "Keeping collection, local inference, persistence, and SMTP delivery separately inspectable when an external dependency fails.",
-    "impact": "I prevented repeat source ingestion through repository identity checks and produced persisted digests with original-source references and plaintext/HTML delivery formats.",
+    "role": "Normalized collected sources into repository records, checked source identity before insertion, isolated local-model generation failures, and produced plaintext/HTML digests with original-source links.",
+    "challenges": "Separating source collection, model failure results, database commits, and SMTP validation so incomplete generation and delivery failures remain distinguishable.",
+    "impact": "Skipped previously stored source identities, persisted source-linked digests, and validated recipient and SMTP configuration before preparing multipart plaintext/HTML delivery.",
     "githubUrl": "https://github.com/harshgavandit/AI_News_To_Email_Generator",
     "slug": "news-automation",
     "aliases": ["AI News-to-Email Digest", "AI News To Email Generator"]

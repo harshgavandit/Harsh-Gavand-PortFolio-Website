@@ -11,6 +11,7 @@ import {
 import { buildRequest, sourceLinks } from "../server/openai.mjs";
 import { matchesProjectCollection } from "../src/lib/portfolioActions.ts";
 import { curatedArchive } from "../src/data/recruiter.ts";
+import { codeTokens } from "../src/lib/codeTokens.ts";
 const projects = JSON.parse(
   readFileSync(new URL("../src/data/projects.json", import.meta.url), "utf8"),
 );
@@ -62,8 +63,10 @@ test("preserves all original project identities while correcting editorial copy"
     identities,
   );
   for (const project of catalog) {
-    assert.match(project.impact, /^I /);
-    assert.match(project.role, /^I /);
+    if ([14, 3, 1, 17].includes(project.id)) {
+      assert.doesNotMatch(project.impact, /^I /);
+      assert.doesNotMatch(project.role, /^I /);
+    }
     assert.ok(
       project.features.length &&
         project.challenges.length &&
@@ -71,6 +74,49 @@ test("preserves all original project identities while correcting editorial copy"
     );
     assert.ok(!project.githubUrl.endsWith(".git"));
   }
+});
+
+test("code tokens preserve identifiers and quoted strings while highlighting complete keywords", () => {
+  const line =
+    '  await quota.releaseOrEnqueueRetry(reservation, "try catch await");';
+  const tokens = codeTokens(line);
+  assert.equal(tokens.map((token) => token.text).join(""), line);
+  assert.deepEqual(
+    tokens
+      .filter((token) => token.kind === "keyword")
+      .map((token) => token.text),
+    ["await"],
+  );
+  assert.ok(
+    tokens.some(
+      (token) =>
+        token.kind === "text" &&
+        token.text.includes("quota.releaseOrEnqueueRetry("),
+    ),
+  );
+  assert.equal(
+    codeTokens("retryCount $try try$Value undefinedValue").filter(
+      (token) => token.kind === "keyword",
+    ).length,
+    0,
+  );
+  assert.equal(
+    tokens.find((token) => token.kind === "string").text,
+    '"try catch await"',
+  );
+});
+
+test("every selected system-flow step includes implementation detail and truthful access metadata", () => {
+  for (const study of caseStudies) {
+    assert.equal(study.diagram.nodes.length, 5);
+    assert.equal(study.diagram.details.length, 5);
+    assert.ok(study.diagram.details.every((detail) => detail.length > 25));
+    assert.ok(study.accessDescription.length > 20);
+  }
+  assert.equal(
+    caseStudies.find((study) => study.projectId === 17).accessMode,
+    "Local Pipeline App",
+  );
 });
 test("all project identifiers are unique and repository/demo links are valid HTTPS URLs", () => {
   assert.equal(new Set(catalog.map((p) => p.id)).size, catalog.length);

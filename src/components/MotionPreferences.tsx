@@ -61,11 +61,11 @@ export function useMotionEnabled() {
   return useContext(MotionPreferences).enabled;
 }
 
-export function MotionToggle() {
+export function MotionToggle({ className = "" }: { className?: string }) {
   const { enabled, systemReduced, toggle } = useContext(MotionPreferences);
   return (
     <button
-      className="motion-toggle"
+      className={`motion-toggle ${className}`.trim()}
       type="button"
       onClick={toggle}
       disabled={systemReduced}

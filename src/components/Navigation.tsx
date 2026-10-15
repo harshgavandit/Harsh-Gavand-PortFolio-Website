@@ -118,9 +118,7 @@ export function Navigation() {
             ))}
           </nav>
           <div className="header-actions">
-            <div className="header-motion">
-              <MotionToggle />
-            </div>
+            <MotionToggle className="header-motion" />
             <button
               className="header-ask"
               onClick={ask}

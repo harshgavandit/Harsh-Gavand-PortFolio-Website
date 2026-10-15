@@ -445,17 +445,53 @@ test("product imagery is the default case tab and public fragment URLs are seman
     /Mumbai, India · Open to Full-Stack, Backend &amp; AI Engineering Roles \(Remote \/ Relocation\)/,
   );
 });
-test("request trace has success and rollback scenarios with explicit simulation disclosure", () => {
+test("the header, hero lists and code preview contain meaningful accessible content", () => {
+  const header = html.match(
+    /<header class="site-header">([\s\S]*?)<\/header>/,
+  )[1];
+  assert.doesNotMatch(header, /<div\b[^>]*>\s*<\/div>/);
+  assert.doesNotMatch(html, /<li\b[^>]*>\s*<\/li>/);
+  assert.match(header, /<span>05<\/span>Contact/);
+  assert.match(html, /href="#projects"[^>]*>Explore selected work/);
+  assert.match(html, /href="#contact"[^>]*>Get in touch/);
+  assert.match(html, /quota\.releaseOrEnqueueRetry\(/);
+});
+
+test("request trace starts complete and exposes accounting-safe scenario controls", () => {
   assert.match(html, /Request Trace/);
-  assert.match(html, /No API call/);
-  assert.match(html, /Simulate Upstream Timeout/);
+  assert.match(html, /Happy Path \(618ms\)/);
+  assert.match(html, /Pre-dispatch Abort \(Rollback\)/);
+  assert.match(html, /Upstream Timeout \(Retained\)/);
+  assert.doesNotMatch(html, /Waiting for trace|No API call|Gemini scenario/);
   assert.equal(
     traceStage("success", 3).message,
-    "Settled 112 actual tokens; refunded 28 tokens",
+    "Settled 112 actual tokens · refunded 28",
   );
   assert.equal(traceStage("timeout", 2).failed, true);
   assert.equal(
     traceStage("timeout", 3).message,
-    "Rollback: 140 tokens restored to user balance",
+    "Unknown usage · reservation retained for reconciliation",
   );
+  assert.equal(
+    traceStage("rollback", 3).message,
+    "Rollback executed · 140 tokens restored",
+  );
+});
+
+test("UGC preview shows a composite studio with inputs, media output and sourced credit costs", () => {
+  const preview = html.match(
+    /id="case-ugc-platform-panel-0"[^>]*>([\s\S]*?)id="case-ugc-platform-panel-1"/,
+  )[1];
+  for (const label of [
+    "Workspace: Brand Shoot #14",
+    "Status: Completed",
+    "Credits: 5 / image · 10 / video",
+    "Input 01 / Product reference",
+    "Input 02 / Model conditioning",
+    "Output / Cloudinary CDN",
+  ])
+    assert.ok(preview.includes(label), label);
+  assert.match(preview, /ugc-gallery-640\.webp/);
+  assert.match(preview, /Interface reconstruction/);
+  assert.doesNotMatch(preview, /Atomic Lock Settled|1080p/);
 });

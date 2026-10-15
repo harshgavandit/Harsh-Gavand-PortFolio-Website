@@ -68,6 +68,22 @@ test("successful generation reconciles actual usage exactly once", async () => {
   assert.equal((await f.run()).answer, "Answer");
   assert.deepEqual(f.events, ["reserve", "generate", ["settle", 30]]);
 });
+
+test("generation receives the reserved request and the same live abort signal", async () => {
+  const f = fixture();
+  let received;
+  await f.run({
+    generate: async (passedRequest, options) => {
+      received = { passedRequest, options };
+      return {
+        answer: "Answer",
+        usage: { input_tokens: 10, output_tokens: 5 },
+      };
+    },
+  });
+  assert.equal(received.passedRequest, request);
+  assert.equal(received.options?.signal, f.controller.signal);
+});
 test("provider timeout keeps potentially billable usage reserved and is not retried", async () => {
   const f = fixture();
   let calls = 0;

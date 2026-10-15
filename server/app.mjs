@@ -185,7 +185,8 @@ export function createApplication(config) {
           request,
           quota,
           signal: controller.signal,
-          generate: () => generate(messages, controller.signal, request),
+          generate: (reservedRequest, { signal }) =>
+            generate(messages, signal, reservedRequest),
         });
         if (typeof result.answer !== "string" || !result.answer.trim())
           throw new Error("Invalid response");

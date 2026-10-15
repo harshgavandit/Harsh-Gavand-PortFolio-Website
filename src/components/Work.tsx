@@ -73,27 +73,58 @@ function ProductPreview({
             alt={study.imageAlt}
           />
         ) : project.id === 14 ? (
-          <div className="generation-preview">
-            <img
-              src="/projects/ugc-gallery-640.webp"
-              srcSet="/projects/ugc-gallery-320.webp 320w, /projects/ugc-gallery-640.webp 640w"
-              sizes="(min-width:1000px) 220px, 45vw"
-              width={640}
-              height={1147}
-              loading="lazy"
-              alt="UGC project gallery image of a model with a suitcase"
-            />
-            <div>
-              <span className="eyebrow">Project gallery</span>
-              <h4>From assets to marketing content.</h4>
-              <p>
-                Image example from the UGC application’s gallery. Upload product
-                and model references to create a generation.
-              </p>
-              <span className="gallery-format">
-                Image generation → video generation
+          <div
+            className="studio-workspace"
+            aria-label="Illustrative UGC studio workspace"
+          >
+            <div className="studio-pipeline-header">
+              <span className="eyebrow">
+                Studio workspace / interface study
               </span>
+              <h4>Workspace: Brand Shoot #14</h4>
+              <div className="studio-workspace-status">
+                <span>
+                  <i aria-hidden="true" />
+                  Status: Completed
+                </span>
+                <span>Credits: 5 / image · 10 / video</span>
+              </div>
             </div>
+            <div className="generation-preview">
+              <img
+                src="/projects/ugc-gallery-640.webp"
+                srcSet="/projects/ugc-gallery-320.webp 320w, /projects/ugc-gallery-640.webp 640w"
+                sizes="(min-width:1000px) 200px, (min-width:520px) 35vw, 75vw"
+                width={640}
+                height={1147}
+                loading="lazy"
+                alt="UGC project gallery image of a model with a suitcase"
+              />
+              <div>
+                <span className="eyebrow">Generation pipeline</span>
+                <dl className="studio-io">
+                  <div>
+                    <dt>Input 01 / Product reference</dt>
+                    <dd>Suitcase asset + product description</dd>
+                  </div>
+                  <div>
+                    <dt>Input 02 / Model conditioning</dt>
+                    <dd>Model reference image + generation prompt</dd>
+                  </div>
+                  <div>
+                    <dt>Output / Cloudinary CDN</dt>
+                    <dd>Generated image + short video asset</dd>
+                  </div>
+                </dl>
+                <p className="studio-state">
+                  Clerk identity → Google AI → persisted media URLs
+                </p>
+              </div>
+            </div>
+            <p className="studio-caption">
+              Interface reconstruction using the project’s gallery asset. Credit
+              values show configured generation costs.
+            </p>
           </div>
         ) : (
           <div className="email-preview">
@@ -169,11 +200,9 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
               Live demo
             </ActionLink>
           )}
-          {project.demoUrl && (
-            <span className="demo-access" title={study.previewNote}>
-              {study.accessMode}
-            </span>
-          )}
+          <span className="demo-access" title={study.accessDescription}>
+            {study.accessMode}
+          </span>
           <ActionLink
             href={project.githubUrl}
             primary={!project.demoUrl}
@@ -216,7 +245,10 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
                       {study.diagram!.nodes.map((node, i) => (
                         <li key={node}>
                           <span>{String(i + 1).padStart(2, "0")}</span>
-                          <strong>{node}</strong>
+                          <div>
+                            <strong>{node}</strong>
+                            <small>{study.diagram!.details[i]}</small>
+                          </div>
                           {i < study.diagram!.nodes.length - 1 && (
                             <ArrowDown size={15} aria-hidden="true" />
                           )}

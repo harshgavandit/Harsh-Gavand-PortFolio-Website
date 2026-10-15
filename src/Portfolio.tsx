@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 import { semanticFragment } from "./lib/projectNavigation";
 import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
@@ -72,6 +73,7 @@ export default function Portfolio({
         route={pathname}
         path={pathname}
       />
+      <SpeedInsights route={pathname} />
     </MotionPreferencesProvider>
   );
 }
