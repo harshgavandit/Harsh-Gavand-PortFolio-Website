@@ -463,6 +463,48 @@ export function MoreWork() {
           </div>
         )}
       </details>
+      <details className="project-directory">
+        <summary>
+          <span>Complete project directory</span>
+          <span>{projects.length} projects · readable without JavaScript</span>
+        </summary>
+        <p className="project-directory-intro">
+          Every published project, with its stack, contribution, and
+          implementation notes.
+        </p>
+        <ol className="project-directory-list">
+          {projects.map((project) => (
+            <li key={project.id} data-project-id={project.id}>
+              <article>
+                <span className="eyebrow">{project.category}</span>
+                <h3>{project.title}</h3>
+                <p>{project.overview}</p>
+                <Tags items={project.technologies} />
+                <div className="archive-links">
+                  <a
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Source code for {project.title}{" "}
+                    <ArrowUpRight size={15} aria-hidden="true" />
+                  </a>
+                  {project.demoUrl && (
+                    <a
+                      href={project.demoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Live demo <ArrowUpRight size={15} aria-hidden="true" />
+                    </a>
+                  )}
+                </div>
+                <ProjectDetails project={project} />
+              </article>
+            </li>
+          ))}
+        </ol>
+      </details>
     </section>
   );
 }

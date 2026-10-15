@@ -165,13 +165,13 @@ export function Contact() {
   );
 }
 
-export function Footer() {
+export function Footer({ year }: { year: number }) {
   return (
     <footer className="section-container site-footer">
       <a href="#hero" className="footer-brand">
         Harsh Gavand<span>Full-Stack & AI Engineer</span>
       </a>
-      <p>© {new Date().getFullYear()} · Built by Harsh Gavand</p>
+      <p>© {year} · Built by Harsh Gavand</p>
       <a href="#hero" className="footer-top">
         Back to top <ArrowUpRight size={16} aria-hidden="true" />
       </a>

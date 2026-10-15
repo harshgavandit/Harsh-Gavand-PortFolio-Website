@@ -39,7 +39,7 @@ export const profile = {
   resume: "/Harsh_Gavand_Resume.pdf",
   github: "https://github.com/harshgavandit",
   linkedin: "https://www.linkedin.com/in/harsh-gavand",
-  site: "https://harsh-gavand-portfolio-website.onrender.com",
+  site: "https://harsh-gavand-portfolio-website-ai.onrender.com",
 };
 
 export const latestAIProjects: Project[] = recentSourceProjects;

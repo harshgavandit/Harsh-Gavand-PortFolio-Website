@@ -1,5 +1,5 @@
 import { LazyMotion, domAnimation } from "framer-motion";
-import { BrowserRouter, Route, Routes, Link } from "react-router-dom";
+import { Route, Routes, Link } from "react-router-dom";
 import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
 import { FeaturedWork, MoreWork } from "./components/Work";
@@ -12,7 +12,7 @@ import { EngineeringBridge } from "./components/EngineeringBridge";
 import { PortfolioIntelligence } from "./components/PortfolioIntelligence";
 import { SpatialAtmosphere } from "./components/SpatialAtmosphere";
 
-function Home() {
+function Home({ year }: { year: number }) {
   return (
     <>
       <a className="skip-link" href="#main">
@@ -37,7 +37,7 @@ function Home() {
         <PortfolioIntelligence />
         <Contact />
       </main>
-      <Footer />
+      <Footer year={year} />
       <Assistant />
     </>
   );
@@ -60,16 +60,18 @@ function NotFound() {
   );
 }
 
-export default function Portfolio() {
+export default function Portfolio({
+  year = new Date().getFullYear(),
+}: {
+  year?: number;
+}) {
   return (
     <LazyMotion features={domAnimation} strict>
       <MotionPreferencesProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home year={year} />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </MotionPreferencesProvider>
     </LazyMotion>
   );

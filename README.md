@@ -2,6 +2,8 @@
 
 React + TypeScript portfolio with the Signal Studio graphite, ivory, and citrus design, a custom kinetic Three.js sculpture, four curated project exhibits, a searchable 38-project index, and an OpenAI GPT-6 Luna portfolio assistant. Includes an engineering profile, experience timeline, project-linked skills, workflow, and contact draft preparation.
 
+Production builds pre-render the React page into `dist/index.html`, including every section and a complete native HTML directory of all 38 projects. The client hydrates that markup to add search, filters, 3D, animation, and the assistant. The readable project directory, source links, contact links, and résumé remain available without JavaScript. Live origin: [harsh-gavand-portfolio-website-ai.onrender.com](https://harsh-gavand-portfolio-website-ai.onrender.com/).
+
 The current presentation leads with “Engineering what’s next,” an original kinetic frame sculpture, and four asymmetric project exhibits. Experience follows selected work directly. The archive opens on a Latest AI collection of 12 public projects pushed on 14 October 2026, with filters for all 34 additional builds. The full six-step process and supplemental product-layer study use native disclosures. Each exhibit reveals its full case study, contribution walkthrough, implementation details, and source links. The engineering index is available through a disclosure, retaining category filters, search, Overview / Architecture / Engineering tabs, selectable nodes, and project-specific assistant prompts. Skill evidence links automatically open the index and select the relevant project; direct project fragments open the matching case study. Shared design tokens and established component styles live in `src/observatory.css`; `src/signal.css` owns the current compositions and responsive refinements. See [current Signal Studio verification](verification/signal-2026-10-15/README.md) and [recent GitHub project sources](verification/github-projects-2026-10-15/sources.json). Earlier visual reports describe earlier versions.
 
 ## Development
@@ -51,9 +53,12 @@ npm run lint
 npm run type-check
 npm test
 npm run build
+npm run test:prerender
 ```
 
 Tests cover preservation of the original catalog/assets/SEO plus assistant input validation, origins, limits, trusted context, source mapping, and provider failure handling. The local HTTP tests need loopback networking. Current OpenAI migration evidence is recorded in `verification/openai-2026-10-13/README.md`; prior Gemini evidence is historical.
+
+`npm run build` automatically runs `postbuild`: Vite builds a temporary server entry, React renders the shared components at build time, and the script injects them into the client HTML. No headless browser download, paid API call, secret, or live provider is needed. Build-time checks reject an empty root or incomplete project content. `npm run test:prerender` runs code and local HTTP checks against the built output: all project content, crawler user agents, every HTML/CSS asset reference, JavaScript syntax and chunk serving, document IDs and anchors, consistent SEO metadata, and pre-rendered 404 handling. Run it after building. Build-only server files remain in ignored `dist-ssr`, outside the public `dist` directory.
 
 ## Content and assets
 
@@ -61,6 +66,7 @@ Tests cover preservation of the original catalog/assets/SEO plus assistant input
 - `src/data/recentProjects.json`: 12 AI projects added from public repositories pushed within the reviewed 48-hour window. Includes agent workflows, two distinct symposium RAG variants, MCP, voice, support, and hybrid retrieval projects. Entries link to source repositories; no unverified demo URLs or performance metrics are added.
 - `verification/github-projects-2026-10-15/sources.json`: review window, GitHub push timestamps, exact reviewed commits, README references, and inspected implementation paths. The adapted AWS demo retains upstream attribution.
 - `src/data/portfolio.ts`: typed case studies and shared public profile content. Personal details come from the updated September 2026 resume.
+- `src/entry-server.tsx` and `scripts/prerender.mjs`: build-time HTML rendering using the same React components and data as the hydrated client.
 - `public/Harsh_Gavand_Resume.pdf`: exact supplied updated resume. All resume links use this stable URL.
 - `public/projects`: actual captured public demo pages in responsive WebP sizes. Other visuals are labeled implementation maps, not screenshots.
 - `src/observatory.css`: shared tokens, component foundations, responsive chat, focus styles, and motion behavior.
@@ -85,7 +91,9 @@ For the complete portfolio **including the assistant**, use a Node web service:
 - Let the host provide `PORT`. For a Render service behind its single trusted reverse proxy, set `TRUST_PROXY=1`; leave it `0` when directly exposing Node.
 - Health endpoint: `/api/health`. It reports model, allowance limits, and configuration presence. Presence alone does not verify Redis connectivity or OpenAI generation quota; a successful chat request verifies the full path.
 
-The Node service serves `dist`, assets, résumé, API routes, and the SPA fallback. A static-only host cannot run `/api/chat`; the existing Render Static Site configuration must become a web service or use a separately configured backend. No hosting account changes are performed by this implementation. Keep the published origin aligned with canonical/social/sitemap metadata if changing the URL.
+The Node service serves pre-rendered `dist/index.html`, assets, résumé, and API routes. Unknown pages receive a pre-rendered 404 with HTTP 404 and `noindex`; `/index.html` redirects to `/`. A static-only host can serve the generated page but cannot run `/api/chat`. The existing Render Node service uses `npm ci --include=dev && npm run build`, starts with `npm run start`, and auto-deploys `main` on commit. Its build lifecycle already invokes pre-rendering; no Render setting change is required.
+
+Metadata defaults to the current public hostname. An optional build-time `SITE_URL` overrides the canonical origin, otherwise Render's `RENDER_EXTERNAL_URL` is used when present. Pre-rendering applies the origin consistently to canonical, Open Graph, Twitter, JSON-LD, robots, and sitemap output. Only an HTTPS origin is accepted. For a custom domain, set `SITE_URL` to that origin before building. Development continues to use `createRoot`; generated production pages use `hydrateRoot`, including a shared build year to prevent footer mismatches across a year boundary.
 
 For a local built preview, run `npm run build` then `npm start`, and use `http://127.0.0.1:3001`. Add that origin to `ALLOWED_ORIGINS`. The integrated `npm run dev` setup uses the development origins from your `.env`.
 

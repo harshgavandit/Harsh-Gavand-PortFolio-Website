@@ -213,6 +213,12 @@ export function createServer(config) {
       return json(res, 404, { error: "Not found." });
     if (!["GET", "HEAD"].includes(req.method))
       return json(res, 405, { error: "Method not allowed." });
+    if (pathname === "/index.html") {
+      res.writeHead(308, {
+        Location: "/" + new URL(req.url, "http://localhost").search,
+      });
+      return res.end();
+    }
     try {
       const file = resolve(dist, "." + pathname);
       if (!file.startsWith(dist + sep) && file !== dist)
@@ -220,15 +226,19 @@ export function createServer(config) {
       if (pathname.split("/").some((part) => part.startsWith(".")))
         return json(res, 404, { error: "Not found." });
       let target = file;
+      let status = pathname === "/404.html" ? 404 : 200;
+      const fallback = () => {
+        status = pathname === "/" ? 200 : 404;
+        return resolve(dist, status === 200 ? "index.html" : "404.html");
+      };
       try {
-        if (!(await stat(target)).isFile())
-          target = resolve(dist, "index.html");
+        if (!(await stat(target)).isFile()) target = fallback();
       } catch {
         if (extname(pathname)) return json(res, 404, { error: "Not found." });
-        target = resolve(dist, "index.html");
+        target = fallback();
       }
       const data = await readFile(target);
-      res.writeHead(200, {
+      res.writeHead(status, {
         "Content-Type": mime[extname(target)] || "application/octet-stream",
         "Cache-Control": pathname.startsWith("/assets/")
           ? "public, max-age=31536000, immutable"

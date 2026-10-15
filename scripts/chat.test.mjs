@@ -133,7 +133,7 @@ test("missing configuration is explicit and does not pretend to generate", async
   assert.equal(calls.length, 0);
 });
 
-test("production serving supports assets and SPA paths while hiding source and env files", async (t) => {
+test("production serving supports assets and a real 404 while hiding source and env files", async (t) => {
   const directory = await mkdtemp(join(tmpdir(), "portfolio-static-test-"));
   await writeFile(
     join(directory, "index.html"),
@@ -143,18 +143,26 @@ test("production serving supports assets and SPA paths while hiding source and e
     join(directory, "Harsh_Gavand_Resume.pdf"),
     "%PDF-test-fixture",
   );
+  await writeFile(
+    join(directory, "404.html"),
+    "<!doctype html><title>Not found</title>",
+  );
   t.after(async () => {
     await unlink(join(directory, "index.html"));
     await unlink(join(directory, "Harsh_Gavand_Resume.pdf"));
+    await unlink(join(directory, "404.html"));
     await rmdir(directory);
   });
   const { origin } = await fixture(t, { staticDirectory: directory });
-  for (const path of ["/", "/a-page-that-does-not-exist"]) {
+  for (const path of ["/"]) {
     const response = await fetch(origin + path);
     assert.equal(response.status, 200);
     assert.match(response.headers.get("content-type"), /text\/html/);
     assert.match(await response.text(), /Harsh Gavand/);
   }
+  const missingPage = await fetch(origin + "/a-page-that-does-not-exist");
+  assert.equal(missingPage.status, 404);
+  assert.match(await missingPage.text(), /Not found/);
   const pdf = await fetch(origin + "/Harsh_Gavand_Resume.pdf");
   assert.equal(pdf.status, 200);
   assert.equal(pdf.headers.get("content-type"), "application/pdf");
