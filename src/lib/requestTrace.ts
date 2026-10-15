@@ -18,15 +18,15 @@ export const traceScenarios: {
   },
   {
     mode: "rollback",
-    label: "Pre-dispatch Abort (Rollback)",
+    label: "Pre-Dispatch Abort (29ms)",
     status:
-      "Failure handled: reservation released via releaseOrEnqueueRetry before dispatch — 0 provider tokens billed.",
+      "Aborted pre-dispatch: 0 tokens billed, 140 reserved tokens restored immediately.",
   },
   {
     mode: "timeout",
-    label: "Upstream Timeout (Retained)",
+    label: "Upstream Timeout & Recovery (1,240ms)",
     status:
-      "Timeout handled: usage is unknown; the reservation stays held for reconciliation.",
+      "Upstream error caught: usage is unknown; the reservation remains held. Known-usage settlement failures enter the idempotent retry worker.",
   },
 ];
 export function traceStage(mode: TraceMode, index: number) {
@@ -38,27 +38,38 @@ export function traceStage(mode: TraceMode, index: number) {
   ];
   if (mode === "rollback" && index === 2)
     return {
-      message: "Client aborted before provider dispatch",
-      timing: "0ms (ABORT)",
+      title: "Abort Signal",
+      message: "Client disconnected before provider dispatch",
+      timing: "0ms",
       failed: true,
     };
   if (mode === "rollback" && index === 3)
     return {
-      message: "Rollback executed · 140 tokens restored",
-      timing: "7ms",
+      title: "Instant Rollback",
+      message: "Released full 140-token reservation atomically",
+      timing: "0ms",
+      failed: false,
+    };
+  if (mode === "timeout" && index < 2)
+    return {
+      ...success[index],
+      title: traceStages[index],
+      timing: index === 0 ? "12ms" : "19ms",
       failed: false,
     };
   if (mode === "timeout" && index === 2)
     return {
-      message: "Provider timeout / stream aborted",
-      timing: "5000ms (ERR)",
+      title: "Provider Dispatch",
+      message: "Upstream timeout after stream initiation",
+      timing: "1,200ms",
       failed: true,
     };
   if (mode === "timeout" && index === 3)
     return {
       message: "Unknown usage · reservation retained for reconciliation",
-      timing: "Conservative hold",
+      title: "Reconciliation Guard",
+      timing: "9ms",
       failed: false,
     };
-  return { ...success[index], failed: false };
+  return { ...success[index], title: traceStages[index], failed: false };
 }

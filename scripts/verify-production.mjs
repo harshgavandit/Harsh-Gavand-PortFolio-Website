@@ -78,6 +78,16 @@ assert.equal(
 );
 for (const page of [home, archive])
   assert.doesNotMatch(page, /Harsh_Gavand_Resume\.pdf/i);
+const resume = await request(profile.resume);
+assert.equal(resume.status, 200);
+assert.match(resume.headers.get("content-type"), /application\/pdf/);
+const resumeBody = Buffer.from(await resume.arrayBuffer());
+assert.match(resumeBody.subarray(0, 8).toString(), /^%PDF-1\./);
+assert.ok(
+  resumeBody.equals(
+    await readFile(new URL("../public/resume.pdf", import.meta.url)),
+  ),
+);
 const health = await request("/api/health");
 assert.equal(health.status, 200);
 const healthInfo = await health.json();
@@ -110,6 +120,7 @@ const report = {
   googlebotHTMLMatches: true,
   unknownPageStatus: 404,
   removedDocumentStatus: 404,
+  resumeStatus: 200,
   apiHealthStatus: 200,
   apiRuntime: healthInfo.runtime,
   assistantConfigured: healthInfo.assistantConfigured,

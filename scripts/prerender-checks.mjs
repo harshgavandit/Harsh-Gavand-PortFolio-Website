@@ -46,6 +46,10 @@ export function assertHomepage(html, origin = profile.site) {
   assert.ok(html.includes('id="contact"'), "Missing contact content");
   assert.ok(html.includes(profile.email), "Missing public contact email");
   assert.ok(
+    html.includes(`href="${profile.resume}"`),
+    "Missing resume PDF access",
+  );
+  assert.ok(
     !/href=["'][^"']*Harsh_Gavand_Resume\.pdf/i.test(html),
     "Removed personal document link must not be published",
   );

@@ -39,7 +39,7 @@ export function RequestTrace() {
             <li key={stage} data-state={detail.failed ? "failed" : "done"}>
               <div className="trace-stage-label">
                 <span>
-                  0{index + 1} / {stage}
+                  0{index + 1} / {detail.title}
                 </span>
                 {detail.failed ? (
                   <TriangleAlert size={14} aria-hidden="true" />
@@ -64,7 +64,8 @@ export function RequestTrace() {
       <p className="trace-disclosure">
         Deterministic state-machine trace with illustrative token values:
         completion settles actual usage, pre-dispatch failures roll back, and
-        uncertain upstream usage remains reserved.
+        uncertain upstream usage remains reserved. Known-usage settlement
+        failures use durable retries with dead-letter handling.
       </p>
     </div>
   );

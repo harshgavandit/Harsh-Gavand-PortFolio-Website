@@ -36,6 +36,7 @@ export interface CaseStudy {
     title: string;
     nodes: string[];
     details: string[];
+    contracts: string[];
     caption: string;
     chapterNodes: number[][];
   };
@@ -49,6 +50,7 @@ export const profile = {
   github: "https://github.com/harshgavandit",
   linkedin: "https://www.linkedin.com/in/harsh-gavand",
   site: "https://harshgavand.dev",
+  resume: "/resume.pdf",
 };
 
 export const latestAIProjects: Project[] = recentSourceProjects;
@@ -84,11 +86,11 @@ export const caseStudies: CaseStudy[] = [
     shortName: "UGC Content Studio — AI Media Generation Pipeline",
     problem: "From product assets to generated marketing content.",
     summary:
-      "Marketing teams need rapid product and model variations without repeated manual shoots. Engineered an end-to-end media workflow coordinating Clerk-authenticated uploads, Google AI image/video synthesis, Cloudinary CDN delivery, and PostgreSQL project and credit records.",
+      "Automated media pipeline that combines product and model references into campaign images and short videos through Google AI and Cloudinary CDN.",
     engineering: [
-      "Bound project queries to Clerk user identity through Prisma ownership predicates, keeping account and generation records related in PostgreSQL.",
-      "Coordinated Google AI generation, provider-operation polling, and Cloudinary uploads with persisted isGenerating, output URL, and error fields.",
-      "Used Prisma credit increment/decrement operations and failure-path restoration for caught generation errors, preserving project error state for the interface.",
+      "Multimodal orchestration: Chained image synthesis and long-running video-operation polling, persisting processing state, media URLs, and failure diagnostics in PostgreSQL.",
+      "Credit accounting & failure recovery: Applied Prisma credit mutations and restoration paths for caught generation failures, retaining project errors for recovery in the interface.",
+      "Identity-scoped media pipeline: Bound project access to Clerk identity while coordinating multipart reference uploads and generated-media persistence through Cloudinary.",
     ],
     contributions: [
       {
@@ -124,6 +126,13 @@ export const caseStudies: CaseStudy[] = [
         "Uploaded reference assets and generated media URLs",
         "User/project relations, integer credits, and persisted error state",
       ],
+      contracts: [
+        "Product/model references + prompt → generation request",
+        "Clerk identity + project identifier → account-scoped project",
+        "Reference media + prompt → image / video operation",
+        "Media upload → stored delivery URL",
+        "Generation result → credits, media URL, processing/error state",
+      ],
       chapterNodes: [[0], [1, 2], [3, 4]],
       caption:
         "Authenticated generation requests with media storage and relational project state.",
@@ -140,11 +149,11 @@ export const caseStudies: CaseStudy[] = [
     shortName: "LendFlow — Multi-Role Lending & Underwriting Platform",
     problem: "One loan lifecycle. Three product perspectives.",
     summary:
-      "Lending workflows span borrower origination, lender review, and administrative oversight. Engineered a role-oriented platform with relational borrower/loan records, decimal principal and interest fields, explicit review states, and React dashboards.",
+      "Loan origination, underwriting review, and repayment interfaces organized around borrower, lender, and administrator workflows. Shared loan records keep review outcomes visible across the product.",
     engineering: [
-      "Modeled borrower foreign keys, DECIMAL(10,2) principal, DECIMAL(5,2) interest, and pending / approved / rejected loan status values in Sequelize.",
-      "Implemented JWT account authentication and Express application, lookup, approval, and rejection handlers with missing-record responses.",
-      "Structured borrower, lender, and admin interfaces around application, repayment, and review data, with Chart.js visualizations for financial context.",
+      "Explicit underwriting state: Persisted pending, approved, and rejected decisions through a shared loan model so review interfaces read the same lifecycle values.",
+      "Financial data modeling: Used fixed-point principal and interest storage with relational borrower records, keeping financial inputs distinct from presentation and review state.",
+      "Role-oriented product architecture: Organized borrower, lender, and administrator React views around JWT-authenticated accounts, review queues, repayments, and Chart.js visualizations.",
     ],
     contributions: [
       {
@@ -184,6 +193,13 @@ export const caseStudies: CaseStudy[] = [
         "Borrower foreign keys, decimal principal/rate fields, and timestamps",
         "Repayment interfaces and Chart.js data presentation",
       ],
+      contracts: [
+        "Application / review input → loan or dashboard request",
+        "Authenticated account request → loan controller",
+        "Loan identifier + decision → persisted review status",
+        "Borrower relationship + financial inputs → loan record",
+        "Loan / repayment records → financial interface state",
+      ],
       chapterNodes: [[0], [1, 2], [3, 4]],
       caption:
         "Role-oriented lending interfaces backed by Express controllers and Sequelize models.",
@@ -191,8 +207,6 @@ export const caseStudies: CaseStudy[] = [
     accessMode: "Live Multi-Role App",
     accessDescription:
       "Public landing page with authenticated, role-oriented lending dashboards",
-    hostingNote:
-      "Render-hosted deployment; the first load can take longer while the service wakes.",
     takeaway:
       "Relational loan records, explicit approval values, and role-oriented lending and repayment workflows.",
     recovery:
@@ -203,11 +217,11 @@ export const caseStudies: CaseStudy[] = [
     shortName: "DevGraph — Repository Discovery & Issue Indexing Platform",
     problem: "Make repository and developer data navigable.",
     summary:
-      "Developer collaboration depends on traversable relationships between accounts, repositories, and issues. Engineered a repository explorer backed by Mongoose document references, Express mutation handlers, and independent personal/discovery feed state.",
+      "Repository discovery and issue exploration built around connected developer, repository, and issue records. Independent personal and discovery workspaces keep search responsive without a request per keystroke.",
     engineering: [
-      "Modeled User, Repository, and Issue references in Mongoose, using owner and issue population in repository queries to resolve related documents.",
-      "Validated required repository names and owner ObjectIds during creation; separated lookup, content updates, visibility toggles, and deletion into Express controllers.",
-      "Separated personal and suggested repository feeds from the local search query so filtering does not trigger a network round-trip per keystroke.",
+      "Document graph resolution: Linked users, repositories, and issues through Mongoose references and targeted population to assemble related repository context.",
+      "Independent discovery state: Separated personal and suggested feeds from local search state, filtering loaded results without redundant network polling.",
+      "Bounded mutation contracts: Separated repository and visibility operations into Express controllers, validating required names and owner identifiers during creation.",
     ],
     contributions: [
       {
@@ -246,6 +260,13 @@ export const caseStudies: CaseStudy[] = [
         "Mongoose references and owner/issue document population",
         "Resolved repository records and developer account screens",
       ],
+      contracts: [
+        "Loaded feed + search query → filtered repository names",
+        "Repository action → dedicated REST handler",
+        "Creation name + owner identifier → validated input",
+        "Repository document → populated owner / issue references",
+        "Resolved records → personal or discovery workspace",
+      ],
       chapterNodes: [[0], [1, 2], [3, 4]],
       caption:
         "Express repository routes and MongoDB relationships support client-side discovery and filtering.",
@@ -253,8 +274,6 @@ export const caseStudies: CaseStudy[] = [
     accessMode: "Live Explorer App",
     accessDescription:
       "Live repository and issue discovery platform with account access",
-    hostingNote:
-      "Render-hosted deployment; the first load can take longer while the service wakes.",
     takeaway:
       "Validated repository mutations, document relationships, and independent client discovery state.",
     recovery:
@@ -265,11 +284,11 @@ export const caseStudies: CaseStudy[] = [
     shortName: "AI News Automation — Ingestion-to-Email Pipeline",
     problem: "Turn collected sources into a readable digest.",
     summary:
-      "Repeated article and transcript collection needs stable source identity and inspectable delivery stages. Engineered a Python ingestion-to-digest pipeline with GUID/video-ID checks, local Ollama inference, SQLAlchemy persistence, and multipart SMTP output.",
+      "Automated source-to-email pipeline that turns AI articles and video transcripts into source-linked digests. Collection, local inference, persistence, and SMTP delivery remain independently inspectable.",
     engineering: [
-      "Normalized articles and videos into SQLAlchemy records, checking GUIDs and video IDs before insertion to skip sources already stored.",
-      "Separated collection, local Ollama summarization, digest persistence, and email formatting; model failures return an explicit missing result instead of fabricated content.",
-      "Validated recipient and SMTP configuration before delivery and generated multipart text/plain and text/html digests with original-source links.",
+      "Duplicate-aware ingestion: Normalized article and video records behind SQLAlchemy repositories, checking GUIDs and video IDs to skip previously collected sources.",
+      "Fault-isolated inference: Separated collection, Ollama summarization, and digest persistence; generation failures return an explicit missing result instead of fabricated content.",
+      "Validated delivery boundary: Checked recipients and SMTP configuration before dispatch, producing multipart plaintext and HTML digests with original-source references.",
     ],
     contributions: [
       {
@@ -306,6 +325,13 @@ export const caseStudies: CaseStudy[] = [
         "Normalized source records, digest storage, and repository commits",
         "Validated recipients/credentials and plaintext plus HTML output",
       ],
+      contracts: [
+        "Article / transcript → source title, URL, date, content",
+        "GUID or video ID → existing-source lookup",
+        "Collected source text → digest or explicit missing result",
+        "Source-linked digest → committed relational record",
+        "Validated recipient + digest → multipart SMTP message",
+      ],
       chapterNodes: [[0, 1, 2], [3], [4]],
       caption:
         "Source collection, local inference, relational persistence, and multipart email delivery.",
@@ -341,10 +367,10 @@ export const experience = [
       "CI/CD",
     ],
     points: [
-      "Engineered Django and React business workflows across relational models, REST contracts, interface state, and deployment, delivering features across the complete application lifecycle.",
-      "Developed Python and JavaScript APIs, asynchronous tasks, and third-party integrations to move long-running service work into explicit backend workflows.",
-      "Designed relational schemas and reusable SQL reporting queries to keep operational records consistent across application screens and reports.",
-      "Reviewed shared changes against coding standards and reusable implementation patterns, keeping collaborative delivery maintainable across frontend and backend boundaries.",
+      "Delivered Django + React workflows: Owned relational models, REST contracts, interface state, and deployment across the complete feature lifecycle.",
+      "Engineered Python + JavaScript services: Organized REST APIs, asynchronous tasks, and third-party integrations into explicit backend workflows.",
+      "Designed SQL reporting models: Used relational schemas and reusable queries to keep operational records consistent across application screens and reports.",
+      "Standardized full-stack delivery: Reviewed shared changes against coding standards and reusable patterns to improve maintainability across frontend and backend boundaries.",
     ],
   },
   {
@@ -369,16 +395,16 @@ export const experience = [
       "Git",
     ],
     points: [
-      "Engineered responsive interfaces across browser and screen-size variations, supporting 1,000+ concurrent users with no reported compatibility issues.",
-      "Integrated REST APIs across 10+ pages and optimized page delivery, reducing average load time by 30%.",
-      "Resolved 20+ interface defects through device and screen-size fixes, improving consistency across responsive layouts.",
+      "Engineered responsive interfaces: Supported 1,000+ concurrent users across browser and screen-size variations with no reported compatibility issues.",
+      "Optimized REST API delivery: Integrated asynchronous data flows across 10+ pages, reducing average page load time by 30%.",
+      "Resolved 20+ UI defects: Applied device and screen-size fixes to improve rendering consistency across responsive layouts.",
     ],
   },
 ];
 
 export const skills = [
   {
-    title: "Backend & APIs",
+    title: "Backend & Distributed Systems",
     description: "Contracts, identity, and request admission.",
     items: [
       "Node.js",
@@ -394,11 +420,10 @@ export const skills = [
       "Socket.io",
       "WebRTC",
       "Webhooks",
-      "REST APIs",
     ],
   },
   {
-    title: "Applied AI & Pipelines",
+    title: "Applied AI Engineering",
     description: "Context, provider workflows, and model output.",
     items: [
       "Google AI / GenAI",
@@ -419,8 +444,8 @@ export const skills = [
     ],
   },
   {
-    title: "Data & Persistence",
-    description: "Schemas, relationships, and explicit state.",
+    title: "Data & Infrastructure",
+    description: "Persistent state, reproducible environments, and delivery.",
     items: [
       "PostgreSQL",
       "Prisma",
@@ -434,10 +459,22 @@ export const skills = [
       "DynamoDB",
       "Schema Design",
       "Loan Lifecycle Models",
+      "Docker",
+      "Docker Compose",
+      "AWS",
+      "GCP",
+      "Linux",
+      "Vercel CI/CD",
+      "Cloudinary",
+      "Git / GitHub",
+      "Postman",
+      "Cursor",
+      "Codex",
+      "Claude Code",
     ],
   },
   {
-    title: "Frontend Architecture",
+    title: "Frontend & Product Interfaces",
     description: "Accessible interaction and application state.",
     items: [
       "React",
@@ -450,25 +487,6 @@ export const skills = [
       "WAI-ARIA Tabs & Dialogs",
       "State Management",
       "Performance Optimization",
-    ],
-  },
-  {
-    title: "Delivery & Developer Tooling",
-    description: "Reproducible environments and reviewable changes.",
-    items: [
-      "Docker",
-      "Docker Compose",
-      "AWS",
-      "GCP",
-      "Linux",
-      "CI/CD",
-      "Cloudinary",
-      "Git",
-      "GitHub",
-      "Postman",
-      "Cursor",
-      "Codex",
-      "Claude Code",
     ],
   },
 ];

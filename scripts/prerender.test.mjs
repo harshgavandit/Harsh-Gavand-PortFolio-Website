@@ -81,15 +81,17 @@ test("case studies expose engineering decisions immediately and neither page nes
   for (const card of cards) {
     assert.ok(!card.includes("<details"));
     for (const content of [
-      "The problem &amp; product",
       "Architecture &amp; engineering decisions",
-      "Engineering outcome",
+      "System Impact &amp; Guarantees",
       "GitHub source",
       "System Architecture",
       "Product Preview",
     ])
       assert.ok(card.includes(content), content);
     assert.equal((card.match(/class="engineering-bullets"/g) || []).length, 1);
+    assert.ok(!card.includes("The problem &amp; product"));
+    assert.equal((card.match(/<li><strong>/g) || []).length, 3);
+    assert.match(card, /class="flagship-footer"><a/);
   }
   for (const page of [html, archive]) {
     let depth = 0;
@@ -114,7 +116,7 @@ test("tabs have connected ARIA relationships and predictable keyboard movement",
   }
   assert.equal((html.match(/role="tablist"/g) || []).length, 5);
   assert.equal((html.match(/aria-selected="true"/g) || []).length, 5);
-  assert.equal((html.match(/role="tabpanel"/g) || []).length, 11);
+  assert.equal((html.match(/role="tabpanel"/g) || []).length, 10);
   assert.equal(nextTabIndex("ArrowLeft", 0, 3), 2);
   assert.equal(nextTabIndex("ArrowRight", 2, 3), 0);
   assert.equal(nextTabIndex("Home", 2, 3), 0);
@@ -246,23 +248,33 @@ test("built assets and social preview resolve while source bundles stay private"
   );
 });
 
-test("personal document links are absent on every rendered route and the old download returns 404", async () => {
+test("the attached resume is linked consistently and served as a real PDF; the retired filename stays removed", async () => {
   const notFound = await readFile(
     new URL("../dist/404.html", import.meta.url),
     "utf8",
   );
   for (const page of [html, archive, notFound]) {
     assert.doesNotMatch(page, /Harsh_Gavand_Resume\.pdf/i);
-    assert.doesNotMatch(
-      page,
-      /(?:View|Read my) r[ée]sum[ée]|Contact &amp; R[ée]sum[ée]/i,
-    );
+    const links = [...page.matchAll(/<a\b[^>]*href="\/resume\.pdf"[^>]*>/g)];
+    assert.ok(links.length >= 2);
+    for (const link of links) {
+      assert.match(link[0], /target="_blank"/);
+      assert.match(link[0], /rel="noopener noreferrer"/);
+    }
   }
   assert.ok(
     archive.includes("Django Resume Builder"),
     "Keep the genuine project listing",
   );
   assert.equal((await fetch(origin + "/Harsh_Gavand_Resume.pdf")).status, 404);
+  const response = await fetch(origin + "/resume.pdf");
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type"), /application\/pdf/);
+  assert.ok(
+    Buffer.from(await response.arrayBuffer()).equals(
+      await readFile(new URL("../public/resume.pdf", import.meta.url)),
+    ),
+  );
 });
 
 test("every HTML image, responsive image candidate, stylesheet, script, and CSS font/image reference resolves", async () => {
@@ -457,11 +469,17 @@ test("the header, hero lists and code preview contain meaningful accessible cont
   assert.match(html, /quota\.releaseOrEnqueueRetry\(/);
 });
 
-test("request trace starts complete and exposes accounting-safe scenario controls", () => {
-  assert.match(html, /Request Trace/);
+test("request trace is the default hero tab with accounting-safe scenario controls", () => {
+  assert.match(html, /Request Lifecycle Trace/);
+  assert.match(html, /id="hero-proof-tab-0"[^>]*aria-selected="true"/);
+  assert.match(
+    html,
+    /id="hero-proof-panel-0"(?![^>]*hidden=)[^>]*>[\s\S]*?class="request-trace"/,
+  );
+  assert.doesNotMatch(html, /Interfaces → APIs → workflows → data/);
   assert.match(html, /Happy Path \(618ms\)/);
-  assert.match(html, /Pre-dispatch Abort \(Rollback\)/);
-  assert.match(html, /Upstream Timeout \(Retained\)/);
+  assert.match(html, /Pre-Dispatch Abort \(29ms\)/);
+  assert.match(html, /Upstream Timeout &amp; Recovery \(1,240ms\)/);
   assert.doesNotMatch(html, /Waiting for trace|No API call|Gemini scenario/);
   assert.equal(
     traceStage("success", 3).message,
@@ -474,8 +492,24 @@ test("request trace starts complete and exposes accounting-safe scenario control
   );
   assert.equal(
     traceStage("rollback", 3).message,
-    "Rollback executed · 140 tokens restored",
+    "Released full 140-token reservation atomically",
   );
+});
+
+test("architecture pipelines expose named keyboard controls and a linked contract callout", () => {
+  const flows = [
+    ...html.matchAll(/<figure class="case-flow">([\s\S]*?)<\/figure>/g),
+  ];
+  assert.equal(flows.length, 4);
+  for (const [, flow] of flows) {
+    assert.equal((flow.match(/<button\b/g) || []).length, 5);
+    assert.equal((flow.match(/aria-pressed="true"/g) || []).length, 1);
+    assert.match(flow, /role="status" aria-live="polite" aria-atomic="true"/);
+    assert.match(flow, /Contract \/<\/span>/);
+    assert.match(flow, /Technical detail \/<\/span>/);
+  }
+  assert.match(html, />Copy Email<\/button>/);
+  assert.match(html, /Async AI pipelines · RBAC · Distributed state/);
 });
 
 test("UGC preview shows a composite studio with inputs, media output and sourced credit costs", () => {

@@ -11,6 +11,7 @@ import { MotionPreferencesProvider } from "./components/MotionPreferences";
 import { Contact, Footer } from "./components/Contact";
 import { Assistant } from "./components/Assistant";
 import { ProjectArchive } from "./components/ProjectArchive";
+import { DemoWarmup } from "./components/DemoWarmup";
 
 function NotFound() {
   return (
@@ -50,6 +51,7 @@ export default function Portfolio({
         Skip to content
       </a>
       <Navigation />
+      <DemoWarmup />
       <Routes>
         <Route
           path="/"

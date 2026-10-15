@@ -1,13 +1,5 @@
-import { useState } from "react";
-import {
-  ArrowDown,
-  ArrowUpRight,
-  Braces,
-  Check,
-  GitBranch,
-} from "lucide-react";
-import { heroArchitecture, productionCode } from "../data/recruiter";
-import { projectSlug } from "../data/portfolio";
+import { ArrowUpRight, Braces, GitBranch } from "lucide-react";
+import { productionCode } from "../data/recruiter";
 import { RequestTrace } from "./RequestTrace";
 import { Tabs } from "./Tabs";
 import { codeTokens } from "../lib/codeTokens";
@@ -31,49 +23,6 @@ function HighlightedLine({ text }: { text: string }) {
     </>
   );
 }
-function Architecture() {
-  const [active, setActive] = useState(0);
-  return (
-    <div className="hero-system">
-      <p className="technical-note">Interfaces → APIs → workflows → data</p>
-      <ol className="system-pipeline">
-        {heroArchitecture.map((node, index) => (
-          <li key={node.title}>
-            <button
-              type="button"
-              aria-pressed={active === index}
-              onClick={() => setActive(index)}
-            >
-              <span className="node-index">0{index + 1}</span>
-              <span>
-                <small>{node.tag}</small>
-                <strong>{node.title}</strong>
-              </span>
-              {active === index ? (
-                <Check size={16} aria-hidden="true" />
-              ) : (
-                <ArrowDown size={16} aria-hidden="true" />
-              )}
-            </button>
-          </li>
-        ))}
-      </ol>
-      <div className="node-detail" role="status">
-        <p>{heroArchitecture[active].detail}</p>
-        <span>{heroArchitecture[active].stack}</span>
-        <a
-          href={
-            heroArchitecture[active].projectId === 14
-              ? "#ugc-platform"
-              : `/archive#${projectSlug(heroArchitecture[active].projectId)}`
-          }
-        >
-          See the implementation <ArrowUpRight size={13} aria-hidden="true" />
-        </a>
-      </div>
-    </div>
-  );
-}
 export function EngineeringShowcase() {
   return (
     <div className="engineering-showcase">
@@ -90,9 +39,9 @@ export function EngineeringShowcase() {
         id="hero-proof"
         label="Explore engineering work"
         items={[
-          { label: "System Architecture", content: <Architecture /> },
+          { label: "Request Lifecycle Trace", content: <RequestTrace /> },
           {
-            label: "Production Code",
+            label: "Implementation",
             content: (
               <div className="code-preview">
                 <div className="code-file">
@@ -114,8 +63,8 @@ export function EngineeringShowcase() {
                   </code>
                 </pre>
                 <p>
-                  Atomic quota reservation, pre-dispatch abort rollback, and
-                  durable settlement retries with dead-letter handling.
+                  Production pattern for atomic credit reservation, abort
+                  rollback, and idempotent settlement.
                 </p>
                 <a
                   className="text-link"
@@ -129,7 +78,6 @@ export function EngineeringShowcase() {
               </div>
             ),
           },
-          { label: "Request Trace", content: <RequestTrace /> },
         ]}
       />
     </div>

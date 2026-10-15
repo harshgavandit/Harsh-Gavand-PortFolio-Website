@@ -1,6 +1,6 @@
 import { aboutProfile, experience, profile, skills } from "../data/portfolio";
 import { engineeringPrinciples } from "../data/recruiter";
-import { ChapterHeading, Tags } from "./Primitives";
+import { ChapterHeading, LeadStatement, Tags } from "./Primitives";
 
 export function Experience() {
   return (
@@ -30,7 +30,9 @@ export function Experience() {
               <h3>{job.role}</h3>
               <ul className="engineering-bullets">
                 {job.points.map((point) => (
-                  <li key={point}>{point}</li>
+                  <li key={point}>
+                    <LeadStatement text={point} />
+                  </li>
                 ))}
               </ul>
               <Tags items={job.tech} />

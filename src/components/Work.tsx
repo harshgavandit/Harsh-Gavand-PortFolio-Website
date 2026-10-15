@@ -11,8 +11,9 @@ import {
   type Project,
 } from "../data/portfolio";
 import { curatedArchive } from "../data/recruiter";
-import { ActionLink, ChapterHeading, Tags } from "./Primitives";
+import { ActionLink, ChapterHeading, LeadStatement, Tags } from "./Primitives";
 import { Tabs } from "./Tabs";
+import { SystemFlow } from "./SystemFlow";
 export function ProjectNotes({ project }: { project: Project }) {
   return (
     <div className="project-notes">
@@ -33,7 +34,7 @@ export function ProjectNotes({ project }: { project: Project }) {
         <p>{project.challenges}</p>
       </div>
       <div>
-        <h4>Engineering outcome</h4>
+        <h4>System Impact &amp; Guarantees</h4>
         <p>{project.impact}</p>
       </div>
     </div>
@@ -214,17 +215,18 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
       </header>
       <div className="flagship-body">
         <div className="engineering-breakdown">
-          <p className="eyebrow">The problem & product</p>
           <p className="product-summary">{study.summary}</p>
           <h4>Architecture & engineering decisions</h4>
           <ul className="engineering-bullets">
             {study.engineering.map((point) => (
-              <li key={point}>{point}</li>
+              <li key={point}>
+                <LeadStatement text={point} />
+              </li>
             ))}
           </ul>
           <Tags items={project.technologies} />
           <div className="engineering-impact">
-            <span className="eyebrow">Engineering outcome</span>
+            <span className="eyebrow">System Impact &amp; Guarantees</span>
             <p>{project.impact}</p>
           </div>
         </div>
@@ -239,36 +241,13 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
               },
               {
                 label: "System Architecture",
-                content: (
-                  <figure className="case-flow">
-                    <ol>
-                      {study.diagram!.nodes.map((node, i) => (
-                        <li key={node}>
-                          <span>{String(i + 1).padStart(2, "0")}</span>
-                          <div>
-                            <strong>{node}</strong>
-                            <small>{study.diagram!.details[i]}</small>
-                          </div>
-                          {i < study.diagram!.nodes.length - 1 && (
-                            <ArrowDown size={15} aria-hidden="true" />
-                          )}
-                        </li>
-                      ))}
-                    </ol>
-                    <figcaption>{study.diagram!.caption}</figcaption>
-                    <p className="flow-recovery">
-                      <span>Recovery / state</span>
-                      {study.recovery}
-                    </p>
-                  </figure>
-                ),
+                content: <SystemFlow study={study} slug={project.slug} />,
               },
             ]}
           />
         </div>
       </div>
       <footer className="flagship-footer">
-        <span>{study.takeaway}</span>
         <a href={`/archive#${project.slug}`}>
           Full project notes <ArrowRight size={14} aria-hidden="true" />
         </a>

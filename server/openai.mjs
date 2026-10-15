@@ -118,6 +118,7 @@ const sections = {
   skills: { label: "Skills", href: "/#skills" },
   projects: { label: "Selected work", href: "/#projects" },
   contact: { label: "Contact Harsh", href: "/#contact" },
+  resume: { label: "Harsh’s Resume (PDF)", href: profile.resume },
 };
 
 export function sourceLinks(result) {

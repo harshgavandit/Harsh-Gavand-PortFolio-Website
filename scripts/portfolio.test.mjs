@@ -12,27 +12,69 @@ import { buildRequest, sourceLinks } from "../server/openai.mjs";
 import { matchesProjectCollection } from "../src/lib/portfolioActions.ts";
 import { curatedArchive } from "../src/data/recruiter.ts";
 import { codeTokens } from "../src/lib/codeTokens.ts";
+import { renderDemoOrigins, warmDemoRequests } from "../src/lib/demoWarmup.ts";
 const projects = JSON.parse(
   readFileSync(new URL("../src/data/projects.json", import.meta.url), "utf8"),
 );
-test("personal document downloads are absent from public profile and assistant sources", () => {
-  assert.equal(Object.hasOwn(profile, "resume"), false);
+test("the attached resume is published as a valid PDF with a canonical assistant source", () => {
+  assert.equal(profile.resume, "/resume.pdf");
+  const pdf = readFileSync(new URL("../public/resume.pdf", import.meta.url));
+  assert.match(pdf.subarray(0, 8).toString(), /^%PDF-1\./);
+  assert.match(pdf.subarray(-100).toString(), /%%EOF/);
   assert.equal(
     existsSync(new URL("../public/Harsh_Gavand_Resume.pdf", import.meta.url)),
     false,
   );
   assert.deepEqual(
     sourceLinks({ projectIds: [], sections: ["resume", "contact"] }),
-    [{ label: "Contact Harsh", href: "/#contact" }],
+    [
+      { label: "Harsh’s Resume (PDF)", href: "/resume.pdf" },
+      { label: "Contact Harsh", href: "/#contact" },
+    ],
   );
   const request = buildRequest([
     { role: "user", content: "How can I contact Harsh?" },
   ]);
   assert.ok(
-    !request.text.format.schema.properties.sections.items.enum.includes(
+    request.text.format.schema.properties.sections.items.enum.includes(
       "resume",
     ),
   );
+});
+
+test("demo warmup deduplicates HTTPS Render origins and isolates request failures", async () => {
+  const origins = renderDemoOrigins([
+    { demoUrl: "https://banking-app-saas.onrender.com/path" },
+    { demoUrl: "https://banking-app-saas.onrender.com/" },
+    { demoUrl: "https://github-replica.onrender.com/" },
+    { demoUrl: "https://example.com/" },
+    { demoUrl: "http://banking-app-saas.onrender.com/" },
+    { demoUrl: "https://banking-app-saas.onrender.com.evil.example/" },
+    { demoUrl: "https://name:password@banking-app-saas.onrender.com/" },
+    { demoUrl: "invalid" },
+  ]);
+  assert.deepEqual(origins, [
+    "https://banking-app-saas.onrender.com/",
+    "https://github-replica.onrender.com/",
+  ]);
+  const controller = new AbortController();
+  const calls = [];
+  await warmDemoRequests(
+    origins,
+    async (url, options) => {
+      calls.push({ url, options });
+      throw new Error("Unreachable demo");
+    },
+    controller.signal,
+  );
+  assert.equal(calls.length, 2);
+  for (const { options } of calls) {
+    assert.equal(options.mode, "no-cors");
+    assert.equal(options.cache, "no-store");
+    assert.equal(options.credentials, "omit");
+    assert.equal(options.referrerPolicy, "no-referrer");
+    assert.equal(options.signal, controller.signal);
+  }
 });
 test("curated archive references eight distinct catalog projects and flagship stacks match reviewed source", () => {
   assert.equal(curatedArchive.length, 8);
@@ -110,6 +152,7 @@ test("every selected system-flow step includes implementation detail and truthfu
   for (const study of caseStudies) {
     assert.equal(study.diagram.nodes.length, 5);
     assert.equal(study.diagram.details.length, 5);
+    assert.equal(study.diagram.contracts.length, 5);
     assert.ok(study.diagram.details.every((detail) => detail.length > 25));
     assert.ok(study.accessDescription.length > 20);
   }

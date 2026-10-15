@@ -3,7 +3,7 @@
     "id": 1,
     "title": "DevGraph — Repository Discovery & Issue Indexing Platform",
     "category": "Developer Tools & Document Relations",
-    "overview": "Developer collaboration depends on traversable relationships between accounts, repositories, and issues. Engineered a repository explorer backed by Mongoose document references, Express mutation handlers, and independent personal/discovery feed state.",
+    "overview": "Repository discovery and issue exploration built around connected developer, repository, and issue records. Independent personal and discovery workspaces keep search responsive without a request per keystroke.",
     "features": [
       "Personal and suggested repository listings",
       "MongoDB repository ownership and issue relationships",
@@ -41,7 +41,7 @@
     "id": 3,
     "title": "LendFlow — Multi-Role Lending & Underwriting Platform",
     "category": "FinTech & Lending Workflows",
-    "overview": "Lending workflows span borrower origination, lender review, and administrative oversight. Engineered a role-oriented platform with Sequelize borrower/loan relations, decimal principal and interest fields, explicit approval values, and React dashboards.",
+    "overview": "Loan origination, underwriting review, and repayment interfaces organized around borrower, lender, and administrator workflows. Shared loan records keep review outcomes visible across the product.",
     "features": [
       "Borrower, lender, and admin dashboard views",
       "Express loan creation and approve/reject endpoints",
@@ -59,7 +59,7 @@
     ],
     "role": "Modeled relational loan records and implemented Express application, lookup, approval, and rejection handlers alongside JWT account authentication and role-oriented React views.",
     "challenges": "Keeping borrower relations, principal and interest precision, and explicit pending / approved / rejected values consistent across application and review screens.",
-    "impact": "Represented loan principal and interest with DECIMAL fields, linked applications to borrower records, and persisted explicit approval/rejection outcomes for lending and repayment interfaces.",
+    "impact": "Kept lending and repayment interfaces linked to shared borrower and loan records, with persisted review outcomes and fixed-point principal and interest inputs.",
     "githubUrl": "https://github.com/harshgavandit/Banking_App_SaaS",
     "demoUrl": "https://banking-app-saas.onrender.com/",
     "slug": "banking-saas",
@@ -254,7 +254,7 @@
     "id": 14,
     "title": "UGC Content Studio — AI Media Generation Pipeline",
     "category": "Applied AI & Media Pipeline",
-    "overview": "Marketing teams need rapid product and model variations without repeated manual shoots. Engineered a multimodal workflow coordinating Clerk-authenticated uploads, Google AI image/video synthesis, Cloudinary CDN delivery, and Prisma/PostgreSQL project and credit records.",
+    "overview": "Automated media pipeline that combines product and model references into campaign images and short videos through Google AI and Cloudinary CDN.",
     "features": [
       "Clerk-authenticated image and video generation requests",
       "Google AI generation and Cloudinary image/video storage",
@@ -274,7 +274,7 @@
     ],
     "role": "Engineered authenticated generation endpoints, provider-operation polling, Cloudinary persistence, and failure-path credit restoration around account-scoped project records.",
     "challenges": "Coordinating generation, media uploads, and credit mutations while persisting output URLs, processing flags, and caught provider errors.",
-    "impact": "Persisted generated image/video URLs and project error state in PostgreSQL, with Prisma credit updates and restoration paths for caught generation failures.",
+    "impact": "Coordinated authenticated reference uploads, generated-media delivery, and recoverable project state in one pipeline, with credit restoration paths for caught generation failures.",
     "githubUrl": "https://github.com/harshgavandit/ugc-project",
     "demoUrl": "https://ugc-project-harsh.vercel.app/",
     "slug": "ugc-platform",
@@ -324,7 +324,7 @@
     "id": 17,
     "title": "AI News Automation — Ingestion-to-Email Pipeline",
     "category": "AI Automation & Delivery Pipelines",
-    "overview": "Repeated article and transcript collection needs stable source identity and inspectable delivery stages. Engineered a Python pipeline with GUID/video-ID checks, local Ollama inference, SQLAlchemy persistence, and multipart SMTP output.",
+    "overview": "Automated source-to-email pipeline that turns AI articles and video transcripts into source-linked digests. Collection, local inference, persistence, and SMTP delivery remain independently inspectable.",
     "features": [
       "Article and video collection with duplicate checks",
       "Local Ollama / llama3 summarization",

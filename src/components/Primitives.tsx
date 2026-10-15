@@ -86,3 +86,14 @@ export function Tags({ items }: { items: string[] }) {
     </ul>
   );
 }
+
+export function LeadStatement({ text }: { text: string }) {
+  const boundary = text.indexOf(": ");
+  if (boundary < 0) return <>{text}</>;
+  return (
+    <>
+      <strong>{text.slice(0, boundary + 1)}</strong>
+      {text.slice(boundary + 1)}
+    </>
+  );
+}

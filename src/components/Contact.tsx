@@ -9,7 +9,7 @@ export function Contact() {
   async function copyEmail() {
     try {
       await navigator.clipboard.writeText(profile.email);
-      setNotice("Email address copied.");
+      setNotice("Copied to clipboard!");
     } catch {
       setNotice(`Copy this email address: ${profile.email}`);
     }
@@ -50,13 +50,15 @@ export function Contact() {
               {profile.email}
               <ArrowUpRight size={22} aria-hidden="true" />
             </a>
-            <button className="copy-email" onClick={copyEmail}>
-              {notice === "Email address copied." ? (
-                <Check size={14} />
+            <button type="button" className="copy-email" onClick={copyEmail}>
+              {notice === "Copied to clipboard!" ? (
+                <Check size={14} aria-hidden="true" />
               ) : (
-                <Copy size={14} />
+                <Copy size={14} aria-hidden="true" />
               )}{" "}
-              Copy email address
+              {notice === "Copied to clipboard!"
+                ? "Copied to clipboard!"
+                : "Copy Email"}
             </button>
             <div className="contact-socials">
               <a
@@ -65,6 +67,13 @@ export function Contact() {
                 rel="noopener noreferrer"
               >
                 GitHub <ArrowUpRight size={15} />
+              </a>
+              <a
+                href={profile.resume}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Resume PDF <ArrowUpRight size={15} aria-hidden="true" />
               </a>
               <a
                 href={profile.linkedin}

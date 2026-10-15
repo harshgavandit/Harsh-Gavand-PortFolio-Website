@@ -8,11 +8,15 @@ A React + TypeScript portfolio organized around engineering decisions: five home
 
 The homepage has one shared chapter definition in `src/data/recruiter.ts`: Introduction, Selected Work, Experience & Impact, Architecture & Skills, and Contact. Header navigation, its hidden mobile menu, and headings derive their numbers from that definition.
 
-The hero replaces the abstract WebGL sculpture with a technical widget: an interactive architecture pipeline, a verbatim excerpt from the executed quota lifecycle, and a deterministic Request Trace simulator. The four case study cards expose product context, engineering decisions, technologies, challenges, and outcomes immediately. Each case study opens on its visual Product Preview, with System Architecture as the only other tab. There are no nested disclosures.
+The hero opens on an interactive Request Lifecycle Trace, with a verbatim excerpt from the executed quota lifecycle in its Implementation tab. The four case study cards expose concise product context, bold architectural decisions, technologies, and system impact immediately. Each case study opens on its visual Product Preview. Its System Architecture tab provides five keyboard-operable stages with a live contract and technical-detail callout. There are no nested disclosures.
 
 The eight-row curated archive uses a native disclosure. The complete catalog lives on a separate pre-rendered route with search and All / Latest AI / AI & ML / APIs & Tools / Web & SaaS filters. Every project retains its identity and repository link; original copy was rewritten and inaccurate stack claims were corrected against source code. No invented performance metrics, production scale, payment guarantees, or database guarantees are added.
 
 Experience, education, the supplied portrait, recognition, skills, engineering principles, contact draft preparation, and the existing assistant remain available. The assistant opens from the header, floating button, or Ctrl/Command+K, with three recruiter prompts. The chat response contract remains unchanged; quota cancellation and settlement recovery are described below.
+
+The attached résumé is exported to `public/resume.pdf`, linked from the desktop header, mobile menu, hero, contact section, and assistant sources. The original Word document remains outside the repository. The two-page PDF preserves its text, formatting, and hyperlinks and was visually checked before publication. Contact also provides a Copy Email control with visible and live-region feedback.
+
+Render-hosted project demos receive best-effort background GET requests after browser idle, with a 500ms fallback. Origins come only from HTTPS Render demo URLs in the catalog and are deduplicated. Requests omit credentials and referrers, failures stay isolated, and cleanup cancels pending work. Visitors using Save-Data are excluded. Warm-up improves the chance a demo is ready but cannot guarantee service availability or remove every cold start; no third-party requests run during server rendering.
 
 ## Development
 
@@ -74,6 +78,8 @@ The tests cover original project identities and assets, source metadata, assista
 - `server/vercel.mjs` and `api/index.mjs`: directly awaited Vercel API handler and authenticated recovery endpoint.
 - `server/admission.mjs`: atomic shared request counters and expiring concurrency leases for serverless instances.
 - `src/components/Tabs.tsx`: shared ARIA tablist with arrow-key, Home/End, and roving-tabindex behavior.
+- `src/components/SystemFlow.tsx`: native architecture-stage buttons with pointer, click, and keyboard-focus activation and a linked live callout.
+- `src/components/DemoWarmup.tsx` and `src/lib/demoWarmup.ts`: cancellable idle scheduling and credential-free Render demo requests.
 - `src/components/ProjectArchive.tsx`: searchable full catalog; initial HTML includes every record.
 - `src/entry-server.tsx` and `scripts/prerender.mjs`: build-time rendering and route metadata.
 - `public/projects`: responsive banking/repository landing-page captures and a UGC gallery asset composed into a labelled studio interface study. Its displayed 5-credit image and 10-credit video generation costs come from the source; it is not a captured live account balance. The digest preview describes its email format rather than claiming a live inbox capture.

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { ArrowUpRight, Menu, X } from "lucide-react";
 import { profile } from "../data/portfolio";
 import { chapters, chapterNumber } from "../data/recruiter";
 import { MotionToggle } from "./MotionPreferences";
@@ -127,6 +127,14 @@ export function Navigation() {
             >
               Ask Harsh’s AI <kbd>⌘ K</kbd>
             </button>
+            <a
+              className="header-resume"
+              href={profile.resume}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Resume <ArrowUpRight size={14} aria-hidden="true" />
+            </a>
             <div className="header-socials">
               <a
                 href={profile.github}
@@ -175,6 +183,14 @@ export function Navigation() {
               </a>
             ))}
           </nav>
+          <a
+            className="mobile-resume button button-secondary"
+            href={profile.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Resume <ArrowUpRight size={16} aria-hidden="true" />
+          </a>
           <button onClick={ask}>Ask Harsh’s AI · Ctrl / ⌘ K</button>
           <MotionToggle />
         </div>

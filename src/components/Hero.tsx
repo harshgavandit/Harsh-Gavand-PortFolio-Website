@@ -2,6 +2,7 @@ import { ArrowDown } from "lucide-react";
 import { chapterNumber } from "../data/recruiter";
 import { ActionLink } from "./Primitives";
 import { EngineeringShowcase } from "./EngineeringShowcase";
+import { profile } from "../data/portfolio";
 export function Hero() {
   return (
     <section
@@ -34,8 +35,9 @@ export function Hero() {
             <ActionLink href="#projects" primary>
               Explore selected work
             </ActionLink>
-            <ActionLink href="#contact">
-              Get in touch
+            <ActionLink href="#contact">Get in touch</ActionLink>
+            <ActionLink href={profile.resume} external className="hero-resume">
+              View Resume (PDF)
             </ActionLink>
           </div>
           <p className="hero-location">
@@ -47,9 +49,9 @@ export function Hero() {
         <EngineeringShowcase />
       </div>
       <div className="hero-credibility">
-        <a href="#projects">
-          <strong>4</strong>
-          <span>End-to-end systems</span>
+        <a href="#projects" className="architecture-proof">
+          <strong>Architecture</strong>
+          <span>Async AI pipelines · RBAC · Distributed state</span>
         </a>
         <a href="#experience">
           <strong>2+ yrs</strong>
