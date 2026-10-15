@@ -3,6 +3,7 @@ import { chapterNumber } from "../data/recruiter";
 import { ActionLink } from "./Primitives";
 import { EngineeringShowcase } from "./EngineeringShowcase";
 import { profile } from "../data/portfolio";
+import { HeroStack } from "./HeroStack";
 export function Hero() {
   return (
     <section
@@ -48,18 +49,14 @@ export function Hero() {
         <EngineeringShowcase />
       </div>
       <div className="hero-credibility">
-        <a href="#projects" className="architecture-proof">
-          <strong>Architecture</strong>
+        <a href="#projects" className="role-proof">
+          <strong>Full-Stack AI Engineer</strong>
           <span>Async AI pipelines · RBAC · Distributed state</span>
         </a>
-        <a href="#experience">
-          <strong>2+ yrs</strong>
-          <span>Full-stack & backend engineering</span>
+        <a href="#experience" className="experience-proof">
+          <strong>2+ Years</strong>
+          <span>of building full-stack, backend and AI engineering</span>
         </a>
-        <div>
-          <strong>Stack</strong>
-          <span>TypeScript · Node.js · Python · React · AI</span>
-        </div>
         <a
           className="hero-scroll"
           href="#projects"
@@ -68,6 +65,7 @@ export function Hero() {
           <ArrowDown size={20} aria-hidden="true" />
         </a>
       </div>
+      <HeroStack />
     </section>
   );
 }

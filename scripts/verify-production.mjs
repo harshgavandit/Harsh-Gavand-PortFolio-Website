@@ -27,7 +27,7 @@ assertArchive(archive, origin);
 const resources = new Set();
 for (const html of [home, archive]) {
   for (const match of html.matchAll(
-    /\b(?:src|href)="(\/[^"?#]+\.(?:js|css|woff2|png|jpe?g|webp|svg|pdf))"/g,
+    /\b(?:src|href)="(\/[^"?#]+\.(?:js|css|woff2|png|jpe?g|webp|svg|pdf))(?:#[^"]*)?"/g,
   ))
     resources.add(match[1]);
   for (const match of html.matchAll(/\bsrc[Ss]et="([^"]+)"/g))

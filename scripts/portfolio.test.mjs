@@ -16,6 +16,7 @@ import { curatedArchive } from "../src/data/recruiter.ts";
 import { codeTokens } from "../src/lib/codeTokens.ts";
 import { renderDemoOrigins, warmDemoRequests } from "../src/lib/demoWarmup.ts";
 import { startTraceReplay } from "../src/lib/traceReplay.ts";
+import { resumeStackGroups } from "../src/data/heroStack.ts";
 const projects = JSON.parse(
   readFileSync(new URL("../src/data/projects.json", import.meta.url), "utf8"),
 );
@@ -233,6 +234,96 @@ test("all responsive featured images exist", () => {
         ),
       );
     }
+});
+
+test("the hero stack covers resume technologies and only references valid local brand symbols", () => {
+  assert.equal(resumeStackGroups.length, 6);
+  const items = resumeStackGroups.flatMap((group) => group.items);
+  const names = items.map((item) => item.name);
+  assert.equal(new Set(names).size, names.length);
+  for (const required of [
+    "React",
+    "Next.js",
+    "JavaScript ES6+",
+    "HTML5",
+    "CSS3",
+    "Tailwind CSS",
+    "Node.js",
+    "Express",
+    "Mongoose",
+    "JWT Auth",
+    "Socket.io",
+    "WebRTC",
+    "Python",
+    "Django",
+    "Flask",
+    "FastAPI",
+    "MongoDB",
+    "PostgreSQL",
+    "MySQL",
+    "DynamoDB",
+    "Redis",
+    "Kafka",
+    "Pandas",
+    "NumPy",
+    "scikit-learn",
+    "TensorFlow",
+    "LSTM Forecasting",
+    "Anomaly Detection",
+    "Moving Average Analysis",
+    "RAG",
+    "LLM APIs",
+    "Vector Databases",
+    "Embeddings",
+    "LangChain",
+    "LangGraph",
+    "Computer Vision",
+    "Django REST Framework",
+    "SQLAlchemy",
+    "Matplotlib",
+    "yfinance",
+    "Clerk",
+    "Cloudinary",
+    "OpenAI APIs",
+    "MinMax Scaling",
+    "Docker",
+    "Docker Compose",
+    "Gunicorn",
+    "CI/CD",
+    "Git",
+    "GitHub",
+    "Postman",
+    "Cursor",
+    "Codex",
+    "Claude Code",
+    "Antigravity",
+    "AWS",
+    "GCP",
+    "Linux",
+    "SQL",
+    "DSA & OOP",
+    "Async Tasks",
+    "Data Pipelines",
+    "Scripting & Automation",
+  ])
+    assert.ok(names.includes(required), required);
+  const sprite = readFileSync(
+    new URL("../public/stack/technology-logos.svg", import.meta.url),
+    "utf8",
+  );
+  const symbols = new Set(
+    [...sprite.matchAll(/<symbol\b[^>]*id="([^"]+)"/g)].map(
+      (match) => match[1],
+    ),
+  );
+  for (const item of items) {
+    if (item.brand) assert.ok(symbols.has(item.brand), item.brand);
+    else assert.ok(item.motif);
+  }
+  assert.doesNotMatch(
+    sprite,
+    /<(?:script|foreignObject)\b|\bon\w+\s*=|\b(?:href|src)=/i,
+  );
 });
 test("SEO files use the canonical production origin and valid structured data", () => {
   const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");

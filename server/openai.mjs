@@ -7,6 +7,7 @@ import {
   caseStudies,
   engineeringSprints,
 } from "../src/data/portfolio.ts";
+import { resumeStackGroups } from "../src/data/heroStack.ts";
 
 export class ChatError extends Error {
   constructor(status, code, message, retryAfter) {
@@ -100,6 +101,10 @@ export function knowledgeFor(messages) {
     experience,
     engineeringSprints,
     skills,
+    technicalStack: resumeStackGroups.map(({ title, items }) => ({
+      title,
+      technologies: items.map((item) => item.name),
+    })),
     projectIndex: projects.map(({ id, title, category, technologies }) => ({
       id,
       title,

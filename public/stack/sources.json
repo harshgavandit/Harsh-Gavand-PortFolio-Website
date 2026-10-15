@@ -1,0 +1,515 @@
+{
+  "simpleIconsVersion": "16.35.0",
+  "deviconCommit": "6a37858047b0e8d9c9c0e68f4a071fc410652e89",
+  "icons": [
+    {
+      "id": "apachekafka",
+      "labels": [
+        "Kafka"
+      ],
+      "title": "Apache Kafka",
+      "slug": "apachekafka",
+      "hex": "231F20",
+      "source": "https://apache.org/logos",
+      "guidelines": "https://www.apache.org/foundation/marks",
+      "license": {
+        "type": "Apache-2.0"
+      },
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "aws",
+      "labels": [
+        "AWS"
+      ],
+      "source": "https://github.com/devicons/devicon/blob/6a37858047b0e8d9c9c0e68f4a071fc410652e89/icons/amazonwebservices/amazonwebservices-plain-wordmark.svg",
+      "license": "MIT",
+      "collection": "Devicon"
+    },
+    {
+      "id": "claude",
+      "labels": [
+        "Claude Code"
+      ],
+      "title": "Claude",
+      "slug": "claude",
+      "hex": "D97757",
+      "source": "https://claude.ai",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "clerk",
+      "labels": [
+        "Clerk"
+      ],
+      "title": "Clerk",
+      "slug": "clerk",
+      "hex": "6C47FF",
+      "source": "https://clerk.com",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "cloudinary",
+      "labels": [
+        "Cloudinary"
+      ],
+      "title": "Cloudinary",
+      "slug": "cloudinary",
+      "hex": "3448C5",
+      "source": "https://cloudinary.com",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "css",
+      "labels": [
+        "CSS3"
+      ],
+      "title": "CSS",
+      "slug": "css",
+      "hex": "663399",
+      "source": "https://github.com/CSS-Next/logo.css/blob/bacc20878227204b283c68a6b935f8279e06b0cd/css.svg",
+      "guidelines": "https://github.com/CSS-Next/logo.css",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "cursor",
+      "labels": [
+        "Cursor"
+      ],
+      "title": "Cursor",
+      "slug": "cursor",
+      "hex": "000000",
+      "source": "https://cursor.com/brand",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "django",
+      "labels": [
+        "Django",
+        "Django REST Framework"
+      ],
+      "title": "Django",
+      "slug": "django",
+      "hex": "092E20",
+      "source": "https://www.djangoproject.com/community/logos/",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "docker",
+      "labels": [
+        "Docker",
+        "Docker Compose"
+      ],
+      "title": "Docker",
+      "slug": "docker",
+      "hex": "2496ED",
+      "source": "https://www.docker.com/company/newsroom/media-resources",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "dynamodb",
+      "labels": [
+        "DynamoDB"
+      ],
+      "source": "https://github.com/devicons/devicon/blob/6a37858047b0e8d9c9c0e68f4a071fc410652e89/icons/dynamodb/dynamodb-plain.svg",
+      "license": "MIT",
+      "collection": "Devicon"
+    },
+    {
+      "id": "express",
+      "labels": [
+        "Express"
+      ],
+      "title": "Express",
+      "slug": "express",
+      "hex": "0A0A0A",
+      "source": "https://github.com/openjs-foundation/artwork/blob/3816245ebbf4707bdafde748350ac8476b6b5b62/projects/express/express-icon-black.svg",
+      "aliases": {
+        "aka": [
+          "Express.js"
+        ]
+      },
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "fastapi",
+      "labels": [
+        "FastAPI"
+      ],
+      "title": "FastAPI",
+      "slug": "fastapi",
+      "hex": "009688",
+      "source": "https://github.com/tiangolo/fastapi/blob/ffb4f77a11f83132b521ba0aac6c95792c19e797/docs/en/docs/img/icon-white.svg",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "flask",
+      "labels": [
+        "Flask"
+      ],
+      "title": "Flask",
+      "slug": "flask",
+      "hex": "3BABC3",
+      "source": "https://github.com/pallets/flask/blob/85c5d93cbd049c4bd0679c36fd1ddcae8c37b642/docs/_static/flask-icon.svg",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "git",
+      "labels": [
+        "Git"
+      ],
+      "title": "Git",
+      "slug": "git",
+      "hex": "F03C2E",
+      "source": "https://git-scm.com/community/logos",
+      "license": {
+        "type": "CC-BY-3.0"
+      },
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "github",
+      "labels": [
+        "GitHub"
+      ],
+      "title": "GitHub",
+      "slug": "github",
+      "hex": "181717",
+      "source": "https://github.com/logos",
+      "guidelines": "https://github.com/logos",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "googlecloud",
+      "labels": [
+        "GCP"
+      ],
+      "title": "Google Cloud",
+      "slug": "googlecloud",
+      "hex": "4285F4",
+      "source": "https://cloud.google.com",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "gunicorn",
+      "labels": [
+        "Gunicorn"
+      ],
+      "title": "Gunicorn",
+      "slug": "gunicorn",
+      "hex": "499848",
+      "source": "https://github.com/benoitc/gunicorn/blob/ff58e0c6da83d5520916bc4cc109a529258d76e1/docs/logo/gunicorn.svg",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "html5",
+      "labels": [
+        "HTML5"
+      ],
+      "title": "HTML5",
+      "slug": "html5",
+      "hex": "E34F26",
+      "source": "https://www.w3.org/html/logo/",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "javascript",
+      "labels": [
+        "JavaScript ES6+"
+      ],
+      "title": "JavaScript",
+      "slug": "javascript",
+      "hex": "F7DF1E",
+      "source": "https://github.com/voodootikigod/logo.js/blob/1544bdeed6d618a6cfe4f0650d04ab8d9cfa76d9/js.svg",
+      "license": {
+        "type": "MIT"
+      },
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "jsonwebtokens",
+      "labels": [
+        "JWT Auth"
+      ],
+      "title": "JSON Web Tokens",
+      "slug": "jsonwebtokens",
+      "hex": "000000",
+      "source": "https://jwt.io",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "keras",
+      "labels": [
+        "Keras"
+      ],
+      "title": "Keras",
+      "slug": "keras",
+      "hex": "D00000",
+      "source": "https://keras.io",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "langchain",
+      "labels": [
+        "LangChain"
+      ],
+      "title": "LangChain",
+      "slug": "langchain",
+      "hex": "7FC8FF",
+      "source": "https://www.langchain.com/langchain",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "langgraph",
+      "labels": [
+        "LangGraph"
+      ],
+      "title": "LangGraph",
+      "slug": "langgraph",
+      "hex": "7FC8FF",
+      "source": "https://www.langchain.com/langgraph",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "linux",
+      "labels": [
+        "Linux"
+      ],
+      "title": "Linux",
+      "slug": "linux",
+      "hex": "FCC624",
+      "source": "https://www.linuxfoundation.org/the-linux-mark/",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "mongodb",
+      "labels": [
+        "MongoDB"
+      ],
+      "title": "MongoDB",
+      "slug": "mongodb",
+      "hex": "47A248",
+      "source": "https://www.mongodb.com/pressroom",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "mongoose",
+      "labels": [
+        "Mongoose"
+      ],
+      "title": "Mongoose",
+      "slug": "mongoose",
+      "hex": "880000",
+      "source": "https://github.com/Automattic/mongoose/blob/7971a4dbd55888f0b005e65b06024109af8352f7/docs/images/mongoose.svg",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "mysql",
+      "labels": [
+        "MySQL"
+      ],
+      "title": "MySQL",
+      "slug": "mysql",
+      "hex": "4479A1",
+      "source": "https://www.mysql.com/about/legal/logos.html",
+      "guidelines": "https://www.mysql.com/about/legal/logos.html",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "nextdotjs",
+      "labels": [
+        "Next.js"
+      ],
+      "title": "Next.js",
+      "slug": "nextdotjs",
+      "hex": "000000",
+      "source": "https://vercel.com/design/brands#next-js",
+      "guidelines": "https://vercel.com/design/brands#next-js",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "nodedotjs",
+      "labels": [
+        "Node.js"
+      ],
+      "title": "Node.js",
+      "slug": "nodedotjs",
+      "hex": "5FA04E",
+      "source": "https://nodejs.org/en/about/branding",
+      "guidelines": "https://nodejs.org/en/about/branding",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "numpy",
+      "labels": [
+        "NumPy"
+      ],
+      "title": "NumPy",
+      "slug": "numpy",
+      "hex": "013243",
+      "source": "https://numpy.org/press-kit/",
+      "guidelines": "https://github.com/numpy/numpy/blob/main/branding/logo/logoguidelines.md",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "pandas",
+      "labels": [
+        "Pandas"
+      ],
+      "title": "pandas",
+      "slug": "pandas",
+      "hex": "150458",
+      "source": "https://pandas.pydata.org/about/citing.html",
+      "guidelines": "https://pandas.pydata.org/about/citing.html",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "postgresql",
+      "labels": [
+        "PostgreSQL"
+      ],
+      "title": "PostgreSQL",
+      "slug": "postgresql",
+      "hex": "4169E1",
+      "source": "https://wiki.postgresql.org/wiki/Logo",
+      "guidelines": "https://www.postgresql.org/about/policies/trademarks/",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "postman",
+      "labels": [
+        "Postman"
+      ],
+      "title": "Postman",
+      "slug": "postman",
+      "hex": "FF6C37",
+      "source": "https://www.getpostman.com/resources/media-assets/",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "python",
+      "labels": [
+        "Python"
+      ],
+      "title": "Python",
+      "slug": "python",
+      "hex": "3776AB",
+      "source": "https://www.python.org/community/logos/",
+      "guidelines": "https://www.python.org/community/logos/",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "react",
+      "labels": [
+        "React"
+      ],
+      "title": "React",
+      "slug": "react",
+      "hex": "61DAFB",
+      "source": "https://github.com/facebook/create-react-app/blob/282c03f9525fdf8061ffa1ec50dce89296d916bd/test/fixtures/relative-paths/src/logo.svg",
+      "aliases": {
+        "dup": [
+          {
+            "title": "React Native",
+            "source": "https://reactnative.dev"
+          }
+        ]
+      },
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "redis",
+      "labels": [
+        "Redis"
+      ],
+      "title": "Redis",
+      "slug": "redis",
+      "hex": "FF4438",
+      "source": "https://redis.io/brand-guidelines",
+      "guidelines": "https://redis.io/brand-guidelines",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "scikitlearn",
+      "labels": [
+        "scikit-learn"
+      ],
+      "title": "scikit-learn",
+      "slug": "scikitlearn",
+      "hex": "F7931E",
+      "source": "https://github.com/scikit-learn/scikit-learn/blob/c5ef2e985c13119001aa697e446ebb3dbcb326e5/doc/logos/scikit-learn-logo.svg",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "socketdotio",
+      "labels": [
+        "Socket.io"
+      ],
+      "title": "Socket.io",
+      "slug": "socketdotio",
+      "hex": "010101",
+      "source": "https://socket.io",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "sqlalchemy",
+      "labels": [
+        "SQLAlchemy"
+      ],
+      "title": "SQLAlchemy",
+      "slug": "sqlalchemy",
+      "hex": "D71F00",
+      "source": "https://commons.wikimedia.org/wiki/File:SQLAlchemy.svg",
+      "license": {
+        "type": "MIT"
+      },
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "tailwindcss",
+      "labels": [
+        "Tailwind CSS"
+      ],
+      "title": "Tailwind CSS",
+      "slug": "tailwindcss",
+      "hex": "06B6D4",
+      "source": "https://tailwindcss.com/brand",
+      "guidelines": "https://tailwindcss.com/brand",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "tensorflow",
+      "labels": [
+        "TensorFlow"
+      ],
+      "title": "TensorFlow",
+      "slug": "tensorflow",
+      "hex": "FF6F00",
+      "source": "https://www.tensorflow.org",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "typescript",
+      "labels": [
+        "TypeScript"
+      ],
+      "title": "TypeScript",
+      "slug": "typescript",
+      "hex": "3178C6",
+      "source": "https://www.typescriptlang.org/branding",
+      "guidelines": "https://www.typescriptlang.org/branding",
+      "collection": "Simple Icons"
+    },
+    {
+      "id": "webrtc",
+      "labels": [
+        "WebRTC"
+      ],
+      "title": "WebRTC",
+      "slug": "webrtc",
+      "hex": "333333",
+      "source": "https://webrtc.org",
+      "collection": "Simple Icons"
+    }
+  ]
+}

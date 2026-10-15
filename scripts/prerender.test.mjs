@@ -8,6 +8,7 @@ import {
   assertHomepage,
   assertArchive,
   siteOrigin,
+  escapeHTML,
 } from "./prerender-checks.mjs";
 import { projects } from "../src/data/portfolio.ts";
 import {
@@ -20,6 +21,7 @@ import { nextTabIndex, isAssistantShortcut } from "../src/lib/interaction.ts";
 
 import { semanticFragment } from "../src/lib/projectNavigation.ts";
 import { traceStage } from "../src/lib/requestTrace.ts";
+import { resumeStackGroups, resumeStackCount } from "../src/data/heroStack.ts";
 
 let server;
 let origin;
@@ -298,11 +300,12 @@ test("the attached resume is linked consistently and served as a real PDF; the r
 test("every HTML image, responsive image candidate, stylesheet, script, and CSS font/image reference resolves", async () => {
   const resources = new Set();
   for (const match of html.matchAll(/\b(?:src|href)="([^"]+)"/g)) {
+    const resource = match[1].split(/[?#]/)[0];
     if (
-      /\.(?:js|css|woff2|png|jpe?g|webp|svg|pdf)(?:\?|$)/i.test(match[1]) &&
-      match[1].startsWith("/")
+      /\.(?:js|css|woff2|png|jpe?g|webp|svg|pdf)$/i.test(resource) &&
+      resource.startsWith("/")
     )
-      resources.add(match[1]);
+      resources.add(resource);
   }
   for (const match of html.matchAll(/\bsrc[Ss]et="([^"]+)"/g))
     for (const candidate of match[1].split(","))
@@ -490,6 +493,38 @@ test("phase two exposes brand, language, replay, shipment and skills proof contr
   assert.match(html, /PromptWars AI Engineering Competition/);
   assert.match(html, /Supervity Autopilot Hackathon/);
   assert.match(html, /aria-label="Copy email harshgavand2@gmail.com"/);
+});
+
+test("hero proof shows the requested role, experience wording, and complete categorized logo stack", async () => {
+  assert.match(
+    html,
+    /class="role-proof"><strong>Full-Stack AI Engineer<\/strong>/,
+  );
+  assert.match(
+    html,
+    /<strong>2\+ Years<\/strong><span>of building full-stack, backend and AI engineering<\/span>/,
+  );
+  assert.doesNotMatch(
+    html,
+    /class="architecture-proof"|End-to-end systems|2\+ yrs/,
+  );
+  assert.equal((html.match(/class="stack-category"/g) || []).length, 6);
+  assert.equal(
+    (html.match(/class="stack-chip"/g) || []).length,
+    resumeStackCount,
+  );
+  const response = await fetch(origin + "/stack/technology-logos.svg");
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type"), /image\/svg\+xml/);
+  const sprite = await response.text();
+  for (const group of resumeStackGroups)
+    for (const item of group.items) {
+      assert.ok(html.includes(escapeHTML(item.name)), item.name);
+      if (item.brand) {
+        assert.ok(html.includes(`/stack/technology-logos.svg#${item.brand}`));
+        assert.ok(sprite.includes(`id="${item.brand}"`));
+      }
+    }
 });
 test("the header, hero lists and code preview contain meaningful accessible content", () => {
   const header = html.match(
