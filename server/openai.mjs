@@ -5,6 +5,7 @@ import {
   skills,
   projects,
   caseStudies,
+  engineeringSprints,
 } from "../src/data/portfolio.ts";
 
 export class ChatError extends Error {
@@ -97,6 +98,7 @@ export function knowledgeFor(messages) {
     profile,
     about: aboutProfile,
     experience,
+    engineeringSprints,
     skills,
     projectIndex: projects.map(({ id, title, category, technologies }) => ({
       id,

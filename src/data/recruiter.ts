@@ -154,3 +154,14 @@ export const productionCode = [
   "}",
   "return result;",
 ];
+
+// The executable illustrative port in examples/quota_lifecycle.py.
+export const pythonQuotaCode = [
+  "async def generate_with_quota(request, quota, generate, check_disconnect):",
+  "    async with quota.reserve(request) as reservation:",
+  "        await check_disconnect()",
+  "        reservation.mark_dispatched()",
+  "        result = await generate(request)",
+  "        await reservation.settle(result.usage)",
+  "    return result",
+];

@@ -50,7 +50,12 @@ export function Contact() {
               {profile.email}
               <ArrowUpRight size={22} aria-hidden="true" />
             </a>
-            <button type="button" className="copy-email" onClick={copyEmail}>
+            <button
+              type="button"
+              className="copy-email"
+              onClick={copyEmail}
+              aria-label={`Copy email ${profile.email}`}
+            >
               {notice === "Copied to clipboard!" ? (
                 <Check size={14} aria-hidden="true" />
               ) : (
@@ -60,31 +65,20 @@ export function Contact() {
                 ? "Copied to clipboard!"
                 : "Copy Email"}
             </button>
-            <div className="contact-socials">
-              <a
-                href={profile.github}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                GitHub <ArrowUpRight size={15} />
-              </a>
-              <a
-                href={profile.resume}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Resume PDF <ArrowUpRight size={15} aria-hidden="true" />
-              </a>
-              <a
-                href={profile.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                LinkedIn <ArrowUpRight size={15} />
-              </a>
+            <div className="contact-socials actions">
+              <ActionLink href={profile.resume} external primary>
+                View Resume (PDF)
+              </ActionLink>
+              <ActionLink href={profile.github} external>
+                GitHub
+              </ActionLink>
+              <ActionLink href={profile.linkedin} external>
+                LinkedIn
+              </ActionLink>
             </div>
-            <p className="contact-location">
-              {profile.location} · Working across the full stack
+            <p className="contact-location availability-badge">
+              <span className="status-dot" aria-hidden="true" />
+              {profile.availability}
             </p>
             <p className="alternate-email">
               Also reachable at{" "}

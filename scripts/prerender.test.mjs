@@ -14,6 +14,7 @@ import {
   chapters,
   chapterNumber,
   productionCode,
+  pythonQuotaCode,
 } from "../src/data/recruiter.ts";
 import { nextTabIndex, isAssistantShortcut } from "../src/lib/interaction.ts";
 
@@ -146,8 +147,13 @@ test("preview images reserve dimensions and load lazily; generated pages contain
     for (const match of page.matchAll(/<img\b[^>]*>/g)) {
       assert.match(match[0], /width="\d+"/);
       assert.match(match[0], /height="\d+"/);
-      assert.match(match[0], /loading="lazy"/);
-      assert.match(match[0], /alt="[^"]+"/);
+      if (match[0].includes('class="brand-logo"')) {
+        assert.match(match[0], /loading="eager"/);
+        assert.match(match[0], /alt=""/);
+      } else {
+        assert.match(match[0], /loading="lazy"/);
+        assert.match(match[0], /alt="[^"]+"/);
+      }
     }
     for (const match of page.matchAll(/href="(https:[^"]+)"/g))
       assert.ok(!/\.git(?:[?#]|$)/.test(match[1]), match[1]);
@@ -162,6 +168,18 @@ test("production code excerpt matches the actual request handler", async () => {
   const lines = server.split(/\r?\n/).map((line) => line.trim());
   for (const line of productionCode.filter(Boolean))
     assert.ok(lines.includes(line.trim()), line);
+  const python = await readFile(
+    new URL("../examples/quota_lifecycle.py", import.meta.url),
+    "utf8",
+  );
+  for (const line of pythonQuotaCode)
+    assert.ok(
+      python
+        .split(/\r?\n/)
+        .map((item) => item.trim())
+        .includes(line.trim()),
+      line,
+    );
 });
 
 test("core foreground tokens maintain at least 7:1 contrast against every card surface", async () => {
@@ -454,8 +472,24 @@ test("product imagery is the default case tab and public fragment URLs are seman
   assert.ok(!html.includes("Implementation Highlights"));
   assert.match(
     html,
-    /Mumbai, India · Open to Full-Stack, Backend &amp; AI Engineering Roles \(Remote \/ Relocation\)/,
+    /Mumbai, India · Open to Full-Stack, Backend &amp; AI Engineering Roles \(Remote only\)/,
   );
+  assert.doesNotMatch(html, /relocat/i);
+});
+
+test("phase two exposes brand, language, replay, shipment and skills proof controls in initial HTML", () => {
+  assert.match(html, /class="brand-logo"[^>]*src="\/brand\/hg-icon.webp"/);
+  assert.match(html, /href="\/favicon.png"/);
+  assert.match(html, /aria-label="Implementation language"/);
+  assert.match(html, /Node.js \/ TypeScript/);
+  assert.match(html, /Python \/ FastAPI/);
+  assert.match(html, /class="trace-replay"[\s\S]*?Replay Trace/);
+  assert.equal((html.match(/class="shipment-banner"/g) || []).length, 2);
+  assert.equal((html.match(/class="skill-patterns"/g) || []).length, 4);
+  assert.equal((html.match(/class="skill-proofs"/g) || []).length, 4);
+  assert.match(html, /PromptWars AI Engineering Competition/);
+  assert.match(html, /Supervity Autopilot Hackathon/);
+  assert.match(html, /aria-label="Copy email harshgavand2@gmail.com"/);
 });
 test("the header, hero lists and code preview contain meaningful accessible content", () => {
   const header = html.match(

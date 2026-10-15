@@ -44,9 +44,12 @@ export interface CaseStudy {
 
 export const profile = {
   name: "Harsh Gavand",
-  email: "harsh.gavand.tech@gmail.com",
-  alternateEmail: "harshgavand2@gmail.com",
+  email: "harshgavand2@gmail.com",
+  alternateEmail: "harsh.gavand.tech@gmail.com",
   location: "Mumbai, India",
+  workPreference: "Remote only",
+  availability:
+    "Mumbai, India · Open to Full-Stack, Backend & AI Engineering Roles (Remote only)",
   github: "https://github.com/harshgavandit",
   linkedin: "https://www.linkedin.com/in/harsh-gavand",
   site: "https://harshgavand.dev",
@@ -217,11 +220,11 @@ export const caseStudies: CaseStudy[] = [
     shortName: "DevGraph — Repository Discovery & Issue Indexing Platform",
     problem: "Make repository and developer data navigable.",
     summary:
-      "Repository discovery and issue exploration built around connected developer, repository, and issue records. Independent personal and discovery workspaces keep search responsive without a request per keystroke.",
+      "Repository discovery built around a connected user–repository–issue graph. Independent feed snapshots and local search state keep discovery responsive without refetching on every keystroke.",
     engineering: [
-      "Document graph resolution: Linked users, repositories, and issues through Mongoose references and targeted population to assemble related repository context.",
-      "Independent discovery state: Separated personal and suggested feeds from local search state, filtering loaded results without redundant network polling.",
-      "Bounded mutation contracts: Separated repository and visibility operations into Express controllers, validating required names and owner identifiers during creation.",
+      "Request orchestration & result reuse: Loaded personal and suggested repository feeds into independent client state, reusing those results during local searches without repeated API polling.",
+      "Search state & document graph resolution: Separated the name query from feed state while Mongoose references and population resolve repository owners and linked issues.",
+      "Deterministic feed boundaries: Kept personal and discovery results independently addressable, with explicit repository visibility operations and creation-time identity validation.",
     ],
     contributions: [
       {
@@ -284,11 +287,11 @@ export const caseStudies: CaseStudy[] = [
     shortName: "AI News Automation — Ingestion-to-Email Pipeline",
     problem: "Turn collected sources into a readable digest.",
     summary:
-      "Automated source-to-email pipeline that turns AI articles and video transcripts into source-linked digests. Collection, local inference, persistence, and SMTP delivery remain independently inspectable.",
+      "A daily source-to-email pipeline turns AI articles and video transcripts into source-linked digests. Per-stage results distinguish collection, processing, generation, and delivery failures across a repeatable run.",
     engineering: [
-      "Duplicate-aware ingestion: Normalized article and video records behind SQLAlchemy repositories, checking GUIDs and video IDs to skip previously collected sources.",
-      "Fault-isolated inference: Separated collection, Ollama summarization, and digest persistence; generation failures return an explicit missing result instead of fabricated content.",
-      "Validated delivery boundary: Checked recipients and SMTP configuration before dispatch, producing multipart plaintext and HTML digests with original-source references.",
+      "Daily ingestion orchestration: Coordinated scraping, transcript/markdown processing, digest generation, and email through a bounded runner with per-stage counts and explicit success/error results.",
+      "Source-identity deduplication: Checked GUIDs and video IDs against normalized SQLAlchemy records to skip stored material, keeping duplicate checks at the persistence boundary.",
+      "Fault-isolated generation & delivery: Preserved missing-model results and delivery errors as inspectable outcomes; validated SMTP inputs before composing source-linked plaintext and HTML messages.",
     ],
     contributions: [
       {
@@ -351,6 +354,8 @@ export const experience = [
     company: "Globetrek Engineering Corporation",
     role: "AI-Native Full-Stack Developer",
     period: "Nov 2025 — Sep 2026",
+    shipment:
+      "Django + React business applications with REST services, relational records, and SQL reporting.",
     tech: [
       "Django",
       "React",
@@ -367,16 +372,17 @@ export const experience = [
       "CI/CD",
     ],
     points: [
-      "Delivered Django + React workflows: Owned relational models, REST contracts, interface state, and deployment across the complete feature lifecycle.",
-      "Engineered Python + JavaScript services: Organized REST APIs, asynchronous tasks, and third-party integrations into explicit backend workflows.",
-      "Designed SQL reporting models: Used relational schemas and reusable queries to keep operational records consistent across application screens and reports.",
-      "Standardized full-stack delivery: Reviewed shared changes against coding standards and reusable patterns to improve maintainability across frontend and backend boundaries.",
+      "Production API architecture: Engineered Python and JavaScript REST services, asynchronous tasks, and third-party integrations to support complete Django + React business workflows.",
+      "Relational modeling & reporting: Designed SQL schemas and reusable reporting queries to keep operational records consistent across product screens and downstream reports.",
+      "Full-stack delivery & review: Owned features from interface state through deployment, using code reviews and shared implementation patterns to keep releases maintainable.",
     ],
   },
   {
     company: "HRP Enterprises",
     role: "Full-Stack Developer",
     period: "Jan 2024 — Oct 2025",
+    shipment:
+      "Responsive product interfaces and REST-driven views spanning 10+ pages.",
     tech: [
       "HTML",
       "CSS",
@@ -395,17 +401,40 @@ export const experience = [
       "Git",
     ],
     points: [
-      "Engineered responsive interfaces: Supported 1,000+ concurrent users across browser and screen-size variations with no reported compatibility issues.",
-      "Optimized REST API delivery: Integrated asynchronous data flows across 10+ pages, reducing average page load time by 30%.",
-      "Resolved 20+ UI defects: Applied device and screen-size fixes to improve rendering consistency across responsive layouts.",
+      "Responsive product architecture: Engineered interfaces supporting 1,000+ concurrent users across browsers and screen sizes with no reported compatibility issues.",
+      "API-driven rendering & performance: Integrated asynchronous REST data flows across 10+ pages, reducing average page load time by 30%.",
+      "Interface reliability & defect resolution: Fixed 20+ UI defects through device and screen-size corrections, improving consistency across responsive layouts.",
     ],
+  },
+];
+
+export const engineeringSprints = [
+  {
+    title: "Supervity Autopilot Hackathon",
+    kind: "Multi-agent systems / 24-hour build",
+    summary:
+      "Architected a multi-agent AI operational command center for automated enterprise workflows, with role-based access and human oversight.",
+    href: "https://github.com/harshgavandit/SuperVity-AutoPilot-AI-Hackathon",
+  },
+  {
+    title: "PromptWars AI Engineering Competition",
+    kind: "AI engineering / competitive sprint",
+    summary:
+      "Built and deployed AI challenge repositories under timed competitive constraints.",
+    href: null,
   },
 ];
 
 export const skills = [
   {
-    title: "Backend & Distributed Systems",
+    title: "Backend & Distributed APIs",
     description: "Contracts, identity, and request admission.",
+    patterns:
+      "Validated API boundaries, shared rate limits, async tasks, and idempotent quota settlement.",
+    proofs: [
+      { label: "Production experience", href: "#experience" },
+      { label: "Quota lifecycle", href: "#hero" },
+    ],
     items: [
       "Node.js",
       "Express",
@@ -420,11 +449,18 @@ export const skills = [
       "Socket.io",
       "WebRTC",
       "Webhooks",
+      "Async Tasks & Queues",
     ],
   },
   {
-    title: "Applied AI Engineering",
+    title: "Applied AI & Agentic Workflows",
     description: "Context, provider workflows, and model output.",
+    patterns:
+      "Multimodal provider orchestration, context retrieval, agent handoffs, and bounded token accounting.",
+    proofs: [
+      { label: "UGC media pipeline", href: "#ugc-platform" },
+      { label: "Memory Graph AI sprint", href: "#hackathon-recognition" },
+    ],
     items: [
       "Google AI / GenAI",
       "OpenAI API",
@@ -441,11 +477,18 @@ export const skills = [
       "Keras",
       "Pandas",
       "NumPy",
+      "LLM Memory Graphs",
     ],
   },
   {
-    title: "Data & Infrastructure",
+    title: "Data Modeling & Cloud Infrastructure",
     description: "Persistent state, reproducible environments, and delivery.",
+    patterns:
+      "Relational state, document references, atomic quota operations, media delivery, and reproducible deployments.",
+    proofs: [
+      { label: "UGC persistence", href: "#ugc-platform" },
+      { label: "LendFlow data model", href: "#banking-saas" },
+    ],
     items: [
       "PostgreSQL",
       "Prisma",
@@ -471,11 +514,18 @@ export const skills = [
       "Cursor",
       "Codex",
       "Claude Code",
+      "ACID Transactions",
     ],
   },
   {
-    title: "Frontend & Product Interfaces",
+    title: "Frontend Architecture & UX",
     description: "Accessible interaction and application state.",
+    patterns:
+      "ARIA tabs and dialogs, independent feed state, role-oriented dashboards, and responsive product workflows.",
+    proofs: [
+      { label: "LendFlow dashboards", href: "#banking-saas" },
+      { label: "Repository discovery", href: "#github-replica" },
+    ],
     items: [
       "React",
       "Next.js",

@@ -1,4 +1,10 @@
-import { aboutProfile, experience, profile, skills } from "../data/portfolio";
+import {
+  aboutProfile,
+  engineeringSprints,
+  experience,
+  profile,
+  skills,
+} from "../data/portfolio";
 import { engineeringPrinciples } from "../data/recruiter";
 import { ChapterHeading, LeadStatement, Tags } from "./Primitives";
 
@@ -25,9 +31,14 @@ export function Experience() {
             <div className="experience-meta">
               <span className="eyebrow">{job.company}</span>
               <p>{job.period}</p>
+              <p>Based in {profile.location}</p>
             </div>
             <div>
               <h3>{job.role}</h3>
+              <p className="shipment-banner">
+                <span>Key Engineering Shipment</span>
+                {job.shipment}
+              </p>
               <ul className="engineering-bullets">
                 {job.points.map((point) => (
                   <li key={point}>
@@ -59,10 +70,12 @@ export function Experience() {
           <h4>{aboutProfile.education.degree}</h4>
           <p>{aboutProfile.education.details}</p>
           <span className="eyebrow">Based in</span>
-          <p>{profile.location} · Open to relocation / remote</p>
+          <p>
+            {profile.location} · {profile.workPreference}
+          </p>
         </div>
       </div>
-      <div className="recognition">
+      <div className="recognition" id="hackathon-recognition">
         <span className="eyebrow">Hackathons & recognition</span>
         <div className="recognition-grid">
           {aboutProfile.recognition.map((item, index) => (
@@ -84,6 +97,28 @@ export function Experience() {
                 </a>
               )}
             </div>
+          ))}
+        </div>
+      </div>
+      <div className="engineering-sprints" aria-labelledby="sprints-title">
+        <h3 id="sprints-title">Hackathons &amp; Engineering Sprints</h3>
+        <div className="sprints-grid">
+          {engineeringSprints.map((sprint) => (
+            <article key={sprint.title}>
+              <span className="eyebrow">{sprint.kind}</span>
+              <h4>{sprint.title}</h4>
+              <p>{sprint.summary}</p>
+              {sprint.href && (
+                <a
+                  className="text-link"
+                  href={sprint.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Explore the build ↗
+                </a>
+              )}
+            </article>
           ))}
         </div>
       </div>
@@ -112,6 +147,19 @@ export function Skills() {
             </span>
             <h3>{group.description}</h3>
             <Tags items={group.items} />
+            <p className="skill-patterns">
+              <strong>Production Patterns:</strong> {group.patterns}
+            </p>
+            <div
+              className="skill-proofs"
+              aria-label={`${group.title} proof links`}
+            >
+              {group.proofs.map((proof) => (
+                <a key={proof.href} href={proof.href}>
+                  Proof: {proof.label} ↗
+                </a>
+              ))}
+            </div>
           </article>
         ))}
       </div>

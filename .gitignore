@@ -30,3 +30,5 @@ dist-ssr
 tmp/
 verification/*.png
 verification/*.jpg
+__pycache__/
+*.pyc

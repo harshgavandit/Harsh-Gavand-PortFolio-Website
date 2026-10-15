@@ -1,5 +1,7 @@
-import { useState } from "react";
-import { Check, TriangleAlert } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Check, Circle, LoaderCircle, Play, TriangleAlert } from "lucide-react";
+import { useMotionEnabled } from "./MotionPreferences";
+import { startTraceReplay } from "../lib/traceReplay";
 import {
   traceStage,
   traceStages,
@@ -9,7 +11,47 @@ import {
 
 export function RequestTrace() {
   const [mode, setMode] = useState<TraceMode>("success");
+  const [step, setStep] = useState<number | null>(null);
+  const [announcement, setAnnouncement] = useState<string | null>(null);
+  const stop = useRef<(() => void) | null>(null);
+  const motionEnabled = useMotionEnabled();
   const scenario = traceScenarios.find((item) => item.mode === mode)!;
+  useEffect(
+    () => () => {
+      stop.current?.();
+    },
+    [],
+  );
+  useEffect(() => {
+    if (!motionEnabled) {
+      stop.current?.();
+      setStep(null);
+      setAnnouncement(null);
+    }
+  }, [motionEnabled]);
+  const running = motionEnabled && step !== null;
+  function select(mode: TraceMode) {
+    stop.current?.();
+    setStep(null);
+    setAnnouncement(null);
+    setMode(mode);
+  }
+  function replay() {
+    stop.current?.();
+    if (!motionEnabled) {
+      setStep(null);
+      setAnnouncement(`Replay complete. ${scenario.status}`);
+      return;
+    }
+    setAnnouncement(`Replaying ${scenario.label}.`);
+    stop.current = startTraceReplay({
+      onStep: setStep,
+      onComplete: () => {
+        setStep(null);
+        setAnnouncement(`Replay complete. ${scenario.status}`);
+      },
+    });
+  }
   return (
     <div className="request-trace">
       <div className="trace-top">
@@ -26,22 +68,60 @@ export function RequestTrace() {
             type="button"
             key={item.mode}
             aria-pressed={mode === item.mode}
-            onClick={() => setMode(item.mode)}
+            onClick={() => select(item.mode)}
           >
             {item.label}
           </button>
         ))}
       </div>
-      <ol className="trace-stages" aria-label={scenario.label}>
+      <button
+        type="button"
+        className="trace-replay"
+        onClick={replay}
+        aria-controls="trace-stage-list"
+      >
+        <Play size={13} aria-hidden="true" />
+        {running ? "Restart Trace" : "Replay Trace"}
+      </button>
+      <ol
+        id="trace-stage-list"
+        className="trace-stages"
+        aria-label={scenario.label}
+        aria-busy={running}
+      >
         {traceStages.map((stage, index) => {
           const detail = traceStage(mode, index);
           return (
-            <li key={stage} data-state={detail.failed ? "failed" : "done"}>
+            <li
+              key={stage}
+              aria-current={running && index === step ? "step" : undefined}
+              data-state={
+                running
+                  ? index === step
+                    ? "running"
+                    : index > step!
+                      ? "idle"
+                      : detail.failed
+                        ? "failed"
+                        : "done"
+                  : detail.failed
+                    ? "failed"
+                    : "done"
+              }
+            >
               <div className="trace-stage-label">
                 <span>
                   0{index + 1} / {detail.title}
                 </span>
-                {detail.failed ? (
+                {running && index === step ? (
+                  <LoaderCircle
+                    className="trace-spinner"
+                    size={14}
+                    aria-hidden="true"
+                  />
+                ) : running && index > step! ? (
+                  <Circle size={12} aria-hidden="true" />
+                ) : detail.failed ? (
                   <TriangleAlert size={14} aria-hidden="true" />
                 ) : (
                   <Check size={14} aria-hidden="true" />
@@ -59,7 +139,11 @@ export function RequestTrace() {
         aria-live="polite"
         aria-atomic="true"
       >
-        {scenario.status}
+        {running
+          ? announcement
+          : step !== null
+            ? scenario.status
+            : (announcement ?? scenario.status)}
       </p>
       <p className="trace-disclosure">
         Deterministic state-machine trace with illustrative token values:

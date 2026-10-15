@@ -7,12 +7,15 @@ import {
   latestAIProjects,
   caseStudies,
   profile,
+  experience,
+  skills,
 } from "../src/data/portfolio.ts";
 import { buildRequest, sourceLinks } from "../server/openai.mjs";
 import { matchesProjectCollection } from "../src/lib/portfolioActions.ts";
 import { curatedArchive } from "../src/data/recruiter.ts";
 import { codeTokens } from "../src/lib/codeTokens.ts";
 import { renderDemoOrigins, warmDemoRequests } from "../src/lib/demoWarmup.ts";
+import { startTraceReplay } from "../src/lib/traceReplay.ts";
 const projects = JSON.parse(
   readFileSync(new URL("../src/data/projects.json", import.meta.url), "utf8"),
 );
@@ -237,7 +240,7 @@ test("SEO files use the canonical production origin and valid structured data", 
     html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1],
   );
   assert.equal(schema.name, "Harsh Gavand");
-  assert.equal(schema.email, "harsh.gavand.tech@gmail.com");
+  assert.equal(schema.email, profile.email);
   for (const path of ["robots.txt", "sitemap.xml"])
     assert.ok(
       readFileSync(
@@ -245,6 +248,66 @@ test("SEO files use the canonical production origin and valid structured data", 
         "utf8",
       ).includes(schema.url),
     );
+});
+
+test("trace replay visits four stages at 150ms intervals and cancels stale callbacks", () => {
+  const pending = [];
+  const seen = [];
+  let completed = 0;
+  const cancelled = [];
+  const stop = startTraceReplay({
+    onStep: (step) => seen.push(step),
+    onComplete: () => completed++,
+    schedule: (callback, delay) => {
+      pending.push({ callback, delay });
+      return pending.length;
+    },
+    cancel: (handle) => cancelled.push(handle),
+  });
+  assert.deepEqual(seen, [0]);
+  assert.deepEqual(
+    pending.map((item) => item.delay),
+    [150, 300, 450, 600],
+  );
+  pending.forEach((item) => item.callback());
+  assert.deepEqual(seen, [0, 1, 2, 3]);
+  assert.equal(completed, 1);
+  stop();
+  pending.forEach((item) => item.callback());
+  assert.equal(completed, 1);
+  assert.deepEqual(cancelled, [1, 2, 3, 4]);
+  const late = [];
+  const cancelledSteps = [];
+  const cancelEarly = startTraceReplay({
+    onStep: (step) => cancelledSteps.push(step),
+    onComplete: () => assert.fail("Cancelled replay must not complete"),
+    schedule: (callback) => {
+      late.push(callback);
+      return late.length;
+    },
+    cancel: () => {},
+  });
+  cancelEarly();
+  late.forEach((callback) => callback());
+  assert.deepEqual(cancelledSteps, [0]);
+});
+
+test("availability, experience shipments and architectural skills carry concrete public proof", () => {
+  assert.equal(profile.workPreference, "Remote only");
+  assert.equal(profile.email, "harshgavand2@gmail.com");
+  assert.doesNotMatch(profile.availability, /relocat/i);
+  assert.equal(skills.length, 4);
+  for (const group of skills) {
+    assert.ok(group.patterns.length > 45);
+    assert.ok(group.proofs.length >= 2);
+  }
+  for (const job of experience) {
+    assert.equal(job.points.length, 3);
+    assert.ok(job.shipment.length > 40);
+    assert.ok(job.points.every((point) => point.includes(": ")));
+  }
+  for (const file of ["brand/hg-icon.webp", "favicon.png"])
+    assert.ok(existsSync(new URL("../public/" + file, import.meta.url)));
 });
 
 test("original supplied portrait remains unaltered", () => {

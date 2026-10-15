@@ -16,6 +16,12 @@ Experience, education, the supplied portrait, recognition, skills, engineering p
 
 The attached résumé is exported to `public/resume.pdf`, linked from the desktop header, mobile menu, hero, contact section, and assistant sources. The original Word document remains outside the repository. The two-page PDF preserves its text, formatting, and hyperlinks and was visually checked before publication. Contact also provides a Copy Email control with visible and live-region feedback.
 
+Availability is remote-only, shared between the hero, profile and contact badge. The primary recruiter address is `harshgavand2@gmail.com`; the earlier address remains an alternate. The supplied neon HG artwork is used in the header and favicon through small web derivatives.
+
+Experience includes shipment banners, three architectural highlights per role, and a sprint grid. The skills matrix links production patterns to real project and experience anchors. PromptWars participation text is supplied by the owner; no competition ranking or public repository link is invented.
+
+Trace replay highlights four stages at 150ms intervals, cancels on restart/scenario change/unmount, and completes immediately with reduced motion. The Implementation panel switches between executed Node.js code and a clearly labelled Python context-manager port in `examples/quota_lifecycle.py`. That port is an optional illustration, not a second deployed backend. Run its standard-library tests with `python -m unittest discover -s examples -p "test_*.py" -v`; a FastAPI host must propagate post-dispatch disconnect cancellation to the injected provider task.
+
 Render-hosted project demos receive best-effort background GET requests after browser idle, with a 500ms fallback. Origins come only from HTTPS Render demo URLs in the catalog and are deduplicated. Requests omit credentials and referrers, failures stay isolated, and cleanup cancels pending work. Visitors using Save-Data are excluded. Warm-up improves the chance a demo is ready but cannot guarantee service availability or remove every cold start; no third-party requests run during server rendering.
 
 ## Development

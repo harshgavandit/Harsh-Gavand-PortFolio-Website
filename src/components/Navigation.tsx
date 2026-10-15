@@ -98,7 +98,14 @@ export function Navigation() {
             className="brand"
             aria-label="Harsh Gavand home"
           >
-            hg<span>.</span>
+            <img
+              className="brand-logo"
+              src="/brand/hg-icon.webp"
+              width={52}
+              height={52}
+              alt=""
+              loading="eager"
+            />
             <span className="brand-caption">
               Harsh Gavand<small>Full-Stack & AI Engineer</small>
             </span>
