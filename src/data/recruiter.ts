@@ -132,19 +132,25 @@ export const heroArchitecture = [
   },
 ];
 
-// Verbatim request-admission path from this portfolio's server/app.mjs.
+// Executed quota lifecycle from server/quota-lifecycle.mjs.
 export const productionCode = [
-  "const request = buildRequest(messages, model);",
   "const estimate = reservationFor(request);",
   "const reservation = await quota.reserve(estimate.amount);",
-  "",
-  "if (controller.signal.aborted) return;",
-  "const result = await generate(messages, controller.signal, request);",
+  "let providerDispatched = false;",
+  "let actual;",
+  "let result;",
   "try {",
-  "  await quota.settle(reservation, usageCost(result.usage, estimate));",
-  "} catch {",
-  "  console.warn(",
-  '    "AI quota settlement unavailable; reservation retained.",',
-  "  );",
+  "  signal.throwIfAborted();",
+  "  providerDispatched = true;",
+  "  result = await generate();",
+  "  actual = usageCost(result.usage, estimate);",
+  "  await quota.settle(reservation, actual);",
+  "} catch (error) {",
+  "  await quota.releaseOrEnqueueRetry(reservation, {",
+  "    providerDispatched,",
+  "    actual,",
+  "  });",
+  "  if (actual === undefined) throw error;",
   "}",
+  "return result;",
 ];

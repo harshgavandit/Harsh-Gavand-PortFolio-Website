@@ -12,7 +12,7 @@ export function ProjectArchive() {
       projects.filter(
         (project) =>
           matchesProjectCollection(project, filter) &&
-          `${project.title} ${project.category} ${project.overview} ${project.technologies.join(" ")}`
+          `${project.title} ${project.aliases?.join(" ") || ""} ${project.githubUrl} ${project.category} ${project.overview} ${project.technologies.join(" ")}`
             .toLowerCase()
             .includes(query.trim().toLowerCase()),
       ),
@@ -70,11 +70,7 @@ export function ProjectArchive() {
       </p>
       <ol className="project-directory-list">
         {visible.map((project) => (
-          <li
-            data-project-id={project.id}
-            id={`archive-project-${project.id}`}
-            key={project.id}
-          >
+          <li data-project-id={project.id} id={project.slug} key={project.id}>
             <article>
               <header>
                 <div>

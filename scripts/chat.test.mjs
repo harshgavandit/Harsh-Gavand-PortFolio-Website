@@ -16,6 +16,10 @@ async function fixture(t, options = {}) {
       monthlyBudgetMicros: 1000000,
       reserve: async (amount) => ({ amount }),
       settle: async () => {},
+      releaseOrEnqueueRetry: async (
+        _reservation,
+        { providerDispatched, actual },
+      ) => (providerDispatched && actual === undefined ? "retained" : "queued"),
     },
     allowedOrigins: ["http://localhost:5173"],
     generate: async (messages) => {
@@ -64,6 +68,24 @@ test("chat returns generated text and only canonical, existing portfolio sources
   assert.ok(data.sources.every((s) => !s.href.includes("javascript:")));
   assert.ok(!JSON.stringify(data).includes("test-key"));
   assert.equal(calls.length, 1);
+});
+
+test("server startup resumes queued settlements without making a provider request", async (t) => {
+  let drains = 0;
+  const { origin, calls } = await fixture(t, {
+    quota: {
+      configured: true,
+      dailyLimit: 200,
+      monthlyBudgetMicros: 1000000,
+      retrySettlements: async () => {
+        drains++;
+        return { claimed: 1, settled: 1, failed: 0, deadLettered: 0 };
+      },
+    },
+  });
+  assert.equal((await fetch(origin + "/api/health")).status, 200);
+  assert.equal(drains, 1);
+  assert.equal(calls.length, 0);
 });
 
 test("rejects malformed, oversized, or forged-role histories before provider calls", async (t) => {
@@ -253,6 +275,8 @@ test("provider failure keeps its reservation; failed settlement still returns a 
       settlements++;
       throw new Error("store temporarily down");
     },
+    releaseOrEnqueueRetry: async (_reservation, { actual }) =>
+      actual === undefined ? "retained" : "queued",
   };
   const failed = await fixture(t, {
     quota,

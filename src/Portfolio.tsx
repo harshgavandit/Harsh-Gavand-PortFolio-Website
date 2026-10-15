@@ -1,4 +1,6 @@
-import { Route, Routes } from "react-router-dom";
+import { useEffect } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
+import { semanticFragment } from "./lib/projectNavigation";
 import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
 import { FeaturedWork } from "./components/Work";
@@ -29,6 +31,17 @@ export default function Portfolio({
 }: {
   year?: number;
 }) {
+  const { pathname, hash } = useLocation();
+  useEffect(() => {
+    const fragment = semanticFragment(hash);
+    if (fragment === hash) return;
+    window.history.replaceState(
+      window.history.state,
+      "",
+      pathname + window.location.search + fragment,
+    );
+    document.getElementById(fragment.slice(1))?.scrollIntoView();
+  }, [pathname, hash]);
   return (
     <MotionPreferencesProvider>
       <a className="skip-link" href="#main">

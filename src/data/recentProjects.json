@@ -21,8 +21,9 @@
     ],
     "role": "I integrated OpenAI-backed ADK agents, public search tools, local admission controls, and configuration diagnostics.",
     "challenges": "Keeping educational budget data separate from personal accounts and preventing search snippets from being presented as verified current prices or rates.",
-    "impact": "I connected two ADK agents to OpenAI, timestamped public-source research, and shared SQLite request admission.",
-    "githubUrl": "https://github.com/harshgavandit/adk-finance-assistant"
+    "impact": "I integrated two ADK agents to OpenAI, timestamped public-source research, and shared SQLite request admission.",
+    "githubUrl": "https://github.com/harshgavandit/adk-finance-assistant",
+    "slug": "adk-finance-assistant"
   },
   {
     "id": 28,
@@ -44,10 +45,11 @@
       "Google Maps API",
       "MCP"
     ],
-    "role": "I connected OpenAI reasoning to direct Maps tools and an MCP agent, with configuration checks and bounded API requests.",
+    "role": "I integrated OpenAI reasoning to direct Maps tools and an MCP agent, with configuration checks and bounded API requests.",
     "challenges": "Separating model access from Maps permissions and explaining that midpoint search covers one area rather than the entire route.",
     "impact": "I implemented two ADK integration paths for location tools: direct Maps REST functions and hosted MCP tool discovery.",
-    "githubUrl": "https://github.com/harshgavandit/google-maps-mcp-openai-agent"
+    "githubUrl": "https://github.com/harshgavandit/google-maps-mcp-openai-agent",
+    "slug": "google-maps-mcp-openai-agent"
   },
   {
     "id": 29,
@@ -73,7 +75,8 @@
     "role": "I integrated the multi-agent shopping flow, deterministic catalog validation, Redis admission, and persistent local sessions.",
     "challenges": "Maintaining consistent state between agent handoffs while ensuring the model cannot invent products, prices, or completed purchases.",
     "impact": "I coordinated four shopping agents through validated catalog data, Python cart calculations, Redis admission, and SQLite sessions.",
-    "githubUrl": "https://github.com/harshgavandit/adk-shopping-assistant"
+    "githubUrl": "https://github.com/harshgavandit/adk-shopping-assistant",
+    "slug": "adk-shopping-assistant"
   },
   {
     "id": 30,
@@ -95,10 +98,11 @@
       "SQLite",
       "Streamable HTTP"
     ],
-    "role": "I connected an OpenAI tool-calling client to MCP data tools, schema discovery, and restricted SQLite querying.",
+    "role": "I integrated an OpenAI tool-calling client to MCP data tools, schema discovery, and restricted SQLite querying.",
     "challenges": "Bounding model-generated SQL and distinguishing illustrative rule-based risk signals from clinically validated predictions.",
     "impact": "I exposed four structured MCP tools through Streamable HTTP and bounded model-generated SQLite queries with read-only access.",
-    "githubUrl": "https://github.com/harshgavandit/healthcare-mcp-openai"
+    "githubUrl": "https://github.com/harshgavandit/healthcare-mcp-openai",
+    "slug": "healthcare-mcp-openai"
   },
   {
     "id": 31,
@@ -125,7 +129,8 @@
     "role": "I integrated the PDF retrieval pipeline, persistent semantic cache, source preservation, and shared request limits.",
     "challenges": "Choosing similarity thresholds and isolating cached answers by source index while keeping the app usable without a Valkey service.",
     "impact": "I added exact and semantic answer reuse with source-page retention, SQLite expiry and size limits, and an optional Valkey adapter.",
-    "githubUrl": "https://github.com/harshgavandit/RAG-Semantic-Cache-Symposium-Bot"
+    "githubUrl": "https://github.com/harshgavandit/RAG-Semantic-Cache-Symposium-Bot",
+    "slug": "symposium-rag-semantic-cache"
   },
   {
     "id": 32,
@@ -150,8 +155,9 @@
     ],
     "role": "I integrated PDF ingestion, retrieval, source-page display, provider configuration, and atomic API admission.",
     "challenges": "Keeping the vector index aligned with its source document and prompting the model to acknowledge information absent from the supplied excerpts.",
-    "impact": "I connected PDF ingestion and FAISS retrieval to a FastAPI answer service and Streamlit source-page display.",
-    "githubUrl": "https://github.com/harshgavandit/RAG-Symposium-Bot"
+    "impact": "I integrated PDF ingestion and FAISS retrieval to a FastAPI answer service and Streamlit source-page display.",
+    "githubUrl": "https://github.com/harshgavandit/RAG-Symposium-Bot",
+    "slug": "symposium-pdf-rag-bot"
   },
   {
     "id": 33,
@@ -175,7 +181,8 @@
     "role": "I integrated the ADK agent with deterministic policy, confirmation state, mock transaction execution, usage limits, and audit controls.",
     "challenges": "Preventing model instructions from bypassing confirmation and ensuring changed transfer details invalidate stale pending state.",
     "impact": "I separated model-selected banking tools from deterministic policy checks, later-turn confirmation, and mock ledger verification.",
-    "githubUrl": "https://github.com/harshgavandit/banking-agent-harness"
+    "githubUrl": "https://github.com/harshgavandit/banking-agent-harness",
+    "slug": "banking-agent-harness"
   },
   {
     "id": 34,
@@ -201,7 +208,8 @@
     "role": "I adapted and organized an existing AWS agent demo, retaining its original history and documenting setup, supported handlers, and verification limits.",
     "challenges": "Distinguishing advertised tool operations from implemented handlers and asynchronous creation requests from completed AWS resources. Update and delete handlers are not implemented.",
     "impact": "I adapted the AWS agent demo and documented its implemented Cloud Control create, read, and list handlers and bounded log queries.",
-    "githubUrl": "https://github.com/harshgavandit/agentic-aws-resource-management"
+    "githubUrl": "https://github.com/harshgavandit/agentic-aws-resource-management",
+    "slug": "agentic-aws-resource-management"
   },
   {
     "id": 35,
@@ -228,7 +236,8 @@
     "role": "I integrated conversational intake, validated ticket state, specialist routing, human review, and session-aware approval outcomes.",
     "challenges": "Keeping the customer interaction responsive while a separate review workflow resolves a refund, with explicit boundaries around process-local session state.",
     "impact": "I separated conversational ticket intake from deterministic support specialists and a separate approval graph for mock refund reviews.",
-    "githubUrl": "https://github.com/harshgavandit/multi-agent-customer-support"
+    "githubUrl": "https://github.com/harshgavandit/multi-agent-customer-support",
+    "slug": "multi-agent-customer-support"
   },
   {
     "id": 36,
@@ -250,10 +259,11 @@
       "Speech-to-Text",
       "Text-to-Speech"
     ],
-    "role": "I connected browser audio capture to an asynchronous transcription, generation, and speech playback flow with recoverable errors.",
+    "role": "I integrated browser audio capture to an asynchronous transcription, generation, and speech playback flow with recoverable errors.",
     "challenges": "Coordinating three provider stages, committing conversation state only after success, and handling browser recording and autoplay behavior.",
-    "impact": "I connected browser audio capture to asynchronous transcription, contextual generation, and MP3 speech playback.",
-    "githubUrl": "https://github.com/harshgavandit/ai-voice-assistant"
+    "impact": "I integrated browser audio capture to asynchronous transcription, contextual generation, and MP3 speech playback.",
+    "githubUrl": "https://github.com/harshgavandit/ai-voice-assistant",
+    "slug": "ai-voice-adventure-assistant"
   },
   {
     "id": 37,
@@ -279,7 +289,8 @@
     "role": "I integrated structure-aware ingestion, hybrid retrieval, graph orchestration, citation checks, and fail-closed request admission.",
     "challenges": "Preserving code context during chunking and combining keyword precision with semantic recall while keeping source labels tied to retrieved chunks.",
     "impact": "I combined Markdown-aware chunking, local embeddings, BM25 and vector rank fusion, and a cited LangGraph generation pipeline.",
-    "githubUrl": "https://github.com/harshgavandit/rag-documentation-assistant"
+    "githubUrl": "https://github.com/harshgavandit/rag-documentation-assistant",
+    "slug": "hybrid-rag-documentation-assistant"
   },
   {
     "id": 38,
@@ -303,7 +314,8 @@
     ],
     "role": "I integrated model configuration, schema-constrained classification, redaction and injection checks, API admission, and the browser demo.",
     "challenges": "Keeping untrusted ticket text separate from system instructions and returning predictable structured results when model output or provider access fails.",
-    "impact": "I connected ticket redaction, injection checks, schema validation, review fallback, and atomic provider admission in a LangGraph API.",
-    "githubUrl": "https://github.com/harshgavandit/support-ticket-classifier"
+    "impact": "I integrated ticket redaction, injection checks, schema validation, review fallback, and atomic provider admission in a LangGraph API.",
+    "githubUrl": "https://github.com/harshgavandit/support-ticket-classifier",
+    "slug": "ai-support-ticket-classifier"
   }
 ]

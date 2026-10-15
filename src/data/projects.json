@@ -1,9 +1,9 @@
 [
   {
     "id": 1,
-    "title": "GitHub Replica",
-    "category": "Full-Stack Developer Platform",
-    "overview": "A GitHub-style application for repository discovery and developer profiles. React renders personal and suggested repositories while Express handlers manage repository and user documents.",
+    "title": "DevGraph — Repository Discovery & Issue Platform",
+    "category": "Developer Tools & Document Relations",
+    "overview": "Developer collaboration depends on clear relationships between accounts, repositories, and issues. I built repository discovery and management workflows around Mongoose document references, validated Express controllers, and independently managed discovery and search state.",
     "features": [
       "Personal and suggested repository listings",
       "MongoDB repository ownership and issue relationships",
@@ -11,11 +11,13 @@
       "Client-side repository name filtering and account login"
     ],
     "technologies": ["React", "Node.js", "Express", "MongoDB", "REST API"],
-    "role": "I connected the React repository interface to Express handlers and MongoDB records, including repository lists, profile views, and account flows.",
-    "challenges": "Presenting related repository, owner, and issue records while keeping client search state aligned with fetched data.",
-    "impact": "I built a React repository explorer backed by Express routes, MongoDB documents, repository ownership queries, and client-side name filtering.",
+    "role": "I implemented repository controllers, document relationship queries, account views, and separate personal/discovery feed state.",
+    "challenges": "Preserving ownership and issue relationships across repository mutations while keeping personal and suggested discovery feeds independently manageable.",
+    "impact": "I implemented owner and issue resolution through Mongoose references, validated repository mutations, and local discovery filtering without a request for each keystroke.",
     "githubUrl": "https://github.com/harshgavandit/GitHub_Replica",
-    "demoUrl": "https://github-replica.onrender.com"
+    "demoUrl": "https://github-replica.onrender.com",
+    "slug": "github-replica",
+    "aliases": ["GitHub Replica"]
   },
   {
     "id": 2,
@@ -30,15 +32,16 @@
     "technologies": ["React", "Node.js", "Socket.io", "WebRTC", "Express"],
     "role": "I built the meeting UI, signaling logic, room lifecycle, client-state handling, and deployment configuration.",
     "challenges": "Handled real-time connection state, peer negotiation, and graceful updates when users join or leave sessions.",
-    "impact": "I connected WebRTC peer negotiation to Socket.io room signaling and built meeting controls around participant and media state.",
+    "impact": "I integrated WebRTC peer negotiation to Socket.io room signaling and built meeting controls around participant and media state.",
     "githubUrl": "https://github.com/harshgavandit/Zoom_Clone",
-    "demoUrl": "https://zoom-clone-xkdj.onrender.com/"
+    "demoUrl": "https://zoom-clone-xkdj.onrender.com/",
+    "slug": "zoom-clone"
   },
   {
     "id": 3,
-    "title": "Banking App SaaS",
-    "category": "FinTech · Lending Workflows",
-    "overview": "A lending application with separate borrower, lender, and admin interfaces. React dashboards connect loan requests, review decisions, repayment records, and reporting to an Express API.",
+    "title": "LendFlow — Multi-Role Lending Platform",
+    "category": "FinTech & Lending Workflows",
+    "overview": "Borrower applications, lender review, and administrative oversight need distinct product flows. I built role-oriented lending screens and Express loan handlers backed by Sequelize models with explicit approval states.",
     "features": [
       "Borrower, lender, and admin dashboard views",
       "Express loan creation and approve/reject endpoints",
@@ -54,11 +57,13 @@
       "JWT",
       "Chart.js"
     ],
-    "role": "I connected role-oriented React screens to Express endpoints, relational loan models, and dashboard data views.",
-    "challenges": "Keeping loan lifecycle states and role-specific interfaces aligned with API responses and relational records.",
-    "impact": "I connected React dashboards to Express loan endpoints and Sequelize models, with pending, approved, and rejected loan states.",
+    "role": "I implemented loan application and approval handlers, relational loan records, and borrower, lender, and administrative product views.",
+    "challenges": "Keeping loan records and role-oriented interfaces consistent across application, approval, rejection, and repayment views.",
+    "impact": "I modeled loan records and approval states in SQL and implemented application, review, and repayment interfaces for three user roles.",
     "githubUrl": "https://github.com/harshgavandit/Banking_App_SaaS",
-    "demoUrl": "https://banking-app-saas.onrender.com/"
+    "demoUrl": "https://banking-app-saas.onrender.com/",
+    "slug": "banking-saas",
+    "aliases": ["Banking App SaaS"]
   },
   {
     "id": 4,
@@ -73,9 +78,10 @@
     "technologies": ["PostgreSQL", "Express", "React", "Node.js", "REST API"],
     "role": "I implemented database-connected backend routes, frontend screens, API integration, and production deployment flow.",
     "challenges": "Structured relational data and API boundaries so the product could remain understandable as features expanded.",
-    "impact": "I connected a React SaaS interface to Express endpoints and PostgreSQL records, keeping the data model separate from presentation.",
+    "impact": "I integrated a React SaaS interface to Express endpoints and PostgreSQL records, keeping the data model separate from presentation.",
     "githubUrl": "https://github.com/harshgavandit/PERN_STACK_SaaS_Project",
-    "demoUrl": "https://pern-stack-saas-project.onrender.com/"
+    "demoUrl": "https://pern-stack-saas-project.onrender.com/",
+    "slug": "pern-stack-saas-project"
   },
   {
     "id": 5,
@@ -92,7 +98,8 @@
     "challenges": "Solved layout consistency and product presentation challenges across responsive breakpoints and commerce states.",
     "impact": "I built reusable storefront components and connected product discovery screens to the application backend.",
     "githubUrl": "https://github.com/harshgavandit/SaaS_E-commerce_Website-",
-    "demoUrl": "https://saas-e-commerce-website-1.onrender.com"
+    "demoUrl": "https://saas-e-commerce-website-1.onrender.com",
+    "slug": "saas-e-commerce-website"
   },
   {
     "id": 6,
@@ -109,7 +116,8 @@
     "challenges": "Translated a complex financial product into a clean clone while keeping the information hierarchy easy to scan.",
     "impact": "I implemented the trading-style interface, reusable financial product sections, routing, and deployment configuration.",
     "githubUrl": "https://github.com/harshgavandit/Zerodha_Clone",
-    "demoUrl": "https://zerodha-clone-qdgb.onrender.com/"
+    "demoUrl": "https://zerodha-clone-qdgb.onrender.com/",
+    "slug": "zerodha-clone"
   },
   {
     "id": 7,
@@ -125,7 +133,8 @@
     "role": "I designed agent workflows, integrated LLM calls, organized backend modules, and prepared the project for iterative extension.",
     "challenges": "Managed unpredictable AI outputs with clearer workflow boundaries, validation points, and maintainable orchestration logic.",
     "impact": "I organized LLM calls and tool execution into modular agent workflows with explicit handoffs between processing steps.",
-    "githubUrl": "https://github.com/harshgavandit/Agentic-AI_SYSTEM"
+    "githubUrl": "https://github.com/harshgavandit/Agentic-AI_SYSTEM",
+    "slug": "agentic-ai-system"
   },
   {
     "id": 8,
@@ -140,14 +149,15 @@
     "technologies": ["Python", "FastAPI", "OpenAI API", "REST API", "Logging"],
     "role": "I built the diagnostic workflow, prompt structure, backend endpoints, and response formatting for developer usability.",
     "challenges": "Converted noisy API failures into actionable summaries while keeping the output concise and technically useful.",
-    "impact": "I connected API failure inputs to an LLM analysis flow and returned structured debugging guidance through backend endpoints.",
-    "githubUrl": "https://github.com/harshgavandit/API_ISSUES_DEBUGGING_AGENT"
+    "impact": "I integrated API failure inputs to an LLM analysis flow and returned structured debugging guidance through backend endpoints.",
+    "githubUrl": "https://github.com/harshgavandit/API_ISSUES_DEBUGGING_AGENT",
+    "slug": "api-issues-debugging-agent"
   },
   {
     "id": 9,
     "title": "Deep Learning Project",
     "category": "Machine Learning",
-    "overview": "A deep learning project focused on model training, experimentation, and predictive analysis. I connected data preparation, training experiments, and model evaluation in a reusable ML pipeline.",
+    "overview": "A deep learning project focused on model training, experimentation, and predictive analysis. I integrated data preparation, training experiments, and model evaluation in a reusable ML pipeline.",
     "features": [
       "Model training workflow",
       "Data preprocessing",
@@ -157,7 +167,8 @@
     "role": "I prepared data, implemented training logic, evaluated model behavior, and documented the experimental workflow.",
     "challenges": "Improved model reliability by organizing preprocessing, training, and evaluation into repeatable steps.",
     "impact": "I implemented preprocessing, model training, and evaluation steps with TensorFlow, Keras, and repeatable data preparation.",
-    "githubUrl": "https://github.com/harshgavandit/Deep-Learning-Project"
+    "githubUrl": "https://github.com/harshgavandit/Deep-Learning-Project",
+    "slug": "deep-learning-project"
   },
   {
     "id": 10,
@@ -179,7 +190,8 @@
     "role": "I designed agent roles, orchestration flow, retrieval logic, and output structure for research-ready responses.",
     "challenges": "Reduced fragmented research outputs by defining clearer handoffs between collection, analysis, and synthesis steps.",
     "impact": "I coordinated collection, retrieval, and summarization agents through a structured research workflow.",
-    "githubUrl": "https://github.com/harshgavandit/Multi-Agent-Research-System"
+    "githubUrl": "https://github.com/harshgavandit/Multi-Agent-Research-System",
+    "slug": "multi-agent-research-system"
   },
   {
     "id": 11,
@@ -194,8 +206,9 @@
     "technologies": ["Python", "Flask", "OpenAI API", "FFmpeg", "REST API"],
     "role": "I built backend workflows for video handling, AI integration, endpoint design, and response preparation.",
     "challenges": "Handled longer-running media tasks by separating processing steps and keeping the user-facing flow understandable.",
-    "impact": "I connected video ingestion and FFmpeg processing to a Flask API and AI summarization workflow.",
-    "githubUrl": "https://github.com/harshgavandit/AI_VIDEO_ASSISTANT"
+    "impact": "I integrated video ingestion and FFmpeg processing to a Flask API and AI summarization workflow.",
+    "githubUrl": "https://github.com/harshgavandit/AI_VIDEO_ASSISTANT",
+    "slug": "ai-video-assistant"
   },
   {
     "id": 12,
@@ -217,7 +230,8 @@
     "role": "I implemented API routes, request handling, automation flow structure, and documentation-friendly backend behavior.",
     "challenges": "Designed the API to support predictable messaging workflows while keeping integration points clean and testable.",
     "impact": "I implemented Express messaging endpoints, request handling, and event-oriented integration workflows.",
-    "githubUrl": "https://github.com/harshgavandit/whatsapp-automation-api"
+    "githubUrl": "https://github.com/harshgavandit/whatsapp-automation-api",
+    "slug": "whatsapp-automation-api"
   },
   {
     "id": 13,
@@ -233,13 +247,14 @@
     "role": "I built the authentication backend, frontend auth flows, route protection, and validation-aware user experience.",
     "challenges": "Handled session persistence and protected state consistently across frontend and backend boundaries.",
     "impact": "I built JWT-based registration and login flows with password hashing and protected application routes.",
-    "githubUrl": "https://github.com/harshgavandit/MERN_AUTHENTICATION_Practice"
+    "githubUrl": "https://github.com/harshgavandit/MERN_AUTHENTICATION_Practice",
+    "slug": "mern-authentication-practice"
   },
   {
     "id": 14,
-    "title": "UGC Content Platform",
-    "category": "Applied AI Platform",
-    "overview": "A creator platform that combines product and model images into marketing imagery and short video. Authenticated users manage generations, credits, and published projects in a React and TypeScript interface.",
+    "title": "UGC Content Studio — AI Media Generation Pipeline",
+    "category": "Applied AI & Media Pipeline",
+    "overview": "Marketing teams need product and model variations without repeated manual shoots. I built a multimodal generation workflow spanning authenticated uploads, Google AI image/video requests, Cloudinary media delivery, and Prisma/PostgreSQL project and credit records.",
     "features": [
       "Clerk-authenticated image and video generation requests",
       "Google AI generation and Cloudinary image/video storage",
@@ -257,11 +272,13 @@
       "Cloudinary",
       "Google AI"
     ],
-    "role": "I connected the creator interface, authenticated project endpoints, generation providers, media storage, and relational project state.",
-    "challenges": "Coordinating provider failures, generation state, temporary media, and credit restoration across the image and video request lifecycle.",
-    "impact": "I connected Clerk-authenticated generation requests to Google AI, Cloudinary media uploads, and Prisma/PostgreSQL project records, with credit restoration on provider failures.",
+    "role": "I implemented authenticated generation endpoints, provider request lifecycles, media persistence, and credit restoration after generation errors.",
+    "challenges": "Coordinating provider operations, media uploads, and credit updates while retaining generation errors and project status.",
+    "impact": "I implemented project-scoped generation, persisted image/video results, and credit restoration on generation failures across the creator workflow.",
     "githubUrl": "https://github.com/harshgavandit/ugc-project",
-    "demoUrl": "https://ugc-project-harsh.vercel.app/"
+    "demoUrl": "https://ugc-project-harsh.vercel.app/",
+    "slug": "ugc-platform",
+    "aliases": ["UGC Content Platform"]
   },
   {
     "id": 15,
@@ -282,8 +299,9 @@
     ],
     "role": "I integrated AI endpoints, structured prompt flows, handled client responses, and refined the user experience.",
     "challenges": "Managed AI response variability with clearer UI states and structured request/response handling.",
-    "impact": "I connected an interactive React interface to server-side OpenAI requests and handled response, loading, and failure states.",
-    "githubUrl": "https://github.com/harshgavandit/OpenAI_Project-"
+    "impact": "I integrated an interactive React interface to server-side OpenAI requests and handled response, loading, and failure states.",
+    "githubUrl": "https://github.com/harshgavandit/OpenAI_Project-",
+    "slug": "openai-project"
   },
   {
     "id": 16,
@@ -299,13 +317,14 @@
     "role": "I built the Flask app structure, AI integration points, media handling flow, and user-facing request lifecycle.",
     "challenges": "Handled media processing complexity while keeping the application lightweight and easy to operate.",
     "impact": "I implemented a Flask media-processing workflow with AI integration, file handling, and result endpoints.",
-    "githubUrl": "https://github.com/harshgavandit/VidSNAP_AI_Flask"
+    "githubUrl": "https://github.com/harshgavandit/VidSNAP_AI_Flask",
+    "slug": "vidsnap-ai-flask"
   },
   {
     "id": 17,
-    "title": "AI News-to-Email Digest",
-    "category": "AI Automation Pipeline",
-    "overview": "A Python pipeline that collects AI articles and video transcripts, summarizes selected content, and formats an email digest. SQLAlchemy repositories track source records and digests between processing stages.",
+    "title": "AI News Automation — Ingestion-to-Email Pipeline",
+    "category": "AI Automation & Delivery Pipelines",
+    "overview": "AI news sources span articles and video transcripts that can be collected repeatedly. I built a Python ingestion-to-digest workflow with source identity checks, local Ollama inference, SQLAlchemy persistence, and multipart SMTP delivery.",
     "features": [
       "Article and video collection with duplicate checks",
       "Local Ollama / llama3 summarization",
@@ -320,10 +339,12 @@
       "Pydantic",
       "SMTP"
     ],
-    "role": "I connected collection, repository access, local model summarization, digest formatting, and container-based execution.",
-    "challenges": "Keeping source identity, summarization failures, and digest persistence consistent across independently run pipeline stages.",
-    "impact": "I connected source collection, duplicate checks, local Ollama summarization, SQLAlchemy persistence, and multipart SMTP digest delivery.",
-    "githubUrl": "https://github.com/harshgavandit/AI_News_To_Email_Generator"
+    "role": "I implemented source ingestion, duplicate identity checks, local-model summarization, digest repositories, and plaintext/HTML SMTP formatting.",
+    "challenges": "Keeping collection, local inference, persistence, and SMTP delivery separately inspectable when an external dependency fails.",
+    "impact": "I prevented repeat source ingestion through repository identity checks and produced persisted digests with original-source references and plaintext/HTML delivery formats.",
+    "githubUrl": "https://github.com/harshgavandit/AI_News_To_Email_Generator",
+    "slug": "news-automation",
+    "aliases": ["AI News-to-Email Digest", "AI News To Email Generator"]
   },
   {
     "id": 18,
@@ -345,7 +366,8 @@
     "role": "I built the upload flow, backend processing endpoints, result presentation, and error-aware user experience.",
     "challenges": "Handled image file inputs and processing states so enhancement results could be delivered consistently.",
     "impact": "I built image upload and processing endpoints with result presentation and recoverable failure states.",
-    "githubUrl": "https://github.com/harshgavandit/AI_image_Enhancer-"
+    "githubUrl": "https://github.com/harshgavandit/AI_image_Enhancer-",
+    "slug": "ai-image-enhancer"
   },
   {
     "id": 19,
@@ -361,7 +383,8 @@
     "role": "I implemented the chat UI, request lifecycle, API integration, and response display experience.",
     "challenges": "Kept AI conversations readable and responsive while managing loading, error, and empty states.",
     "impact": "I built a chat interface around server-side model requests, including loading, error, and conversation rendering states.",
-    "githubUrl": "https://github.com/harshgavandit/SigmaGPT"
+    "githubUrl": "https://github.com/harshgavandit/SigmaGPT",
+    "slug": "sigmagpt"
   },
   {
     "id": 20,
@@ -376,8 +399,9 @@
     "technologies": ["Python", "Django", "TensorFlow", "Keras", "Pandas"],
     "role": "I implemented data processing, prediction workflow integration, API/backend logic, and visual result presentation.",
     "challenges": "Connected ML model outputs to a web-facing experience while keeping the results understandable for users.",
-    "impact": "I connected historical data preparation and model inference to a Django portal with prediction result views.",
-    "githubUrl": "https://github.com/harshgavandit/Stock-Prediction_Portal_Python_ML"
+    "impact": "I integrated historical data preparation and model inference to a Django portal with prediction result views.",
+    "githubUrl": "https://github.com/harshgavandit/Stock-Prediction_Portal_Python_ML",
+    "slug": "stock-prediction-portal-python-ml"
   },
   {
     "id": 21,
@@ -399,7 +423,8 @@
     "role": "I built backend controllers, database models, application views, and validation-aware user flows.",
     "challenges": "Structured server-side logic and data access patterns for maintainability and predictable application behavior.",
     "impact": "I implemented ASP.NET Core controllers, Entity Framework models, and validation-aware views for database-backed workflows.",
-    "githubUrl": "https://github.com/harshgavandit/ASP.NET-CORE_Project"
+    "githubUrl": "https://github.com/harshgavandit/ASP.NET-CORE_Project",
+    "slug": "asp-net-core-project"
   },
   {
     "id": 22,
@@ -414,8 +439,9 @@
     "technologies": ["PHP", "MySQL", "HTML", "CSS", "JavaScript"],
     "role": "I implemented server-rendered pages, database operations, user flows, and interface refinements.",
     "challenges": "Organized transportation data into usable screens while keeping the application lightweight and accessible.",
-    "impact": "I connected PHP pages to MySQL records and built the transport data and navigation views.",
-    "githubUrl": "https://github.com/harshgavandit/RailTrackerUTS_PHP"
+    "impact": "I integrated PHP pages to MySQL records and built the transport data and navigation views.",
+    "githubUrl": "https://github.com/harshgavandit/RailTrackerUTS_PHP",
+    "slug": "railtracker-uts-php"
   },
   {
     "id": 23,
@@ -437,7 +463,8 @@
     "role": "I built API endpoints, serializers, permissions, authentication flows, and database-connected backend logic.",
     "challenges": "Designed API boundaries and permission handling to keep backend behavior secure, readable, and extensible.",
     "impact": "I implemented Django REST Framework endpoints, serializers, authentication, and permission boundaries around PostgreSQL data.",
-    "githubUrl": "https://github.com/harshgavandit/DRF_Advanced_Project"
+    "githubUrl": "https://github.com/harshgavandit/DRF_Advanced_Project",
+    "slug": "drf-advanced-project"
   },
   {
     "id": 24,
@@ -459,7 +486,8 @@
     "role": "I implemented webhook endpoints, request validation, event routing, and integration-oriented backend structure.",
     "challenges": "Handled external event payloads predictably while keeping the processing flow clear and easy to extend.",
     "impact": "I built Express webhook endpoints with request validation, event routing, and downstream integration handling.",
-    "githubUrl": "https://github.com/harshgavandit/WebHook_API_Integration"
+    "githubUrl": "https://github.com/harshgavandit/WebHook_API_Integration",
+    "slug": "webhook-api-integration"
   },
   {
     "id": 25,
@@ -475,7 +503,8 @@
     "role": "I built Django views, form handling, data models, resume templates, and responsive page layouts.",
     "challenges": "Turned multi-section resume data into a structured output flow while keeping the experience simple for users.",
     "impact": "I implemented Django forms, data models, and responsive templates that turn structured inputs into a professional resume.",
-    "githubUrl": "https://github.com/harshgavandit/DjangoResumeBuilder"
+    "githubUrl": "https://github.com/harshgavandit/DjangoResumeBuilder",
+    "slug": "django-resume-builder"
   },
   {
     "id": 26,
@@ -491,6 +520,7 @@
     "role": "I implemented data models, management views, CRUD flows, validation, and user-facing administration screens.",
     "challenges": "Structured office data into reliable workflows that reduce manual tracking and improve administrative clarity.",
     "impact": "I built employee records, validation, and administrative CRUD views on a Django and SQLite application.",
-    "githubUrl": "https://github.com/harshgavandit/Office-Employee-Management-System"
+    "githubUrl": "https://github.com/harshgavandit/Office-Employee-Management-System",
+    "slug": "office-employee-management-system"
   }
 ]

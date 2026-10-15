@@ -4,11 +4,11 @@ import {
   ArrowUpRight,
   Braces,
   Check,
-  Database,
   GitBranch,
 } from "lucide-react";
 import { heroArchitecture, productionCode } from "../data/recruiter";
-import { profile } from "../data/portfolio";
+import { projectSlug } from "../data/portfolio";
+import { RequestTrace } from "./RequestTrace";
 import { Tabs } from "./Tabs";
 function HighlightedLine({ text }: { text: string }) {
   return (
@@ -65,8 +65,8 @@ function Architecture() {
         <a
           href={
             heroArchitecture[active].projectId === 14
-              ? "#project-14"
-              : `/archive#archive-project-${heroArchitecture[active].projectId}`
+              ? "#ugc-platform"
+              : `/archive#${projectSlug(heroArchitecture[active].projectId)}`
           }
         >
           See the implementation <ArrowUpRight size={13} aria-hidden="true" />
@@ -97,7 +97,8 @@ export function EngineeringShowcase() {
             content: (
               <div className="code-preview">
                 <div className="code-file">
-                  <Braces size={14} aria-hidden="true" /> server/app.mjs
+                  <Braces size={14} aria-hidden="true" />{" "}
+                  server/quota-lifecycle.mjs
                 </div>
                 <pre aria-label="Server request admission and quota settlement">
                   <code>
@@ -114,67 +115,22 @@ export function EngineeringShowcase() {
                   </code>
                 </pre>
                 <p>
-                  Reserve the usage allowance before generation. Retain the
-                  reservation when settlement fails.
+                  Atomic quota reservation, pre-dispatch abort rollback, and
+                  durable settlement retries with dead-letter handling.
                 </p>
                 <a
                   className="text-link"
-                  href="https://github.com/harshgavandit/Harsh-Gavand-PortFolio-Website/blob/main/server/app.mjs"
+                  href="https://github.com/harshgavandit/Harsh-Gavand-PortFolio-Website/blob/main/server/quota-lifecycle.mjs"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Read the request handler{" "}
+                  Read the quota lifecycle{" "}
                   <ArrowUpRight size={14} aria-hidden="true" />
                 </a>
               </div>
             ),
           },
-          {
-            label: "Live Telemetry",
-            content: (
-              <div className="engineering-profile">
-                <div className="profile-symbol">
-                  <Database size={30} aria-hidden="true" />
-                </div>
-                <p className="eyebrow">Engineering profile</p>
-                <h3>
-                  Backend APIs.
-                  <br />
-                  Applied AI.
-                  <br />
-                  Full-stack delivery.
-                </h3>
-                <p>Mumbai · Open to relocation / remote</p>
-                <dl>
-                  <div>
-                    <dt>Specialization</dt>
-                    <dd>Backend APIs, AI workflows & data integration</dd>
-                  </div>
-                  <div>
-                    <dt>Languages</dt>
-                    <dd>TypeScript · JavaScript · Python · SQL</dd>
-                  </div>
-                </dl>
-                <div className="profile-links">
-                  {[
-                    { label: "Résumé PDF", href: profile.resume },
-                    { label: "GitHub", href: profile.github },
-                    { label: "LinkedIn", href: profile.linkedin },
-                  ].map((link) => (
-                    <a
-                      key={link.label}
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      {link.label}
-                      <ArrowUpRight size={14} aria-hidden="true" />
-                    </a>
-                  ))}
-                </div>
-              </div>
-            ),
-          },
+          { label: "Request Trace", content: <RequestTrace /> },
         ]}
       />
     </div>

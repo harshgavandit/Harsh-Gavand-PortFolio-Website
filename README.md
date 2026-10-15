@@ -2,17 +2,17 @@
 
 A React + TypeScript portfolio organized around engineering decisions: five homepage chapters, four immediately readable case studies, a compact eight-repository archive, and a complete searchable 38-project catalog at [/archive](https://harsh-gavand-portfolio-website-ai.onrender.com/archive/).
 
-[Live portfolio](https://harsh-gavand-portfolio-website-ai.onrender.com/) · [Refactor verification](verification/recruiter-2026-10-15/README.md) · [Recent AI repository sources](verification/github-projects-2026-10-15/sources.json)
+[Live portfolio](https://harsh-gavand-portfolio-website-ai.onrender.com/) · [Refactor verification](verification/recruiter-scan-2026-10-15/README.md) · [Recent AI repository sources](verification/github-projects-2026-10-15/sources.json)
 
 ## Experience and structure
 
-The homepage has one shared chapter definition in `src/data/recruiter.ts`: Introduction, Selected Work, Experience & Impact, Architecture & Skills, and Contact & Résumé. Header navigation, chapter navigation, and headings derive their numbers from that definition.
+The homepage has one shared chapter definition in `src/data/recruiter.ts`: Introduction, Selected Work, Experience & Impact, Architecture & Skills, and Contact & Résumé. Header navigation, its hidden mobile menu, and headings derive their numbers from that definition.
 
-The hero replaces the abstract WebGL sculpture with a technical widget: an interactive architecture pipeline, a verbatim excerpt from this site's request handler, and a profile with résumé, GitHub, and LinkedIn links. The four case study cards expose product context, engineering decisions, technologies, challenges, and outcomes immediately. Keyboard-accessible tabs switch between architecture flows, product previews, and contribution highlights. There are no nested disclosures.
+The hero replaces the abstract WebGL sculpture with a technical widget: an interactive architecture pipeline, a verbatim excerpt from the executed quota lifecycle, and a deterministic Request Trace simulator. The four case study cards expose product context, engineering decisions, technologies, challenges, and outcomes immediately. Each case study opens on its visual Product Preview, with System Architecture as the only other tab. There are no nested disclosures.
 
 The eight-row curated archive uses a native disclosure. The complete catalog lives on a separate pre-rendered route with search and All / Latest AI / AI & ML / APIs & Tools / Web & SaaS filters. Every project retains its identity and repository link; original copy was rewritten and inaccurate stack claims were corrected against source code. No invented performance metrics, production scale, payment guarantees, or database guarantees are added.
 
-Experience, education, the supplied portrait, recognition, skills, engineering principles, résumé, contact draft preparation, and the existing assistant remain available. The assistant opens from the header, floating button, or Ctrl/Command+K, with three recruiter prompts. Chat generation and quota contracts are unchanged.
+Experience, education, the supplied portrait, recognition, skills, engineering principles, résumé, contact draft preparation, and the existing assistant remain available. The assistant opens from the header, floating button, or Ctrl/Command+K, with three recruiter prompts. The chat response contract remains unchanged; quota cancellation and settlement recovery are described below.
 
 ## Development
 
@@ -39,7 +39,9 @@ Configure these variables in your existing local `.env` and in Render's service 
 - `AI_DAILY_REQUEST_LIMIT=200`
 - `AI_MONTHLY_BUDGET_USD=1.00`
 
-Redis admission uses one atomic Lua script to check both allowances, count the request, and reserve its maximum estimated cost **before OpenAI is invoked**. Concurrent calls cannot oversubscribe the remaining allowance. A successful response reconciles its reservation with provider-reported token usage, once only. Timeouts, cancellation, provider failures, incomplete responses, invalid usage metadata, and failed settlements retain the conservative reservation. Rejected admissions never call OpenAI. There is no automatic provider retry.
+Redis admission uses one atomic Lua script to check both allowances, count the request, and reserve its maximum estimated cost **before OpenAI is invoked**. Concurrent calls cannot oversubscribe the remaining allowance. A successful response reconciles its reservation with provider-reported token usage, once only. Cancellation before provider dispatch releases the monthly cost reservation through idempotent settlement at zero; the admitted daily request remains counted. Once a provider may have consumed usage, uncertain failures retain the conservative reservation. A failed settlement with known usage is stored in a durable Redis retry queue; the generated answer is returned only after reconciliation or retry persistence succeeds. If Redis cannot persist the retry, the request reports an accounting availability error and keeps the reservation. Rejected admissions never call OpenAI. There is no automatic provider retry.
+
+The Node server drains settlement retries at startup and every 30 seconds, with atomic job leases and idempotent settlement across instances. Failed jobs use bounded backoff and move to a dead-letter set after five failed attempts; conservative reservations remain held for operator review. Only anonymous reservation keys and accounting values enter these queues. `node scripts/quota-status.mjs` includes queued/dead-letter counts. `node scripts/quota-recovery-live.mjs` verifies recovery using an isolated temporary namespace, cleans up its test keys, and makes no model call.
 
 The cost ledger uses integer micro-dollars and a 2x margin over GPT-6 Luna Standard prices checked on 13 October 2026 ($0.10/M input and $0.50/M output). Its preflight upper bound counts the full serialized request's UTF-8 bytes, including trusted portfolio context/history/schema, plus 4,096 tokens of framing allowance and the 1,000-output-token cap. Requests over 100,000 serialized bytes or with unsupported model/tier/reasoning/tools settings are rejected. Cache discounts are ignored for conservative accounting. This is an application allowance, not an OpenAI billing balance or account-wide cap: it covers this service's calls after activation, excludes taxes and unrelated API use, and requires reviewing pricing if the model's rates change.
 
@@ -59,7 +61,7 @@ npm run test:prerender
 
 The build automatically runs a browser-free React pre-render step for the homepage, archive, and 404 page. Client code hydrates the same component tree and build year. No API call, credential, running server, or headless browser is needed during the build. HTML is readable before JavaScript runs, including all 38 archive entries and their complete notes.
 
-The tests cover original project identities and assets, source metadata, assistant validation and failure contracts, quota admission/settlement, crawler user agents, archive routing, every referenced HTML/CSS asset, JavaScript chunk syntax, unique IDs and anchors, chapter numbering, tab relationships and keyboard movement, copy/link cleanup, image attributes, and disclosure nesting. Local HTTP tests require loopback networking. Browser layout and device interaction review is a separate manual check; this refactor was verified at the code and HTTP levels at the user's request.
+The tests cover original project identities and assets, source metadata, assistant validation and failure contracts, quota admission, pre-dispatch rollback, durable retries, dead letters, crawler user agents, archive routing, every referenced HTML/CSS asset, JavaScript chunk syntax, unique IDs and anchors, chapter numbering, tab relationships and keyboard movement, copy/link cleanup, image attributes, and disclosure nesting. Local HTTP tests require loopback networking. Browser layout and device interaction review is a separate manual check; this refactor was verified at the code and HTTP levels at the user's request.
 
 ## Content and presentation
 
@@ -67,6 +69,8 @@ The tests cover original project identities and assets, source metadata, assista
 - `src/data/portfolio.ts`: shared profile, experience, skills, and four source-reviewed case studies.
 - `src/data/recruiter.ts`: chapter numbers, curated archive, architecture widget, code excerpt, prompts, and principles.
 - `src/recruiter.css`: graphite, ivory, and citrus tokens; high-contrast text; responsive layouts; focus states; 180ms transitions and reduced-motion support.
+- `src/components/RequestTrace.tsx` and `src/lib/requestTrace.ts`: illustrative Gemini success/timeout scenarios with no network requests or real balance changes. The live assistant uses OpenAI and conservative cost accounting.
+- `server/quota-lifecycle.mjs`: shared executed lifecycle for release-before-dispatch and settlement recovery.
 - `src/components/Tabs.tsx`: shared ARIA tablist with arrow-key, Home/End, and roving-tabindex behavior.
 - `src/components/ProjectArchive.tsx`: searchable full catalog; initial HTML includes every record.
 - `src/entry-server.tsx` and `scripts/prerender.mjs`: build-time rendering and route metadata.

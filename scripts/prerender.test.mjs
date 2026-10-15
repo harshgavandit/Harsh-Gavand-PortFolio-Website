@@ -17,6 +17,9 @@ import {
 } from "../src/data/recruiter.ts";
 import { nextTabIndex, isAssistantShortcut } from "../src/lib/interaction.ts";
 
+import { semanticFragment } from "../src/lib/projectNavigation.ts";
+import { traceStage } from "../src/lib/requestTrace.ts";
+
 let server;
 let origin;
 let html;
@@ -44,14 +47,16 @@ after(async () => {
   await new Promise((resolve) => server.close(resolve));
 });
 
-test("home has five numbered chapters and both navigation surfaces use the same order", () => {
+test("home has five numbered chapters with one header navigation and a hidden mobile menu", () => {
   const expected = chapters.map((chapter) => chapter.id);
   const main = html.split('<main id="main"')[1].split("</main>")[0];
   assert.deepEqual(
     [...main.matchAll(/<section id="([^"]+)"/g)].map((match) => match[1]),
     expected,
   );
-  for (const label of ["Main navigation", "Page chapters"]) {
+  assert.ok(!html.includes('aria-label="Page chapters"'));
+  assert.match(html, /id="mobile-navigation"[^>]*hidden=""/);
+  for (const label of ["Main navigation", "Mobile navigation"]) {
     const nav = html.match(
       new RegExp(
         '<nav[^>]+aria-label="' + label + '"[^>]*>([\\s\\S]*?)<\\/nav>',
@@ -80,9 +85,8 @@ test("case studies expose engineering decisions immediately and neither page nes
       "Architecture &amp; engineering decisions",
       "Engineering outcome",
       "GitHub source",
-      "Architecture Flow",
+      "System Architecture",
       "Product Preview",
-      "Implementation Highlights",
     ])
       assert.ok(card.includes(content), content);
     assert.equal((card.match(/class="engineering-bullets"/g) || []).length, 1);
@@ -110,7 +114,7 @@ test("tabs have connected ARIA relationships and predictable keyboard movement",
   }
   assert.equal((html.match(/role="tablist"/g) || []).length, 5);
   assert.equal((html.match(/aria-selected="true"/g) || []).length, 5);
-  assert.equal((html.match(/role="tabpanel"/g) || []).length, 15);
+  assert.equal((html.match(/role="tabpanel"/g) || []).length, 11);
   assert.equal(nextTabIndex("ArrowLeft", 0, 3), 2);
   assert.equal(nextTabIndex("ArrowRight", 2, 3), 0);
   assert.equal(nextTabIndex("Home", 2, 3), 0);
@@ -150,7 +154,7 @@ test("preview images reserve dimensions and load lazily; generated pages contain
 
 test("production code excerpt matches the actual request handler", async () => {
   const server = await readFile(
-    new URL("../server/app.mjs", import.meta.url),
+    new URL("../server/quota-lifecycle.mjs", import.meta.url),
     "utf8",
   );
   const lines = server.split(/\r?\n/).map((line) => line.trim());
@@ -383,5 +387,56 @@ test("pre-render validation rejects empty shells, incomplete catalogs, and malfo
   assert.equal(
     siteOrigin("https://portfolio.example.com/"),
     "https://portfolio.example.com",
+  );
+});
+
+test("product imagery is the default case tab and public fragment URLs are semantic", () => {
+  for (const project of projects) {
+    assert.match(project.slug, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+    assert.ok(archive.includes('id="' + project.slug + '"'));
+  }
+  assert.equal(
+    new Set(projects.map((project) => project.slug)).size,
+    projects.length,
+  );
+  for (const slug of [
+    "ugc-platform",
+    "banking-saas",
+    "github-replica",
+    "news-automation",
+  ]) {
+    assert.ok(html.includes('id="' + slug + '"'));
+    assert.match(
+      html,
+      new RegExp('id="case-' + slug + '-tab-0"[^>]+aria-selected="true"'),
+    );
+    assert.match(
+      html,
+      new RegExp('id="case-' + slug + '-panel-0"(?![^>]*hidden=)[^>]*>'),
+    );
+  }
+  for (const page of [html, archive])
+    assert.ok(!/href="[^"\s]*#(?:archive-)?project-\d+/.test(page));
+  assert.equal(semanticFragment("#project-14"), "#ugc-platform");
+  assert.equal(semanticFragment("#archive-project-3"), "#banking-saas");
+  assert.equal(semanticFragment("#skills"), "#skills");
+  assert.ok(!html.includes("Implementation Highlights"));
+  assert.match(
+    html,
+    /Mumbai, India · Open to Full-Stack, Backend &amp; AI Engineering Roles \(Remote \/ Relocation\)/,
+  );
+});
+test("request trace has success and rollback scenarios with explicit simulation disclosure", () => {
+  assert.match(html, /Request Trace/);
+  assert.match(html, /No API call/);
+  assert.match(html, /Simulate Upstream Timeout/);
+  assert.equal(
+    traceStage("success", 3).message,
+    "Settled 112 actual tokens; refunded 28 tokens",
+  );
+  assert.equal(traceStage("timeout", 2).failed, true);
+  assert.equal(
+    traceStage("timeout", 3).message,
+    "Rollback: 140 tokens restored to user balance",
   );
 });

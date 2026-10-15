@@ -40,8 +40,9 @@ export function Hero() {
             </ActionLink>
           </div>
           <p className="hero-location">
-            <span className="status-dot" /> Mumbai, India · Open to full-stack &
-            backend roles
+            <span className="status-dot" aria-hidden="true" /> Mumbai, India ·
+            Open to Full-Stack, Backend &amp; AI Engineering Roles (Remote /
+            Relocation)
           </p>
         </div>
         <EngineeringShowcase />

@@ -118,6 +118,9 @@ export function Navigation() {
             ))}
           </nav>
           <div className="header-actions">
+            <div className="header-motion">
+              <MotionToggle />
+            </div>
             <button
               className="header-ask"
               onClick={ask}
@@ -186,24 +189,6 @@ export function Navigation() {
           <MotionToggle />
         </div>
       </header>
-      {home && (
-        <nav
-          className="chapter-rail section-container"
-          aria-label="Page chapters"
-        >
-          {chapters.map((chapter) => (
-            <a
-              key={chapter.id}
-              href={`#${chapter.id}`}
-              aria-current={active === chapter.id ? "location" : undefined}
-            >
-              <span>{chapterNumber(chapter.id)}</span>
-              {chapter.label}
-            </a>
-          ))}
-          <MotionToggle />
-        </nav>
-      )}
     </>
   );
 }

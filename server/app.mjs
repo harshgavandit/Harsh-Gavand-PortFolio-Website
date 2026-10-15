@@ -10,7 +10,8 @@ import {
   buildRequest,
 } from "./openai.mjs";
 
-import { RedisQuota, reservationFor, usageCost } from "./quota.mjs";
+import { RedisQuota } from "./quota.mjs";
+import { generateWithQuota } from "./quota-lifecycle.mjs";
 
 const defaultDist = resolve(
   fileURLToPath(new URL("../dist/", import.meta.url)),
@@ -65,7 +66,7 @@ export function createServer(config) {
     });
     res.end(JSON.stringify(body));
   }
-  return httpServer(async (req, res) => {
+  const server = httpServer(async (req, res) => {
     res.setHeader("X-Content-Type-Options", "nosniff");
     res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
     res.setHeader("X-Frame-Options", "DENY");
@@ -170,22 +171,12 @@ export function createServer(config) {
         concurrent++;
         inFlight = true;
         const request = buildRequest(messages, model);
-        const estimate = reservationFor(request);
-        const reservation = await quota.reserve(estimate.amount);
-        // Keep the full reservation after cancellations, timeouts or provider
-        // failures: these may already have incurred a charge. Never retry a
-        // provider request automatically when its outcome is unknown.
-        if (controller.signal.aborted) return;
-        const result = await generate(messages, controller.signal, request);
-        try {
-          await quota.settle(reservation, usageCost(result.usage, estimate));
-        } catch {
-          // Reservation is already durable. A failed settlement keeps the
-          // conservative amount charged to the allowance, so it stays safe.
-          console.warn(
-            "AI quota settlement unavailable; reservation retained.",
-          );
-        }
+        const result = await generateWithQuota({
+          request,
+          quota,
+          signal: controller.signal,
+          generate: () => generate(messages, controller.signal, request),
+        });
         if (typeof result.answer !== "string" || !result.answer.trim())
           throw new Error("Invalid response");
         json(res, 200, { answer: result.answer, sources: sourceLinks(result) });
@@ -253,4 +244,30 @@ export function createServer(config) {
       });
     }
   });
+  let timer;
+  let reconciling = false;
+  const reconcile = async () => {
+    if (reconciling || !quota.configured || !quota.retrySettlements) return;
+    reconciling = true;
+    try {
+      const report = await quota.retrySettlements();
+      if (report.deadLettered || report.failed)
+        console.error(
+          JSON.stringify({ event: "quota_settlement_retry", ...report }),
+        );
+    } catch {
+      console.error(
+        JSON.stringify({ event: "quota_settlement_retry_unavailable" }),
+      );
+    } finally {
+      reconciling = false;
+    }
+  };
+  server.once("listening", () => {
+    void reconcile();
+    timer = setInterval(() => void reconcile(), 30000);
+    timer.unref();
+  });
+  server.once("close", () => clearInterval(timer));
+  return server;
 }

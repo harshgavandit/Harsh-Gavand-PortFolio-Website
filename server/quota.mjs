@@ -93,6 +93,40 @@ redis.call('HSET', KEYS[2], 'settled', 1)
 return 1
 `;
 
+// Retry records contain accounting metadata only; never prompts or responses.
+export const ENQUEUE_SETTLEMENT_SCRIPT = `
+if redis.call('EXISTS', KEYS[1]) == 0 then return redis.error_reply('Missing reservation') end
+if redis.call('HGET', KEYS[1], 'settled') == '1' then return 0 end
+local reserved = tonumber(redis.call('HGET', KEYS[1], 'amount'))
+local actual = tonumber(ARGV[1])
+if not reserved or not actual or actual < 0 or actual > reserved then return redis.error_reply('Invalid retry') end
+redis.call('ZADD', KEYS[2], 'NX', ARGV[2], ARGV[3])
+return 1
+`;
+
+export const CLAIM_SETTLEMENTS_SCRIPT = `
+local jobs = redis.call('ZRANGEBYSCORE', KEYS[1], '-inf', ARGV[1], 'LIMIT', 0, ARGV[3])
+for _, job in ipairs(jobs) do redis.call('ZADD', KEYS[1], ARGV[2], job) end
+return jobs
+`;
+
+export const RETRY_FAILURE_SCRIPT = `
+if redis.call('EXISTS', KEYS[1]) == 0 or redis.call('HGET', KEYS[1], 'settled') == '1' then
+  redis.call('ZREM', KEYS[2], ARGV[1])
+  return 0
+end
+local attempts = redis.call('HINCRBY', KEYS[1], 'retry_attempts', 1)
+if attempts >= 5 then
+  redis.call('ZADD', KEYS[3], ARGV[2], ARGV[1])
+  redis.call('EXPIRE', KEYS[3], 7776000)
+  redis.call('ZREMRANGEBYSCORE', KEYS[3], '-inf', tonumber(ARGV[2]) - 7776000000)
+  redis.call('ZREM', KEYS[2], ARGV[1])
+  return -1
+end
+redis.call('ZADD', KEYS[2], 'XX', tonumber(ARGV[2]) + math.min(300000, 30000 * (2 ^ (attempts - 1))), ARGV[1])
+return attempts
+`;
+
 const unavailable = () =>
   new ChatError(
     503,
@@ -234,6 +268,12 @@ export class RedisQuota {
     const [requestsUsed, budgetUsedMicros] = result.map((v) => Number(v || 0));
     if (![requestsUsed, budgetUsedMicros].every(Number.isSafeInteger))
       throw unavailable();
+    const backlog = await Promise.all([
+      this.command(["ZCARD", `${prefix}:settlement-retries`]),
+      this.command(["ZCARD", `${prefix}:settlement-dead-letters`]),
+    ]);
+    if (!backlog.every((value) => Number.isSafeInteger(value) && value >= 0))
+      throw unavailable();
     return {
       day: periods.day,
       month: periods.month,
@@ -246,7 +286,109 @@ export class RedisQuota {
         Math.max(0, this.monthlyBudgetMicros - budgetUsedMicros) / 1000000,
       dailyResetUtc: new Date(periods.dayReset).toISOString(),
       monthlyResetUtc: new Date(periods.monthReset).toISOString(),
+      settlementRetriesQueued: backlog[0],
+      settlementDeadLetters: backlog[1],
     };
+  }
+  async releaseOrEnqueueRetry(reservation, { providerDispatched, actual }) {
+    if (providerDispatched && actual === undefined) return "retained";
+    const amount = providerDispatched ? actual : 0;
+    if (!providerDispatched) {
+      try {
+        await this.settle(reservation, 0);
+        return "released";
+      } catch {
+        /* A failed rollback becomes a durable zero-cost settlement. */
+      }
+    }
+    if (
+      !Number.isSafeInteger(amount) ||
+      amount < 0 ||
+      amount > reservation.amount
+    )
+      throw unavailable();
+    const job = JSON.stringify({ ...reservation, actual: amount });
+    const result = await this.command([
+      "EVAL",
+      ENQUEUE_SETTLEMENT_SCRIPT,
+      2,
+      reservation.requestKey,
+      `{${this.namespace}}:settlement-retries`,
+      amount,
+      this.clock(),
+      job,
+    ]);
+    if (result !== 0 && result !== 1) throw unavailable();
+    return result === 1 ? "queued" : "settled";
+  }
+  async retrySettlements({ limit = 5 } = {}) {
+    if (!Number.isSafeInteger(limit) || limit < 1 || limit > 20)
+      throw unavailable();
+    const prefix = `{${this.namespace}}`;
+    const queue = `${prefix}:settlement-retries`;
+    const now = this.clock();
+    const jobs = await this.command([
+      "EVAL",
+      CLAIM_SETTLEMENTS_SCRIPT,
+      1,
+      queue,
+      now,
+      now + Math.max(120000, limit * 12000 + 30000),
+      limit,
+    ]);
+    if (!Array.isArray(jobs) || jobs.length > limit) throw unavailable();
+    const report = {
+      claimed: jobs.length,
+      settled: 0,
+      failed: 0,
+      deadLettered: 0,
+    };
+    for (const encoded of jobs) {
+      let job;
+      try {
+        job = JSON.parse(encoded);
+      } catch {
+        throw unavailable();
+      }
+      if (
+        typeof job.monthKey !== "string" ||
+        !job.monthKey.startsWith(prefix) ||
+        !/^:month:\d{4}-\d{2}$/.test(job.monthKey.slice(prefix.length)) ||
+        typeof job.requestKey !== "string" ||
+        !job.requestKey.startsWith(prefix) ||
+        !/^:request:[a-f0-9-]{36}$/.test(job.requestKey.slice(prefix.length)) ||
+        !Number.isSafeInteger(job.amount) ||
+        job.amount < 1 ||
+        !Number.isSafeInteger(job.actual) ||
+        job.actual < 0 ||
+        job.actual > job.amount
+      )
+        throw unavailable();
+      try {
+        // Expired reservations belong to an expired accounting window.
+        const exists = await this.command(["EXISTS", job.requestKey]);
+        if (exists !== 0 && exists !== 1) throw unavailable();
+        if (exists === 1) await this.settle(job, job.actual);
+        await this.command(["ZREM", queue, encoded]);
+        report.settled++;
+      } catch {
+        const status = await this.command([
+          "EVAL",
+          RETRY_FAILURE_SCRIPT,
+          3,
+          job.requestKey,
+          queue,
+          `${prefix}:settlement-dead-letters`,
+          encoded,
+          this.clock(),
+        ]);
+        if (status === -1) report.deadLettered++;
+        else if (Number.isSafeInteger(status) && status >= 0 && status < 5)
+          report.failed++;
+        else throw unavailable();
+      }
+    }
+    return report;
   }
   async settle(reservation, actual) {
     if (

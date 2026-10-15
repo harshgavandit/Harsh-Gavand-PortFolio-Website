@@ -117,7 +117,12 @@ function ProductPreview({
           </div>
         )}
       </div>
-      <p className="preview-note">{study.previewNote}</p>
+      <p className="preview-note">
+        {study.previewNote}
+        {study.hostingNote && (
+          <span className="hosting-note">{study.hostingNote}</span>
+        )}
+      </p>
       {project.demoUrl ? (
         <a
           className="text-link"
@@ -146,9 +151,9 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
   return (
     <article
       className="flagship-card"
-      id={`project-${project.id}`}
+      id={project.slug}
       tabIndex={-1}
-      aria-labelledby={`project-title-${project.id}`}
+      aria-labelledby={`${project.slug}-title`}
     >
       <header className="flagship-header">
         <div>
@@ -156,13 +161,18 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
             <span>{String(index + 1).padStart(2, "0")}</span>
             <span className="category-badge">{project.category}</span>
           </div>
-          <h3 id={`project-title-${project.id}`}>{study.shortName}</h3>
+          <h3 id={`${project.slug}-title`}>{study.shortName}</h3>
         </div>
-        <div className="actions">
+        <div className="actions demo-actions">
           {project.demoUrl && (
             <ActionLink href={project.demoUrl} primary external>
               Live demo
             </ActionLink>
+          )}
+          {project.demoUrl && (
+            <span className="demo-access" title={study.previewNote}>
+              {study.accessMode}
+            </span>
           )}
           <ActionLink
             href={project.githubUrl}
@@ -191,11 +201,15 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
         </div>
         <div className="flagship-visual">
           <Tabs
-            id={`case-${project.id}`}
+            id={`case-${project.slug}`}
             label={`${study.shortName} technical preview`}
             items={[
               {
-                label: "Architecture Flow",
+                label: "Product Preview",
+                content: <ProductPreview study={study} project={project} />,
+              },
+              {
+                label: "System Architecture",
                 content: (
                   <figure className="case-flow">
                     <ol>
@@ -210,25 +224,11 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
                       ))}
                     </ol>
                     <figcaption>{study.diagram!.caption}</figcaption>
+                    <p className="flow-recovery">
+                      <span>Recovery / state</span>
+                      {study.recovery}
+                    </p>
                   </figure>
-                ),
-              },
-              {
-                label: "Product Preview",
-                content: <ProductPreview study={study} project={project} />,
-              },
-              {
-                label: "Implementation Highlights",
-                content: (
-                  <div className="contribution-grid">
-                    {study.contributions.map((item, i) => (
-                      <div key={item.label}>
-                        <span className="eyebrow">0{i + 1}</span>
-                        <h4>{item.label}</h4>
-                        <p>{item.description}</p>
-                      </div>
-                    ))}
-                  </div>
                 ),
               },
             ]}
@@ -236,8 +236,8 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
         </div>
       </div>
       <footer className="flagship-footer">
-        <span>{project.challenges}</span>
-        <a href={`/archive#archive-project-${project.id}`}>
+        <span>{study.takeaway}</span>
+        <a href={`/archive#${project.slug}`}>
           Full project notes <ArrowRight size={14} aria-hidden="true" />
         </a>
       </footer>
@@ -310,9 +310,7 @@ export function MoreWork() {
                 <tr key={project.id}>
                   <td>{entry.year}</td>
                   <th scope="row">
-                    <a href={`/archive#archive-project-${project.id}`}>
-                      {project.title}
-                    </a>
+                    <a href={`/archive#${project.slug}`}>{project.title}</a>
                   </th>
                   <td>{project.technologies.slice(0, 3).join(" · ")}</td>
                   <td>{entry.feature}</td>
