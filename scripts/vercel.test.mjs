@@ -7,6 +7,8 @@ import { createVercelHandler } from "../server/vercel.mjs";
 import * as vercel from "../server/vercel.mjs";
 import { ChatError } from "../server/openai.mjs";
 import { readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 
 async function fixture(t, overrides = {}) {
   const events = [];
@@ -102,6 +104,35 @@ async function fixture(t, overrides = {}) {
 
 test("production defaults to the Vercel custom domain", () => {
   assert.equal(profile.site, "https://harshgavand.dev");
+});
+
+test("production origin configuration accepts an optional trailing root slash", () => {
+  const origins = execFileSync(
+    process.execPath,
+    [
+      "--input-type=module",
+      "-e",
+      'import { loadConfig } from "./server/config.mjs"; console.log(JSON.stringify(loadConfig().allowedOrigins));',
+    ],
+    {
+      cwd: fileURLToPath(new URL("../", import.meta.url)),
+      env: {
+        ...process.env,
+        VERCEL: "1",
+        NODE_ENV: "production",
+        OPENAI_MODEL: "gpt-6-luna",
+        ALLOWED_ORIGINS:
+          " https://harshgavand.dev/,https://preview.example.com ",
+        AI_DAILY_REQUEST_LIMIT: "200",
+        AI_MONTHLY_BUDGET_USD: "1.00",
+      },
+      encoding: "utf8",
+    },
+  );
+  assert.deepEqual(JSON.parse(origins), [
+    "https://harshgavand.dev",
+    "https://preview.example.com",
+  ]);
 });
 
 test("invocation lifetime is registered before work starts and covers post-response accounting", async () => {

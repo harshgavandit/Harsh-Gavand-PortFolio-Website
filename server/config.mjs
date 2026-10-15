@@ -42,7 +42,7 @@ export function loadConfig() {
         : "http://localhost:5173,http://127.0.0.1:5173")
     )
       .split(",")
-      .map((s) => s.trim())
+      .map((s) => s.trim().replace(/\/+$/, ""))
       .filter(Boolean),
     trustProxy: vercel || process.env.TRUST_PROXY === "1",
     production,
