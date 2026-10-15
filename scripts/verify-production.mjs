@@ -80,6 +80,23 @@ for (const page of [home, archive])
   assert.doesNotMatch(page, /Harsh_Gavand_Resume\.pdf/i);
 const health = await request("/api/health");
 assert.equal(health.status, 200);
+const healthInfo = await health.json();
+assert.equal(healthInfo.runtime, "vercel", "Expected the API to run on Vercel");
+const chatMethod = await request("/api/chat");
+assert.equal(chatMethod.status, 405);
+assert.equal(chatMethod.headers.get("allow"), "POST");
+const invalidChat = await request("/api/chat", {
+  method: "POST",
+  headers: { "Content-Type": "application/json", Origin: origin },
+  body: JSON.stringify({ messages: [] }),
+});
+assert.equal(
+  invalidChat.status,
+  400,
+  "Expected origin-approved validation before any provider work",
+);
+const cron = await request("/api/quota-reconcile");
+assert.equal(cron.status, 401, "The recovery job must require authentication");
 const report = {
   verifiedAt: new Date().toISOString(),
   origin,
@@ -94,6 +111,12 @@ const report = {
   unknownPageStatus: 404,
   removedDocumentStatus: 404,
   apiHealthStatus: 200,
+  apiRuntime: healthInfo.runtime,
+  assistantConfigured: healthInfo.assistantConfigured,
+  usageProtectionConfigured: healthInfo.usageProtection.configured,
+  scheduledRecoveryConfigured: healthInfo.scheduledRecoveryConfigured,
+  invalidChatStatus: 400,
+  unauthenticatedCronStatus: 401,
   browserReview: "Not performed; user requested code-level verification only.",
   providerCalls: 0,
 };

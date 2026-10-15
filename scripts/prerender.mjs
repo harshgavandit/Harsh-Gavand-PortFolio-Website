@@ -24,9 +24,7 @@ await build({
   },
 });
 const { render } = await import("../dist-ssr/entry-server.mjs");
-const origin = siteOrigin(
-  process.env.SITE_URL || process.env.RENDER_EXTERNAL_URL || profile.site,
-);
+const origin = siteOrigin(process.env.SITE_URL || profile.site);
 const template = (
   await readFile(new URL("../dist/index.html", import.meta.url), "utf8")
 ).replaceAll(profile.site, origin);

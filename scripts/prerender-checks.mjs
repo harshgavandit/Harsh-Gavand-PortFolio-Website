@@ -12,7 +12,7 @@ export function siteOrigin(value) {
     url.hash
   )
     throw new Error(
-      "SITE_URL / RENDER_EXTERNAL_URL must be an HTTPS origin without a path, query, or credentials.",
+      "SITE_URL must be an HTTPS origin without a path, query, or credentials.",
     );
   return url.origin;
 }

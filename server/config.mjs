@@ -1,12 +1,15 @@
 import { existsSync } from "node:fs";
 import { loadEnvFile } from "node:process";
 import { fileURLToPath } from "node:url";
+import { profile } from "../src/data/portfolio.ts";
 
 export function loadConfig() {
+  const vercel = process.env.VERCEL === "1";
+  const production = vercel || process.env.NODE_ENV === "production";
   // Existing process variables take precedence. The parent env is a local-only
   // convenience for this workspace; it is never served, copied, or bundled.
-  const candidates = ["../.env.local", "../.env"];
-  if (process.env.NODE_ENV !== "production") candidates.push("../../.env");
+  const candidates = vercel ? [] : ["../.env.local", "../.env"];
+  if (!production) candidates.push("../../.env");
   for (const relative of candidates) {
     const path = fileURLToPath(new URL(relative, import.meta.url));
     if (existsSync(path)) loadEnvFile(path);
@@ -34,14 +37,16 @@ export function loadConfig() {
     port: Number(process.env.PORT || 3001),
     allowedOrigins: (
       process.env.ALLOWED_ORIGINS ||
-      (process.env.NODE_ENV === "production"
-        ? ""
+      (production
+        ? profile.site
         : "http://localhost:5173,http://127.0.0.1:5173")
     )
       .split(",")
       .map((s) => s.trim())
       .filter(Boolean),
-    trustProxy: process.env.TRUST_PROXY === "1",
-    production: process.env.NODE_ENV === "production",
+    trustProxy: vercel || process.env.TRUST_PROXY === "1",
+    production,
+    vercel,
+    cronSecret: process.env.CRON_SECRET || "",
   };
 }

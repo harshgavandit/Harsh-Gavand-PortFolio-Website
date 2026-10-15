@@ -46,7 +46,7 @@ export const profile = {
   location: "Mumbai, India",
   github: "https://github.com/harshgavandit",
   linkedin: "https://www.linkedin.com/in/harsh-gavand",
-  site: "https://harsh-gavand-portfolio-website-ai.onrender.com",
+  site: "https://harshgavand.dev",
 };
 
 export const latestAIProjects: Project[] = recentSourceProjects;

@@ -32,7 +32,7 @@ const mime = {
   ".xml": "application/xml",
 };
 
-export function createServer(config) {
+export function createApplication(config) {
   const dist = resolve(config.staticDirectory || defaultDist);
   const {
     apiKey,
@@ -66,7 +66,7 @@ export function createServer(config) {
     });
     res.end(JSON.stringify(body));
   }
-  const server = httpServer(async (req, res) => {
+  const handler = async (req, res) => {
     res.setHeader("X-Content-Type-Options", "nosniff");
     res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
     res.setHeader("X-Frame-Options", "DENY");
@@ -83,6 +83,8 @@ export function createServer(config) {
         status: "ok",
         assistantConfigured: Boolean(apiKey),
         model,
+        runtime: config.vercel ? "vercel" : "node",
+        scheduledRecoveryConfigured: Boolean(config.cronSecret),
         usageProtection: {
           configured: quota.configured,
           dailyLimit: quota.dailyLimit,
@@ -106,11 +108,14 @@ export function createServer(config) {
           code: "not_configured",
         });
       let inFlight = false;
+      let admissionLease;
       const controller = new AbortController();
       const abort = () => {
         if (!res.writableEnded) controller.abort();
       };
       res.on("close", abort);
+      req.on("aborted", abort);
+      req.on("error", abort);
       try {
         const chunks = [];
         let bytes = 0;
@@ -143,33 +148,38 @@ export function createServer(config) {
               .trim()
           : req.socket.remoteAddress;
         const client = clients.get(ip) || { count: 0, reset: now + windowMs };
-        if (
-          client.count >= clientLimit ||
-          global.count >= globalLimit ||
-          concurrent >= 3
-        )
-          throw new ChatError(
-            429,
-            "rate_limit",
-            "The assistant is busy. Please try again shortly or use the contact links.",
+        if (config.admission) {
+          admissionLease = await config.admission.acquire(ip);
+        } else {
+          if (
+            client.count >= clientLimit ||
+            global.count >= globalLimit ||
             concurrent >= 3
-              ? 5
-              : Math.max(
-                  1,
-                  Math.ceil(
-                    ((client.count >= clientLimit
-                      ? client.reset
-                      : global.reset) -
-                      now) /
-                      1000,
+          )
+            throw new ChatError(
+              429,
+              "rate_limit",
+              "The assistant is busy. Please try again shortly or use the contact links.",
+              concurrent >= 3
+                ? 5
+                : Math.max(
+                    1,
+                    Math.ceil(
+                      ((client.count >= clientLimit
+                        ? client.reset
+                        : global.reset) -
+                        now) /
+                        1000,
+                    ),
                   ),
-                ),
-          );
-        client.count++;
-        global.count++;
-        clients.set(ip, client);
-        concurrent++;
-        inFlight = true;
+            );
+          client.count++;
+          global.count++;
+          clients.set(ip, client);
+          concurrent++;
+          inFlight = true;
+        }
+        await config.beforeGenerate?.();
         const request = buildRequest(messages, model);
         const result = await generateWithQuota({
           request,
@@ -196,7 +206,19 @@ export function createServer(config) {
           );
       } finally {
         if (inFlight) concurrent--;
+        if (admissionLease) {
+          try {
+            await config.admission.release(admissionLease);
+          } catch {
+            // The shared lease expires even if this cleanup cannot reach Redis.
+            console.error(
+              JSON.stringify({ event: "admission_release_unavailable" }),
+            );
+          }
+        }
         res.off("close", abort);
+        req.off("aborted", abort);
+        req.off("error", abort);
       }
       return;
     }
@@ -243,18 +265,18 @@ export function createServer(config) {
         error: "Build the portfolio first with npm run build.",
       });
     }
-  });
-  let timer;
+  };
   let reconciling = false;
-  const reconcile = async () => {
+  const reconcile = async (options) => {
     if (reconciling || !quota.configured || !quota.retrySettlements) return;
     reconciling = true;
     try {
-      const report = await quota.retrySettlements();
+      const report = await quota.retrySettlements(options);
       if (report.deadLettered || report.failed)
         console.error(
           JSON.stringify({ event: "quota_settlement_retry", ...report }),
         );
+      return report;
     } catch {
       console.error(
         JSON.stringify({ event: "quota_settlement_retry_unavailable" }),
@@ -263,6 +285,13 @@ export function createServer(config) {
       reconciling = false;
     }
   };
+  return { handler, reconcile };
+}
+
+export function createServer(config) {
+  const { handler, reconcile } = createApplication(config);
+  const server = httpServer(handler);
+  let timer;
   server.once("listening", () => {
     void reconcile();
     timer = setInterval(() => void reconcile(), 30000);

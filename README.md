@@ -1,8 +1,8 @@
 # Harsh Gavand — Full-Stack & AI Engineer
 
-A React + TypeScript portfolio organized around engineering decisions: five homepage chapters, four immediately readable case studies, a compact eight-repository archive, and a complete searchable 38-project catalog at [/archive](https://harsh-gavand-portfolio-website-ai.onrender.com/archive/).
+A React + TypeScript portfolio organized around engineering decisions: five homepage chapters, four immediately readable case studies, a compact eight-repository archive, and a complete searchable 38-project catalog at [/archive](https://harshgavand.dev/archive/).
 
-[Live portfolio](https://harsh-gavand-portfolio-website-ai.onrender.com/) · [Refactor verification](verification/recruiter-scan-2026-10-15/README.md) · [Recent AI repository sources](verification/github-projects-2026-10-15/sources.json)
+[Live portfolio](https://harshgavand.dev/) · [Refactor verification](verification/recruiter-scan-2026-10-15/README.md) · [Recent AI repository sources](verification/github-projects-2026-10-15/sources.json)
 
 ## Experience and structure
 
@@ -26,13 +26,13 @@ Configure `OPENAI_API_KEY` and `OPENAI_MODEL=gpt-6-luna` in the service environm
 
 The browser sends bounded conversation history to same-origin `/api/chat`. The server supplies published profile, About, experience, skills, all 38 project index entries, and the five most relevant project details, including existing case-study architecture and contribution notes. OpenAI returns text and references; the server maps references to existing portfolio links. Chat is held in page memory only. This service does not store conversation text. Redis stores only aggregate allowance counters and anonymous reservation records. Messages and portfolio context are sent to OpenAI; `store=false` disables stored Responses, while provider retention follows the account's applicable data controls.
 
-Controls include suggestions, follow-up questions, a 2,000-character input limit, loading, stop, retry, clear, project/contact references, and keyboard dismissal. Provider quota, invalid configuration, timeout, and incomplete output become clear user-facing errors. Default server limits are ten requests per client and sixty globally per ten minutes, with at most three simultaneous generations. These short-window limits remain in memory. The additional global daily and monthly allowances below are persistent and shared across server instances.
+Controls include suggestions, follow-up questions, a 2,000-character input limit, loading, stop, retry, clear, project/contact references, and keyboard dismissal. Provider quota, invalid configuration, timeout, and incomplete output become clear user-facing errors. On Vercel, atomic Redis admission enforces ten requests per hashed client and sixty globally per ten-minute window, with at most three active generation leases across all function instances. Leases expire after two minutes if an invocation cannot clean up. Standalone local serving retains its per-process guards. The additional global daily and monthly allowances below remain persistent and shared across instances.
 
 ## Persistent credit protection
 
 The entire assistant shares a **200-request daily allowance** and a **$1.00 monthly conservative cost allowance**, persisted in Upstash Redis. Daily and calendar-month windows reset at midnight UTC (05:30 India time). Both limits survive service restarts, sleep and redeploys, and apply across server instances sharing the same Redis database.
 
-Configure these variables in your existing local `.env` and in Render's service environment:
+Configure these variables in your existing local `.env` and in Vercel's Production environment:
 
 - `UPSTASH_REDIS_REST_URL`: the HTTPS Redis REST endpoint.
 - `UPSTASH_REDIS_REST_TOKEN`: the standard REST token, with EVAL/write access. The read-only token cannot enforce quotas. Keep it server-only.
@@ -41,13 +41,13 @@ Configure these variables in your existing local `.env` and in Render's service 
 
 Redis admission uses one atomic Lua script to check both allowances, count the request, and reserve its maximum estimated cost **before OpenAI is invoked**. Concurrent calls cannot oversubscribe the remaining allowance. A successful response reconciles its reservation with provider-reported token usage, once only. Cancellation before provider dispatch releases the monthly cost reservation through idempotent settlement at zero; the admitted daily request remains counted. Once a provider may have consumed usage, uncertain failures retain the conservative reservation. A failed settlement with known usage is stored in a durable Redis retry queue; the generated answer is returned only after reconciliation or retry persistence succeeds. If Redis cannot persist the retry, the request reports an accounting availability error and keeps the reservation. Rejected admissions never call OpenAI. There is no automatic provider retry.
 
-The Node server drains settlement retries at startup and every 30 seconds, with atomic job leases and idempotent settlement across instances. Failed jobs use bounded backoff and move to a dead-letter set after five failed attempts; conservative reservations remain held for operator review. Only anonymous reservation keys and accounting values enter these queues. `node scripts/quota-status.mjs` includes queued/dead-letter counts. `node scripts/quota-recovery-live.mjs` verifies recovery using an isolated temporary namespace, cleans up its test keys, and makes no model call.
+Vercel drains one queued settlement during each admitted chat request and up to three jobs in a secret-authenticated daily cron invocation. Every invocation awaits its accounting work; no idle process or background timer is required. The daily schedule is compatible with Vercel Hobby. Standalone local serving also drains at startup and every 30 seconds. All workers use atomic job leases and idempotent settlement across instances. Failed jobs use bounded backoff and move to a dead-letter set after five failed attempts; conservative reservations remain held for operator review. Only anonymous reservation keys and accounting values enter these queues. `node scripts/quota-status.mjs` includes queued/dead-letter counts. `node scripts/quota-recovery-live.mjs` verifies recovery using an isolated temporary namespace, cleans up its test keys, and makes no model call.
 
 The cost ledger uses integer micro-dollars and a 2x margin over GPT-6 Luna Standard prices checked on 13 October 2026 ($0.10/M input and $0.50/M output). Its preflight upper bound counts the full serialized request's UTF-8 bytes, including trusted portfolio context/history/schema, plus 4,096 tokens of framing allowance and the 1,000-output-token cap. Requests over 100,000 serialized bytes or with unsupported model/tier/reasoning/tools settings are rejected. Cache discounts are ignored for conservative accounting. This is an application allowance, not an OpenAI billing balance or account-wide cap: it covers this service's calls after activation, excludes taxes and unrelated API use, and requires reviewing pricing if the model's rates change.
 
 Missing credentials, Redis errors, malformed stored values, and read-only tokens **pause generation**. The portfolio remains accessible. Exhausted allowances return HTTP 429 and a reset interval; storage failures return HTTP 503. Chat hides immediate retry for daily/monthly exhaustion and keeps the contact link available. Never delete the quota database or its current keys to reset usage. The short-window IP limiter does not provide identity authentication; persistent global allowances protect the spending even when callers use multiple IPs.
 
-`node scripts/quota-status.mjs` prints aggregate usage and remaining allowances without exposing credentials or chat. `node scripts/quota-live.mjs` runs explicit live Redis verification using isolated expiring test keys and **no OpenAI calls**. `node scripts/quota-http-live.mjs` also verifies rejection after a real Node process restart with a fake generator. Test keys cannot change the production ledger. The free Render filesystem cannot retain local counters, which is why this uses external Redis instead of a local file. See [verification](verification/quota-2026-10-13/README.md).
+`node scripts/quota-status.mjs` prints aggregate usage and remaining allowances without exposing credentials or chat. `node scripts/quota-live.mjs` runs explicit live Redis verification using isolated expiring test keys and **no OpenAI calls**. `node scripts/quota-http-live.mjs` also verifies rejection after a real Node process restart with a fake generator. Test keys cannot change the production ledger. Vercel function memory and filesystem are not durable shared storage, so the allowance remains in Redis. See [verification](verification/quota-2026-10-13/README.md).
 
 ## Validation
 
@@ -71,6 +71,8 @@ The tests cover original project identities and assets, source metadata, assista
 - `src/recruiter.css`: graphite, ivory, and citrus tokens; high-contrast text; responsive layouts; focus states; 180ms transitions and reduced-motion support.
 - `src/components/RequestTrace.tsx` and `src/lib/requestTrace.ts`: illustrative Gemini success/timeout scenarios with no network requests or real balance changes. The live assistant uses OpenAI and conservative cost accounting.
 - `server/quota-lifecycle.mjs`: shared executed lifecycle for release-before-dispatch and settlement recovery.
+- `server/vercel.mjs` and `api/index.mjs`: directly awaited Vercel API handler and authenticated recovery endpoint.
+- `server/admission.mjs`: atomic shared request counters and expiring concurrency leases for serverless instances.
 - `src/components/Tabs.tsx`: shared ARIA tablist with arrow-key, Home/End, and roving-tabindex behavior.
 - `src/components/ProjectArchive.tsx`: searchable full catalog; initial HTML includes every record.
 - `src/entry-server.tsx` and `scripts/prerender.mjs`: build-time rendering and route metadata.
@@ -83,18 +85,29 @@ The contact form prepares a `mailto:` draft for the visitor to review and send i
 
 ## Hosting
 
-For the complete portfolio **including the assistant**, use a Node web service:
+The portfolio runs entirely on **Vercel** at **https://harshgavand.dev**. Vercel serves the pre-rendered `dist` output through its CDN and routes `/api/*` to the shared Node 24 function in `api/index.mjs`. There is no external backend proxy or Render dependency. The function has a 60-second maximum duration and cancellation support; its entire invocation is registered with Vercel's `waitUntil` before work begins so accounting and cleanup can finish after a disconnect or response completion. Application provider calls still have their existing 25-second timeout. Related API paths share the same function, and Redis enforces allowances across every instance.
 
-- Build command: `npm ci --include=dev && npm run build`
-- Start command: `npm start`
-- Environment: `NODE_ENV=production`, `OPENAI_API_KEY` (secret), `OPENAI_MODEL=gpt-6-luna`, and `ALLOWED_ORIGINS` set to the exact public origin (no trailing slash). Include comma-separated aliases only if they actually serve this site.
-- Add the four Redis/allowance variables described above. The assistant will pause if Redis is not configured or writable.
-- Let the host provide `PORT`. For a Render service behind its single trusted reverse proxy, set `TRUST_PROXY=1`; leave it `0` when directly exposing Node.
-- Health endpoint: `/api/health`. It reports model, allowance limits, and configuration presence. Presence alone does not verify Redis connectivity or OpenAI generation quota; a successful chat request verifies the full path.
+Import this repository into Vercel, deploy branch `main`, and attach `harshgavand.dev`. The repository's `vercel.json` sets the Vite framework, install/build commands, `dist` output, API routing, function settings, static/security headers and daily recovery cron. Do not replace these with a catch-all SPA rewrite or a long-running start command. The build automatically pre-renders the homepage, archive and 404 page. Vercel serves the custom 404 with HTTP 404; `/index.html` redirects to `/`.
 
-The Node service serves pre-rendered `dist/index.html`, the full `dist/archive/index.html` catalog at `/archive` and `/archive/`, assets, and API routes. Unknown pages receive a pre-rendered 404 with HTTP 404 and `noindex`; `/index.html` redirects to `/`. A static-only host can serve the generated page but cannot run `/api/chat`. The existing Render Node service uses `npm ci --include=dev && npm run build`, starts with `npm run start`, and auto-deploys `main` on commit. Its build lifecycle already invokes pre-rendering; no Render setting change is required.
+Set the following under **Project Settings → Environment Variables → Production**, then redeploy:
 
-Metadata defaults to the current public hostname. An optional build-time `SITE_URL` overrides the canonical origin, otherwise Render's `RENDER_EXTERNAL_URL` is used when present. Pre-rendering applies the origin consistently to canonical, Open Graph, Twitter, JSON-LD, robots, and sitemap output. Only an HTTPS origin is accepted. For a custom domain, set `SITE_URL` to that origin before building. Development continues to use `createRoot`; generated production pages use `hydrateRoot`, including a shared build year to prevent footer mismatches across a year boundary.
+| Variable | Value |
+| --- | --- |
+| `SITE_URL` | `https://harshgavand.dev` (also the built-in default) |
+| `ALLOWED_ORIGINS` | `https://harshgavand.dev` (also the production default); comma-separate only real aliases |
+| `OPENAI_API_KEY` | Existing OpenAI project key; keep secret |
+| `OPENAI_MODEL` | `gpt-6-luna` |
+| `UPSTASH_REDIS_REST_URL` | Existing HTTPS Upstash REST endpoint |
+| `UPSTASH_REDIS_REST_TOKEN` | Existing writable REST token with EVAL access; keep secret |
+| `AI_DAILY_REQUEST_LIMIT` | `200` |
+| `AI_MONTHLY_BUDGET_USD` | `1.00` |
+| `CRON_SECRET` | Random secret of at least 32 characters |
+
+Use the existing quota database: the namespace remains `portfolio-ai:v1`, so moving hosts does not reset spending or lose queued settlements. Never put secrets in `VITE_*` variables. Vercel supplies its runtime environment; no manual `PORT`, `TRUST_PROXY`, `VERCEL` or start command is required. Node 24 is already pinned. `.env.example` contains placeholders only.
+
+Vercel calls `/api/quota-reconcile` daily at 04:15 UTC (09:45 India time), automatically passing `CRON_SECRET` as a bearer token. Missing or incorrect authorization returns 401 without Redis or provider work. Cron runs only on production deployments. The assistant also reconciles during admitted requests, so recovery progresses between daily invocations. Dead letters still require operator review. `/api/health` reports model, allowance limits and configuration presence; presence alone does not prove Redis connectivity or a successful model request.
+
+Metadata defaults to `https://harshgavand.dev`. Optional build-time `SITE_URL` overrides canonical, Open Graph, Twitter, JSON-LD, robots and sitemap output consistently; only an HTTPS origin is accepted. Development uses `createRoot`; generated pages use `hydrateRoot`, including a shared build year. Old verification reports remain historical records and are not rewritten to imply they tested the current host.
 
 For a local built preview, run `npm run build` then `npm start`, and use `http://127.0.0.1:3001`. Add that origin to `ALLOWED_ORIGINS`. The integrated `npm run dev` setup uses the development origins from your `.env`.
 
