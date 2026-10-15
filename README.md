@@ -115,6 +115,12 @@ No deployment is performed by local development or validation commands.
 
 Earlier verification directories document earlier designs and are retained as historical evidence.
 
+## Web Analytics
+
+Vercel Web Analytics uses `@vercel/analytics/react`, mounted once in the shared `Portfolio` component. React Router's pathname supplies page views for the homepage, archive and other routes; hash-only chapter navigation does not send another page view. Development uses the SDK's debug mode, and production uses its hosted collection script. The component renders no HTML, preserving pre-rendering and hydration.
+
+Enable Web Analytics in the Vercel project's Analytics panel, then deploy. No additional application environment variable or tracking ID is required. Visit the production site normally to generate real traffic and view visitors/page views in the Vercel dashboard. The integration adds page-view tracking only; contact fields and AI conversations are not sent as custom analytics events.
+
 ## Dependency and deployment tooling
 
 The linter uses ESLint 10 flat configuration in `eslint.config.js`, with compatible TypeScript, React, hooks, and Fast Refresh checks. The lockfile excludes the retired ESLint 8 dependency chain.
