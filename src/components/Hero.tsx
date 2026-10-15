@@ -1,5 +1,4 @@
 import { ArrowDown } from "lucide-react";
-import { profile } from "../data/portfolio";
 import { chapterNumber } from "../data/recruiter";
 import { ActionLink } from "./Primitives";
 import { EngineeringShowcase } from "./EngineeringShowcase";
@@ -35,8 +34,8 @@ export function Hero() {
             <ActionLink href="#projects" primary>
               Explore selected work
             </ActionLink>
-            <ActionLink href={profile.resume} external>
-              View résumé
+            <ActionLink href="#contact">
+              Get in touch
             </ActionLink>
           </div>
           <p className="hero-location">

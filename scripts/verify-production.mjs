@@ -70,6 +70,14 @@ assert.equal(await bot.text(), home);
 const missing = await request("/not-a-portfolio-route");
 assert.equal(missing.status, 404);
 assert.match(await missing.text(), /noindex, follow/);
+const removedDocument = await request("/Harsh_Gavand_Resume.pdf");
+assert.equal(
+  removedDocument.status,
+  404,
+  "Removed personal document remains accessible",
+);
+for (const page of [home, archive])
+  assert.doesNotMatch(page, /Harsh_Gavand_Resume\.pdf/i);
 const health = await request("/api/health");
 assert.equal(health.status, 200);
 const report = {
@@ -84,6 +92,7 @@ const report = {
   assets,
   googlebotHTMLMatches: true,
   unknownPageStatus: 404,
+  removedDocumentStatus: 404,
   apiHealthStatus: 200,
   browserReview: "Not performed; user requested code-level verification only.",
   providerCalls: 0,

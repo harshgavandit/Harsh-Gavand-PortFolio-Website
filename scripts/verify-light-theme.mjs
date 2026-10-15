@@ -337,13 +337,12 @@ await check(
   },
 );
 await check(
-  "Unknown route returns to the portfolio and resume is served",
+  "Unknown route returns to the portfolio and removed personal document returns 404",
   async () => {
     const pdf = await page.request.get(
       new URL("/Harsh_Gavand_Resume.pdf", page.url()).href,
     );
-    assert.equal(pdf.status(), 200);
-    assert.equal((await pdf.body()).subarray(0, 5).toString(), "%PDF-");
+    assert.equal(pdf.status(), 404);
     await page.goto(new URL("/unknown-page", page.url()).href);
     await page.getByRole("link", { name: /Back to the portfolio/ }).click();
     await page.waitForURL((url) => url.pathname === "/");

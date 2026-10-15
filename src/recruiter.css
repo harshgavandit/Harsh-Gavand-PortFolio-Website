@@ -331,12 +331,6 @@ kbd {
   border-radius: 3px;
   color: var(--muted);
 }
-.header-resume {
-  font-size: 0.75rem;
-  min-height: 44px;
-  display: flex;
-  align-items: center;
-}
 .header-socials {
   display: flex;
   gap: 0;
@@ -1648,9 +1642,6 @@ textarea:focus {
     display: grid;
     place-items: center;
   }
-  .header-resume {
-    margin-right: 6px;
-  }
   .mobile-menu {
     display: grid;
     gap: 20px;
@@ -1837,10 +1828,6 @@ textarea:focus {
   }
   .header-actions {
     gap: 5px;
-  }
-  .header-resume {
-    font-size: 0.66rem;
-    margin-right: 0;
   }
   .header-socials {
     padding-left: 0;

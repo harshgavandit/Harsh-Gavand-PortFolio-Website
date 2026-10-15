@@ -129,14 +129,6 @@ export function Navigation() {
             >
               Ask Harsh’s AI <kbd>⌘ K</kbd>
             </button>
-            <a
-              href={profile.resume}
-              className="header-resume"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Résumé ↗
-            </a>
             <div className="header-socials">
               <a
                 href={profile.github}

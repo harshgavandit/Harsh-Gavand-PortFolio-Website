@@ -3,7 +3,7 @@ export const chapters = [
   { id: "projects", label: "Selected Work", navLabel: "Work" },
   { id: "experience", label: "Experience & Impact", navLabel: "Experience" },
   { id: "skills", label: "Architecture & Skills", navLabel: "Skills" },
-  { id: "contact", label: "Contact & Résumé", navLabel: "Contact" },
+  { id: "contact", label: "Contact", navLabel: "Contact" },
 ] as const;
 
 export type ChapterId = (typeof chapters)[number]["id"];

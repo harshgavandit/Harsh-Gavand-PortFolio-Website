@@ -162,7 +162,7 @@ test("production serving supports assets and a real 404 while hiding source and 
     "<!doctype html><title>Harsh Gavand</title>",
   );
   await writeFile(
-    join(directory, "Harsh_Gavand_Resume.pdf"),
+    join(directory, "sample-document.pdf"),
     "%PDF-test-fixture",
   );
   await writeFile(
@@ -171,7 +171,7 @@ test("production serving supports assets and a real 404 while hiding source and 
   );
   t.after(async () => {
     await unlink(join(directory, "index.html"));
-    await unlink(join(directory, "Harsh_Gavand_Resume.pdf"));
+    await unlink(join(directory, "sample-document.pdf"));
     await unlink(join(directory, "404.html"));
     await rmdir(directory);
   });
@@ -185,7 +185,7 @@ test("production serving supports assets and a real 404 while hiding source and 
   const missingPage = await fetch(origin + "/a-page-that-does-not-exist");
   assert.equal(missingPage.status, 404);
   assert.match(await missingPage.text(), /Not found/);
-  const pdf = await fetch(origin + "/Harsh_Gavand_Resume.pdf");
+  const pdf = await fetch(origin + "/sample-document.pdf");
   assert.equal(pdf.status, 200);
   assert.equal(pdf.headers.get("content-type"), "application/pdf");
   for (const path of [

@@ -6,12 +6,33 @@ import {
   projects as catalog,
   latestAIProjects,
   caseStudies,
+  profile,
 } from "../src/data/portfolio.ts";
+import { buildRequest, sourceLinks } from "../server/openai.mjs";
 import { matchesProjectCollection } from "../src/lib/portfolioActions.ts";
 import { curatedArchive } from "../src/data/recruiter.ts";
 const projects = JSON.parse(
   readFileSync(new URL("../src/data/projects.json", import.meta.url), "utf8"),
 );
+test("personal document downloads are absent from public profile and assistant sources", () => {
+  assert.equal(Object.hasOwn(profile, "resume"), false);
+  assert.equal(
+    existsSync(new URL("../public/Harsh_Gavand_Resume.pdf", import.meta.url)),
+    false,
+  );
+  assert.deepEqual(
+    sourceLinks({ projectIds: [], sections: ["resume", "contact"] }),
+    [{ label: "Contact Harsh", href: "/#contact" }],
+  );
+  const request = buildRequest([
+    { role: "user", content: "How can I contact Harsh?" },
+  ]);
+  assert.ok(
+    !request.text.format.schema.properties.sections.items.enum.includes(
+      "resume",
+    ),
+  );
+});
 test("curated archive references eight distinct catalog projects and flagship stacks match reviewed source", () => {
   assert.equal(curatedArchive.length, 8);
   assert.equal(new Set(curatedArchive.map((item) => item.projectId)).size, 8);
@@ -111,15 +132,7 @@ test("all recently pushed AI repositories are included once, discoverable, and t
     ),
   );
 });
-test("resume has a PDF signature and all responsive featured images exist", () => {
-  const pdf = readFileSync(
-    new URL("../public/Harsh_Gavand_Resume.pdf", import.meta.url),
-  );
-  assert.equal(pdf.subarray(0, 5).toString(), "%PDF-");
-  assert.equal(
-    createHash("sha256").update(pdf).digest("hex"),
-    "e01a0147dc57cfb330c74c642c57687cec8657cede39440a76cabbc590dc195b",
-  );
+test("all responsive featured images exist", () => {
   for (const name of ["github", "banking"])
     for (const width of [640, 1280]) {
       assert.ok(

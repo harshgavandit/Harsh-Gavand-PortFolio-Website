@@ -6,17 +6,17 @@ A React + TypeScript portfolio organized around engineering decisions: five home
 
 ## Experience and structure
 
-The homepage has one shared chapter definition in `src/data/recruiter.ts`: Introduction, Selected Work, Experience & Impact, Architecture & Skills, and Contact & Résumé. Header navigation, its hidden mobile menu, and headings derive their numbers from that definition.
+The homepage has one shared chapter definition in `src/data/recruiter.ts`: Introduction, Selected Work, Experience & Impact, Architecture & Skills, and Contact. Header navigation, its hidden mobile menu, and headings derive their numbers from that definition.
 
 The hero replaces the abstract WebGL sculpture with a technical widget: an interactive architecture pipeline, a verbatim excerpt from the executed quota lifecycle, and a deterministic Request Trace simulator. The four case study cards expose product context, engineering decisions, technologies, challenges, and outcomes immediately. Each case study opens on its visual Product Preview, with System Architecture as the only other tab. There are no nested disclosures.
 
 The eight-row curated archive uses a native disclosure. The complete catalog lives on a separate pre-rendered route with search and All / Latest AI / AI & ML / APIs & Tools / Web & SaaS filters. Every project retains its identity and repository link; original copy was rewritten and inaccurate stack claims were corrected against source code. No invented performance metrics, production scale, payment guarantees, or database guarantees are added.
 
-Experience, education, the supplied portrait, recognition, skills, engineering principles, résumé, contact draft preparation, and the existing assistant remain available. The assistant opens from the header, floating button, or Ctrl/Command+K, with three recruiter prompts. The chat response contract remains unchanged; quota cancellation and settlement recovery are described below.
+Experience, education, the supplied portrait, recognition, skills, engineering principles, contact draft preparation, and the existing assistant remain available. The assistant opens from the header, floating button, or Ctrl/Command+K, with three recruiter prompts. The chat response contract remains unchanged; quota cancellation and settlement recovery are described below.
 
 ## Development
 
-Use Node.js **22.18 or newer**, required for the server's shared TypeScript data. Install with `npm ci`, then run `npm run dev`. This starts the API at `127.0.0.1:3001` and Vite at `127.0.0.1:5173`; both ports must be available. Vite proxies `/api`. The UI and API can also run separately through `npm run dev:ui` and `npm run dev:api`.
+Use Node.js **24.x LTS**, pinned in `package.json` and `.nvmrc`. This supports the server's shared TypeScript data and keeps deployments on one major version while receiving patch updates. Install with `npm ci`, then run `npm run dev`. This starts the API at `127.0.0.1:3001` and Vite at `127.0.0.1:5173`; both ports must be available. Vite proxies `/api`. The UI and API can also run separately through `npm run dev:ui` and `npm run dev:api`.
 
 ## OpenAI assistant
 
@@ -26,7 +26,7 @@ Configure `OPENAI_API_KEY` and `OPENAI_MODEL=gpt-6-luna` in the service environm
 
 The browser sends bounded conversation history to same-origin `/api/chat`. The server supplies published profile, About, experience, skills, all 38 project index entries, and the five most relevant project details, including existing case-study architecture and contribution notes. OpenAI returns text and references; the server maps references to existing portfolio links. Chat is held in page memory only. This service does not store conversation text. Redis stores only aggregate allowance counters and anonymous reservation records. Messages and portfolio context are sent to OpenAI; `store=false` disables stored Responses, while provider retention follows the account's applicable data controls.
 
-Controls include suggestions, follow-up questions, a 2,000-character input limit, loading, stop, retry, clear, résumé/contact references, and keyboard dismissal. Provider quota, invalid configuration, timeout, and incomplete output become clear user-facing errors. Default server limits are ten requests per client and sixty globally per ten minutes, with at most three simultaneous generations. These short-window limits remain in memory. The additional global daily and monthly allowances below are persistent and shared across server instances.
+Controls include suggestions, follow-up questions, a 2,000-character input limit, loading, stop, retry, clear, project/contact references, and keyboard dismissal. Provider quota, invalid configuration, timeout, and incomplete output become clear user-facing errors. Default server limits are ten requests per client and sixty globally per ten minutes, with at most three simultaneous generations. These short-window limits remain in memory. The additional global daily and monthly allowances below are persistent and shared across server instances.
 
 ## Persistent credit protection
 
@@ -74,7 +74,6 @@ The tests cover original project identities and assets, source metadata, assista
 - `src/components/Tabs.tsx`: shared ARIA tablist with arrow-key, Home/End, and roving-tabindex behavior.
 - `src/components/ProjectArchive.tsx`: searchable full catalog; initial HTML includes every record.
 - `src/entry-server.tsx` and `scripts/prerender.mjs`: build-time rendering and route metadata.
-- `public/Harsh_Gavand_Resume.pdf`: unchanged supplied résumé at a stable URL.
 - `public/projects`: responsive banking/repository landing-page captures and a UGC gallery image from the project's asset directory. The digest preview describes its email format rather than claiming a live inbox capture.
 - `verification/recruiter-2026-10-15/sources.json`: reviewed flagship commit IDs, paths, and corrections.
 
@@ -93,7 +92,7 @@ For the complete portfolio **including the assistant**, use a Node web service:
 - Let the host provide `PORT`. For a Render service behind its single trusted reverse proxy, set `TRUST_PROXY=1`; leave it `0` when directly exposing Node.
 - Health endpoint: `/api/health`. It reports model, allowance limits, and configuration presence. Presence alone does not verify Redis connectivity or OpenAI generation quota; a successful chat request verifies the full path.
 
-The Node service serves pre-rendered `dist/index.html`, the full `dist/archive/index.html` catalog at `/archive` and `/archive/`, assets, résumé, and API routes. Unknown pages receive a pre-rendered 404 with HTTP 404 and `noindex`; `/index.html` redirects to `/`. A static-only host can serve the generated page but cannot run `/api/chat`. The existing Render Node service uses `npm ci --include=dev && npm run build`, starts with `npm run start`, and auto-deploys `main` on commit. Its build lifecycle already invokes pre-rendering; no Render setting change is required.
+The Node service serves pre-rendered `dist/index.html`, the full `dist/archive/index.html` catalog at `/archive` and `/archive/`, assets, and API routes. Unknown pages receive a pre-rendered 404 with HTTP 404 and `noindex`; `/index.html` redirects to `/`. A static-only host can serve the generated page but cannot run `/api/chat`. The existing Render Node service uses `npm ci --include=dev && npm run build`, starts with `npm run start`, and auto-deploys `main` on commit. Its build lifecycle already invokes pre-rendering; no Render setting change is required.
 
 Metadata defaults to the current public hostname. An optional build-time `SITE_URL` overrides the canonical origin, otherwise Render's `RENDER_EXTERNAL_URL` is used when present. Pre-rendering applies the origin consistently to canonical, Open Graph, Twitter, JSON-LD, robots, and sitemap output. Only an HTTPS origin is accepted. For a custom domain, set `SITE_URL` to that origin before building. Development continues to use `createRoot`; generated production pages use `hydrateRoot`, including a shared build year to prevent footer mismatches across a year boundary.
 
@@ -102,3 +101,9 @@ For a local built preview, run `npm run build` then `npm start`, and use `http:/
 No deployment is performed by local development or validation commands.
 
 Earlier verification directories document earlier designs and are retained as historical evidence.
+
+## Dependency and deployment tooling
+
+The linter uses ESLint 10 flat configuration in `eslint.config.js`, with compatible TypeScript, React, hooks, and Fast Refresh checks. The lockfile excludes the retired ESLint 8 dependency chain.
+
+Vercel uses the repository's `vercel.json` install/build commands. `node scripts/run-npm.mjs` invokes npm with supported environment settings: legacy `cache-dir` is translated to npm's `cache` setting when no explicit cache is configured, and pnpm-only `store-dir` is omitted. This changes only the npm subprocess; it does not modify your system or deployment environment variables. Warnings are not suppressed. For the same behavior locally, use `node scripts/run-npm.mjs ci --include=dev` and `node scripts/run-npm.mjs run build`.

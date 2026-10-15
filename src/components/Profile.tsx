@@ -1,6 +1,6 @@
 import { aboutProfile, experience, profile, skills } from "../data/portfolio";
 import { engineeringPrinciples } from "../data/recruiter";
-import { ActionLink, ChapterHeading, Tags } from "./Primitives";
+import { ChapterHeading, Tags } from "./Primitives";
 
 export function Experience() {
   return (
@@ -51,9 +51,6 @@ export function Experience() {
           <span className="eyebrow">About me</span>
           <h3>Curious about the whole system.</h3>
           <p>{aboutProfile.summary}</p>
-          <ActionLink href={profile.resume} external>
-            Read my résumé
-          </ActionLink>
         </div>
         <div className="education-card">
           <span className="eyebrow">Education</span>

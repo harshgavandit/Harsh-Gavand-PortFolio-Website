@@ -73,13 +73,6 @@ export function Contact() {
               >
                 LinkedIn <ArrowUpRight size={15} />
               </a>
-              <a
-                href={profile.resume}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Resume <ArrowUpRight size={15} />
-              </a>
             </div>
             <p className="contact-location">
               {profile.location} · Working across the full stack

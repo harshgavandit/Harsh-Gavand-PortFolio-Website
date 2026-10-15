@@ -9,7 +9,7 @@ import {
   assertArchive,
   siteOrigin,
 } from "./prerender-checks.mjs";
-import { projects, profile } from "../src/data/portfolio.ts";
+import { projects } from "../src/data/portfolio.ts";
 import {
   chapters,
   chapterNumber,
@@ -230,10 +230,10 @@ for (const userAgent of [
   });
 }
 
-test("built assets, resume, and social preview resolve while source bundles stay private", async () => {
+test("built assets and social preview resolve while source bundles stay private", async () => {
   const script = html.match(/<script[^>]+src="([^"]+)"/)?.[1];
   const css = html.match(/<link[^>]+href="([^"]+\.css)"/)?.[1];
-  for (const path of [script, css, profile.resume, "/social-preview.png"])
+  for (const path of [script, css, "/social-preview.png"])
     assert.equal((await fetch(origin + path)).status, 200, path);
   for (const path of [
     "/dist-ssr/entry-server.mjs",
@@ -244,6 +244,25 @@ test("built assets, resume, and social preview resolve while source bundles stay
   assert.ok(
     (await stat(new URL("../dist/index.html", import.meta.url))).size > 50000,
   );
+});
+
+test("personal document links are absent on every rendered route and the old download returns 404", async () => {
+  const notFound = await readFile(
+    new URL("../dist/404.html", import.meta.url),
+    "utf8",
+  );
+  for (const page of [html, archive, notFound]) {
+    assert.doesNotMatch(page, /Harsh_Gavand_Resume\.pdf/i);
+    assert.doesNotMatch(
+      page,
+      /(?:View|Read my) r[ée]sum[ée]|Contact &amp; R[ée]sum[ée]/i,
+    );
+  }
+  assert.ok(
+    archive.includes("Django Resume Builder"),
+    "Keep the genuine project listing",
+  );
+  assert.equal((await fetch(origin + "/Harsh_Gavand_Resume.pdf")).status, 404);
 });
 
 test("every HTML image, responsive image candidate, stylesheet, script, and CSS font/image reference resolves", async () => {
