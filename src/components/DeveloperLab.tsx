@@ -1,4 +1,7 @@
-import { projectGroup, openPortfolioAssistant } from "../lib/portfolioActions";
+import {
+  matchesProjectCollection,
+  openPortfolioAssistant,
+} from "../lib/portfolioActions";
 import { useEffect, useState } from "react";
 import { AnimatePresence, m } from "framer-motion";
 import {
@@ -21,12 +24,13 @@ import { useMotionEnabled } from "./MotionPreferences";
 
 const categories = [
   "Selected work",
+  "Latest AI",
   "All projects",
   "AI & ML",
   "Web & SaaS",
   "APIs & Tools",
 ];
-const categoryIcons = [FileCode2, Boxes, Sparkles, Layers3, Braces];
+const categoryIcons = [FileCode2, Sparkles, Boxes, Sparkles, Layers3, Braces];
 const views = ["Overview", "Architecture", "Engineering"] as const;
 
 export function DeveloperLab() {
@@ -42,10 +46,9 @@ export function DeveloperLab() {
   });
   const filtered = ordered.filter(
     (p) =>
-      (category === "All projects" ||
-        (category === "Selected work"
-          ? caseStudies.some((study) => study.projectId === p.id)
-          : projectGroup(p) === category)) &&
+      (category === "Selected work"
+        ? caseStudies.some((study) => study.projectId === p.id)
+        : matchesProjectCollection(p, category)) &&
       `${p.title} ${p.category} ${p.technologies.join(" ")}`
         .toLowerCase()
         .includes(query.toLowerCase().trim()),
@@ -109,10 +112,9 @@ export function DeveloperLab() {
                   <small>
                     {label === "Selected work"
                       ? caseStudies.length
-                      : label === "All projects"
-                        ? projects.length
-                        : projects.filter((p) => projectGroup(p) === label)
-                            .length}
+                      : projects.filter((p) =>
+                          matchesProjectCollection(p, label),
+                        ).length}
                   </small>
                 </button>
               );

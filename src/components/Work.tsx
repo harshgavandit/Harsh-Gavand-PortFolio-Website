@@ -1,9 +1,10 @@
-import { projectGroup } from "../lib/portfolioActions";
+import { matchesProjectCollection } from "../lib/portfolioActions";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { ArrowDown, ArrowRight, ArrowUpRight, Search } from "lucide-react";
 import {
   caseStudies,
   projects,
+  latestAIProjects,
   type CaseStudy,
   type Project,
 } from "../data/portfolio";
@@ -273,18 +274,24 @@ export function FeaturedWork() {
         <DeveloperLab />
       </details>
       <a href="#all-projects" className="section-end-link">
-        There’s more to explore{" "}
-        <span>{projects.length - caseStudies.length} additional projects</span>
+        Explore the latest AI builds{" "}
+        <span>{latestAIProjects.length} new projects in the archive</span>
         <ArrowDown size={18} aria-hidden="true" />
       </a>
     </section>
   );
 }
 
-const filters = ["All", "AI & ML", "Web & SaaS", "APIs & Tools"] as const;
+const filters = [
+  "Latest AI",
+  "All",
+  "AI & ML",
+  "Web & SaaS",
+  "APIs & Tools",
+] as const;
 export function MoreWork() {
   const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState<string>("All");
+  const [filter, setFilter] = useState<string>("Latest AI");
   const [limit, setLimit] = useState(6);
   const searchRef = useRef<HTMLInputElement>(null);
   const projectHeadingRefs = useRef(new Map<number, HTMLHeadingElement>());
@@ -303,7 +310,7 @@ export function MoreWork() {
   );
   const filtered = secondary.filter(
     (p) =>
-      (filter === "All" || projectGroup(p) === filter) &&
+      matchesProjectCollection(p, filter) &&
       `${p.title} ${p.category} ${p.technologies.join(" ")}`
         .toLowerCase()
         .includes(query.toLowerCase().trim()),
@@ -325,16 +332,16 @@ export function MoreWork() {
             <span className="muted-heading">More possibilities.</span>
           </span>
         }
-        description="Real-time communication, machine learning, enterprise applications, and everything in between."
+        description={`${latestAIProjects.length} recent AI builds, from agent workflows and MCP tools to voice interfaces and document retrieval. Explore the latest additions or browse the full archive.`}
       />
-      <details className="archive-disclosure">
+      <details className="archive-disclosure" open>
         <summary>
           <span>
             <strong>{secondary.length.toString().padStart(2, "0")}</strong> More
             builds. Different challenges.
           </span>
           <span>
-            Open the archive <ArrowDown size={18} aria-hidden="true" />
+            Browse the archive <ArrowDown size={18} aria-hidden="true" />
           </span>
         </summary>
         <div className="archive-controls">

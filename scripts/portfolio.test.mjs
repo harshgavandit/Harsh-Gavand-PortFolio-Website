@@ -2,6 +2,12 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { readFileSync, existsSync } from "node:fs";
 import { createHash } from "node:crypto";
+import {
+  projects as catalog,
+  latestAIProjects,
+  caseStudies,
+} from "../src/data/portfolio.ts";
+import { matchesProjectCollection } from "../src/lib/portfolioActions.ts";
 const projects = JSON.parse(
   readFileSync(new URL("../src/data/projects.json", import.meta.url), "utf8"),
 );
@@ -16,8 +22,12 @@ test("preserves every original project, its content, technology list, and links"
   );
 });
 test("all project identifiers are unique and repository/demo links are valid HTTPS URLs", () => {
-  assert.equal(new Set(projects.map((p) => p.id)).size, projects.length);
-  for (const project of projects) {
+  assert.equal(new Set(catalog.map((p) => p.id)).size, catalog.length);
+  assert.equal(
+    new Set(catalog.map((p) => p.githubUrl.toLowerCase())).size,
+    catalog.length,
+  );
+  for (const project of catalog) {
     assert.equal(new URL(project.githubUrl).protocol, "https:");
     assert.equal(new URL(project.githubUrl).hostname, "github.com");
     if (project.demoUrl)
@@ -28,6 +38,48 @@ test("all project identifiers are unique and repository/demo links are valid HTT
         project.role.length,
     );
   }
+});
+test("all recently pushed AI repositories are included once, discoverable, and traced to reviewed commits", () => {
+  const sources = JSON.parse(
+    readFileSync(
+      new URL(
+        "../verification/github-projects-2026-10-15/sources.json",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  );
+  assert.equal(catalog.length, 38);
+  assert.equal(latestAIProjects.length, 12);
+  assert.equal(sources.projects.length, 12);
+  assert.deepEqual(
+    catalog.filter((project) => matchesProjectCollection(project, "Latest AI")),
+    latestAIProjects,
+  );
+  for (const source of sources.projects) {
+    const project = catalog.find((item) => item.id === source.projectId);
+    assert.equal(project.githubUrl, source.url);
+    assert.ok(Date.parse(source.pushedAt) >= Date.parse(sources.windowStart));
+    assert.ok(Date.parse(source.pushedAt) <= Date.parse(sources.windowEnd));
+    assert.match(source.commit, /^[a-f0-9]{40}$/);
+    assert.ok(source.inspectedSourcePaths.length > 0);
+    assert.equal(matchesProjectCollection(project, "Latest AI"), true);
+    assert.equal(matchesProjectCollection(project, "AI & ML"), true);
+    assert.equal(matchesProjectCollection(project, "All"), true);
+    assert.equal(project.demoUrl, undefined);
+  }
+  for (const project of projects) {
+    assert.deepEqual(
+      catalog.find((item) => item.id === project.id),
+      project,
+    );
+    assert.equal(matchesProjectCollection(project, "Latest AI"), false);
+  }
+  assert.ok(
+    caseStudies.every((study) =>
+      catalog.some((project) => project.id === study.projectId),
+    ),
+  );
 });
 test("resume has a PDF signature and all responsive featured images exist", () => {
   const pdf = readFileSync(

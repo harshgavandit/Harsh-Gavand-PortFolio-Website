@@ -1,4 +1,5 @@
 import sourceProjects from "./projects.json" with { type: "json" };
+import recentSourceProjects from "./recentProjects.json" with { type: "json" };
 
 export interface Project {
   id: number;
@@ -41,7 +42,12 @@ export const profile = {
   site: "https://harsh-gavand-portfolio-website.onrender.com",
 };
 
-export const projects: Project[] = sourceProjects;
+export const latestAIProjects: Project[] = recentSourceProjects;
+const latestAIIds = new Set(latestAIProjects.map((project) => project.id));
+export function isLatestAIProject(projectId: number) {
+  return latestAIIds.has(projectId);
+}
+export const projects: Project[] = [...latestAIProjects, ...sourceProjects];
 // Shared published About content for the page and assistant knowledge.
 export const aboutProfile = {
   summary:

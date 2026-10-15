@@ -1,0 +1,160 @@
+[
+  {
+    "check": "Archive shows all 12 new projects with exact source links",
+    "pass": true
+  },
+  {
+    "check": "All 12 implementation disclosures include source-derived features, challenges, and outcomes",
+    "pass": true
+  },
+  {
+    "check": "Archive MCP search returns 2 projects; empty-state reset clears query and focuses search",
+    "pass": true
+  },
+  {
+    "check": "Full archive pagination reaches 12, 18, 24, 30, and 34 projects",
+    "pass": true
+  },
+  {
+    "check": "Latest AI engineering collection lists all 12 projects",
+    "pass": true
+  },
+  {
+    "check": "All 12 engineering selections map to their source after animated transitions",
+    "pass": true
+  },
+  {
+    "check": "New project Architecture tab is explicitly a technology map",
+    "pass": true
+  },
+  {
+    "check": "Engineering index technology search returns 3 LangGraph projects",
+    "pass": true
+  },
+  {
+    "check": "Axe WCAG A/AA scan passes on desktop and mobile",
+    "pass": true
+  },
+  {
+    "check": "Archive fits viewport at 320px",
+    "pass": true,
+    "evidence": {
+      "cards": [
+        {
+          "left": 20,
+          "right": 291.20001220703125
+        },
+        {
+          "left": 20,
+          "right": 291.20001220703125
+        },
+        {
+          "left": 20,
+          "right": 291.20001220703125
+        },
+        {
+          "left": 20,
+          "right": 291.20001220703125
+        },
+        {
+          "left": 20,
+          "right": 291.20001220703125
+        },
+        {
+          "left": 20,
+          "right": 291.20001220703125
+        }
+      ],
+      "scrollWidth": 311,
+      "viewport": 320
+    }
+  },
+  {
+    "check": "Archive fits viewport at 768px",
+    "pass": true,
+    "evidence": {
+      "cards": [
+        {
+          "left": 36,
+          "right": 367.6000061035156
+        },
+        {
+          "left": 391.6000061035156,
+          "right": 723.2000122070312
+        },
+        {
+          "left": 36,
+          "right": 367.6000061035156
+        },
+        {
+          "left": 391.6000061035156,
+          "right": 723.2000122070312
+        },
+        {
+          "left": 36,
+          "right": 367.6000061035156
+        },
+        {
+          "left": 391.6000061035156,
+          "right": 723.2000122070312
+        }
+      ],
+      "scrollWidth": 759,
+      "viewport": 768
+    }
+  },
+  {
+    "check": "Archive fits viewport at 1440px",
+    "pass": true,
+    "evidence": {
+      "cards": [
+        {
+          "left": 75.5999984741211,
+          "right": 486.2625045776367
+        },
+        {
+          "left": 510.2625122070313,
+          "right": 920.9250183105468
+        },
+        {
+          "left": 944.9249877929688,
+          "right": 1355.5874938964844
+        },
+        {
+          "left": 75.5999984741211,
+          "right": 486.2625045776367
+        },
+        {
+          "left": 510.2625122070313,
+          "right": 920.9250183105468
+        },
+        {
+          "left": 944.9249877929688,
+          "right": 1355.5874938964844
+        }
+      ],
+      "scrollWidth": 1431,
+      "viewport": 1440
+    }
+  },
+  {
+    "check": "Mobile engineering index fits viewport and exposes all 12 latest projects",
+    "pass": true,
+    "evidence": {
+      "count": 12,
+      "heading": "AI Support Ticket Classifier",
+      "lab": {
+        "bottom": 2450.275146484375,
+        "height": 2173.400146484375,
+        "left": 20,
+        "right": 361.6000061035156,
+        "top": 276.875,
+        "width": 341.6000061035156,
+        "x": 20,
+        "y": 276.875
+      },
+      "scrollWidth": 382,
+      "viewport": 390
+    }
+  }
+]

@@ -1,0 +1,144 @@
+{
+  "checkedAt": "2026-10-15T14:05:39Z",
+  "windowStart": "2026-10-13T14:05:39Z",
+  "windowEnd": "2026-10-15T14:05:39Z",
+  "account": "harshgavandit",
+  "selection": "Public AI repositories owned by this account with pushed_at inside the preceding 48 hours. The portfolio and profile README repositories are excluded. Repository metadata, latest commits, READMEs, and implementation files were reviewed through GitHub.",
+  "projects": [
+    {
+      "projectId": 27,
+      "repository": "harshgavandit/adk-finance-assistant",
+      "url": "https://github.com/harshgavandit/adk-finance-assistant",
+      "pushedAt": "2026-10-14T12:35:37Z",
+      "commit": "82024d875fa07c9b73f9ac914a07f6e5ea738d53",
+      "commitUrl": "https://github.com/harshgavandit/adk-finance-assistant/commit/82024d875fa07c9b73f9ac914a07f6e5ea738d53",
+      "readmeUrl": "https://github.com/harshgavandit/adk-finance-assistant/blob/82024d875fa07c9b73f9ac914a07f6e5ea738d53/README.md",
+      "readmeBlob": "6cbd42d6165af66fd8f45f8d05bf28ac150d2907",
+      "inspectedSourcePaths": [
+        "ADK_Finance_Assistance_Agent/finance_assistant_agent/agent.py"
+      ]
+    },
+    {
+      "projectId": 28,
+      "repository": "harshgavandit/google-maps-mcp-openai-agent",
+      "url": "https://github.com/harshgavandit/google-maps-mcp-openai-agent",
+      "pushedAt": "2026-10-14T12:29:19Z",
+      "commit": "8b3f3a37b773fb064131e556d64b05533a215468",
+      "commitUrl": "https://github.com/harshgavandit/google-maps-mcp-openai-agent/commit/8b3f3a37b773fb064131e556d64b05533a215468",
+      "readmeUrl": "https://github.com/harshgavandit/google-maps-mcp-openai-agent/blob/8b3f3a37b773fb064131e556d64b05533a215468/README.md",
+      "readmeBlob": "4a1931a0ccf1af523f8081fbbdcbe5eacb9e9607",
+      "inspectedSourcePaths": ["MCP_Google_Maps_agent/Maps_Agent/agent.py"]
+    },
+    {
+      "projectId": 29,
+      "repository": "harshgavandit/adk-shopping-assistant",
+      "url": "https://github.com/harshgavandit/adk-shopping-assistant",
+      "pushedAt": "2026-10-14T12:28:42Z",
+      "commit": "92d5fa8776bd3db90994c5b1898081812d160617",
+      "commitUrl": "https://github.com/harshgavandit/adk-shopping-assistant/commit/92d5fa8776bd3db90994c5b1898081812d160617",
+      "readmeUrl": "https://github.com/harshgavandit/adk-shopping-assistant/blob/92d5fa8776bd3db90994c5b1898081812d160617/README.md",
+      "readmeBlob": "f40f3ce194be6550b10be6d5d354baeabb2de38e",
+      "inspectedSourcePaths": ["ADK_Shopping/server.py"]
+    },
+    {
+      "projectId": 30,
+      "repository": "harshgavandit/healthcare-mcp-openai",
+      "url": "https://github.com/harshgavandit/healthcare-mcp-openai",
+      "pushedAt": "2026-10-14T12:17:22Z",
+      "commit": "ed7bedbd93c91f2769eb09940e6fdda77304703f",
+      "commitUrl": "https://github.com/harshgavandit/healthcare-mcp-openai/commit/ed7bedbd93c91f2769eb09940e6fdda77304703f",
+      "readmeUrl": "https://github.com/harshgavandit/healthcare-mcp-openai/blob/ed7bedbd93c91f2769eb09940e6fdda77304703f/README.md",
+      "readmeBlob": "e31e28247cf127cc0c70d55783d5292391902943",
+      "inspectedSourcePaths": ["healthcare_mcp_server/server.py"]
+    },
+    {
+      "projectId": 31,
+      "repository": "harshgavandit/RAG-Semantic-Cache-Symposium-Bot",
+      "url": "https://github.com/harshgavandit/RAG-Semantic-Cache-Symposium-Bot",
+      "pushedAt": "2026-10-14T09:22:50Z",
+      "commit": "a7ada0234039a121180df5fa75fa2f035348ba65",
+      "commitUrl": "https://github.com/harshgavandit/RAG-Semantic-Cache-Symposium-Bot/commit/a7ada0234039a121180df5fa75fa2f035348ba65",
+      "readmeUrl": "https://github.com/harshgavandit/RAG-Semantic-Cache-Symposium-Bot/blob/a7ada0234039a121180df5fa75fa2f035348ba65/README.md",
+      "readmeBlob": "9b83582b68f9e3863079e1a15ae51b40776af652",
+      "inspectedSourcePaths": ["phase2_retrieval/cache.py"]
+    },
+    {
+      "projectId": 32,
+      "repository": "harshgavandit/RAG-Symposium-Bot",
+      "url": "https://github.com/harshgavandit/RAG-Symposium-Bot",
+      "pushedAt": "2026-10-14T09:14:33Z",
+      "commit": "70cfbb28fa1ba99a328e1ea7ddba0e108f0c8aec",
+      "commitUrl": "https://github.com/harshgavandit/RAG-Symposium-Bot/commit/70cfbb28fa1ba99a328e1ea7ddba0e108f0c8aec",
+      "readmeUrl": "https://github.com/harshgavandit/RAG-Symposium-Bot/blob/70cfbb28fa1ba99a328e1ea7ddba0e108f0c8aec/README.md",
+      "readmeBlob": "99788986cfef3e04a3321dd0ae82a0e4c2314dd1",
+      "inspectedSourcePaths": ["phase2_retrieval/backend.py"]
+    },
+    {
+      "projectId": 33,
+      "repository": "harshgavandit/banking-agent-harness",
+      "url": "https://github.com/harshgavandit/banking-agent-harness",
+      "pushedAt": "2026-10-14T09:09:32Z",
+      "commit": "2b8b094bc80bef18f75b1e50c5235c77d5a246c9",
+      "commitUrl": "https://github.com/harshgavandit/banking-agent-harness/commit/2b8b094bc80bef18f75b1e50c5235c77d5a246c9",
+      "readmeUrl": "https://github.com/harshgavandit/banking-agent-harness/blob/2b8b094bc80bef18f75b1e50c5235c77d5a246c9/README.md",
+      "readmeBlob": "66aeada153ecdb7437ccf7a30b1b86af17114432",
+      "inspectedSourcePaths": ["app/services/transfer_service.py"]
+    },
+    {
+      "projectId": 34,
+      "repository": "harshgavandit/agentic-aws-resource-management",
+      "url": "https://github.com/harshgavandit/agentic-aws-resource-management",
+      "pushedAt": "2026-10-14T07:54:57Z",
+      "commit": "3f94d6e154d5a8f1f4ebcbb3baf8d92e3e7d4aea",
+      "commitUrl": "https://github.com/harshgavandit/agentic-aws-resource-management/commit/3f94d6e154d5a8f1f4ebcbb3baf8d92e3e7d4aea",
+      "readmeUrl": "https://github.com/harshgavandit/agentic-aws-resource-management/blob/3f94d6e154d5a8f1f4ebcbb3baf8d92e3e7d4aea/README.md",
+      "readmeBlob": "3ed259e48c98cf9ead421713fa069e89c0ca7148",
+      "inspectedSourcePaths": ["backend/core/aws_agent.py"],
+      "upstream": "https://github.com/sanjayssnit/agentic-aws-resource-management"
+    },
+    {
+      "projectId": 35,
+      "repository": "harshgavandit/multi-agent-customer-support",
+      "url": "https://github.com/harshgavandit/multi-agent-customer-support",
+      "pushedAt": "2026-10-14T07:48:43Z",
+      "commit": "1e03c1f3475368ee2ce1be0b0cf21c9c3c6274ef",
+      "commitUrl": "https://github.com/harshgavandit/multi-agent-customer-support/commit/1e03c1f3475368ee2ce1be0b0cf21c9c3c6274ef",
+      "readmeUrl": "https://github.com/harshgavandit/multi-agent-customer-support/blob/1e03c1f3475368ee2ce1be0b0cf21c9c3c6274ef/README.md",
+      "readmeBlob": "b666309ae4705ceb3c610fa00de9454a947f0f64",
+      "inspectedSourcePaths": ["pipeline/graph.py"]
+    },
+    {
+      "projectId": 36,
+      "repository": "harshgavandit/ai-voice-assistant",
+      "url": "https://github.com/harshgavandit/ai-voice-assistant",
+      "pushedAt": "2026-10-14T07:48:36Z",
+      "commit": "4f21da4fc0c7f72860938aa30eb12682f1265260",
+      "commitUrl": "https://github.com/harshgavandit/ai-voice-assistant/commit/4f21da4fc0c7f72860938aa30eb12682f1265260",
+      "readmeUrl": "https://github.com/harshgavandit/ai-voice-assistant/blob/4f21da4fc0c7f72860938aa30eb12682f1265260/README.md",
+      "readmeBlob": "c5c989838f360b99eb4bf635d84002e1401da7d8",
+      "inspectedSourcePaths": ["main.py"]
+    },
+    {
+      "projectId": 37,
+      "repository": "harshgavandit/rag-documentation-assistant",
+      "url": "https://github.com/harshgavandit/rag-documentation-assistant",
+      "pushedAt": "2026-10-14T07:48:35Z",
+      "commit": "3d021d9d178d85a17e61bb22c92d18f65abcd284",
+      "commitUrl": "https://github.com/harshgavandit/rag-documentation-assistant/commit/3d021d9d178d85a17e61bb22c92d18f65abcd284",
+      "readmeUrl": "https://github.com/harshgavandit/rag-documentation-assistant/blob/3d021d9d178d85a17e61bb22c92d18f65abcd284/README.md",
+      "readmeBlob": "1dd9e62bc9f6873e86adf5420df22e5eddfbe96c",
+      "inspectedSourcePaths": ["retrieval/hybrid_search.py"]
+    },
+    {
+      "projectId": 38,
+      "repository": "harshgavandit/support-ticket-classifier",
+      "url": "https://github.com/harshgavandit/support-ticket-classifier",
+      "pushedAt": "2026-10-14T07:47:53Z",
+      "commit": "64563514137a13d99c43b806868172c4719e14c8",
+      "commitUrl": "https://github.com/harshgavandit/support-ticket-classifier/commit/64563514137a13d99c43b806868172c4719e14c8",
+      "readmeUrl": "https://github.com/harshgavandit/support-ticket-classifier/blob/64563514137a13d99c43b806868172c4719e14c8/README.md",
+      "readmeBlob": "f27aa0d89e7c2221875c01fd5312607f93e956eb",
+      "inspectedSourcePaths": ["graph.py"]
+    }
+  ]
+}

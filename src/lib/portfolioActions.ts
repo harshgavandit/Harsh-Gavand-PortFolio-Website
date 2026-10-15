@@ -1,4 +1,14 @@
-import type { Project } from "../data/portfolio";
+import { isLatestAIProject, type Project } from "../data/portfolio.ts";
+
+export function matchesProjectCollection(project: Project, collection: string) {
+  return (
+    collection === "All" ||
+    collection === "All projects" ||
+    (collection === "Latest AI"
+      ? isLatestAIProject(project.id)
+      : projectGroup(project) === collection)
+  );
+}
 
 export function projectGroup(project: Project) {
   if (/AI|Learning|Prediction|GPT/.test(project.title + project.category))

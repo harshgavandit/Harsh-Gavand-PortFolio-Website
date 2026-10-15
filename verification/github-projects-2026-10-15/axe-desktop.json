@@ -1,0 +1,9 @@
+{
+  "result": {
+    "type": "object",
+    "value": {
+      "passes": 30,
+      "violations": []
+    }
+  }
+}

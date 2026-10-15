@@ -1,13 +1,14 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { generateReply, knowledgeFor, sourceLinks } from "../server/openai.mjs";
+import { projects, latestAIProjects } from "../src/data/portfolio.ts";
 
 const messages = [
   { role: "user", content: "Tell me about the AI News-to-Email Digest." },
 ];
 test("retrieval includes the relevant project and complete public project index", () => {
   const knowledge = knowledgeFor(messages);
-  assert.equal(knowledge.projectIndex.length, 26);
+  assert.equal(knowledge.projectIndex.length, projects.length);
   assert.ok(knowledge.projectDetails.some((p) => p.id === 17));
   const digestStudy = knowledge.caseStudyNotes.find(
     (study) => study.projectId === 17,
@@ -17,6 +18,20 @@ test("retrieval includes the relevant project and complete public project index"
     digestStudy.contributions.some((item) => item.label === "Pipeline / AI"),
   );
   assert.ok(!JSON.stringify(knowledge).includes("OPENAI_API_KEY"));
+});
+test("each recent AI project is retrievable with its implementation context and canonical source link", () => {
+  for (const project of latestAIProjects) {
+    const knowledge = knowledgeFor([
+      { role: "user", content: `Tell me about ${project.title}` },
+    ]);
+    assert.ok(
+      knowledge.projectDetails.some((item) => item.id === project.id),
+      project.title,
+    );
+    assert.deepEqual(sourceLinks({ projectIds: [project.id], sections: [] }), [
+      { label: `${project.title} · source`, href: project.githubUrl },
+    ]);
+  }
 });
 test("OpenAI request uses server headers, trusted context and multi-turn role mapping", async () => {
   const result = await generateReply(
