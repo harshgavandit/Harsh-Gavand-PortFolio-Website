@@ -10,6 +10,7 @@ import { Contact, Footer } from "./components/Contact";
 import { Assistant } from "./components/Assistant";
 import { EngineeringBridge } from "./components/EngineeringBridge";
 import { PortfolioIntelligence } from "./components/PortfolioIntelligence";
+import { SpatialAtmosphere } from "./components/SpatialAtmosphere";
 
 function Home() {
   return (
@@ -17,6 +18,7 @@ function Home() {
       <a className="skip-link" href="#main">
         Skip to content
       </a>
+      <SpatialAtmosphere />
       <Navigation />
       <main id="main" tabIndex={-1}>
         <Hero />

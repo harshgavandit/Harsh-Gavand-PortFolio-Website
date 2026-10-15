@@ -116,7 +116,117 @@ export function ProjectCaseStudy({
   );
 }
 
+function CaseStudyExhibit({
+  study,
+  project,
+  index,
+}: {
+  study: CaseStudy;
+  project: Project;
+  index: number;
+}) {
+  const disclosure = useRef<HTMLDetailsElement>(null);
+  useEffect(() => {
+    const reveal = () => {
+      if (
+        window.location.hash === `#project-${project.id}` &&
+        disclosure.current
+      ) {
+        disclosure.current.open = true;
+        requestAnimationFrame(() =>
+          document
+            .getElementById(`project-${project.id}`)
+            ?.scrollIntoView({ block: "start" }),
+        );
+      }
+    };
+    reveal();
+    window.addEventListener("hashchange", reveal);
+    return () => window.removeEventListener("hashchange", reveal);
+  }, [project.id]);
+  return (
+    <details className={`work-exhibit exhibit-${index}`} ref={disclosure}>
+      <summary aria-label={`Explore ${study.shortName} case study`}>
+        <div className="exhibit-visual">
+          <span className="exhibit-label">
+            0{index + 1} /{" "}
+            {study.image ? "PRODUCT CAPTURE" : "IMPLEMENTATION MAP"}
+          </span>
+          {study.image ? (
+            <img
+              src={`/projects/${study.image}-1280.webp`}
+              srcSet={`/projects/${study.image}-640.webp 640w, /projects/${study.image}-1280.webp 1280w`}
+              sizes="(min-width: 900px) 45vw, 100vw"
+              width="1280"
+              height="722"
+              loading="lazy"
+              alt={study.imageAlt}
+            />
+          ) : (
+            <div className="exhibit-system">
+              <span>{study.diagram?.title}</span>
+              <ol>
+                {study.diagram?.nodes.map((node, i) => (
+                  <li key={node}>
+                    <span>0{i + 1}</span>
+                    <strong>{node}</strong>
+                    <ArrowRight size={16} aria-hidden="true" />
+                  </li>
+                ))}
+              </ol>
+            </div>
+          )}
+          <span className="exhibit-open" aria-hidden="true">
+            <ArrowUpRight size={23} />
+          </span>
+        </div>
+        <div className="exhibit-copy">
+          <span className="eyebrow">{project.category}</span>
+          <h3>{study.shortName}</h3>
+          <p>{study.problem}</p>
+          <div className="exhibit-meta">
+            <span>{project.technologies.slice(0, 3).join(" / ")}</span>
+            <span className="exhibit-action">
+              Explore the build <span aria-hidden="true">+</span>
+            </span>
+          </div>
+        </div>
+      </summary>
+      <div className="exhibit-expanded">
+        <ProjectCaseStudy study={study} project={project} index={index} />
+        <button
+          className="exhibit-close text-link"
+          onClick={() => {
+            if (!disclosure.current) return;
+            disclosure.current.open = false;
+            const summary = disclosure.current.querySelector("summary");
+            summary?.focus({ preventScroll: true });
+            summary?.scrollIntoView({ block: "center" });
+          }}
+        >
+          Close case study <span aria-hidden="true">−</span>
+        </button>
+      </div>
+    </details>
+  );
+}
+
 export function FeaturedWork() {
+  const labDisclosure = useRef<HTMLDetailsElement>(null);
+  useEffect(() => {
+    const revealLab = () => {
+      if (!labDisclosure.current) return;
+      labDisclosure.current.open = true;
+      requestAnimationFrame(() => {
+        labDisclosure.current?.scrollIntoView({ block: "start" });
+        labDisclosure.current
+          ?.querySelector<HTMLInputElement>(".lab-search input")
+          ?.focus({ preventScroll: true });
+      });
+    };
+    window.addEventListener("explore-project", revealLab);
+    return () => window.removeEventListener("explore-project", revealLab);
+  }, []);
   return (
     <section
       id="projects"
@@ -129,23 +239,18 @@ export function FeaturedWork() {
         label="Selected work"
         title={
           <span id="featured-title">
-            A few things I’ve built.
+            Selected work.
             <br />
-            <span className="muted-heading">Open them up.</span>
+            <span className="muted-heading">Built end to end.</span>
           </span>
         }
-        description="Start with four selected builds. Explore the product, trace its architecture, or go straight to the source."
+        description="Four different problems. One considered approach. Explore the products and the engineering behind them."
       />
-      <DeveloperLab />
-      <div className="case-study-divider">
-        <span className="eyebrow">Behind the builds</span>
-        <p>The decisions, contributions, and details.</p>
-      </div>
       <div className="case-study-list">
         {caseStudies.map((study, index) => {
           const project = projects.find((p) => p.id === study.projectId)!;
           return (
-            <ProjectCaseStudy
+            <CaseStudyExhibit
               key={project.id}
               study={study}
               project={project}
@@ -154,6 +259,19 @@ export function FeaturedWork() {
           );
         })}
       </div>
+      <details className="lab-disclosure" ref={labDisclosure}>
+        <summary>
+          <span>
+            <span className="eyebrow">THE ENGINEERING INDEX</span>
+            <strong>Go deeper into the work.</strong>
+          </span>
+          <span>
+            Search all {projects.length} projects{" "}
+            <ArrowUpRight size={20} aria-hidden="true" />
+          </span>
+        </summary>
+        <DeveloperLab />
+      </details>
       <a href="#all-projects" className="section-end-link">
         There’s more to explore{" "}
         <span>{projects.length - caseStudies.length} additional projects</span>

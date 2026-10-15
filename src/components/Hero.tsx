@@ -1,128 +1,95 @@
 import { m } from "framer-motion";
-import {
-  ArrowDown,
-  ArrowUpRight,
-  Code2,
-  GitBranch,
-  Sparkles,
-} from "lucide-react";
-import {
-  aboutProfile,
-  caseStudies,
-  experience,
-  profile,
-  projects,
-} from "../data/portfolio";
+import { ArrowDown, ArrowUpRight, Sparkles } from "lucide-react";
+import { aboutProfile, profile, projects } from "../data/portfolio";
 import { ActionLink } from "./Primitives";
-import { SystemArtifact } from "./SystemArtifact";
+import { StudioScene } from "./StudioScene";
 import { useMotionEnabled } from "./MotionPreferences";
 import { openPortfolioAssistant } from "../lib/portfolioActions";
-import "./cinematic.css";
 
 export function Hero() {
   const enabled = useMotionEnabled();
   return (
     <section
       id="hero"
-      className="hero section-container cinematic-hero atelier-hero lab-hero"
+      className="hero section-container"
       tabIndex={-1}
       aria-labelledby="hero-title"
     >
       <div className="hero-topline">
-        <span className="eyebrow">
-          <Code2 size={14} aria-hidden="true" /> HARSH GAVAND / ENGINEERING
-          PORTFOLIO
+        <span>
+          <span className="status-dot" /> Open to new opportunities
         </span>
-        <span className="location">
-          {profile.location} <span>↗</span>
+        <span>
+          {profile.location}{" "}
+          <span className="hero-edition"> / INDEPENDENT MINDSET</span>
         </span>
       </div>
       <div className="hero-layout">
         <div className="hero-copy">
-          <div className="lab-role-badge">
-            <span /> FULL-STACK & AI DEVELOPER
-          </div>
+          <p className="hero-kicker">
+            Harsh Gavand <span> / </span> Full-stack & AI engineer
+          </p>
           <m.h1
             id="hero-title"
             initial={false}
-            animate={enabled ? { opacity: [0.4, 1], y: [16, 0] } : undefined}
-            transition={{ duration: 0.65 }}
+            animate={enabled ? { opacity: [0.6, 1], y: [18, 0] } : undefined}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           >
-            Good software,
+            Thoughtful
             <br />
-            <span>all the way down.</span>
+            by design.
+            <br />
+            <span>Built to work.</span>
           </m.h1>
           <p className="hero-description">
-            I’m Harsh. I connect React interfaces, Python and JavaScript
-            backends, and practical AI workflows. Here’s the work — and how it
-            fits together.
+            I connect the interface, the system, and the intelligence behind it.
+          </p>
+          <p className="hero-detail">
+            Full-stack products. Practical AI. Care in every layer.
           </p>
           <div className="actions">
             <ActionLink href="#projects" primary>
-              Explore selected work
+              Explore the work
             </ActionLink>
-            <ActionLink href={profile.github} external>
-              GitHub
-            </ActionLink>
+            <ActionLink href="#contact">Let’s talk</ActionLink>
           </div>
           <button
             className="hero-assistant-link"
             onClick={() => openPortfolioAssistant()}
             aria-haspopup="dialog"
           >
-            <Sparkles size={16} aria-hidden="true" />
-            <span>
-              Have a question? <strong>Ask my portfolio</strong>
-            </span>
-            <ArrowUpRight size={15} aria-hidden="true" />
+            <Sparkles size={14} aria-hidden="true" /> Curious about the details?{" "}
+            <strong>Ask my portfolio</strong>
+            <ArrowUpRight size={14} aria-hidden="true" />
           </button>
-          <div className="hero-evidence">
-            <span>
-              <GitBranch size={14} /> Public source code
-            </span>
-            <span>
-              <Code2 size={14} /> Architecture & implementation
-            </span>
-          </div>
         </div>
-        <SystemArtifact />
-      </div>
-      <div
-        className="lab-facts"
-        role="group"
-        aria-label="Portfolio at a glance"
-      >
-        <a href="#projects">
-          <strong>{projects.length.toString().padStart(2, "0")}</strong>
-          <span>
-            Projects to explore<small>Source, stack & decisions</small>
-          </span>
-          <ArrowUpRight size={17} />
-        </a>
-        <a href="#projects">
-          <strong>{caseStudies.length.toString().padStart(2, "0")}</strong>
-          <span>
-            Featured case studies<small>Inside the implementation</small>
-          </span>
-          <ArrowUpRight size={17} />
-        </a>
-        <a href="#experience">
-          <strong>{aboutProfile.experience.replace(" years", "")}</strong>
-          <span>
-            Years of experience
-            <small>{experience.length} professional roles</small>
-          </span>
-          <ArrowUpRight size={17} />
-        </a>
+        <StudioScene />
       </div>
       <div className="hero-bottom">
-        <a href="#projects">
-          <ArrowDown size={15} /> Inspect the work
+        <a href="#projects" className="scroll-cue">
+          <ArrowDown size={17} aria-hidden="true" /> A closer look
         </a>
-        <span className="lab-micro">INTERFACES / SYSTEMS / APPLIED AI</span>
-        <a href="#contact">
-          Let’s build something <ArrowUpRight size={14} />
-        </a>
+        <div className="hero-index">
+          <a href="#all-projects">
+            <strong>{projects.length}</strong>
+            <span>projects to explore</span>
+          </a>
+          <a href="#experience">
+            <strong>{aboutProfile.experience}</strong>
+            <span>of building products</span>
+          </a>
+        </div>
+        <span className="hero-signoff">
+          Design meets engineering.
+          <br />
+          Good things happen.
+        </span>
+      </div>
+      <div className="discipline-strip" aria-label="Areas of work">
+        <span>Interface</span>
+        <span>Systems</span>
+        <span>Applied AI</span>
+        <span>One connected perspective.</span>
       </div>
     </section>
   );

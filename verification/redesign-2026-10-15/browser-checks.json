@@ -1,0 +1,242 @@
+{
+  "checkedAt": "2026-10-15",
+  "checks": [
+    {
+      "name": "Case study opens by keyboard",
+      "passed": true
+    },
+    {
+      "name": "Contribution chapter changes",
+      "passed": true
+    },
+    {
+      "name": "Case study closes",
+      "passed": true
+    },
+    {
+      "name": "Index search finds matching project",
+      "passed": true
+    },
+    {
+      "name": "Architecture view opens",
+      "passed": true
+    },
+    {
+      "name": "Detail tabs support arrow navigation",
+      "passed": true
+    },
+    {
+      "name": "Index empty state",
+      "passed": true
+    },
+    {
+      "name": "Skill tabs support keyboard navigation",
+      "passed": true
+    },
+    {
+      "name": "Skill evidence opens the engineering index",
+      "passed": true
+    },
+    {
+      "name": "Skill evidence selects the correct project",
+      "passed": true
+    },
+    {
+      "name": "Archive search filters content",
+      "passed": true
+    },
+    {
+      "name": "Archive empty state",
+      "passed": true
+    },
+    {
+      "name": "Archive reveals all 22 secondary projects",
+      "passed": true
+    },
+    {
+      "name": "Mobile menu locks the background",
+      "passed": true
+    },
+    {
+      "name": "Menu resize closes overlay and releases inert",
+      "passed": true
+    },
+    {
+      "name": "Engineering index search works at 320 pixels",
+      "passed": true
+    },
+    {
+      "name": "Escape closes menu and restores toggle focus",
+      "passed": true
+    },
+    {
+      "name": "Mobile section link releases background",
+      "passed": true
+    },
+    {
+      "name": "Contact prepares a reviewable email draft",
+      "passed": true
+    },
+    {
+      "name": "Editing contact fields invalidates stale draft",
+      "passed": true
+    },
+    {
+      "name": "Project prompt opens assistant with a draft question",
+      "passed": true
+    },
+    {
+      "name": "Clear chat clears the prompt",
+      "passed": true
+    },
+    {
+      "name": "Assistant closes with Escape",
+      "passed": true
+    },
+    {
+      "name": "Manual motion control enables animation",
+      "passed": true
+    },
+    {
+      "name": "System reduced motion overrides animation",
+      "passed": true
+    },
+    {
+      "name": "Motion toggle reflects system preference",
+      "passed": true
+    },
+    {
+      "name": "WebGL failure reveals still fallback",
+      "passed": true
+    },
+    {
+      "name": "Fallback disables unusable 3D controls",
+      "passed": true
+    },
+    {
+      "name": "Discipline controls work without WebGL",
+      "passed": true
+    },
+    {
+      "name": "Fallback still is decoded and failed canvas is hidden",
+      "passed": true
+    },
+    {
+      "name": "Content fits 320px",
+      "passed": true
+    },
+    {
+      "name": "Content fits 390px",
+      "passed": true
+    },
+    {
+      "name": "Content fits 600px",
+      "passed": true
+    },
+    {
+      "name": "Content fits 768px",
+      "passed": true
+    },
+    {
+      "name": "Content fits 820px",
+      "passed": true
+    },
+    {
+      "name": "Content fits 1024px",
+      "passed": true
+    },
+    {
+      "name": "Content fits 1440px",
+      "passed": true
+    },
+    {
+      "name": "Content fits 1920px",
+      "passed": true
+    },
+    {
+      "name": "Direct project fragment reveals its case study on load",
+      "passed": true
+    },
+    {
+      "name": "Workflow stage can be selected manually",
+      "passed": true
+    },
+    {
+      "name": "Engineering bridge switches product layers",
+      "passed": true
+    },
+    {
+      "name": "Workflow does not highlight an unrelated navigation section",
+      "passed": true
+    }
+  ],
+  "responsive": [
+    {
+      "overflow": [],
+      "scrollWidth": 311,
+      "width": 320
+    },
+    {
+      "overflow": [],
+      "scrollWidth": 382,
+      "width": 390
+    },
+    {
+      "overflow": [],
+      "scrollWidth": 591,
+      "width": 600
+    },
+    {
+      "overflow": [],
+      "scrollWidth": 759,
+      "width": 768
+    },
+    {
+      "overflow": [],
+      "scrollWidth": 811,
+      "width": 820
+    },
+    {
+      "overflow": [],
+      "scrollWidth": 1015,
+      "width": 1024
+    },
+    {
+      "overflow": [],
+      "scrollWidth": 1431,
+      "width": 1440
+    },
+    {
+      "overflow": [],
+      "scrollWidth": 1911,
+      "width": 1920
+    }
+  ],
+  "accessibility": {
+    "desktop": {
+      "incomplete": [
+        "aria-prohibited-attr",
+        "aria-valid-attr-value",
+        "color-contrast"
+      ],
+      "passes": 30,
+      "violations": []
+    },
+    "mobile": {
+      "incomplete": [
+        "aria-prohibited-attr",
+        "aria-valid-attr-value",
+        "color-contrast"
+      ],
+      "passes": 30,
+      "violations": []
+    },
+    "assistant": {
+      "incomplete": [
+        "color-contrast"
+      ],
+      "passes": 17,
+      "violations": []
+    }
+  }
+}

@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #b8acc9;
+  color: #a2aa99;
   font-size: 9px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -22,7 +22,7 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #c9bde3;
+  background: #c5ed8b;
 }
 .walkthrough-depth {
   border-radius: 9px;
@@ -50,32 +50,100 @@
   right: 10px;
   padding: 6px 8px;
   background: #141219ec;
-  border: 1px solid #8f829c60;
+  border: 1px solid #63744f60;
   border-radius: 4px;
-  color: #e0d7ee;
+  color: #e1e4d9;
   font: 7px var(--font-body);
   letter-spacing: 0.08em;
 }
 .walkthrough-pipeline {
-  padding: 25px 25px 18px;
+  padding: 24px 28px 18px;
+  background: rgba(8, 14, 28, 0.95);
+  background-image: radial-gradient(
+    ellipse at 80% 20%,
+    rgba(56, 189, 248, 0.08) 0%,
+    transparent 70%
+  );
 }
+
+.pipeline-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 18px;
+}
+
+.pipeline-heading svg {
+  color: var(--accent);
+}
+
+.walkthrough-pipeline ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 8px;
+}
+
 .walkthrough-pipeline li {
-  opacity: 0.56;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--foreground-muted);
+  background: rgba(255, 255, 255, 0.02);
+  opacity: 0.55;
   transition:
     opacity 0.4s ease,
     border-color 0.4s ease,
     background 0.4s ease,
     transform 0.4s ease;
 }
+
+.pipeline-step {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+}
+
+.walkthrough-pipeline li svg {
+  margin-left: auto;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
 .walkthrough-pipeline li.pipeline-active {
   opacity: 1;
-  border-color: #b3a0d4;
-  background: #bd9dec12;
-  transform: translateX(3px);
+  border-color: rgba(56, 189, 248, 0.4);
+  background: rgba(56, 189, 248, 0.12);
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.15);
+  transform: translateX(4px);
 }
+
 .walkthrough-pipeline li:last-child:not(.pipeline-active) {
-  border-color: #3f384b;
-  background: #a285cb05;
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.pipeline-note {
+  display: block;
+  margin-top: 18px;
+  text-align: right;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
 }
 .walkthrough-chapters {
   display: grid;
@@ -96,9 +164,9 @@
   text-align: left;
   line-height: 1.45;
   font-size: 10px;
-  color: #c1b8cb;
+  color: #c5c9be;
   background: #ffffff03;
-  border: 1px solid #887b9c38;
+  border: 1px solid #63744f38;
   border-radius: 4px;
   cursor: pointer;
   transition:
@@ -106,13 +174,13 @@
     border-color 0.2s;
 }
 .walkthrough-chapters button:hover {
-  background: #b5a3d311;
-  border-color: #9b86b574;
+  background: #a9c08e11;
+  border-color: #8ba56a74;
 }
 .walkthrough-chapters button[aria-pressed="true"] {
-  background: #b5a3d319;
-  border-color: #a28cbe;
-  color: #f5efff;
+  background: #a9c08e19;
+  border-color: #8ba56a;
+  color: #edf0e6;
 }
 .walkthrough-chapter-number {
   font-family: monospace;
@@ -125,7 +193,7 @@
   height: 2px;
   left: 0;
   right: 0;
-  background: #d2baf0;
+  background: #c5ed8b;
   transform-origin: left;
 }
 .walkthrough-detail {
@@ -134,7 +202,7 @@
 }
 .walkthrough-detail-label {
   display: block;
-  color: #c8badb;
+  color: #a2aa99;
   font-size: 8px;
   line-height: 1.6;
   letter-spacing: 0.08em;
@@ -142,7 +210,7 @@
 }
 .walkthrough-detail p {
   margin-top: 7px;
-  color: #d0c8d9;
+  color: #c5c9be;
   font-size: 11px;
   line-height: 1.8;
 }
@@ -175,7 +243,7 @@
   cursor: default;
 }
 .walkthrough-playback > span {
-  color: #aea3bb;
+  color: #a2aa99;
   font-size: 8px;
   text-align: right;
   line-height: 1.6;
@@ -184,7 +252,7 @@
   margin-top: 11px;
   font-size: 8px;
   text-align: left;
-  color: #a99eb6;
+  color: #a2aa99;
 }
 @media (max-width: 600px) {
   .project-walkthrough {

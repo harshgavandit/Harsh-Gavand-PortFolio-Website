@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { ArrowUpRight, Check, Copy } from "lucide-react";
 import { profile } from "../data/portfolio";
 import { ActionLink, Reveal } from "./Primitives";
+import { GitHubMark, LinkedInMark } from "./CornerSocials";
 
 export function Contact() {
   const [draft, setDraft] = useState("");
@@ -171,6 +172,28 @@ export function Footer() {
       <a href="#hero" className="footer-brand">
         Harsh Gavand<span>Full-Stack & AI Engineer</span>
       </a>
+      <div className="footer-socials">
+        <a
+          href={profile.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Harsh Gavand on GitHub"
+          title="GitHub / @harshgavandit"
+          className="corner-social-btn"
+        >
+          <GitHubMark size={20} />
+        </a>
+        <a
+          href={profile.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Harsh Gavand on LinkedIn"
+          title="LinkedIn / harsh-gavand"
+          className="corner-social-btn"
+        >
+          <LinkedInMark size={20} />
+        </a>
+      </div>
       <p>© {new Date().getFullYear()} · Built by Harsh Gavand</p>
       <a href="#hero">
         Back to top <ArrowUpRight size={16} aria-hidden="true" />

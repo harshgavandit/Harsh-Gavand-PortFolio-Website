@@ -120,7 +120,7 @@ export function StudioScene() {
     >
       <div className="studio-topline">
         <span>
-          <i /> THE SHAPE OF AN IDEA
+          <i /> THE CONNECTED OBJECT
         </span>
         <span>OBJECT / 0{active + 1}</span>
       </div>
@@ -128,11 +128,10 @@ export function StudioScene() {
         <div className="studio-grid" aria-hidden="true" />
         <div className="studio-fallback" aria-hidden="true">
           <img
-            src="/studio/atelier-sculpture.svg"
+            src="/studio/orbital-poster.png"
             alt=""
-            width={848}
-            height={586}
-            loading="eager"
+            width="960"
+            height="960"
           />
         </div>
         <div className="studio-canvas" ref={host} aria-hidden="true" />

@@ -3,15 +3,9 @@ import { m, useScroll } from "framer-motion";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { profile } from "../data/portfolio";
 import { MotionToggle } from "./MotionPreferences";
+import { GitHubMark, LinkedInMark } from "./CornerSocials";
 
-const links = [
-  "Projects",
-  "Intelligence",
-  "Experience",
-  "Skills",
-  "About",
-  "Contact",
-];
+const links = ["Projects", "Experience", "Skills", "About", "Contact"];
 export function Navigation() {
   const [active, setActive] = useState("");
   const [open, setOpen] = useState(false);
@@ -23,16 +17,23 @@ export function Navigation() {
     let queued = false;
     const update = () => {
       setScrolled(window.scrollY > 24);
-      const id = [...links]
+      const currentSection = Array.from(
+        document.querySelectorAll<HTMLElement>("main > section[id]"),
+      )
         .reverse()
         .find(
-          (label) =>
-            (document
-              .getElementById(label.toLowerCase())
-              ?.getBoundingClientRect().top ?? Infinity) <=
-            window.innerHeight * 0.35,
-        );
-      setActive(id ?? "");
+          (section) =>
+            section.getBoundingClientRect().top <= window.innerHeight * 0.35,
+        )?.id;
+      const sectionLabels: Record<string, string> = {
+        projects: "Projects",
+        "all-projects": "Projects",
+        experience: "Experience",
+        skills: "Skills",
+        about: "About",
+        contact: "Contact",
+      };
+      setActive(sectionLabels[currentSection ?? ""] ?? "");
       queued = false;
     };
     const scroll = () => {
@@ -63,7 +64,7 @@ export function Navigation() {
         const elements = [
           toggleRef.current,
           ...Array.from(
-            menuRef.current?.querySelectorAll<HTMLElement>("a") ?? [],
+            menuRef.current?.querySelectorAll<HTMLElement>("a, button") ?? [],
           ),
         ].filter((el): el is HTMLElement => el !== null);
         const first = elements[0],
@@ -113,7 +114,10 @@ export function Navigation() {
             aria-label="Harsh Gavand home"
             onClick={() => setOpen(false)}
           >
-            hg<span>.</span>
+            <span className="brand-monogram">
+              h<span>g</span>
+              <i />
+            </span>
             <span className="brand-name">Harsh Gavand</span>
           </a>
           <nav aria-label="Main navigation" className="desktop-nav">
@@ -134,7 +138,7 @@ export function Navigation() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Resume <ArrowUpRight size={15} aria-hidden="true" />
+            Résumé <ArrowUpRight size={15} aria-hidden="true" />
           </a>
           <button
             ref={toggleRef}
@@ -163,6 +167,26 @@ export function Navigation() {
               </a>
             ))}
           </nav>
+          <div className="mobile-menu-socials">
+            <a
+              href={profile.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Harsh Gavand on GitHub"
+              className="corner-social-btn"
+            >
+              <GitHubMark size={22} />
+            </a>
+            <a
+              href={profile.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Harsh Gavand on LinkedIn"
+              className="corner-social-btn"
+            >
+              <LinkedInMark size={22} />
+            </a>
+          </div>
           <p>Full-stack thinking. Thoughtful execution.</p>
           <a className="text-link" href={`mailto:${profile.email}`}>
             {profile.email}

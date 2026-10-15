@@ -193,10 +193,11 @@ export const experience = [
     period: "Nov 2025 — Sep 2026",
     tech: ["Django", "React", "Python", "JavaScript", "SQL"],
     points: [
-      "Built and maintained Django and React applications, from database design through deployment.",
-      "Implemented REST APIs, async tasks, and third-party service integrations.",
-      "Optimized relational schemas and reusable SQL for application features and reporting.",
-      "Collaborated on product delivery, reviewed code, and maintained shared coding standards.",
+      "Built and maintained full-stack Django and React applications, connecting database design, API development, frontend integration, and deployment.",
+      "Developed REST APIs, asynchronous tasks, and third-party service integrations using Python and JavaScript.",
+      "Designed relational database schemas and optimized reusable SQL queries for application features and reporting pipelines.",
+      "Worked with product and design teams to deliver features while keeping shared codebases maintainable and scalable.",
+      "Conducted code reviews and applied consistent coding standards across shared repositories.",
     ],
   },
   {

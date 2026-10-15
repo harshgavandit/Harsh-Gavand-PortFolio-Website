@@ -26,7 +26,7 @@ export function createStudio(
   renderer.setClearColor(0xffffff, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.2;
+  renderer.toneMappingExposure = 0.95;
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 60);
   camera.position.set(0, 1.3, 10.4);
@@ -37,44 +37,53 @@ export function createStudio(
   scene.environment = environmentMap.texture;
   environment.dispose();
   generator.dispose();
-  scene.add(new THREE.HemisphereLight(0xffffff, 0xadc4e8, 2));
-  const light = new THREE.DirectionalLight(0xffffff, 3);
+  scene.add(new THREE.HemisphereLight(0xe9f2d9, 0x141b0d, 2));
+  const light = new THREE.DirectionalLight(0xfff7e4, 3);
   light.position.set(-3, 6, 5);
   scene.add(light);
-  const rim = new THREE.DirectionalLight(0x6ea1ff, 4);
+  const rim = new THREE.DirectionalLight(0xc5ed8b, 2.8);
   rim.position.set(4, 2, -3);
   scene.add(rim);
+  const violetRim = new THREE.DirectionalLight(0xe3e9d9, 2);
+  violetRim.position.set(-4, -2, 2);
+  scene.add(violetRim);
 
-  const blue = new THREE.MeshPhysicalMaterial({
-    color: 0x234bff,
-    metalness: 0.72,
-    roughness: 0.16,
-    clearcoat: 1,
+  const blue = new THREE.MeshStandardMaterial({
+    color: 0xcbd3bf,
+    emissive: 0x1e2814,
+    emissiveIntensity: 0.15,
+    metalness: 0.82,
+    roughness: 0.22,
   });
-  const pearl = new THREE.MeshPhysicalMaterial({
-    color: 0xf5f8ff,
-    metalness: 0.25,
-    roughness: 0.25,
-    clearcoat: 1,
+  const pearl = new THREE.MeshStandardMaterial({
+    color: 0xe5e8dc,
+    emissive: 0x252b1d,
+    emissiveIntensity: 0.1,
+    metalness: 0.6,
+    roughness: 0.27,
   });
   const silver = new THREE.MeshStandardMaterial({
-    color: 0xaac4ec,
-    metalness: 0.72,
-    roughness: 0.23,
+    color: 0xc5ed8b,
+    emissive: 0x425b25,
+    emissiveIntensity: 0.22,
+    metalness: 0.65,
+    roughness: 0.22,
   });
-  const glass = new THREE.MeshPhysicalMaterial({
-    color: 0xa4c5ff,
-    metalness: 0.12,
-    roughness: 0.2,
+  const glass = new THREE.MeshStandardMaterial({
+    color: 0xc5ed8b,
+    metalness: 0.2,
+    roughness: 0.1,
     transparent: true,
-    opacity: 0.34,
+    opacity: 0.45,
     depthWrite: false,
     side: THREE.DoubleSide,
   });
   const ink = new THREE.MeshStandardMaterial({
-    color: 0x31508a,
-    metalness: 0.25,
-    roughness: 0.4,
+    color: 0x1c2415,
+    emissive: 0x526a36,
+    emissiveIntensity: 0.25,
+    metalness: 0.6,
+    roughness: 0.3,
   });
   const assembly = new THREE.Group();
   assembly.rotation.set(0.13, -0.28, -0.13);
@@ -84,7 +93,7 @@ export function createStudio(
   orbit.position.y = 0.3;
   assembly.add(orbit);
   const mainRing = new THREE.Mesh(
-    new THREE.TorusKnotGeometry(1.05, 0.29, 180, 20, 2, 3),
+    new THREE.TorusKnotGeometry(1.05, 0.25, 120, 16, 2, 3),
     blue,
   );
   mainRing.rotation.set(0.15, 0.5, -0.35);
@@ -97,12 +106,14 @@ export function createStudio(
   orbit.add(innerRing);
   const core = new THREE.Mesh(new THREE.IcosahedronGeometry(0.46, 3), pearl);
   orbit.add(core);
+  const coreLight = new THREE.PointLight(0xc5ed8b, 1.8, 10);
+  core.add(coreLight);
   const coreGrid = new THREE.LineSegments(
-    new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(0.48, 1)),
+    new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(0.49, 1)),
     new THREE.LineBasicMaterial({
-      color: 0x7198df,
+      color: 0xc5ed8b,
       transparent: true,
-      opacity: 0.32,
+      opacity: 0.75,
     }),
   );
   core.add(coreGrid);
@@ -133,7 +144,7 @@ export function createStudio(
   const traceGeometry = new THREE.BoxGeometry(0.075, 0.017, 0.55);
   for (let i = 0; i < 3; i++) {
     const layer = new THREE.Group();
-    layer.add(new THREE.Mesh(slabGeometry, i === 1 ? glass : pearl));
+    layer.add(new THREE.Mesh(slabGeometry, i === 1 ? glass : ink));
     layer.position.y = -1.6 - i * 0.22;
     layer.rotation.y = 0.3;
     for (let j = 0; j < 6; j++) {
@@ -146,7 +157,7 @@ export function createStudio(
   }
   const base = new THREE.Mesh(
     new THREE.CylinderGeometry(1.78, 1.87, 0.12, 80),
-    pearl,
+    ink,
   );
   base.position.set(0, -2.31, 0);
   assembly.add(base);
@@ -163,7 +174,7 @@ export function createStudio(
   const lineGeo = new THREE.BoxGeometry(0.44, 0.04, 0.025);
   for (let i = 0; i < 3; i++) {
     const chip = new THREE.Group();
-    chip.add(new THREE.Mesh(chipGeo, i === 1 ? blue : pearl));
+    chip.add(new THREE.Mesh(chipGeo, i === 1 ? silver : ink));
     for (let j = 0; j < 3; j++) {
       const stripe = new THREE.Mesh(
         lineGeo,
@@ -183,15 +194,15 @@ export function createStudio(
     chips.push(chip);
   }
 
-  const points = new Float32Array(70 * 3);
-  for (let i = 0; i < 70; i++) {
+  const points = new Float32Array(160 * 3);
+  for (let i = 0; i < 160; i++) {
     const angle = i * 2.399963;
-    const radius = 2.6 + (i % 11) * 0.15;
+    const radius = 2.4 + (i % 13) * 0.18;
     points.set(
       [
         Math.cos(angle) * radius,
-        Math.sin(angle) * radius * 0.68,
-        -0.7 - (i % 5) * 0.2,
+        Math.sin(angle) * radius * 0.72,
+        -0.8 - (i % 7) * 0.3,
       ],
       i * 3,
     );
@@ -201,10 +212,10 @@ export function createStudio(
   const field = new THREE.Points(
     pointGeo,
     new THREE.PointsMaterial({
-      color: 0x4c7bca,
-      size: 0.022,
+      color: 0xa8bc8b,
+      size: 0.038,
       transparent: true,
-      opacity: 0.6,
+      opacity: 0.82,
     }),
   );
   scene.add(field);
@@ -218,6 +229,7 @@ export function createStudio(
   let frame = 0,
     time = 0,
     previous = 0,
+    lastDraw = 0,
     progress = 0,
     turn = 0;
   const pointer = { x: 0, y: 0 };
@@ -226,6 +238,13 @@ export function createStudio(
   const render = (stamp: number) => {
     frame = 0;
     if (disposed || lost || !visible || document.hidden) return;
+    // This decorative scene needs at most 30 draws per second. Input and
+    // visibility still use native animation-frame scheduling.
+    if (enabled && stamp - lastDraw < 1000 / 30) {
+      frame = requestAnimationFrame(render);
+      return;
+    }
+    lastDraw = stamp;
     const delta = previous ? Math.min((stamp - previous) / 1000, 0.05) : 0;
     previous = stamp;
     if (enabled) time += delta;
@@ -245,6 +264,7 @@ export function createStudio(
     orbit.rotation.z = enabled ? Math.sin(time * 0.18) * 0.09 : 0;
     innerRing.rotation.y = -0.42 + time * 0.1;
     core.rotation.y = time * 0.13;
+    coreLight.intensity = enabled ? 1.6 + Math.sin(time * 1.8) * 0.25 : 1.6;
     core.scale.lerp(targetScale.setScalar(active === 2 ? 1.15 : 1), ease);
     mainRing.rotation.y +=
       ((active === 1 ? 1.3 : active === 2 ? -0.55 : 0.5) -

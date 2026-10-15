@@ -1,8 +1,8 @@
 # Harsh Gavand — Portfolio
 
-React + TypeScript portfolio with a light, interactive engineering-lab design, an interactive CSS 3D model of real project layers, a searchable 26-project dashboard, four detailed case studies, and a OpenAI GPT-6 Luna portfolio assistant. Includes an engineering profile, experience timeline, project-linked skills, workflow, and contact draft preparation.
+React + TypeScript portfolio with a graphite, ivory, and citrus engineering-studio design, an interactive Three.js sculpture, four curated project exhibits, a searchable 26-project index, and an OpenAI GPT-6 Luna portfolio assistant. Includes an engineering profile, experience timeline, project-linked skills, workflow, and contact draft preparation.
 
-The current craft refinement puts proof of work first: selected builds lead the index, a physical-looking implementation model replaces the abstract hero sculpture, and editorial case studies reduce repeated card framing. See [the critique and current verification](verification/craft-2026-10-13/README.md). The underlying Engineering Lab presentation offers category filters, search, Overview / Architecture / Engineering tabs, selectable system nodes, and project-specific assistant prompts. The final theme is `src/lab.css`, layered after the existing styles. See [current research and verification](verification/engineering-lab-2026-10-13/README.md) for reference observations, screenshots, responsive checks, accessibility results, bundle sizes, and limitations. Earlier redesign reports remain historical evidence.
+The current presentation leads with an open sculptural hero and four project exhibits. Each exhibit reveals its full case study, contribution walkthrough, implementation details, and source links. The engineering index is available through a disclosure, retaining category filters, search, Overview / Architecture / Engineering tabs, selectable nodes, and project-specific assistant prompts. Skill evidence links automatically open the index and select the relevant project; direct project fragments open the matching case study. The active visual system is `src/observatory.css`, with component styles for walkthroughs and workflow. See [current redesign verification](verification/redesign-2026-10-15/README.md). Earlier visual reports describe earlier versions.
 
 ## Development
 
@@ -61,7 +61,7 @@ Tests cover preservation of the original catalog/assets/SEO plus assistant input
 - `src/data/portfolio.ts`: typed case studies and shared public profile content. Personal details come from the updated September 2026 resume.
 - `public/Harsh_Gavand_Resume.pdf`: exact supplied updated resume. All resume links use this stable URL.
 - `public/projects`: actual captured public demo pages in responsive WebP sizes. Other visuals are labeled implementation maps, not screenshots.
-- `src/index.css`, `src/calm.css`, `src/enhancements.css`: tokens, light presentation, gallery, responsive chat, focus styles, and motion behavior.
+- `src/observatory.css`: active design tokens, layout, project exhibits, responsive chat, focus styles, and motion behavior. Earlier theme files remain outside the active entry point.
 - `src/components/Assistant.tsx`: native chat dialog and conversation lifecycle.
 - `server`: OpenAI generation, portfolio knowledge, validated links, HTTP contracts, and production static serving.
 
@@ -90,18 +90,16 @@ No deployment is performed by local development or validation commands.
 
 ## Presentation and motion
 
-The hero uses a CSS 3D implementation model derived from the existing AI digest and UGC case-study diagrams. Visitors can assemble or separate its layers, switch the build, and select a layer to read its published contribution notes. Layer controls support clicks, arrow keys, Home and End. Pointer movement produces a small damped perspective response on mouse devices only. Native touch scrolling is preserved; no automatic rotation, scroll hijacking, or WebGL is required.
+The hero dynamically loads a procedural Three.js sculpture when it approaches the viewport. Visitors can select Interface, Systems, or Applied AI, drag with a mouse, rotate through keyboard-accessible buttons, or reset the view. The sculpture is an abstract illustration of connected disciplines, not a verified architecture diagram. Project exhibits use actual supplied project captures or explicitly labeled implementation maps from the published notes.
 
-The supplied photograph appears in About at `public/portrait/harsh-studio.jpg`; the original photograph is retained. All 26 project records, case studies, experience, resume, contact draft behavior, and portfolio assistant remain intact. `src/lab.css` is the final visual layer.
+The supplied photograph appears in About at `public/portrait/harsh-studio.jpg`; the original photograph is retained. All 26 project records, four case studies, experience, skills, recognition, resume, contact draft behavior, and assistant contracts remain available. Globetrek experience bullets were clarified using the existing resume content without adding performance metrics.
 
-The current page does not import the earlier Three.js scene or its renderer. Those source files remain for reference, but Vite excludes them from the production output. The new model uses five DOM layers and only animates in response to interaction. System reduced motion and the manual motion toggle disable layer transitions and pointer response while preserving all information and controls.
+The renderer caps device pixel ratio and decorative drawing at 30 frames per second, pauses outside the viewport or when the page is hidden, and disposes its geometry, materials, environment and canvas on unmount. It uses standard materials without a transmission rendering pass. Data-saving or constrained devices retain a local still image. WebGL failures also reveal that still and disable unavailable viewpoint controls while keeping the discipline descriptions usable. System reduced motion and the manual motion toggle disable continuous motion; native scrolling remains in place.
 
-See [the studio verification report](verification/studio-2026-10-12/README.md) for evidence and remaining limits.
+Vite ignores `tmp` and `verification` in its file watcher so locked backup files and screenshot writes cannot interrupt the live preview. Production still builds through Vite and runs through the existing Node service.
 
 ## Interactive exploration
 
-The embedded engineering dashboard replaces the earlier project-gallery modal. Its detail tabs support arrow keys and Home/End. Featured projects have implementation maps based on existing notes; other projects have explicitly labeled technology maps without invented request sequences. The six-category skills map supports keyboard navigation, links to matching projects in the dashboard, and keeps a complete toolkit disclosure available. An experience chapter rail tracks the visible role; a dimensional engineering bridge connects the hero to the work. These sections use CSS perspective and Framer Motion.
+The engineering index's detail tabs support arrow keys and Home/End. Featured projects have implementation maps based on existing notes; other projects have explicitly labeled technology maps without invented request sequences. The six-category skills explorer supports keyboard navigation, links to matching projects in the index, and keeps a complete toolkit disclosure available. Experience chapters retain a fixed-header anchor offset. The archive retains filters, empty states, and focus-preserving pagination. The engineering bridge and six-step workflow retain their interactive controls.
 
-See [interactive exploration validation](verification/exploration-2026-10-12/README.md) for desktop/mobile screenshots, accessibility scans, responsive checks, and scope limits.
-
-See [the latest immersive design evidence](verification/immersive-2026-10-12/README.md) for reference research, final desktop/mobile captures, WebGL fallback, and current validation results.
+See [current redesign verification](verification/redesign-2026-10-15/README.md) for browser checks, screenshots, responsive results, accessibility scan boundaries, and remaining limits.
