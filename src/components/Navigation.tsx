@@ -11,6 +11,7 @@ export function Navigation() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const socialsRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const { scrollYProgress } = useScroll();
   useEffect(() => {
@@ -63,6 +64,9 @@ export function Navigation() {
       if (event.key === "Tab") {
         const elements = [
           toggleRef.current,
+          ...Array.from(
+            socialsRef.current?.querySelectorAll<HTMLElement>("a") ?? [],
+          ),
           ...Array.from(
             menuRef.current?.querySelectorAll<HTMLElement>("a, button") ?? [],
           ),
@@ -150,6 +154,32 @@ export function Navigation() {
           >
             {open ? <X /> : <Menu />}
           </button>
+          <div
+            className="header-socials"
+            ref={socialsRef}
+            aria-label="Social profiles"
+          >
+            <a
+              href={profile.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Harsh Gavand on GitHub"
+              title="GitHub / @harshgavandit"
+              className="corner-social-btn"
+            >
+              <GitHubMark size={20} />
+            </a>
+            <a
+              href={profile.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Harsh Gavand on LinkedIn"
+              title="LinkedIn / harsh-gavand"
+              className="corner-social-btn"
+            >
+              <LinkedInMark size={20} />
+            </a>
+          </div>
         </div>
       </header>
       {open && (
@@ -167,26 +197,14 @@ export function Navigation() {
               </a>
             ))}
           </nav>
-          <div className="mobile-menu-socials">
-            <a
-              href={profile.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Harsh Gavand on GitHub"
-              className="corner-social-btn"
-            >
-              <GitHubMark size={22} />
-            </a>
-            <a
-              href={profile.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Harsh Gavand on LinkedIn"
-              className="corner-social-btn"
-            >
-              <LinkedInMark size={22} />
-            </a>
-          </div>
+          <a
+            className="mobile-resume button button-secondary"
+            href={profile.resume}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            View résumé <ArrowUpRight size={16} aria-hidden="true" />
+          </a>
           <p>Full-stack thinking. Thoughtful execution.</p>
           <a className="text-link" href={`mailto:${profile.email}`}>
             {profile.email}

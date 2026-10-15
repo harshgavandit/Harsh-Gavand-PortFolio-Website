@@ -23,13 +23,18 @@ function Home() {
       <main id="main" tabIndex={-1}>
         <Hero />
         <FeaturedWork />
-        <PortfolioIntelligence />
         <Experience />
         <Skills />
         <About />
         <MoreWork />
-        <EngineeringBridge />
         <Workflow />
+        <details className="engineering-notes section-container">
+          <summary>
+            One mindset, every layer <span>Explore the product layers</span>
+          </summary>
+          <EngineeringBridge />
+        </details>
+        <PortfolioIntelligence />
         <Contact />
       </main>
       <Footer />

@@ -5,12 +5,12 @@ import { useMotionEnabled } from "./MotionPreferences";
 const chapters = [
   { id: "hero", label: "Introduction" },
   { id: "projects", label: "Selected work" },
-  { id: "intelligence", label: "Portfolio intelligence" },
   { id: "experience", label: "Experience" },
   { id: "skills", label: "Skills" },
   { id: "about", label: "About Harsh" },
   { id: "all-projects", label: "Project archive" },
   { id: "workflow", label: "Process" },
+  { id: "intelligence", label: "Portfolio intelligence" },
   { id: "contact", label: "Contact" },
 ];
 

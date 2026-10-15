@@ -33,7 +33,7 @@ export function PortfolioIntelligence() {
     >
       <div className="intelligence-copy">
         <span className="lab-micro">
-          <Sparkles size={14} /> 02 / PORTFOLIO INTELLIGENCE
+          <Sparkles size={14} /> 07 / PORTFOLIO INTELLIGENCE
         </span>
         <h2 id="intelligence-title">
           The work has context.

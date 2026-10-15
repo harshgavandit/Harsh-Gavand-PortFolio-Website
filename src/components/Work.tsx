@@ -316,7 +316,7 @@ export function MoreWork() {
       aria-labelledby="archive-title"
     >
       <SectionHeading
-        number="06"
+        number="05"
         label="Project archive"
         title={
           <span id="archive-title">
@@ -327,120 +327,135 @@ export function MoreWork() {
         }
         description="Real-time communication, machine learning, enterprise applications, and everything in between."
       />
-      <div className="archive-controls">
-        <div className="filter-list" role="group" aria-label="Filter projects">
-          {filters.map((item) => (
-            <button
-              key={item}
-              aria-pressed={filter === item}
-              onClick={() => {
-                setFilter(item);
+      <details className="archive-disclosure">
+        <summary>
+          <span>
+            <strong>{secondary.length.toString().padStart(2, "0")}</strong> More
+            builds. Different challenges.
+          </span>
+          <span>
+            Open the archive <ArrowDown size={18} aria-hidden="true" />
+          </span>
+        </summary>
+        <div className="archive-controls">
+          <div
+            className="filter-list"
+            role="group"
+            aria-label="Filter projects"
+          >
+            {filters.map((item) => (
+              <button
+                key={item}
+                aria-pressed={filter === item}
+                onClick={() => {
+                  setFilter(item);
+                  setLimit(6);
+                }}
+              >
+                {item}
+              </button>
+            ))}
+          </div>
+          <label className="search-field">
+            <Search size={17} aria-hidden="true" />
+            <span className="sr-only">Search projects</span>
+            <input
+              ref={searchRef}
+              value={query}
+              onChange={(e) => {
+                setQuery(e.target.value);
                 setLimit(6);
               }}
-            >
-              {item}
-            </button>
-          ))}
+              placeholder="Search name or technology"
+              type="search"
+            />
+          </label>
         </div>
-        <label className="search-field">
-          <Search size={17} aria-hidden="true" />
-          <span className="sr-only">Search projects</span>
-          <input
-            ref={searchRef}
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              setLimit(6);
-            }}
-            placeholder="Search name or technology"
-            type="search"
-          />
-        </label>
-      </div>
-      <p className="results-count" role="status">
-        Showing {Math.min(limit, filtered.length)} of {filtered.length} matching
-        projects · {secondary.length} in the archive
-      </p>
-      <div className="archive-grid" id="archive-results">
-        {filtered.slice(0, limit).map((project) => (
-          <article key={project.id} className="archive-card">
-            <div className="archive-top">
-              <span className="eyebrow">{project.category}</span>
-              <ArrowUpRight size={20} aria-hidden="true" />
-            </div>
-            <h3
-              tabIndex={-1}
-              ref={(heading) => {
-                if (heading)
-                  projectHeadingRefs.current.set(project.id, heading);
-                else projectHeadingRefs.current.delete(project.id);
-              }}
-            >
-              {project.title}
-            </h3>
-            <p>{project.overview.split(". ")[0]}.</p>
-            <div className="archive-contribution">
-              <span>MY CONTRIBUTION</span>
-              <p>{project.role}</p>
-            </div>
-            <Tags items={project.technologies} />
-            <div className="archive-links">
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Source code for ${project.title}`}
+        <p className="results-count" role="status">
+          Showing {Math.min(limit, filtered.length)} of {filtered.length}{" "}
+          matching projects · {secondary.length} in the archive
+        </p>
+        <div className="archive-grid" id="archive-results">
+          {filtered.slice(0, limit).map((project) => (
+            <article key={project.id} className="archive-card">
+              <div className="archive-top">
+                <span className="eyebrow">{project.category}</span>
+                <ArrowUpRight size={20} aria-hidden="true" />
+              </div>
+              <h3
+                tabIndex={-1}
+                ref={(heading) => {
+                  if (heading)
+                    projectHeadingRefs.current.set(project.id, heading);
+                  else projectHeadingRefs.current.delete(project.id);
+                }}
               >
-                Source <ArrowUpRight size={15} aria-hidden="true" />
-              </a>
-              {project.demoUrl ? (
+                {project.title}
+              </h3>
+              <p>{project.overview.split(". ")[0]}.</p>
+              <div className="archive-contribution">
+                <span>MY CONTRIBUTION</span>
+                <p>{project.role}</p>
+              </div>
+              <Tags items={project.technologies} />
+              <div className="archive-links">
                 <a
-                  href={project.demoUrl}
+                  href={project.githubUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={`Live demo for ${project.title}`}
+                  aria-label={`Source code for ${project.title}`}
                 >
-                  Live demo <ArrowUpRight size={15} aria-hidden="true" />
+                  Source <ArrowUpRight size={15} aria-hidden="true" />
                 </a>
-              ) : (
-                <span>Source available</span>
-              )}
-            </div>
-            <ProjectDetails project={project} />
-          </article>
-        ))}
-      </div>
-      {limit < filtered.length && (
-        <div className="archive-more">
-          <button
-            className="button button-secondary"
-            aria-controls="archive-results"
-            onClick={() => {
-              pendingProjectFocus.current = filtered[limit]?.id ?? null;
-              setLimit((n) => n + 6);
-            }}
-          >
-            Show more projects <ArrowDown size={16} aria-hidden="true" />
-          </button>
+                {project.demoUrl ? (
+                  <a
+                    href={project.demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Live demo for ${project.title}`}
+                  >
+                    Live demo <ArrowUpRight size={15} aria-hidden="true" />
+                  </a>
+                ) : (
+                  <span>Source available</span>
+                )}
+              </div>
+              <ProjectDetails project={project} />
+            </article>
+          ))}
         </div>
-      )}
-      {filtered.length === 0 && (
-        <div className="empty-state">
-          <h3>No matching projects.</h3>
-          <p>Try another name or technology.</p>
-          <button
-            className="button button-secondary"
-            onClick={() => {
-              setFilter("All");
-              setQuery("");
-              setLimit(6);
-              searchRef.current?.focus();
-            }}
-          >
-            Reset filters <ArrowRight size={16} aria-hidden="true" />
-          </button>
-        </div>
-      )}
+        {limit < filtered.length && (
+          <div className="archive-more">
+            <button
+              className="button button-secondary"
+              aria-controls="archive-results"
+              onClick={() => {
+                pendingProjectFocus.current = filtered[limit]?.id ?? null;
+                setLimit((n) => n + 6);
+              }}
+            >
+              Show more projects <ArrowDown size={16} aria-hidden="true" />
+            </button>
+          </div>
+        )}
+        {filtered.length === 0 && (
+          <div className="empty-state">
+            <h3>No matching projects.</h3>
+            <p>Try another name or technology.</p>
+            <button
+              className="button button-secondary"
+              onClick={() => {
+                setFilter("All");
+                setQuery("");
+                setLimit(6);
+                searchRef.current?.focus();
+              }}
+            >
+              Reset filters <ArrowRight size={16} aria-hidden="true" />
+            </button>
+          </div>
+        )}
+      </details>
     </section>
   );
 }

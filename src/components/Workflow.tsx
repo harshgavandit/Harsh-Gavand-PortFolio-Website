@@ -219,21 +219,19 @@ export function Workflow() {
   return (
     <section
       id="workflow"
-      className="section craft-workflow"
+      className="section craft-workflow signal-workflow"
       aria-labelledby="workflow-title"
       tabIndex={-1}
     >
       <div className="section-container">
         <SectionHeading
-          number="07"
+          number="06"
           label="How I work"
           title={
             <span id="workflow-title">
-              Thoughtful at every step.
+              From the first question.
               <br />
-              <span className="muted-heading">
-                From idea to something real.
-              </span>
+              <span className="muted-heading">To the final detail.</span>
             </span>
           }
           description="A deliberate path from understanding a problem to delivering a working product."
@@ -290,6 +288,7 @@ export function Workflow() {
                 0{active + 1} / {stages[active].name}
               </span>
               <p>{stages[active].label}</p>
+              <p className="build-active-detail">{workflow[active][1]}</p>
               <span className="build-story-hint">
                 {followsScroll ? (
                   <>
@@ -310,35 +309,56 @@ export function Workflow() {
                 : `Exploring ${stages[active].name}. Scroll control paused.`}
             </p>
           </div>
-          <ol className="build-story-steps">
-            {workflow.map(([title, detail], index) => {
-              const Icon = stages[index].icon;
-              return (
-                <li key={title} className={active === index ? "is-active" : ""}>
-                  <span className="build-step-marker" aria-hidden="true">
-                    <Icon size={17} />
-                  </span>
-                  <div>
-                    <span className="eyebrow">
-                      0{index + 1} /{" "}
-                      {index === 1 ? "Design / Architecture" : title}
-                    </span>
-                    <h3>{stages[index].label}</h3>
-                    <p>{detail}</p>
-                    <button
-                      type="button"
-                      className="build-step-explore"
-                      onClick={() => chooseStage(index, true)}
-                      aria-label={`Show ${stages[index].name} in the build sequence`}
+          <div className="workflow-reading">
+            <p className="eyebrow">A considered process</p>
+            <h3>
+              Good products start
+              <br />
+              with good questions.
+            </h3>
+            <p>
+              Understand what matters. Give it a clear structure. Build, test,
+              and follow through. Explore the stages to see how the pieces come
+              together.
+            </p>
+            <details className="workflow-notes">
+              <summary>
+                Read the complete process <span aria-hidden="true">+</span>
+              </summary>
+              <ol className="build-story-steps">
+                {workflow.map(([title, detail], index) => {
+                  const Icon = stages[index].icon;
+                  return (
+                    <li
+                      key={title}
+                      className={active === index ? "is-active" : ""}
                     >
-                      Explore this step{" "}
-                      <ArrowUpRight size={14} aria-hidden="true" />
-                    </button>
-                  </div>
-                </li>
-              );
-            })}
-          </ol>
+                      <span className="build-step-marker" aria-hidden="true">
+                        <Icon size={17} />
+                      </span>
+                      <div>
+                        <span className="eyebrow">
+                          0{index + 1} /{" "}
+                          {index === 1 ? "Design / Architecture" : title}
+                        </span>
+                        <h3>{stages[index].label}</h3>
+                        <p>{detail}</p>
+                        <button
+                          type="button"
+                          className="build-step-explore"
+                          onClick={() => chooseStage(index, true)}
+                          aria-label={`Show ${stages[index].name} in the build sequence`}
+                        >
+                          Explore this step{" "}
+                          <ArrowUpRight size={14} aria-hidden="true" />
+                        </button>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ol>
+            </details>
+          </div>
         </div>
       </div>
     </section>

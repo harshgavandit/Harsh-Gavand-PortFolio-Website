@@ -15,7 +15,7 @@ export function About() {
     >
       <div className="section-container">
         <SectionHeading
-          number="05"
+          number="04"
           label="The engineer"
           title={
             <span id="about-title">
@@ -118,7 +118,7 @@ export function Experience() {
       aria-labelledby="experience-title"
     >
       <SectionHeading
-        number="03"
+        number="02"
         label="Experience"
         title={<span id="experience-title">Built in the real world.</span>}
         description="Hands-on ownership, collaborative delivery, and attention to the details that matter in production."
@@ -137,7 +137,7 @@ export function Skills() {
       aria-labelledby="skills-title"
     >
       <SectionHeading
-        number="04"
+        number="03"
         label="The toolkit"
         title={
           <span id="skills-title">

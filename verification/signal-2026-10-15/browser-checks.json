@@ -1,0 +1,305 @@
+{
+  "checks": [
+    {
+      "check": "3D Systems selection updates state and copy",
+      "pass": true
+    },
+    {
+      "check": "3D Applied AI selection updates state and copy",
+      "pass": true
+    },
+    {
+      "check": "3D viewpoint controls remain usable",
+      "pass": true
+    },
+    {
+      "check": "Case study opens with keyboard",
+      "pass": true
+    },
+    {
+      "check": "Case-study contribution chapters remain interactive",
+      "pass": true
+    },
+    {
+      "check": "Closing case study restores summary focus",
+      "pass": true
+    },
+    {
+      "check": "Project archive opens with keyboard",
+      "pass": true
+    },
+    {
+      "check": "Archive search has a clear empty state",
+      "pass": true
+    },
+    {
+      "check": "Archive reset restores projects and search focus",
+      "pass": true
+    },
+    {
+      "check": "Archive pagination reveals next projects and moves focus",
+      "pass": true
+    },
+    {
+      "check": "Workflow stage selection updates scene and explanation",
+      "pass": true
+    },
+    {
+      "check": "Workflow End key selects Deployment and moves focus",
+      "pass": true
+    },
+    {
+      "check": "Full six-step process is available by keyboard",
+      "pass": true
+    },
+    {
+      "check": "Process detail selects and focuses its stage",
+      "pass": true
+    },
+    {
+      "check": "Manual workflow selection holds across scrolling",
+      "pass": true
+    },
+    {
+      "check": "Engineering fragment reveals its enclosing disclosure",
+      "pass": true
+    },
+    {
+      "check": "Supplemental product-layer controls still work",
+      "pass": true
+    },
+    {
+      "check": "Engineering index opens by keyboard",
+      "pass": true
+    },
+    {
+      "check": "Engineering index supports search empty state",
+      "pass": true
+    },
+    {
+      "check": "Engineering index architecture tab works",
+      "pass": true
+    },
+    {
+      "check": "Skill categories support arrow-key selection",
+      "pass": true
+    },
+    {
+      "check": "Skill evidence opens and selects its project in the index",
+      "pass": true
+    },
+    {
+      "check": "Contact prepares a correctly encoded mail draft",
+      "pass": true
+    },
+    {
+      "check": "Editing contact fields invalidates the previous draft",
+      "pass": true
+    },
+    {
+      "check": "Portfolio prompts open the assistant with a reviewable question",
+      "pass": true
+    },
+    {
+      "check": "Assistant dismisses by keyboard",
+      "pass": true
+    },
+    {
+      "check": "Mobile navigation opens and protects background focus",
+      "pass": true
+    },
+    {
+      "check": "Resizing mobile menu to desktop releases inert and scroll lock",
+      "pass": true
+    },
+    {
+      "check": "Mobile navigation Escape restores trigger focus",
+      "pass": true
+    },
+    {
+      "check": "All six phone workflow labels fit within 58px targets",
+      "pass": true
+    },
+    {
+      "check": "Expanded desktop process restores sticky, top-aligned preview",
+      "pass": true
+    },
+    {
+      "check": "Manual motion pause updates the shared motion preference",
+      "pass": true
+    },
+    {
+      "check": "System reduced motion disables shared visual motion",
+      "pass": true
+    },
+    {
+      "check": "WebGL failure reveals a decoded matching still and disables viewpoint controls",
+      "pass": true
+    },
+    {
+      "check": "Discipline information remains usable after graphics loss",
+      "pass": true
+    },
+    {
+      "check": "Expanded tablet process also keeps a sticky preview",
+      "pass": true
+    },
+    {
+      "check": "Desktop accessibility scan detects no WCAG-tagged violations",
+      "pass": true
+    },
+    {
+      "check": "Mobile accessibility scan detects no WCAG-tagged violations",
+      "pass": true
+    },
+    {
+      "check": "Compact mobile assistant launcher keeps its accessible name and opens chat",
+      "pass": true
+    },
+    {
+      "check": "Mobile assistant accessibility scan detects no WCAG-tagged violations",
+      "pass": true
+    },
+    {
+      "check": "Assistant clear resets the local draft",
+      "pass": true
+    },
+    {
+      "check": "Header hosts both social profiles and footer has no social icon pair",
+      "pass": true
+    },
+    {
+      "check": "Mobile menu wraps focus back to its trigger",
+      "pass": true
+    },
+    {
+      "check": "Header social links participate in the mobile focus trap",
+      "pass": true
+    },
+    {
+      "check": "Mobile footer back-to-top remains clear of the assistant",
+      "pass": true
+    },
+    {
+      "check": "Built application renders the new hero, custom WebGL scene, and header social links through Node",
+      "pass": true
+    },
+    {
+      "check": "Direct project fragment opens its case study below the fixed header",
+      "pass": true,
+      "detail": {
+        "header": 82.80000305175781,
+        "open": true,
+        "top": 99.9250030517578
+      }
+    },
+    {
+      "check": "Live assistant quick-start returned an answer with canonical project source links",
+      "pass": true,
+      "detail": "Observed completed local assistant response and source navigation; cleared the test conversation afterward."
+    },
+    {
+      "check": "All eleven final responsive widths have no document, header, or visible content overflow",
+      "pass": true
+    },
+    {
+      "check": "Final desktop and mobile header/footer accessibility scans detect no WCAG-tagged violations",
+      "pass": true
+    }
+  ],
+  "responsive": [
+    {
+      "documentOverflow": false,
+      "headerOverflow": false,
+      "outOfBounds": [],
+      "width": 320
+    },
+    {
+      "documentOverflow": false,
+      "headerOverflow": false,
+      "outOfBounds": [],
+      "width": 390
+    },
+    {
+      "documentOverflow": false,
+      "headerOverflow": false,
+      "outOfBounds": [],
+      "width": 600
+    },
+    {
+      "documentOverflow": false,
+      "headerOverflow": false,
+      "outOfBounds": [],
+      "width": 650
+    },
+    {
+      "documentOverflow": false,
+      "headerOverflow": false,
+      "outOfBounds": [],
+      "width": 768
+    },
+    {
+      "documentOverflow": false,
+      "headerOverflow": false,
+      "outOfBounds": [],
+      "width": 820
+    },
+    {
+      "documentOverflow": false,
+      "headerOverflow": false,
+      "outOfBounds": [],
+      "width": 900
+    },
+    {
+      "documentOverflow": false,
+      "headerOverflow": false,
+      "outOfBounds": [],
+      "width": 1024
+    },
+    {
+      "documentOverflow": false,
+      "headerOverflow": false,
+      "outOfBounds": [],
+      "width": 1280
+    },
+    {
+      "documentOverflow": false,
+      "headerOverflow": false,
+      "outOfBounds": [],
+      "width": 1440
+    },
+    {
+      "documentOverflow": false,
+      "headerOverflow": false,
+      "outOfBounds": [],
+      "width": 1920
+    }
+  ],
+  "accessibility": {
+    "desktop": {
+      "incomplete": [
+        "aria-prohibited-attr",
+        "aria-valid-attr-value",
+        "color-contrast"
+      ],
+      "passes": 32,
+      "violations": []
+    },
+    "mobile": {
+      "incomplete": [
+        "aria-prohibited-attr",
+        "aria-valid-attr-value",
+        "color-contrast"
+      ],
+      "passes": 32,
+      "violations": []
+    },
+    "assistant": {
+      "incomplete": [
+        "color-contrast"
+      ],
+      "passes": 15,
+      "violations": []
+    }
+  }
+}

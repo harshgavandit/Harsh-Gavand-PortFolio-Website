@@ -5,6 +5,7 @@ import Portfolio from "./Portfolio";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/space-grotesk";
 import "./observatory.css";
+import "./signal.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

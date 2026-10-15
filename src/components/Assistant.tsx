@@ -173,7 +173,7 @@ export function Assistant() {
         aria-controls="portfolio-assistant"
       >
         <MessageCircle size={20} aria-hidden="true" />
-        <span>Ask about Harsh</span>
+        <span className="assistant-launcher-label">Ask about Harsh</span>
         <span className="assistant-ai-badge">AI</span>
       </button>
       <dialog

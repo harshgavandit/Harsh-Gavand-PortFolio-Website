@@ -113,39 +113,30 @@ export function StudioScene() {
   return (
     <m.div
       ref={composition}
-      className="studio"
+      className="studio signal-object"
       style={{ y: enabled ? parallax : 0 }}
       data-scene={ready ? "webgl" : "fallback"}
       data-discipline={active}
     >
       <div className="studio-topline">
         <span>
-          <i /> THE CONNECTED OBJECT
+          <i /> SIGNAL / A STUDY IN CONNECTION
         </span>
-        <span>OBJECT / 0{active + 1}</span>
+        <span>0{active + 1} / 03</span>
       </div>
       <div className="studio-visual">
         <div className="studio-grid" aria-hidden="true" />
         <div className="studio-fallback" aria-hidden="true">
           <img
-            src="/studio/orbital-poster.png"
+            src="/studio/signal-poster.png"
             alt=""
-            width="960"
-            height="960"
+            width="400"
+            height="385"
           />
         </div>
         <div className="studio-canvas" ref={host} aria-hidden="true" />
-        <span className="studio-label label-top" aria-hidden="true">
-          <Layers3 size={15} /> Interface
-        </span>
-        <span className="studio-label label-bottom" aria-hidden="true">
-          <Braces size={15} /> Systems
-        </span>
-        <span className="studio-label label-right" aria-hidden="true">
-          <Sparkles size={15} /> Intelligence
-        </span>
         <div className="studio-coordinate" aria-hidden="true">
-          INTERFACE × SYSTEMS × INTELLIGENCE
+          FORM FOLLOWS CURIOSITY
         </div>
         <div
           className="scene-view-controls"
@@ -198,8 +189,8 @@ export function StudioScene() {
       <p className="studio-hint">
         <Move size={12} aria-hidden="true" />
         {ready && enabled
-          ? "Drag to rotate · Choose a discipline to explore"
-          : "Explore the layers of my work"}
+          ? "Drag the object · Discover a different perspective"
+          : "An abstract study of connected disciplines"}
       </p>
     </m.div>
   );

@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 export type StudioRenderer = {
@@ -10,7 +9,7 @@ export type StudioRenderer = {
   dispose: () => void;
 };
 
-/** Procedural kinetic sculpture. One canvas, shared geometry, no downloaded models. */
+/** Original kinetic frame study; abstract material, not a product architecture. */
 export function createStudio(
   host: HTMLElement,
   onLost: () => void,
@@ -23,288 +22,204 @@ export function createStudio(
   renderer.setPixelRatio(
     Math.min(window.devicePixelRatio, window.innerWidth < 700 ? 1.25 : 1.5),
   );
-  renderer.setClearColor(0xffffff, 0);
+  renderer.setClearColor(0x10120f, 0);
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.95;
+  renderer.toneMappingExposure = 1.15;
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(34, 1, 0.1, 60);
-  camera.position.set(0, 1.3, 10.4);
+  const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 50);
+  camera.position.set(0, 0.5, 10.7);
   camera.lookAt(0, 0, 0);
-  const environment = new RoomEnvironment();
+  const room = new RoomEnvironment();
   const generator = new THREE.PMREMGenerator(renderer);
-  const environmentMap = generator.fromScene(environment, 0.04);
-  scene.environment = environmentMap.texture;
-  environment.dispose();
+  const environment = generator.fromScene(room, 0.04);
+  scene.environment = environment.texture;
+  room.dispose();
   generator.dispose();
-  scene.add(new THREE.HemisphereLight(0xe9f2d9, 0x141b0d, 2));
-  const light = new THREE.DirectionalLight(0xfff7e4, 3);
-  light.position.set(-3, 6, 5);
-  scene.add(light);
-  const rim = new THREE.DirectionalLight(0xc5ed8b, 2.8);
-  rim.position.set(4, 2, -3);
+  scene.add(new THREE.HemisphereLight(0xf0f4e8, 0x1b2414, 2.2));
+  const key = new THREE.DirectionalLight(0xffffff, 4);
+  key.position.set(-3, 5, 5);
+  scene.add(key);
+  const rim = new THREE.DirectionalLight(0xc5ed8b, 4);
+  rim.position.set(4, 0, -3);
   scene.add(rim);
-  const violetRim = new THREE.DirectionalLight(0xe3e9d9, 2);
-  violetRim.position.set(-4, -2, 2);
-  scene.add(violetRim);
-
-  const blue = new THREE.MeshStandardMaterial({
-    color: 0xcbd3bf,
-    emissive: 0x1e2814,
-    emissiveIntensity: 0.15,
+  const fill = new THREE.DirectionalLight(0xe9eddc, 2);
+  fill.position.set(-4, -3, 2);
+  scene.add(fill);
+  const chrome = new THREE.MeshStandardMaterial({
+    color: 0xd5dbce,
+    metalness: 0.95,
+    roughness: 0.16,
+  });
+  const graphite = new THREE.MeshStandardMaterial({
+    color: 0x293024,
     metalness: 0.82,
-    roughness: 0.22,
+    roughness: 0.25,
   });
-  const pearl = new THREE.MeshStandardMaterial({
-    color: 0xe5e8dc,
-    emissive: 0x252b1d,
-    emissiveIntensity: 0.1,
-    metalness: 0.6,
-    roughness: 0.27,
-  });
-  const silver = new THREE.MeshStandardMaterial({
+  const signal = new THREE.MeshStandardMaterial({
     color: 0xc5ed8b,
-    emissive: 0x425b25,
-    emissiveIntensity: 0.22,
+    emissive: 0x61892b,
+    emissiveIntensity: 0.36,
     metalness: 0.65,
     roughness: 0.22,
   });
-  const glass = new THREE.MeshStandardMaterial({
-    color: 0xc5ed8b,
-    metalness: 0.2,
-    roughness: 0.1,
-    transparent: true,
-    opacity: 0.45,
-    depthWrite: false,
-    side: THREE.DoubleSide,
+
+  function roundedPath(size: number, radius: number) {
+    const p = new THREE.Shape();
+    const h = size / 2;
+    p.moveTo(-h + radius, -h);
+    p.lineTo(h - radius, -h);
+    p.quadraticCurveTo(h, -h, h, -h + radius);
+    p.lineTo(h, h - radius);
+    p.quadraticCurveTo(h, h, h - radius, h);
+    p.lineTo(-h + radius, h);
+    p.quadraticCurveTo(-h, h, -h, h - radius);
+    p.lineTo(-h, -h + radius);
+    p.quadraticCurveTo(-h, -h, -h + radius, -h);
+    return p;
+  }
+  const shape = roundedPath(3.05, 0.62);
+  shape.holes.push(roundedPath(2.38, 0.43));
+  const geometry = new THREE.ExtrudeGeometry(shape, {
+    depth: 0.085,
+    bevelEnabled: true,
+    bevelSegments: 3,
+    steps: 1,
+    bevelSize: 0.045,
+    bevelThickness: 0.045,
+    curveSegments: 12,
   });
-  const ink = new THREE.MeshStandardMaterial({
-    color: 0x1c2415,
-    emissive: 0x526a36,
-    emissiveIntensity: 0.25,
-    metalness: 0.6,
-    roughness: 0.3,
-  });
-  const assembly = new THREE.Group();
-  assembly.rotation.set(0.13, -0.28, -0.13);
-  scene.add(assembly);
-
-  const orbit = new THREE.Group();
-  orbit.position.y = 0.3;
-  assembly.add(orbit);
-  const mainRing = new THREE.Mesh(
-    new THREE.TorusKnotGeometry(1.05, 0.25, 120, 16, 2, 3),
-    blue,
-  );
-  mainRing.rotation.set(0.15, 0.5, -0.35);
-  orbit.add(mainRing);
-  const innerRing = new THREE.Mesh(
-    new THREE.TorusGeometry(1.78, 0.035, 12, 96),
-    silver,
-  );
-  innerRing.rotation.set(-0.62, -0.42, 0.5);
-  orbit.add(innerRing);
-  const core = new THREE.Mesh(new THREE.IcosahedronGeometry(0.46, 3), pearl);
-  orbit.add(core);
-  const coreLight = new THREE.PointLight(0xc5ed8b, 1.8, 10);
-  core.add(coreLight);
-  const coreGrid = new THREE.LineSegments(
-    new THREE.WireframeGeometry(new THREE.IcosahedronGeometry(0.49, 1)),
-    new THREE.LineBasicMaterial({
-      color: 0xc5ed8b,
-      transparent: true,
-      opacity: 0.75,
-    }),
-  );
-  core.add(coreGrid);
-
-  const paths: THREE.Mesh[] = [];
-  const pathsGroup = new THREE.Group();
-  pathsGroup.position.y = 0.4;
-  assembly.add(pathsGroup);
-  for (let i = 0; i < 3; i++) {
-    const ring = new THREE.Mesh(
-      new THREE.TorusGeometry(2.03 + i * 0.22, 0.009, 5, 96),
-      i === 0 ? blue : silver,
+  geometry.center();
+  const object = new THREE.Group();
+  object.rotation.set(-0.22, -0.5, -0.3);
+  scene.add(object);
+  const frames: THREE.Mesh[] = [];
+  for (let i = 0; i < 11; i++) {
+    const frame = new THREE.Mesh(
+      geometry,
+      i === 5 ? signal : i % 4 === 0 ? graphite : chrome,
     );
-    ring.rotation.set(0.55 + i * 0.56, 0.25 + i * 0.54, i * 0.6);
-    pathsGroup.add(ring);
-    paths.push(ring);
+    object.add(frame);
+    frames.push(frame);
   }
-  const satelliteGeometry = new THREE.SphereGeometry(0.045, 10, 8);
-  const satellites: THREE.Mesh[] = [];
-  for (let i = 0; i < 12; i++) {
-    const node = new THREE.Mesh(satelliteGeometry, i % 3 === 0 ? pearl : blue);
-    paths[i % 3].add(node);
-    satellites.push(node);
-  }
-
-  const layers: THREE.Group[] = [];
-  const slabGeometry = new RoundedBoxGeometry(2.7, 0.12, 1.8, 3, 0.055);
-  const traceGeometry = new THREE.BoxGeometry(0.075, 0.017, 0.55);
-  for (let i = 0; i < 3; i++) {
-    const layer = new THREE.Group();
-    layer.add(new THREE.Mesh(slabGeometry, i === 1 ? glass : ink));
-    layer.position.y = -1.6 - i * 0.22;
-    layer.rotation.y = 0.3;
-    for (let j = 0; j < 6; j++) {
-      const trace = new THREE.Mesh(traceGeometry, j === 0 ? blue : silver);
-      trace.position.set(-0.95 + j * 0.37, 0.072, -0.25 + (j % 2) * 0.3);
-      layer.add(trace);
-    }
-    assembly.add(layer);
-    layers.push(layer);
-  }
-  const base = new THREE.Mesh(
-    new THREE.CylinderGeometry(1.78, 1.87, 0.12, 80),
-    ink,
-  );
-  base.position.set(0, -2.31, 0);
-  assembly.add(base);
-  const baseRing = new THREE.Mesh(
-    new THREE.TorusGeometry(1.79, 0.018, 8, 96),
-    blue,
-  );
-  baseRing.rotation.x = Math.PI / 2;
-  baseRing.position.y = -2.22;
-  assembly.add(baseRing);
-
-  const chips: THREE.Group[] = [];
-  const chipGeo = new RoundedBoxGeometry(0.82, 0.65, 0.09, 3, 0.07);
-  const lineGeo = new THREE.BoxGeometry(0.44, 0.04, 0.025);
-  for (let i = 0; i < 3; i++) {
-    const chip = new THREE.Group();
-    chip.add(new THREE.Mesh(chipGeo, i === 1 ? silver : ink));
-    for (let j = 0; j < 3; j++) {
-      const stripe = new THREE.Mesh(
-        lineGeo,
-        i === 1 ? pearl : j === 0 ? blue : ink,
-      );
-      stripe.position.set(j === 2 ? -0.08 : 0, 0.13 - j * 0.12, 0.058);
-      if (j === 2) stripe.scale.x = 0.65;
-      chip.add(stripe);
-    }
-    chip.position.set(
-      i === 0 ? -2 : i === 1 ? 2.08 : 1.75,
-      i === 0 ? 1.2 : i === 1 ? 0.85 : -1.12,
-      i === 0 ? 0.4 : -0.1,
-    );
-    chip.rotation.set(-0.12, i === 0 ? 0.4 : -0.4, i === 0 ? -0.13 : 0.12);
-    assembly.add(chip);
-    chips.push(chip);
-  }
-
-  const points = new Float32Array(160 * 3);
-  for (let i = 0; i < 160; i++) {
-    const angle = i * 2.399963;
-    const radius = 2.4 + (i % 13) * 0.18;
-    points.set(
-      [
-        Math.cos(angle) * radius,
-        Math.sin(angle) * radius * 0.72,
-        -0.8 - (i % 7) * 0.3,
-      ],
+  const particles = new Float32Array(64 * 3);
+  for (let i = 0; i < 64; i++) {
+    const a = i * 2.399963,
+      r = 2.5 + (i % 9) * 0.17;
+    particles.set(
+      [Math.cos(a) * r, Math.sin(a) * r * 0.8, -2 - (i % 7) * 0.15],
       i * 3,
     );
   }
-  const pointGeo = new THREE.BufferGeometry();
-  pointGeo.setAttribute("position", new THREE.BufferAttribute(points, 3));
+  const pointGeometry = new THREE.BufferGeometry();
+  pointGeometry.setAttribute(
+    "position",
+    new THREE.BufferAttribute(particles, 3),
+  );
   const field = new THREE.Points(
-    pointGeo,
+    pointGeometry,
     new THREE.PointsMaterial({
-      color: 0xa8bc8b,
-      size: 0.038,
+      color: 0xc5ed8b,
+      size: 0.018,
       transparent: true,
-      opacity: 0.82,
+      opacity: 0.45,
     }),
   );
   scene.add(field);
   host.appendChild(renderer.domElement);
-
   let enabled = true,
     active = 0,
     visible = true,
     disposed = false,
     lost = false;
   let frame = 0,
-    time = 0,
     previous = 0,
     lastDraw = 0,
+    time = 0,
     progress = 0,
-    turn = 0;
+    angle = 0;
   const pointer = { x: 0, y: 0 };
-  let drag: { id: number; x: number; turn: number } | undefined;
-  const targetScale = new THREE.Vector3();
-  const render = (stamp: number) => {
+  const target = new THREE.Vector3();
+  let drag: { id: number; x: number; angle: number } | undefined;
+  let initialized = false;
+  function render(stamp: number) {
     frame = 0;
     if (disposed || lost || !visible || document.hidden) return;
-    // This decorative scene needs at most 30 draws per second. Input and
-    // visibility still use native animation-frame scheduling.
     if (enabled && stamp - lastDraw < 1000 / 30) {
       frame = requestAnimationFrame(render);
       return;
     }
     lastDraw = stamp;
-    const delta = previous ? Math.min((stamp - previous) / 1000, 0.05) : 0;
+    const delta = previous ? Math.min((stamp - previous) / 1000, 0.05) : 1 / 30;
     previous = stamp;
     if (enabled) time += delta;
-    const ease = enabled ? 1 - Math.exp(-5 * delta) : 1;
-    const scroll = enabled ? progress : 0;
-    assembly.rotation.y +=
-      (-0.28 +
-        turn +
-        active * 0.23 +
-        (enabled ? pointer.x * 0.3 : 0) +
-        scroll * 0.35 -
-        assembly.rotation.y) *
+    const ease = !enabled || !initialized ? 1 : 1 - Math.exp(-5 * delta);
+    frames.forEach((mesh, i) => {
+      const n = i - 5;
+      let x = n * 0.14,
+        y = n * 0.025,
+        z = n * 0.19,
+        rx = 0,
+        ry = n * 0.012,
+        rz = n * 0.095;
+      if (active === 1) {
+        x = Math.sin(n * 0.38) * 0.45;
+        y = n * 0.14;
+        z = Math.cos(n * 0.38) * 0.38;
+        rx = n * 0.065;
+        ry = n * 0.12;
+        rz = n * 0.035;
+      }
+      if (active === 2) {
+        x = Math.sin(n * 0.5) * 0.5;
+        y = n * 0.18;
+        z = Math.cos(n * 0.5) * 0.45;
+        rx = 0.15;
+        ry = n * 0.1;
+        rz = n * 0.16;
+      }
+      mesh.position.lerp(target.set(x, y, z), ease);
+      mesh.rotation.x += (rx - mesh.rotation.x) * ease;
+      mesh.rotation.y += (ry - mesh.rotation.y) * ease;
+      mesh.rotation.z += (rz - mesh.rotation.z) * ease;
+    });
+    object.rotation.y +=
+      (-0.5 +
+        angle +
+        (enabled
+          ? pointer.x * 0.32 + Math.sin(time * 0.18) * 0.12 + progress * 0.4
+          : 0) -
+        object.rotation.y) *
       ease;
-    assembly.rotation.x +=
-      (0.13 + (enabled ? pointer.y * 0.14 : 0) - assembly.rotation.x) * ease;
-    assembly.position.y = -scroll * 0.2;
-    orbit.rotation.z = enabled ? Math.sin(time * 0.18) * 0.09 : 0;
-    innerRing.rotation.y = -0.42 + time * 0.1;
-    core.rotation.y = time * 0.13;
-    coreLight.intensity = enabled ? 1.6 + Math.sin(time * 1.8) * 0.25 : 1.6;
-    core.scale.lerp(targetScale.setScalar(active === 2 ? 1.15 : 1), ease);
-    mainRing.rotation.y +=
-      ((active === 1 ? 1.3 : active === 2 ? -0.55 : 0.5) -
-        mainRing.rotation.y) *
-      ease;
-    mainRing.rotation.z = -0.35 + (enabled ? Math.sin(time * 0.22) * 0.18 : 0);
-    orbit.position.y += ((active === 1 ? 0.8 : 0.3) - orbit.position.y) * ease;
-    layers.forEach((layer, i) => {
-      layer.position.y +=
-        (-1.6 - i * (active === 1 ? 0.36 : 0.22) - layer.position.y) * ease;
-    });
-    satellites.forEach((node, i) => {
-      const angle = i * 0.83 + time * (active === 2 ? 0.28 : 0.13);
-      const radius = 2.03 + (i % 3) * 0.22;
-      node.position.set(Math.cos(angle) * radius, Math.sin(angle) * radius, 0);
-    });
-    chips.forEach((chip, i) => {
-      chip.position.y =
-        [1.2, 0.85, -1.12][i] +
-        (enabled ? Math.sin(time * 0.65 + i * 2) * 0.1 : 0);
-    });
-    field.rotation.z = time * 0.012;
+    object.rotation.x +=
+      (-0.22 + (enabled ? pointer.y * 0.2 : 0) - object.rotation.x) * ease;
+    object.rotation.z = -0.3 + (enabled ? Math.sin(time * 0.22) * 0.035 : 0);
+    object.position.y = enabled
+      ? Math.sin(time * 0.55) * 0.08 - progress * 0.2
+      : 0;
+    signal.emissiveIntensity = enabled
+      ? 0.35 + Math.sin(time * 0.9) * 0.08
+      : 0.35;
+    field.rotation.z = time * 0.006;
     renderer.render(scene, camera);
+    initialized = true;
     if (enabled) frame = requestAnimationFrame(render);
-  };
-  const request = () => {
+  }
+  function request() {
     if (!frame && !disposed && !lost) frame = requestAnimationFrame(render);
-  };
-  const resize = () => {
+  }
+  function resize() {
     const { width, height } = host.getBoundingClientRect();
     if (!width || !height) return;
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
-    camera.position.z = camera.aspect < 1 ? 10.4 / camera.aspect : 10.4;
+    camera.position.z = camera.aspect < 1 ? 10.7 / camera.aspect : 10.7;
     camera.updateProjectionMatrix();
     request();
-  };
+  }
   const resizeObserver = new ResizeObserver(resize);
   resizeObserver.observe(host);
-  const intersection = new IntersectionObserver(([entry]) => {
+  const observer = new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting;
     previous = 0;
     if (visible) request();
@@ -313,53 +228,47 @@ export function createStudio(
       frame = 0;
     }
   });
-  intersection.observe(host);
-  const move = (event: PointerEvent) => {
+  observer.observe(host);
+  function move(event: PointerEvent) {
     if (event.pointerType !== "mouse" || !enabled) return;
     const box = host.getBoundingClientRect();
     pointer.x = (event.clientX - box.left) / box.width - 0.5;
     pointer.y = (event.clientY - box.top) / box.height - 0.5;
-    if (drag) turn = drag.turn + (event.clientX - drag.x) * 0.007;
-  };
-  const down = (event: PointerEvent) => {
-    if (event.pointerType !== "mouse" || event.button !== 0 || !enabled) return;
-    drag = { id: event.pointerId, x: event.clientX, turn };
+    if (drag) angle = drag.angle + (event.clientX - drag.x) * 0.008;
+    request();
+  }
+  function down(event: PointerEvent) {
+    if (event.pointerType !== "mouse" || !enabled) return;
+    drag = { id: event.pointerId, x: event.clientX, angle };
     host.setPointerCapture(event.pointerId);
     host.dataset.dragging = "true";
-  };
-  const up = () => {
+  }
+  function up() {
     if (drag && host.hasPointerCapture(drag.id))
       host.releasePointerCapture(drag.id);
     drag = undefined;
     delete host.dataset.dragging;
-  };
-  const leave = () => {
-    if (!drag) {
-      pointer.x = 0;
-      pointer.y = 0;
-    }
-  };
-  const reset = () => {
-    turn = 0;
+  }
+  function leave() {
     pointer.x = 0;
     pointer.y = 0;
     request();
-  };
-  const visibility = () => {
+  }
+  function visibility() {
     previous = 0;
     if (!document.hidden) request();
     else {
       cancelAnimationFrame(frame);
       frame = 0;
     }
-  };
-  const contextLost = (event: Event) => {
+  }
+  function contextLost(event: Event) {
     event.preventDefault();
     lost = true;
     cancelAnimationFrame(frame);
     frame = 0;
     onLost();
-  };
+  }
   host.addEventListener("pointermove", move);
   host.addEventListener("pointerdown", down);
   host.addEventListener("pointerup", up);
@@ -381,16 +290,21 @@ export function createStudio(
       if (enabled && visible) request();
     },
     turn(direction) {
-      turn += (direction * Math.PI) / 6;
+      angle += (direction * Math.PI) / 6;
       request();
     },
-    reset,
+    reset() {
+      angle = 0;
+      pointer.x = 0;
+      pointer.y = 0;
+      request();
+    },
     dispose() {
       disposed = true;
       cancelAnimationFrame(frame);
       up();
       resizeObserver.disconnect();
-      intersection.disconnect();
+      observer.disconnect();
       host.removeEventListener("pointermove", move);
       host.removeEventListener("pointerdown", down);
       host.removeEventListener("pointerup", up);
@@ -398,24 +312,13 @@ export function createStudio(
       host.removeEventListener("pointerleave", leave);
       document.removeEventListener("visibilitychange", visibility);
       renderer.domElement.removeEventListener("webglcontextlost", contextLost);
-      const geometries = new Set<THREE.BufferGeometry>();
-      const materials = new Set<THREE.Material>();
-      scene.traverse((object) => {
-        if (
-          object instanceof THREE.Mesh ||
-          object instanceof THREE.LineSegments ||
-          object instanceof THREE.Points
-        ) {
-          geometries.add(object.geometry);
-          (Array.isArray(object.material)
-            ? object.material
-            : [object.material]
-          ).forEach((material) => materials.add(material));
-        }
-      });
-      geometries.forEach((geometry) => geometry.dispose());
-      materials.forEach((material) => material.dispose());
-      environmentMap.dispose();
+      geometry.dispose();
+      pointGeometry.dispose();
+      chrome.dispose();
+      graphite.dispose();
+      signal.dispose();
+      (field.material as THREE.Material).dispose();
+      environment.dispose();
       renderer.dispose();
       renderer.forceContextLoss();
       renderer.domElement.remove();

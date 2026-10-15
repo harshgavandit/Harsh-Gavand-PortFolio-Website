@@ -1,4 +1,5 @@
-import { m } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { ArrowDown, ArrowUpRight, Sparkles } from "lucide-react";
 import { aboutProfile, profile, projects } from "../data/portfolio";
 import { ActionLink } from "./Primitives";
@@ -8,10 +9,17 @@ import { openPortfolioAssistant } from "../lib/portfolioActions";
 
 export function Hero() {
   const enabled = useMotionEnabled();
+  const root = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: root,
+    offset: ["start start", "end start"],
+  });
+  const drift = useTransform(scrollYProgress, [0, 1], [0, -55]);
   return (
     <section
+      ref={root}
       id="hero"
-      className="hero section-container"
+      className="hero signal-hero section-container"
       tabIndex={-1}
       aria-labelledby="hero-title"
     >
@@ -21,11 +29,11 @@ export function Hero() {
         </span>
         <span>
           {profile.location}{" "}
-          <span className="hero-edition"> / INDEPENDENT MINDSET</span>
+          <span className="hero-edition"> / AVAILABLE FOR WHAT’S NEXT</span>
         </span>
       </div>
       <div className="hero-layout">
-        <div className="hero-copy">
+        <m.div className="hero-copy" style={{ y: enabled ? drift : 0 }}>
           <p className="hero-kicker">
             Harsh Gavand <span> / </span> Full-stack & AI engineer
           </p>
@@ -35,21 +43,22 @@ export function Hero() {
             animate={enabled ? { opacity: [0.6, 1], y: [18, 0] } : undefined}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           >
-            Thoughtful
+            Engineering
             <br />
-            by design.
-            <br />
-            <span>Built to work.</span>
+            <span>what’s next.</span>
           </m.h1>
           <p className="hero-description">
-            I connect the interface, the system, and the intelligence behind it.
+            I’m Harsh. I turn complex ideas into considered digital products —
+            connecting the interface, the system, and the intelligence behind
+            it.
           </p>
           <p className="hero-detail">
-            Full-stack products. Practical AI. Care in every layer.
+            React & TypeScript <span aria-hidden="true">/</span> Python &
+            Node.js <span aria-hidden="true">/</span> Applied AI
           </p>
           <div className="actions">
             <ActionLink href="#projects" primary>
-              Explore the work
+              Discover my work
             </ActionLink>
             <ActionLink href="#contact">Let’s talk</ActionLink>
           </div>
@@ -58,16 +67,16 @@ export function Hero() {
             onClick={() => openPortfolioAssistant()}
             aria-haspopup="dialog"
           >
-            <Sparkles size={14} aria-hidden="true" /> Curious about the details?{" "}
-            <strong>Ask my portfolio</strong>
+            <Sparkles size={14} aria-hidden="true" />
+            <strong>A question in mind? Ask my portfolio</strong>
             <ArrowUpRight size={14} aria-hidden="true" />
           </button>
-        </div>
+        </m.div>
         <StudioScene />
       </div>
       <div className="hero-bottom">
         <a href="#projects" className="scroll-cue">
-          <ArrowDown size={17} aria-hidden="true" /> A closer look
+          <ArrowDown size={17} aria-hidden="true" /> Scroll to discover
         </a>
         <div className="hero-index">
           <a href="#all-projects">
@@ -80,16 +89,9 @@ export function Hero() {
           </a>
         </div>
         <span className="hero-signoff">
-          Design meets engineering.
-          <br />
-          Good things happen.
+          A little curiosity.
+          <br />A lot of possibility.
         </span>
-      </div>
-      <div className="discipline-strip" aria-label="Areas of work">
-        <span>Interface</span>
-        <span>Systems</span>
-        <span>Applied AI</span>
-        <span>One connected perspective.</span>
       </div>
     </section>
   );
