@@ -1,7 +1,11 @@
 import { build } from "vite";
-import { readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
-import { assertHomepage, siteOrigin } from "./prerender-checks.mjs";
+import {
+  assertHomepage,
+  assertArchive,
+  siteOrigin,
+} from "./prerender-checks.mjs";
 import { profile, projects } from "../src/data/portfolio.ts";
 
 // Generate HTML from the same components and data as the client, without a
@@ -40,6 +44,18 @@ const documentFor = (location) =>
   );
 const homepage = documentFor("/");
 assertHomepage(homepage, origin);
+const archive = documentFor("/archive")
+  .replace(
+    /<title>.*?<\/title>/s,
+    "<title>Project Archive | Harsh Gavand — Full-Stack & AI Engineer</title>",
+  )
+  .replace(/(rel="canonical"\s+href=")[^"]+"/, `$1${origin}/archive/"`)
+  .replace(/(property="og:url"\s+content=")[^"]+"/, `$1${origin}/archive/"`)
+  .replace(
+    /(property="og:title"\s+content=")[^"]+"/,
+    '$1Project Archive | Harsh Gavand"',
+  );
+assertArchive(archive, origin);
 const notFound = documentFor("/404")
   .replace(
     /<title>.*?<\/title>/s,
@@ -51,14 +67,19 @@ const notFound = documentFor("/404")
   );
 await writeFile(new URL("../dist/index.html", import.meta.url), homepage);
 await writeFile(new URL("../dist/404.html", import.meta.url), notFound);
+await mkdir(new URL("../dist/archive/", import.meta.url), { recursive: true });
+await writeFile(
+  new URL("../dist/archive/index.html", import.meta.url),
+  archive,
+);
 await writeFile(
   new URL("../dist/robots.txt", import.meta.url),
   `User-agent: *\nAllow: /\nSitemap: ${origin}/sitemap.xml\n`,
 );
 await writeFile(
   new URL("../dist/sitemap.xml", import.meta.url),
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${origin}/</loc></url></urlset>\n`,
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${origin}/</loc></url><url><loc>${origin}/archive/</loc></url></urlset>\n`,
 );
 console.log(
-  `Pre-rendered homepage and 404 page; all ${projects.length} projects included. Canonical origin: ${origin}`,
+  `Pre-rendered home, archive (${projects.length} projects), and 404. Canonical origin: ${origin}`,
 );

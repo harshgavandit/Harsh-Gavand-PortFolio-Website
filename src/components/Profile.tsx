@@ -1,113 +1,6 @@
-import { ArrowUpRight } from "lucide-react";
-import { aboutProfile, profile } from "../data/portfolio";
-import { ActionLink, Reveal, SectionHeading } from "./Primitives";
-import { Portrait } from "./Portrait";
-import { SkillExplorer } from "./SkillExplorer";
-import { ExperienceJourney } from "./ExperienceJourney";
-
-export function About() {
-  return (
-    <section
-      id="about"
-      className="section profile-section"
-      tabIndex={-1}
-      aria-labelledby="about-title"
-    >
-      <div className="section-container">
-        <SectionHeading
-          number="04"
-          label="The engineer"
-          title={
-            <span id="about-title">
-              A product mindset.
-              <br />
-              <span className="muted-heading">An engineer’s curiosity.</span>
-            </span>
-          }
-        />
-        <div className="about-layout">
-          <Reveal className="about-portrait">
-            <Portrait />
-          </Reveal>
-          <Reveal>
-            <p className="about-lead">
-              I’m Harsh — a full-stack developer working at the intersection of{" "}
-              <em>useful software</em> and <em>applied AI.</em>
-            </p>
-            <p className="body-copy">
-              I build SaaS dashboards, real-time applications, AI tools, and
-              data-backed platforms. My work connects responsive React
-              interfaces with JavaScript and Python backends, thoughtful data
-              models, and practical deployment workflows.
-            </p>
-            <p className="body-copy">
-              I care about the details: clear architecture, accessible
-              interfaces, predictable APIs, and a product that feels coherent
-              from the first click to the last.
-            </p>
-            <ActionLink href={profile.resume} external>
-              View updated resume
-            </ActionLink>
-          </Reveal>
-          <Reveal className="profile-facts">
-            <div>
-              <span>EXPERIENCE</span>
-              <strong>{aboutProfile.experience}</strong>
-              <p>Building and maintaining web applications.</p>
-            </div>
-            <div>
-              <span>APPROACH</span>
-              <strong>End to end.</strong>
-              <p>Interface, business logic, data, and delivery.</p>
-            </div>
-            <div>
-              <span>EDUCATION</span>
-              <strong>{aboutProfile.education.degree}</strong>
-              <p>{aboutProfile.education.details}</p>
-            </div>
-          </Reveal>
-        </div>
-        <div className="recognition">
-          <span className="eyebrow">Beyond the day-to-day</span>
-          <a
-            href="https://github.com/harshgavandit/SuperVity-AutoPilot-AI-Hackathon.git"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <strong>Top 5</strong>
-            <span>
-              Supervity AI Hackathon
-              <br />
-              500+ participants · built in 24 hours
-            </span>
-            <ArrowUpRight size={18} aria-hidden="true" />
-          </a>
-          <a
-            href="https://github.com/harshgavandit/OpenAI_Project-"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <strong>Top 10</strong>
-            <span>
-              OpenAI Builders Hackathon
-              <br />
-              Memory Graph AI · 500+ builders
-            </span>
-            <ArrowUpRight size={18} aria-hidden="true" />
-          </a>
-          <div>
-            <strong>Top 100</strong>
-            <span>
-              Smart India Hackathon 2025
-              <br />
-              National level · 500+ teams
-            </span>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+import { aboutProfile, experience, profile, skills } from "../data/portfolio";
+import { engineeringPrinciples } from "../data/recruiter";
+import { ActionLink, ChapterHeading, Tags } from "./Primitives";
 
 export function Experience() {
   return (
@@ -117,13 +10,84 @@ export function Experience() {
       tabIndex={-1}
       aria-labelledby="experience-title"
     >
-      <SectionHeading
-        number="02"
-        label="Experience"
-        title={<span id="experience-title">Built in the real world.</span>}
-        description="Hands-on ownership, collaborative delivery, and attention to the details that matter in production."
+      <ChapterHeading
+        id="experience"
+        title="Experience that connects the layers."
+        description="From responsive interfaces to APIs, relational data, and application delivery."
       />
-      <ExperienceJourney />
+      <div className="experience-list">
+        {experience.map((job, index) => (
+          <article
+            className="experience-card"
+            id={`experience-${index}`}
+            key={job.company}
+          >
+            <div className="experience-meta">
+              <span className="eyebrow">{job.company}</span>
+              <p>{job.period}</p>
+            </div>
+            <div>
+              <h3>{job.role}</h3>
+              <ul className="engineering-bullets">
+                {job.points.map((point) => (
+                  <li key={point}>{point}</li>
+                ))}
+              </ul>
+              <Tags items={job.tech} />
+            </div>
+          </article>
+        ))}
+      </div>
+      <div className="profile-brief" id="about">
+        <div className="about-summary">
+          <img
+            className="profile-photo"
+            src="/portrait/harsh-profile.webp"
+            width={270}
+            height={600}
+            loading="lazy"
+            alt="Harsh Gavand"
+          />
+          <span className="eyebrow">About me</span>
+          <h3>Curious about the whole system.</h3>
+          <p>{aboutProfile.summary}</p>
+          <ActionLink href={profile.resume} external>
+            Read my résumé
+          </ActionLink>
+        </div>
+        <div className="education-card">
+          <span className="eyebrow">Education</span>
+          <h4>{aboutProfile.education.degree}</h4>
+          <p>{aboutProfile.education.details}</p>
+          <span className="eyebrow">Based in</span>
+          <p>{profile.location} · Open to relocation / remote</p>
+        </div>
+      </div>
+      <div className="recognition">
+        <span className="eyebrow">Hackathons & recognition</span>
+        <div className="recognition-grid">
+          {aboutProfile.recognition.map((item, index) => (
+            <div key={item}>
+              <strong>{["Top 5", "Top 10", "Top 100"][index]}</strong>
+              <p>{item.split(" — ")[1]}</p>
+              {index < 2 && (
+                <a
+                  className="text-link"
+                  href={
+                    index === 0
+                      ? "https://github.com/harshgavandit/SuperVity-AutoPilot-AI-Hackathon"
+                      : "https://github.com/harshgavandit/OpenAI_Project-"
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View project ↗
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
@@ -136,19 +100,35 @@ export function Skills() {
       tabIndex={-1}
       aria-labelledby="skills-title"
     >
-      <SectionHeading
-        number="03"
-        label="The toolkit"
-        title={
-          <span id="skills-title">
-            The right tools.
-            <br />
-            <span className="muted-heading">For the actual problem.</span>
-          </span>
-        }
-        description="A practical stack that supports the work — chosen for the product, not the trend."
+      <ChapterHeading
+        id="skills"
+        title="Architecture before abstraction."
+        description="The tools I use across interfaces, services, AI workflows, and data — and the principles that connect them."
       />
-      <SkillExplorer />
+      <div className="skills-grid">
+        {skills.map((group, index) => (
+          <article key={group.title}>
+            <span className="eyebrow">
+              0{index + 1} / {group.title}
+            </span>
+            <h3>{group.description}</h3>
+            <Tags items={group.items} />
+          </article>
+        ))}
+      </div>
+      <div className="principles" id="workflow">
+        <h3>How I approach the build</h3>
+        <div className="principles-grid">
+          {engineeringPrinciples.map((principle, index) => (
+            <article key={principle.title}>
+              <span className="eyebrow">0{index + 1}</span>
+              <h4>{principle.title}</h4>
+              <p>{principle.description}</p>
+              <span className="principle-evidence">{principle.evidence}</span>
+            </article>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

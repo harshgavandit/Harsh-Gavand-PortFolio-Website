@@ -3,10 +3,8 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import Portfolio from "./Portfolio";
 
-import "@fontsource-variable/inter";
-import "@fontsource-variable/space-grotesk";
-import "./observatory.css";
-import "./signal.css";
+import "./fonts.css";
+import "./recruiter.css";
 
 const root = document.getElementById("root")!;
 const prerendered = root.dataset.prerendered === "true";

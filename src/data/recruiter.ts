@@ -1,0 +1,150 @@
+export const chapters = [
+  { id: "hero", label: "Introduction", navLabel: "Intro" },
+  { id: "projects", label: "Selected Work", navLabel: "Work" },
+  { id: "experience", label: "Experience & Impact", navLabel: "Experience" },
+  { id: "skills", label: "Architecture & Skills", navLabel: "Skills" },
+  { id: "contact", label: "Contact & Résumé", navLabel: "Contact" },
+] as const;
+
+export type ChapterId = (typeof chapters)[number]["id"];
+export function chapterNumber(id: ChapterId) {
+  return String(
+    chapters.findIndex((chapter) => chapter.id === id) + 1,
+  ).padStart(2, "0");
+}
+
+export const recruiterPrompts = [
+  {
+    label: "Backend & API architecture",
+    prompt: "Summarize Harsh's backend & API architecture experience",
+  },
+  {
+    label: "AI / LLM integration",
+    prompt: "How does Harsh integrate AI/LLMs into production web apps?",
+  },
+  {
+    label: "Full-stack / Backend fit",
+    prompt: "Why is Harsh a strong fit for a Full-Stack / Backend SWE role?",
+  },
+];
+
+export const curatedArchive = [
+  {
+    projectId: 33,
+    year: "2026",
+    feature: "Deterministic transfer policy and later-turn confirmation",
+  },
+  {
+    projectId: 37,
+    year: "2026",
+    feature: "BM25 + vector retrieval with Reciprocal Rank Fusion",
+  },
+  {
+    projectId: 38,
+    year: "2026",
+    feature: "Validated classification with redaction and review fallback",
+  },
+  {
+    projectId: 31,
+    year: "2026",
+    feature: "Semantic answer reuse with source-page retention",
+  },
+  {
+    projectId: 30,
+    year: "2026",
+    feature: "MCP discovery and bounded read-only SQL tools",
+  },
+  {
+    projectId: 35,
+    year: "2026",
+    feature: "Separate conversational intake and approval graphs",
+  },
+  {
+    projectId: 36,
+    year: "2026",
+    feature: "Async transcription → generation → speech playback",
+  },
+  {
+    projectId: 29,
+    year: "2026",
+    feature: "Validated cart state across four ADK agents",
+  },
+];
+
+export const engineeringPrinciples = [
+  {
+    title: "Define the contract",
+    description:
+      "Start with the product flow, API inputs, authorization boundary, and data ownership.",
+    evidence: "UGC · Clerk-scoped project endpoints",
+  },
+  {
+    title: "Keep state explicit",
+    description:
+      "Model the states a request can enter, including provider failures, retries, and incomplete work.",
+    evidence: "Banking · pending / approved / rejected",
+  },
+  {
+    title: "Bound external work",
+    description:
+      "Validate before a provider call. Limit usage and keep decisions that matter in application code.",
+    evidence: "Banking harness · policy + confirmation",
+  },
+  {
+    title: "Verify the delivery",
+    description:
+      "Check the API, generated assets, source references, and deployment response before calling work complete.",
+    evidence: "Portfolio · pre-render + HTTP checks",
+  },
+];
+
+export const heroArchitecture = [
+  {
+    title: "React / Next.js client",
+    detail: "Typed interfaces, request state, and accessible interactions.",
+    tag: "INTERFACE",
+    stack: "React · TypeScript",
+    projectId: 14,
+  },
+  {
+    title: "Node.js / FastAPI gateway",
+    detail:
+      "Authentication, validated inputs, and request admission before external work.",
+    tag: "API BOUNDARY",
+    stack: "Express · FastAPI",
+    projectId: 38,
+  },
+  {
+    title: "AI & workflow layer",
+    detail:
+      "Provider requests, agent handoffs, and explicit processing states.",
+    tag: "ORCHESTRATION",
+    stack: "Google AI · OpenAI · LangGraph",
+    projectId: 35,
+  },
+  {
+    title: "Persistence & media",
+    detail:
+      "Relational and document records, source identity, and stored media URLs.",
+    tag: "DATA",
+    stack: "PostgreSQL · MongoDB · Cloudinary",
+    projectId: 14,
+  },
+];
+
+// Verbatim request-admission path from this portfolio's server/app.mjs.
+export const productionCode = [
+  "const request = buildRequest(messages, model);",
+  "const estimate = reservationFor(request);",
+  "const reservation = await quota.reserve(estimate.amount);",
+  "",
+  "if (controller.signal.aborted) return;",
+  "const result = await generate(messages, controller.signal, request);",
+  "try {",
+  "  await quota.settle(reservation, usageCost(result.usage, estimate));",
+  "} catch {",
+  "  console.warn(",
+  '    "AI quota settlement unavailable; reservation retained.",',
+  "  );",
+  "}",
+];

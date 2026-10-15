@@ -1,215 +1,208 @@
 import { useEffect, useRef, useState } from "react";
-import { m, useScroll } from "framer-motion";
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import { useLocation } from "react-router-dom";
+import { Menu, X } from "lucide-react";
 import { profile } from "../data/portfolio";
+import { chapters, chapterNumber } from "../data/recruiter";
 import { MotionToggle } from "./MotionPreferences";
 import { GitHubMark, LinkedInMark } from "./CornerSocials";
 
-const links = ["Projects", "Experience", "Skills", "About", "Contact"];
 export function Navigation() {
-  const [active, setActive] = useState("");
+  const { pathname } = useLocation();
+  const [active, setActive] = useState("hero");
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  const socialsRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
-  const { scrollYProgress } = useScroll();
+  const home = pathname === "/";
+  const target = (id: string) => `${home ? "" : "/"}#${id}`;
   useEffect(() => {
-    let queued = false;
+    if (!home) return;
+    let frame = 0;
     const update = () => {
-      setScrolled(window.scrollY > 24);
-      const currentSection = Array.from(
-        document.querySelectorAll<HTMLElement>("main > section[id]"),
-      )
+      frame = 0;
+      const current = [
+        ...document.querySelectorAll<HTMLElement>("main > section[id]"),
+      ]
         .reverse()
         .find(
           (section) =>
             section.getBoundingClientRect().top <= window.innerHeight * 0.35,
-        )?.id;
-      const sectionLabels: Record<string, string> = {
-        projects: "Projects",
-        "all-projects": "Projects",
-        experience: "Experience",
-        skills: "Skills",
-        about: "About",
-        contact: "Contact",
-      };
-      setActive(sectionLabels[currentSection ?? ""] ?? "");
-      queued = false;
+        );
+      setActive(current?.id || "hero");
     };
     const scroll = () => {
-      if (!queued) {
-        queued = true;
-        requestAnimationFrame(update);
-      }
+      if (!frame) frame = requestAnimationFrame(update);
     };
     update();
     window.addEventListener("scroll", scroll, { passive: true });
-    return () => window.removeEventListener("scroll", scroll);
-  }, []);
+    return () => {
+      window.removeEventListener("scroll", scroll);
+      cancelAnimationFrame(frame);
+    };
+  }, [home]);
   useEffect(() => {
     if (!open) return;
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    const background = document.getElementById("main");
-    const footer = document.querySelector("footer");
-    background?.setAttribute("inert", "");
-    footer?.setAttribute("inert", "");
-    menuRef.current?.querySelector<HTMLAnchorElement>("a")?.focus();
-    function onKey(event: KeyboardEvent) {
+    const background = [
+      document.getElementById("main"),
+      document.querySelector("footer"),
+      document.querySelector(".assistant-launcher"),
+    ];
+    background.forEach((element) => element?.setAttribute("inert", ""));
+    menuRef.current?.querySelector<HTMLElement>("a")?.focus();
+    const key = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setOpen(false);
         toggleRef.current?.focus();
       }
-      if (event.key === "Tab") {
-        const elements = [
-          toggleRef.current,
-          ...Array.from(
-            socialsRef.current?.querySelectorAll<HTMLElement>("a") ?? [],
-          ),
-          ...Array.from(
-            menuRef.current?.querySelectorAll<HTMLElement>("a, button") ?? [],
-          ),
-        ].filter((el): el is HTMLElement => el !== null);
-        const first = elements[0],
-          last = elements[elements.length - 1];
-        if (event.shiftKey && document.activeElement === first) {
-          event.preventDefault();
-          last.focus();
-        }
-        if (!event.shiftKey && document.activeElement === last) {
-          event.preventDefault();
-          first.focus();
-        }
+      if (event.key !== "Tab") return;
+      const elements = [
+        toggleRef.current,
+        ...(menuRef.current?.querySelectorAll<HTMLElement>("a,button") || []),
+      ].filter(
+        (element): element is HTMLElement =>
+          !!element && !element.hasAttribute("disabled"),
+      );
+      const first = elements[0],
+        last = elements.at(-1)!;
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
       }
-    }
-    const breakpoint = window.matchMedia("(min-width: 900px)");
-    const closeOnResize = () => {
-      if (breakpoint.matches) setOpen(false);
     };
-    breakpoint.addEventListener("change", closeOnResize);
-    document.addEventListener("keydown", onKey);
+    const resize = () => {
+      if (window.innerWidth >= 1000) setOpen(false);
+    };
+    window.addEventListener("keydown", key);
+    window.addEventListener("resize", resize);
     return () => {
       document.body.style.overflow = previous;
-      background?.removeAttribute("inert");
-      footer?.removeAttribute("inert");
-      document.removeEventListener("keydown", onKey);
-      breakpoint.removeEventListener("change", closeOnResize);
+      background.forEach((element) => element?.removeAttribute("inert"));
+      window.removeEventListener("keydown", key);
+      window.removeEventListener("resize", resize);
     };
   }, [open]);
-  function closeMenu(id: string) {
+  const ask = () => {
     setOpen(false);
-    requestAnimationFrame(() =>
-      document.getElementById(id)?.focus({ preventScroll: true }),
-    );
-  }
+    window.dispatchEvent(new CustomEvent("open-portfolio-assistant"));
+  };
   return (
     <>
-      <m.div
-        className="scroll-progress"
-        style={{ scaleX: scrollYProgress }}
-        aria-hidden="true"
-      />
-      <header className={`site-header ${scrolled ? "is-scrolled" : ""}`}>
-        <div className="nav-shell">
+      <header className="site-header">
+        <div className="header-inner">
           <a
+            href={target("hero")}
             className="brand"
-            href="#hero"
             aria-label="Harsh Gavand home"
-            onClick={() => setOpen(false)}
           >
-            <span className="brand-monogram">
-              h<span>g</span>
-              <i />
+            hg<span>.</span>
+            <span className="brand-caption">
+              Harsh Gavand<small>Full-Stack & AI Engineer</small>
             </span>
-            <span className="brand-name">Harsh Gavand</span>
           </a>
-          <nav aria-label="Main navigation" className="desktop-nav">
-            {links.map((link) => (
+          <nav className="desktop-nav" aria-label="Main navigation">
+            {chapters.map((chapter) => (
               <a
-                href={`#${link.toLowerCase()}`}
-                key={link}
-                aria-current={active === link ? "location" : undefined}
+                key={chapter.id}
+                href={target(chapter.id)}
+                aria-current={
+                  home && active === chapter.id ? "location" : undefined
+                }
               >
-                {link}
+                <span>{chapterNumber(chapter.id)}</span>
+                {chapter.navLabel}
               </a>
             ))}
           </nav>
-          <MotionToggle />
-          <a
-            className="nav-resume"
-            href={profile.resume}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Résumé <ArrowUpRight size={15} aria-hidden="true" />
-          </a>
-          <button
-            ref={toggleRef}
-            className="menu-toggle"
-            aria-label={open ? "Close navigation" : "Open navigation"}
-            aria-expanded={open}
-            aria-controls="mobile-navigation"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <X /> : <Menu />}
-          </button>
-          <div
-            className="header-socials"
-            ref={socialsRef}
-            aria-label="Social profiles"
-          >
+          <div className="header-actions">
+            <button
+              className="header-ask"
+              onClick={ask}
+              aria-haspopup="dialog"
+              aria-controls="portfolio-assistant"
+            >
+              Ask Harsh’s AI <kbd>⌘ K</kbd>
+            </button>
             <a
-              href={profile.github}
+              href={profile.resume}
+              className="header-resume"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Harsh Gavand on GitHub"
-              title="GitHub / @harshgavandit"
-              className="corner-social-btn"
             >
-              <GitHubMark size={20} />
+              Résumé ↗
             </a>
-            <a
-              href={profile.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Harsh Gavand on LinkedIn"
-              title="LinkedIn / harsh-gavand"
-              className="corner-social-btn"
+            <div className="header-socials">
+              <a
+                href={profile.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Harsh on GitHub"
+              >
+                <GitHubMark />
+              </a>
+              <a
+                href={profile.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Harsh on LinkedIn"
+              >
+                <LinkedInMark />
+              </a>
+            </div>
+            <button
+              className="menu-toggle"
+              ref={toggleRef}
+              onClick={() => setOpen((value) => !value)}
+              aria-label={open ? "Close navigation" : "Open navigation"}
+              aria-expanded={open}
+              aria-controls="mobile-navigation"
             >
-              <LinkedInMark size={20} />
-            </a>
+              {open ? <X size={22} /> : <Menu size={22} />}
+            </button>
           </div>
         </div>
-      </header>
-      {open && (
-        <div className="mobile-menu" id="mobile-navigation" ref={menuRef}>
+        <div
+          className="mobile-menu"
+          id="mobile-navigation"
+          ref={menuRef}
+          hidden={!open}
+        >
           <nav aria-label="Mobile navigation">
-            {links.map((link, i) => (
+            {chapters.map((chapter) => (
               <a
-                href={`#${link.toLowerCase()}`}
-                key={link}
-                onClick={() => closeMenu(link.toLowerCase())}
+                key={chapter.id}
+                href={target(chapter.id)}
+                onClick={() => setOpen(false)}
               >
-                <span>0{i + 1}</span>
-                {link}
-                <ArrowUpRight aria-hidden="true" />
+                <span>{chapterNumber(chapter.id)}</span>
+                {chapter.label}
               </a>
             ))}
           </nav>
-          <a
-            className="mobile-resume button button-secondary"
-            href={profile.resume}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View résumé <ArrowUpRight size={16} aria-hidden="true" />
-          </a>
-          <p>Full-stack thinking. Thoughtful execution.</p>
-          <a className="text-link" href={`mailto:${profile.email}`}>
-            {profile.email}
-          </a>
+          <button onClick={ask}>Ask Harsh’s AI · Ctrl / ⌘ K</button>
+          <MotionToggle />
         </div>
+      </header>
+      {home && (
+        <nav
+          className="chapter-rail section-container"
+          aria-label="Page chapters"
+        >
+          {chapters.map((chapter) => (
+            <a
+              key={chapter.id}
+              href={`#${chapter.id}`}
+              aria-current={active === chapter.id ? "location" : undefined}
+            >
+              <span>{chapterNumber(chapter.id)}</span>
+              {chapter.label}
+            </a>
+          ))}
+          <MotionToggle />
+        </nav>
       )}
     </>
   );

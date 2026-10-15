@@ -1,510 +1,350 @@
-import { matchesProjectCollection } from "../lib/portfolioActions";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { ArrowDown, ArrowRight, ArrowUpRight, Search } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowRight,
+  ArrowUpRight,
+  ExternalLink,
+} from "lucide-react";
 import {
   caseStudies,
   projects,
-  latestAIProjects,
   type CaseStudy,
   type Project,
 } from "../data/portfolio";
-import { ActionLink, Reveal, SectionHeading, Tags } from "./Primitives";
-import { ProjectWalkthrough } from "./ProjectWalkthrough";
-import { DeveloperLab } from "./DeveloperLab";
-
-function ProjectDetails({ project }: { project: Project }) {
+import { curatedArchive } from "../data/recruiter";
+import { ActionLink, ChapterHeading, Tags } from "./Primitives";
+import { Tabs } from "./Tabs";
+export function ProjectNotes({ project }: { project: Project }) {
   return (
-    <details className="project-details">
-      <summary>
-        Explore implementation <span aria-hidden="true">+</span>
-      </summary>
-      <div className="details-body">
-        <h4>Product overview</h4>
-        <p>{project.overview}</p>
+    <div className="project-notes">
+      <div>
         <h4>My contribution</h4>
         <p>{project.role}</p>
+      </div>
+      <div>
         <h4>Features implemented</h4>
         <ul>
           {project.features.map((feature) => (
             <li key={feature}>{feature}</li>
           ))}
         </ul>
+      </div>
+      <div>
         <h4>Engineering challenge</h4>
         <p>{project.challenges}</p>
-        <h4>Outcome</h4>
+      </div>
+      <div>
+        <h4>Engineering outcome</h4>
         <p>{project.impact}</p>
       </div>
-    </details>
+    </div>
   );
 }
-
-export function ProjectCaseStudy({
+function ProductPreview({
   study,
   project,
-  index,
 }: {
   study: CaseStudy;
   project: Project;
-  index: number;
 }) {
   return (
-    <Reveal>
-      <article
-        className="case-study"
-        id={`project-${project.id}`}
-        tabIndex={-1}
-        aria-labelledby={`project-title-${project.id}`}
-      >
-        <div className="case-topline">
-          <span className="project-number">0{index + 1}</span>
-          <span className="eyebrow">{project.category}</span>
-          <span
-            className={`project-status ${project.demoUrl ? "status-live" : ""}`}
-          >
-            <span />
-            {project.demoUrl ? "Live demo available" : "Source available"}
+    <div className="product-preview">
+      <div className="browser-frame">
+        <div className="browser-toolbar">
+          <span>
+            <i />
+            <i />
+            <i />
           </span>
-        </div>
-        <div className="case-layout">
-          <div className="case-copy">
-            <h3 id={`project-title-${project.id}`}>{study.shortName}</h3>
-            <p className="project-problem">{study.problem}</p>
-            <p className="project-summary">{study.summary}</p>
-            <dl className="role-meta">
-              <div>
-                <dt>ROLE</dt>
-                <dd>
-                  {project.id === 17
-                    ? "Backend & AI Developer"
-                    : "Full-Stack Developer"}
-                </dd>
-              </div>
-              <div>
-                <dt>FOCUS</dt>
-                <dd>
-                  {project.id === 17
-                    ? "Pipeline · Data · AI · Delivery"
-                    : "Frontend · APIs · Integrations"}
-                </dd>
-              </div>
-            </dl>
-            <Tags items={project.technologies} />
-            <div className="actions">
-              {project.demoUrl && (
-                <ActionLink href={project.demoUrl} primary external>
-                  Live demo
-                </ActionLink>
-              )}
-              <ActionLink href={project.githubUrl} external>
-                Source code
-              </ActionLink>
-            </div>
-          </div>
-          <ProjectWalkthrough study={study} project={project} />
-        </div>
-        <div className="contribution-grid">
-          {study.contributions.map((item, i) => (
-            <div key={item.label}>
-              <span className="contribution-number">0{i + 1}</span>
-              <h4>{item.label}</h4>
-              <p>{item.description}</p>
-            </div>
-          ))}
-        </div>
-        <ProjectDetails project={project} />
-      </article>
-    </Reveal>
-  );
-}
-
-function CaseStudyExhibit({
-  study,
-  project,
-  index,
-}: {
-  study: CaseStudy;
-  project: Project;
-  index: number;
-}) {
-  const disclosure = useRef<HTMLDetailsElement>(null);
-  useEffect(() => {
-    const reveal = () => {
-      if (
-        window.location.hash === `#project-${project.id}` &&
-        disclosure.current
-      ) {
-        disclosure.current.open = true;
-        requestAnimationFrame(() =>
-          document
-            .getElementById(`project-${project.id}`)
-            ?.scrollIntoView({ block: "start" }),
-        );
-      }
-    };
-    reveal();
-    window.addEventListener("hashchange", reveal);
-    return () => window.removeEventListener("hashchange", reveal);
-  }, [project.id]);
-  return (
-    <details className={`work-exhibit exhibit-${index}`} ref={disclosure}>
-      <summary aria-label={`Explore ${study.shortName} case study`}>
-        <div className="exhibit-visual">
-          <span className="exhibit-label">
-            0{index + 1} /{" "}
-            {study.image ? "PRODUCT CAPTURE" : "IMPLEMENTATION MAP"}
+          <span>
+            {project.demoUrl
+              ? new URL(project.demoUrl).hostname
+              : "digest / email output"}
           </span>
-          {study.image ? (
+          <ExternalLink size={12} aria-hidden="true" />
+        </div>
+        {study.image ? (
+          <img
+            src={`/projects/${study.image}-1280.webp`}
+            srcSet={`/projects/${study.image}-640.webp 640w, /projects/${study.image}-1280.webp 1280w`}
+            sizes="(min-width: 1000px) 42vw, 100vw"
+            width={1280}
+            height={722}
+            loading="lazy"
+            alt={study.imageAlt}
+          />
+        ) : project.id === 14 ? (
+          <div className="generation-preview">
             <img
-              src={`/projects/${study.image}-1280.webp`}
-              srcSet={`/projects/${study.image}-640.webp 640w, /projects/${study.image}-1280.webp 1280w`}
-              sizes="(min-width: 900px) 45vw, 100vw"
-              width="1280"
-              height="722"
+              src="/projects/ugc-gallery-640.webp"
+              srcSet="/projects/ugc-gallery-320.webp 320w, /projects/ugc-gallery-640.webp 640w"
+              sizes="(min-width:1000px) 220px, 45vw"
+              width={640}
+              height={1147}
               loading="lazy"
-              alt={study.imageAlt}
+              alt="UGC project gallery image of a model with a suitcase"
             />
-          ) : (
-            <div className="exhibit-system">
-              <span>{study.diagram?.title}</span>
-              <ol>
-                {study.diagram?.nodes.map((node, i) => (
-                  <li key={node}>
-                    <span>0{i + 1}</span>
-                    <strong>{node}</strong>
-                    <ArrowRight size={16} aria-hidden="true" />
-                  </li>
-                ))}
-              </ol>
+            <div>
+              <span className="eyebrow">Project gallery</span>
+              <h4>From assets to marketing content.</h4>
+              <p>
+                Image example from the UGC application’s gallery. Upload product
+                and model references to create a generation.
+              </p>
+              <span className="gallery-format">
+                Image generation → video generation
+              </span>
             </div>
-          )}
-          <span className="exhibit-open" aria-hidden="true">
-            <ArrowUpRight size={23} />
-          </span>
-        </div>
-        <div className="exhibit-copy">
-          <span className="eyebrow">{project.category}</span>
-          <h3>{study.shortName}</h3>
-          <p>{study.problem}</p>
-          <div className="exhibit-meta">
-            <span>{project.technologies.slice(0, 3).join(" / ")}</span>
-            <span className="exhibit-action">
-              Explore the build <span aria-hidden="true">+</span>
-            </span>
           </div>
-        </div>
-      </summary>
-      <div className="exhibit-expanded">
-        <ProjectCaseStudy study={study} project={project} index={index} />
-        <button
-          className="exhibit-close text-link"
-          onClick={() => {
-            if (!disclosure.current) return;
-            disclosure.current.open = false;
-            const summary = disclosure.current.querySelector("summary");
-            summary?.focus({ preventScroll: true });
-            summary?.scrollIntoView({ block: "center" });
-          }}
-        >
-          Close case study <span aria-hidden="true">−</span>
-        </button>
+        ) : (
+          <div className="email-preview">
+            <span className="eyebrow">Email delivery format</span>
+            <h4>One digest. Two formats.</h4>
+            <div>
+              <strong>Plain text</strong>
+              <p>
+                A readable summary with links back to the collected articles and
+                transcripts.
+              </p>
+            </div>
+            <div>
+              <strong>HTML email</strong>
+              <p>
+                A greeting, introduction, article headings, formatted summaries,
+                and source links.
+              </p>
+            </div>
+            <p>text/plain + text/html · SMTP delivery</p>
+          </div>
+        )}
       </div>
-    </details>
+      <p className="preview-note">{study.previewNote}</p>
+      {project.demoUrl ? (
+        <a
+          className="text-link"
+          href={project.demoUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Open the product <ArrowUpRight size={14} aria-hidden="true" />
+        </a>
+      ) : (
+        <a
+          className="text-link"
+          href={project.githubUrl + "/blob/main/app/services/email.py"}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Inspect the email formatter{" "}
+          <ArrowUpRight size={14} aria-hidden="true" />
+        </a>
+      )}
+    </div>
   );
 }
-
+function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
+  const project = projects.find((item) => item.id === study.projectId)!;
+  return (
+    <article
+      className="flagship-card"
+      id={`project-${project.id}`}
+      tabIndex={-1}
+      aria-labelledby={`project-title-${project.id}`}
+    >
+      <header className="flagship-header">
+        <div>
+          <div className="flagship-kicker">
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <span className="category-badge">{project.category}</span>
+          </div>
+          <h3 id={`project-title-${project.id}`}>{study.shortName}</h3>
+        </div>
+        <div className="actions">
+          {project.demoUrl && (
+            <ActionLink href={project.demoUrl} primary external>
+              Live demo
+            </ActionLink>
+          )}
+          <ActionLink
+            href={project.githubUrl}
+            primary={!project.demoUrl}
+            external
+          >
+            GitHub source
+          </ActionLink>
+        </div>
+      </header>
+      <div className="flagship-body">
+        <div className="engineering-breakdown">
+          <p className="eyebrow">The problem & product</p>
+          <p className="product-summary">{study.summary}</p>
+          <h4>Architecture & engineering decisions</h4>
+          <ul className="engineering-bullets">
+            {study.engineering.map((point) => (
+              <li key={point}>{point}</li>
+            ))}
+          </ul>
+          <Tags items={project.technologies} />
+          <div className="engineering-impact">
+            <span className="eyebrow">Engineering outcome</span>
+            <p>{project.impact}</p>
+          </div>
+        </div>
+        <div className="flagship-visual">
+          <Tabs
+            id={`case-${project.id}`}
+            label={`${study.shortName} technical preview`}
+            items={[
+              {
+                label: "Architecture Flow",
+                content: (
+                  <figure className="case-flow">
+                    <ol>
+                      {study.diagram!.nodes.map((node, i) => (
+                        <li key={node}>
+                          <span>{String(i + 1).padStart(2, "0")}</span>
+                          <strong>{node}</strong>
+                          {i < study.diagram!.nodes.length - 1 && (
+                            <ArrowDown size={15} aria-hidden="true" />
+                          )}
+                        </li>
+                      ))}
+                    </ol>
+                    <figcaption>{study.diagram!.caption}</figcaption>
+                  </figure>
+                ),
+              },
+              {
+                label: "Product Preview",
+                content: <ProductPreview study={study} project={project} />,
+              },
+              {
+                label: "Implementation Highlights",
+                content: (
+                  <div className="contribution-grid">
+                    {study.contributions.map((item, i) => (
+                      <div key={item.label}>
+                        <span className="eyebrow">0{i + 1}</span>
+                        <h4>{item.label}</h4>
+                        <p>{item.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                ),
+              },
+            ]}
+          />
+        </div>
+      </div>
+      <footer className="flagship-footer">
+        <span>{project.challenges}</span>
+        <a href={`/archive#archive-project-${project.id}`}>
+          Full project notes <ArrowRight size={14} aria-hidden="true" />
+        </a>
+      </footer>
+    </article>
+  );
+}
 export function FeaturedWork() {
-  const labDisclosure = useRef<HTMLDetailsElement>(null);
-  useEffect(() => {
-    const revealLab = () => {
-      if (!labDisclosure.current) return;
-      labDisclosure.current.open = true;
-      requestAnimationFrame(() => {
-        labDisclosure.current?.scrollIntoView({ block: "start" });
-        labDisclosure.current
-          ?.querySelector<HTMLInputElement>(".lab-search input")
-          ?.focus({ preventScroll: true });
-      });
-    };
-    window.addEventListener("explore-project", revealLab);
-    return () => window.removeEventListener("explore-project", revealLab);
-  }, []);
   return (
     <section
       id="projects"
       className="section section-container"
       tabIndex={-1}
-      aria-labelledby="featured-title"
+      aria-labelledby="projects-title"
     >
-      <SectionHeading
-        number="01"
-        label="Selected work"
-        title={
-          <span id="featured-title">
-            Selected work.
-            <br />
-            <span className="muted-heading">Built end to end.</span>
-          </span>
-        }
-        description="Four different problems. One considered approach. Explore the products and the engineering behind them."
+      <ChapterHeading
+        id="projects"
+        title="Four systems. The engineering behind them."
+        description="AI media generation, lending workflows, repository discovery, and automated news delivery."
       />
-      <div className="case-study-list">
-        {caseStudies.map((study, index) => {
-          const project = projects.find((p) => p.id === study.projectId)!;
-          return (
-            <CaseStudyExhibit
-              key={project.id}
-              study={study}
-              project={project}
-              index={index}
-            />
-          );
-        })}
+      <div className="flagship-list">
+        {caseStudies.map((study, index) => (
+          <CaseStudyCard key={study.projectId} study={study} index={index} />
+        ))}
       </div>
-      <details className="lab-disclosure" ref={labDisclosure}>
-        <summary>
-          <span>
-            <span className="eyebrow">THE ENGINEERING INDEX</span>
-            <strong>Go deeper into the work.</strong>
-          </span>
-          <span>
-            Search all {projects.length} projects{" "}
-            <ArrowUpRight size={20} aria-hidden="true" />
-          </span>
-        </summary>
-        <DeveloperLab />
-      </details>
-      <a href="#all-projects" className="section-end-link">
-        Explore the latest AI builds{" "}
-        <span>{latestAIProjects.length} new projects in the archive</span>
-        <ArrowDown size={18} aria-hidden="true" />
-      </a>
+      <MoreWork />
     </section>
   );
 }
-
-const filters = [
-  "Latest AI",
-  "All",
-  "AI & ML",
-  "Web & SaaS",
-  "APIs & Tools",
-] as const;
 export function MoreWork() {
-  const [query, setQuery] = useState("");
-  const [filter, setFilter] = useState<string>("Latest AI");
-  const [limit, setLimit] = useState(6);
-  const searchRef = useRef<HTMLInputElement>(null);
-  const projectHeadingRefs = useRef(new Map<number, HTMLHeadingElement>());
-  const pendingProjectFocus = useRef<number | null>(null);
-  useEffect(() => {
-    if (pendingProjectFocus.current === null) return;
-    const heading = projectHeadingRefs.current.get(pendingProjectFocus.current);
-    pendingProjectFocus.current = null;
-    heading?.focus({ preventScroll: true });
-    heading?.scrollIntoView({ block: "center" });
-  }, [limit]);
-  const secondary = useMemo(
-    () =>
-      projects.filter((p) => !caseStudies.some((c) => c.projectId === p.id)),
-    [],
-  );
-  const filtered = secondary.filter(
-    (p) =>
-      matchesProjectCollection(p, filter) &&
-      `${p.title} ${p.category} ${p.technologies.join(" ")}`
-        .toLowerCase()
-        .includes(query.toLowerCase().trim()),
-  );
   return (
-    <section
-      id="all-projects"
-      className="section section-container"
-      tabIndex={-1}
-      aria-labelledby="archive-title"
-    >
-      <SectionHeading
-        number="05"
-        label="Project archive"
-        title={
-          <span id="archive-title">
-            More problems.
-            <br />
-            <span className="muted-heading">More possibilities.</span>
-          </span>
-        }
-        description={`${latestAIProjects.length} recent AI builds, from agent workflows and MCP tools to voice interfaces and document retrieval. Explore the latest additions or browse the full archive.`}
-      />
-      <details className="archive-disclosure" open>
-        <summary>
-          <span>
-            <strong>{secondary.length.toString().padStart(2, "0")}</strong> More
-            builds. Different challenges.
-          </span>
-          <span>
-            Browse the archive <ArrowDown size={18} aria-hidden="true" />
-          </span>
-        </summary>
-        <div className="archive-controls">
-          <div
-            className="filter-list"
-            role="group"
-            aria-label="Filter projects"
-          >
-            {filters.map((item) => (
-              <button
-                key={item}
-                aria-pressed={filter === item}
-                onClick={() => {
-                  setFilter(item);
-                  setLimit(6);
-                }}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-          <label className="search-field">
-            <Search size={17} aria-hidden="true" />
-            <span className="sr-only">Search projects</span>
-            <input
-              ref={searchRef}
-              value={query}
-              onChange={(e) => {
-                setQuery(e.target.value);
-                setLimit(6);
-              }}
-              placeholder="Search name or technology"
-              type="search"
-            />
-          </label>
-        </div>
-        <p className="results-count" role="status">
-          Showing {Math.min(limit, filtered.length)} of {filtered.length}{" "}
-          matching projects · {secondary.length} in the archive
-        </p>
-        <div className="archive-grid" id="archive-results">
-          {filtered.slice(0, limit).map((project) => (
-            <article key={project.id} className="archive-card">
-              <div className="archive-top">
-                <span className="eyebrow">{project.category}</span>
-                <ArrowUpRight size={20} aria-hidden="true" />
-              </div>
-              <h3
-                tabIndex={-1}
-                ref={(heading) => {
-                  if (heading)
-                    projectHeadingRefs.current.set(project.id, heading);
-                  else projectHeadingRefs.current.delete(project.id);
-                }}
-              >
-                {project.title}
-              </h3>
-              <p>{project.overview.split(". ")[0]}.</p>
-              <div className="archive-contribution">
-                <span>MY CONTRIBUTION</span>
-                <p>{project.role}</p>
-              </div>
-              <Tags items={project.technologies} />
-              <div className="archive-links">
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Source code for ${project.title}`}
-                >
-                  Source <ArrowUpRight size={15} aria-hidden="true" />
-                </a>
-                {project.demoUrl ? (
-                  <a
-                    href={project.demoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`Live demo for ${project.title}`}
-                  >
-                    Live demo <ArrowUpRight size={15} aria-hidden="true" />
-                  </a>
-                ) : (
-                  <span>Source available</span>
-                )}
-              </div>
-              <ProjectDetails project={project} />
-            </article>
-          ))}
-        </div>
-        {limit < filtered.length && (
-          <div className="archive-more">
-            <button
-              className="button button-secondary"
-              aria-controls="archive-results"
-              onClick={() => {
-                pendingProjectFocus.current = filtered[limit]?.id ?? null;
-                setLimit((n) => n + 6);
-              }}
-            >
-              Show more projects <ArrowDown size={16} aria-hidden="true" />
-            </button>
-          </div>
-        )}
-        {filtered.length === 0 && (
-          <div className="empty-state">
-            <h3>No matching projects.</h3>
-            <p>Try another name or technology.</p>
-            <button
-              className="button button-secondary"
-              onClick={() => {
-                setFilter("All");
-                setQuery("");
-                setLimit(6);
-                searchRef.current?.focus();
-              }}
-            >
-              Reset filters <ArrowRight size={16} aria-hidden="true" />
-            </button>
-          </div>
-        )}
-      </details>
-      <details className="project-directory">
-        <summary>
-          <span>Complete project directory</span>
-          <span>{projects.length} projects · readable without JavaScript</span>
-        </summary>
-        <p className="project-directory-intro">
-          Every published project, with its stack, contribution, and
-          implementation notes.
-        </p>
-        <ol className="project-directory-list">
-          {projects.map((project) => (
-            <li key={project.id} data-project-id={project.id}>
-              <article>
-                <span className="eyebrow">{project.category}</span>
-                <h3>{project.title}</h3>
-                <p>{project.overview}</p>
-                <Tags items={project.technologies} />
-                <div className="archive-links">
-                  <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Source code for {project.title}{" "}
-                    <ArrowUpRight size={15} aria-hidden="true" />
-                  </a>
-                  {project.demoUrl && (
+    <details id="all-projects" className="curated-archive">
+      <summary>
+        <span>
+          <span className="eyebrow">Curated archive</span>
+          <strong>Eight more engineering problems.</strong>
+        </span>
+        <span>
+          Browse repositories <ArrowDown size={17} aria-hidden="true" />
+        </span>
+      </summary>
+      <div
+        className="archive-table-scroll"
+        tabIndex={0}
+        role="region"
+        aria-label="Curated engineering repositories"
+      >
+        <table>
+          <caption>
+            Selected AI, API, retrieval, and workflow repositories
+          </caption>
+          <thead>
+            <tr>
+              {[
+                "Year",
+                "Project",
+                "Built with",
+                "Key engineering feature",
+                "Links",
+              ].map((label) => (
+                <th scope="col" key={label}>
+                  {label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {curatedArchive.map((entry) => {
+              const project = projects.find((p) => p.id === entry.projectId)!;
+              return (
+                <tr key={project.id}>
+                  <td>{entry.year}</td>
+                  <th scope="row">
+                    <a href={`/archive#archive-project-${project.id}`}>
+                      {project.title}
+                    </a>
+                  </th>
+                  <td>{project.technologies.slice(0, 3).join(" · ")}</td>
+                  <td>{entry.feature}</td>
+                  <td>
                     <a
-                      href={project.demoUrl}
+                      href={project.githubUrl}
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label={`GitHub source for ${project.title}`}
                     >
-                      Live demo <ArrowUpRight size={15} aria-hidden="true" />
+                      GitHub <ArrowUpRight size={13} aria-hidden="true" />
                     </a>
-                  )}
-                </div>
-                <ProjectDetails project={project} />
-              </article>
-            </li>
-          ))}
-        </ol>
-      </details>
-    </section>
+                    {project.demoUrl && (
+                      <a
+                        href={project.demoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Live <ArrowUpRight size={13} aria-hidden="true" />
+                      </a>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      <a className="archive-complete-link" href="/archive">
+        Browse the complete project catalog{" "}
+        <ArrowRight size={16} aria-hidden="true" />
+      </a>
+    </details>
   );
 }

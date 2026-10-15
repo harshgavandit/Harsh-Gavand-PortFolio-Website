@@ -50,14 +50,30 @@ export function assertHomepage(html, origin = profile.site) {
     html.includes(`${origin}/social-preview.png`),
     "Incorrect social preview origin",
   );
-  const directory = html
-    .split('<ol class="project-directory-list">')[1]
-    ?.split("</ol>")[0];
-  assert.ok(directory, "Missing complete project directory");
-  assert.equal(
-    (directory.match(/data-project-id=/g) || []).length,
-    projects.length,
+  const chapterNumbers = [...html.matchAll(/data-chapter-number="(\d+)"/g)].map(
+    (match) => match[1],
   );
+  assert.deepEqual(chapterNumbers, ["01", "02", "03", "04", "05"]);
+  assert.equal((html.match(/class="flagship-card"/g) || []).length, 4);
+  assert.ok(html.includes('id="all-projects"'));
+  assert.equal(
+    (html.match(/<tr>/g) || []).length,
+    9,
+    "Expected eight curated repositories and a table header",
+  );
+  assert.ok(html.includes('href="/archive"'));
+  for (const job of experience)
+    assert.ok(
+      html.includes(escapeHTML(job.company)),
+      `Missing experience: ${job.company}`,
+    );
+}
+
+export function assertArchive(html, origin = profile.site) {
+  assert.ok(html.includes('data-prerendered="true"'));
+  assert.ok(html.includes('href="' + origin + '/archive/"'));
+  assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, 1);
+  assert.equal((html.match(/data-project-id=/g) || []).length, projects.length);
   for (const project of projects) {
     for (const value of [
       project.title,
@@ -70,13 +86,8 @@ export function assertHomepage(html, origin = profile.site) {
       ...project.technologies,
     ])
       assert.ok(
-        directory.includes(escapeHTML(value)),
-        `Missing public project content: ${project.title}`,
+        html.includes(escapeHTML(value)),
+        "Missing archive content: " + project.title,
       );
   }
-  for (const job of experience)
-    assert.ok(
-      html.includes(escapeHTML(job.company)),
-      `Missing experience: ${job.company}`,
-    );
 }

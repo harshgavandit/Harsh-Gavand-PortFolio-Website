@@ -225,7 +225,9 @@ export function createServer(config) {
         return json(res, 404, { error: "Not found." });
       if (pathname.split("/").some((part) => part.startsWith(".")))
         return json(res, 404, { error: "Not found." });
-      let target = file;
+      let target = ["/archive", "/archive/"].includes(pathname)
+        ? resolve(dist, "archive/index.html")
+        : file;
       let status = pathname === "/404.html" ? 404 : 200;
       const fallback = () => {
         status = pathname === "/" ? 200 : 404;

@@ -21,6 +21,8 @@ export interface CaseStudy {
   problem: string;
   summary: string;
   contributions: { label: string; description: string }[];
+  engineering: string[];
+  previewNote: string;
   image?: string;
   imageAlt?: string;
   diagram?: {
@@ -51,7 +53,7 @@ export const projects: Project[] = [...latestAIProjects, ...sourceProjects];
 // Shared published About content for the page and assistant knowledge.
 export const aboutProfile = {
   summary:
-    "Harsh is a full-stack developer working at the intersection of useful software and applied AI. He builds SaaS dashboards, real-time applications, AI tools, and data-backed platforms, connecting React interfaces with JavaScript and Python backends, data models, and deployment workflows.",
+    "I build full-stack applications, backend APIs, and applied AI workflows. My work connects React and TypeScript interfaces to Node.js and Python services, relational and document databases, and external model and media providers.",
   experience: "2+ years",
   education: {
     degree: "B.Tech · Information Technology",
@@ -67,127 +69,181 @@ export const caseStudies: CaseStudy[] = [
   {
     projectId: 14,
     shortName: "UGC Content Platform",
-    problem: "From product images to AI-powered content.",
+    problem: "From product assets to generated marketing content.",
     summary:
-      "A creator platform that turns model and product assets into generated content, with authenticated sessions and credit-based usage.",
+      "Creators upload product and model images to generate marketing imagery and short video. I connected authentication, generation requests, media storage, and relational project state.",
+    engineering: [
+      "Clerk authentication scopes project endpoints to the signed-in user.",
+      "Google AI generation feeds Cloudinary image and video uploads.",
+      "Prisma/PostgreSQL tracks credits, generation status, errors, and media URLs.",
+    ],
     contributions: [
       {
         label: "Frontend",
         description:
-          "Responsive React creation flow with uploads and real-time generation status.",
+          "React and TypeScript creation, project, and result views with generation and error states.",
       },
       {
         label: "Backend / APIs",
         description:
-          "Node.js and Express endpoints with structured error handling.",
+          "Express project endpoints connect Clerk identity to Google AI image and video requests.",
       },
       {
         label: "Data / integrations",
         description:
-          "MongoDB project state, Clerk authentication, and Cloudinary media storage.",
+          "Prisma/PostgreSQL project records, credit restoration, Clerk provisioning, and Cloudinary media.",
       },
     ],
+    previewNote: "Sign in with Clerk to create and manage generations.",
     diagram: {
-      title: "The content creation pipeline",
-      chapterNodes: [[0, 1], [2], [3, 4]],
+      title: "Generation request lifecycle",
       nodes: [
-        "Product + model assets",
-        "React creation workspace",
-        "Node.js / Express API",
-        "Cloudinary + MongoDB",
-        "Generated content",
+        "React asset upload",
+        "Express + Clerk",
+        "Google AI generation",
+        "Cloudinary media",
+        "Prisma / PostgreSQL",
       ],
-      caption: "Implementation map · based on the project and updated resume",
+      chapterNodes: [[0], [1, 2], [3, 4]],
+      caption:
+        "Authenticated generation requests with media storage and relational project state.",
     },
   },
   {
     projectId: 3,
     shortName: "Banking App SaaS",
-    problem: "Make financial workflows easier to navigate.",
+    problem: "One loan lifecycle. Three product perspectives.",
     summary:
-      "A banking-focused web experience for account access, financial product discovery, and transaction-oriented workflows.",
+      "Borrowers request loans, lenders review opportunities, and admins manage platform records. I connected the role-oriented React interfaces to Express handlers and Sequelize models.",
+    engineering: [
+      "Borrower, lender, and admin screens organize distinct workflows.",
+      "Express handlers create loan requests and update approval states.",
+      "Sequelize models define financial fields, relationships, and loan lifecycle values.",
+    ],
     contributions: [
       {
         label: "Frontend",
         description:
-          "Dashboard flows, authentication-aware interfaces, and financial data presentation.",
+          "Role-oriented React dashboards, loan forms, repayment views, and Chart.js data presentation.",
       },
       {
-        label: "Integrations",
+        label: "Backend / APIs",
         description:
-          "Account and transaction workflows built around the project’s Appwrite and Plaid stack.",
+          "Express loan and account routes, JWT authentication, and approve/reject handlers.",
       },
       {
-        label: "Deployment",
+        label: "Data / integrations",
         description:
-          "Application setup and deployment configuration for the linked demo.",
+          "Sequelize loan and user models with pending, approved, and rejected states.",
       },
     ],
     image: "banking",
     imageAlt:
-      "Actual Banking App SaaS public landing page with investment and savings options",
+      "Banking application landing page introducing lending and investment workflows",
+    previewNote:
+      "Open the landing page; account access is needed for borrower, lender, and admin views.",
+    diagram: {
+      title: "Loan request and review flow",
+      nodes: [
+        "React role dashboards",
+        "JWT / Express API",
+        "Loan review handlers",
+        "Sequelize / SQL records",
+        "Repayment + reporting",
+      ],
+      chapterNodes: [[0], [1, 2], [3, 4]],
+      caption:
+        "Role-oriented lending interfaces backed by Express controllers and Sequelize models.",
+    },
   },
   {
     projectId: 1,
     shortName: "GitHub Replica",
-    problem: "Bring repositories and developer profiles together.",
+    problem: "Make repository and developer data navigable.",
     summary:
-      "A GitHub-inspired application for repository discovery, profile views, and structured project navigation.",
+      "A React interface presents personal repositories, suggested projects, and developer profiles. I connected those views to Express endpoints and MongoDB repository, owner, and issue records.",
+    engineering: [
+      "Express handlers validate repository names and owner identifiers.",
+      "MongoDB queries fetch owner-specific repositories and populate owner and issue relationships.",
+      "React filters fetched repositories by name and maintains separate suggested-project state.",
+    ],
     contributions: [
       {
         label: "Frontend",
         description:
-          "Repository listings, profile views, routing, and reusable React components.",
+          "Repository discovery, name filtering, profile views, and account screens in React.",
       },
       {
-        label: "Backend / data",
+        label: "Backend / APIs",
         description:
-          "API integration across a Node.js, Express, and MongoDB application.",
+          "Express repository create, read, update, visibility, and delete handlers.",
       },
       {
-        label: "Deployment",
+        label: "Data / integrations",
         description:
-          "Deployment-ready structure and a publicly accessible sign-in experience.",
+          "MongoDB user, repository, and issue documents with ownership and relationship queries.",
       },
     ],
     image: "github",
-    imageAlt:
-      "Actual GitHub Replica sign-in page; application requires an account",
+    imageAlt: "GitHub Replica account sign-in interface",
+    previewNote:
+      "Create an account or sign in to explore personal repository views.",
+    diagram: {
+      title: "Repository discovery request path",
+      nodes: [
+        "React repository explorer",
+        "Express REST handlers",
+        "Owner-specific queries",
+        "MongoDB relationships",
+        "Repository + profile views",
+      ],
+      chapterNodes: [[0], [1, 2], [3, 4]],
+      caption:
+        "Express repository routes and MongoDB relationships support client-side discovery and filtering.",
+    },
   },
   {
     projectId: 17,
     shortName: "AI News-to-Email Digest",
-    problem: "Turn scattered AI news into a useful daily digest.",
+    problem: "Turn collected sources into a readable digest.",
     summary:
-      "An automated pipeline that collects articles and transcripts, generates AI summaries, and delivers a structured email digest.",
+      "A Python pipeline collects AI articles and video transcripts, summarizes selected content, and produces an email digest. I connected local model inference, repository access, and multipart email formatting.",
+    engineering: [
+      "Source identity checks skip articles and videos already held in the repository.",
+      "Local Ollama / llama3 summarizes collected material before digest persistence.",
+      "SQLAlchemy repositories and plaintext / HTML SMTP output keep storage and delivery separate.",
+    ],
     contributions: [
       {
         label: "Pipeline / AI",
         description:
-          "Content collection, LLM summarization, and configurable article and time limits.",
+          "Article and transcript collection, source identity checks, and local Ollama summarization.",
       },
       {
         label: "Database",
         description:
-          "SQLAlchemy models and a repository layer for articles, videos, and digests.",
+          "SQLAlchemy models and repository methods for source records, videos, and digests.",
       },
       {
         label: "Delivery",
         description:
-          "Email formatting, structured logs, and modular Docker-based orchestration.",
+          "Multipart plaintext / HTML email formatting, SMTP delivery, and Docker orchestration.",
       },
     ],
+    previewNote:
+      "The product output is a multipart email digest. Inspect the formatter and run instructions in the repository.",
     diagram: {
-      title: "From signal to inbox",
-      chapterNodes: [[0, 1, 2], [3], [4]],
+      title: "Source-to-digest pipeline",
       nodes: [
         "Articles + transcripts",
-        "Collect + normalize",
-        "LLM summarization",
+        "Source identity checks",
+        "Ollama summarization",
         "SQLAlchemy repository",
-        "Email digest",
+        "Multipart SMTP digest",
       ],
-      caption: "Implementation map · a backend automation project",
+      chapterNodes: [[0, 1, 2], [3], [4]],
+      caption:
+        "Source collection, local inference, relational persistence, and multipart email delivery.",
     },
   },
 ];

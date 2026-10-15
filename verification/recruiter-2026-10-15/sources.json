@@ -1,0 +1,79 @@
+{
+  "reviewedOn": "2026-10-15",
+  "scope": "Public source review for portfolio editorial accuracy; this does not certify the linked applications as production ready.",
+  "projects": [
+    {
+      "projectId": 14,
+      "paths": [
+        "README.md",
+        "server/src/modules/projects/project.controller.ts",
+        "server/prisma/schema.prisma",
+        "server/src/config/ai.ts",
+        "client/src/features/generation/pages/LoadingPage.tsx",
+        "client/src/assets/generated1.png"
+      ],
+      "findings": [
+        "React/TypeScript, Express, Prisma/PostgreSQL, Clerk, Google AI, Cloudinary.",
+        "Credit deduction and failure restoration exist; no idempotent ledger claim.",
+        "Provider operation polling is inside the HTTP request, not a durable worker queue.",
+        "The gallery preview uses a repository asset, not an authenticated dashboard capture."
+      ],
+      "repository": "https://github.com/harshgavandit/ugc-project",
+      "commit": "ca5bdf57dbe84b5db6d62cbcbaea9733801b8270",
+      "branch": "main"
+    },
+    {
+      "projectId": 3,
+      "paths": [
+        "README.md",
+        "frontend/package.json",
+        "backend/package.json",
+        "backend/models/loanModel.js",
+        "backend/controllers/loanController.js"
+      ],
+      "findings": [
+        "Implementation uses React/JavaScript, Express, Sequelize/SQL and JWT.",
+        "Loan statuses are pending, approved and rejected.",
+        "No Next.js, Plaid, Appwrite, multi-bank aggregation or measured layout-shift claims."
+      ],
+      "repository": "https://github.com/harshgavandit/Banking_App_SaaS",
+      "commit": "47760d995abc5633f589bb57b7978f5c7444b359",
+      "branch": "main"
+    },
+    {
+      "projectId": 1,
+      "paths": [
+        "README.md",
+        "backend-main/controllers/repoController.js",
+        "backend-main/controllers/userController.js",
+        "frontend-main/src/components/dashboard/Dashboard.jsx"
+      ],
+      "findings": [
+        "React, Express and MongoDB/Mongoose repository workflows.",
+        "Dashboard name filtering is client-side; no debounce claim.",
+        "Login token issuance is present; no OAuth or fully enforced authorization claim."
+      ],
+      "repository": "https://github.com/harshgavandit/GitHub_Replica",
+      "commit": "c899592fbf6548fe8e0e71969c231868f91489a3",
+      "branch": "main"
+    },
+    {
+      "projectId": 17,
+      "paths": [
+        "README.md",
+        "app/agent/digest_agent.py",
+        "app/database/repository.py",
+        "app/services/email.py"
+      ],
+      "findings": [
+        "Python digest pipeline uses local Ollama/llama3.",
+        "SQLAlchemy source identity checks and repository persistence.",
+        "Multipart text/plain and text/html SMTP delivery.",
+        "Formatter preview describes output structure, not a captured sent email."
+      ],
+      "repository": "https://github.com/harshgavandit/AI_News_To_Email_Generator",
+      "commit": "bbb261c3ede195706da20eac1db33825af76f6d4",
+      "branch": "main"
+    }
+  ]
+}

@@ -3,91 +3,95 @@
     "id": 1,
     "title": "GitHub Replica",
     "category": "Full-Stack Developer Platform",
-    "overview": "A full-stack GitHub-inspired platform focused on repository discovery, developer profiles, and clean project navigation. The application recreates core collaboration patterns with a responsive interface and maintainable API structure.",
+    "overview": "A GitHub-style application for repository discovery and developer profiles. React renders personal and suggested repositories while Express handlers manage repository and user documents.",
     "features": [
-      "Repository-style project listings",
-      "Developer profile views",
-      "Searchable and responsive UI"
+      "Personal and suggested repository listings",
+      "MongoDB repository ownership and issue relationships",
+      "Repository create, update, visibility, and delete handlers",
+      "Client-side repository name filtering and account login"
     ],
     "technologies": ["React", "Node.js", "Express", "MongoDB", "REST API"],
-    "role": "Owned frontend implementation, API integration, routing, component structure, and deployment readiness.",
-    "challenges": "Solved the challenge of presenting dense repository data in a clean, recruiter-friendly layout without sacrificing usability.",
-    "impact": "Demonstrates end-to-end MERN delivery, reusable UI composition, and production-style developer tooling workflows.",
-    "githubUrl": "https://github.com/harshgavandit/GitHub_Replica.git",
+    "role": "I connected the React repository interface to Express handlers and MongoDB records, including repository lists, profile views, and account flows.",
+    "challenges": "Presenting related repository, owner, and issue records while keeping client search state aligned with fetched data.",
+    "impact": "I built a React repository explorer backed by Express routes, MongoDB documents, repository ownership queries, and client-side name filtering.",
+    "githubUrl": "https://github.com/harshgavandit/GitHub_Replica",
     "demoUrl": "https://github-replica.onrender.com"
   },
   {
     "id": 2,
     "title": "Zoom Clone",
     "category": "Real-Time Communication",
-    "overview": "A real-time video conferencing application with room-based communication and live peer connectivity. The project focuses on low-latency collaboration flows, media controls, and scalable socket-based signaling.",
+    "overview": "A real-time video conferencing application with room-based communication and live peer connectivity.",
     "features": [
       "Video meeting rooms",
       "Socket-based signaling",
       "Mute, camera, and session controls"
     ],
     "technologies": ["React", "Node.js", "Socket.io", "WebRTC", "Express"],
-    "role": "Built the meeting UI, signaling logic, room lifecycle, client-state handling, and deployment configuration.",
+    "role": "I built the meeting UI, signaling logic, room lifecycle, client-state handling, and deployment configuration.",
     "challenges": "Handled real-time connection state, peer negotiation, and graceful updates when users join or leave sessions.",
-    "impact": "Shows practical experience with WebRTC architecture, real-time systems, and interactive frontend engineering.",
-    "githubUrl": "https://github.com/harshgavandit/Zoom_Clone.git",
+    "impact": "I connected WebRTC peer negotiation to Socket.io room signaling and built meeting controls around participant and media state.",
+    "githubUrl": "https://github.com/harshgavandit/Zoom_Clone",
     "demoUrl": "https://zoom-clone-xkdj.onrender.com/"
   },
   {
     "id": 3,
     "title": "Banking App SaaS",
-    "category": "FinTech SaaS",
-    "overview": "A banking-focused SaaS dashboard designed for secure financial workflows, user account management, and transaction visibility. The application emphasizes clean architecture, reusable components, and a trustworthy financial user experience.",
+    "category": "FinTech · Lending Workflows",
+    "overview": "A lending application with separate borrower, lender, and admin interfaces. React dashboards connect loan requests, review decisions, repayment records, and reporting to an Express API.",
     "features": [
-      "Account dashboard",
-      "Transaction-oriented workflows",
-      "Secure user experience patterns"
+      "Borrower, lender, and admin dashboard views",
+      "Express loan creation and approve/reject endpoints",
+      "Sequelize models for users, loans, and related financial records",
+      "JWT-based authentication and repayment interfaces"
     ],
     "technologies": [
-      "Next.js",
-      "TypeScript",
-      "Appwrite",
-      "Plaid",
-      "Tailwind CSS"
+      "React",
+      "Node.js",
+      "Express",
+      "Sequelize",
+      "SQL",
+      "JWT",
+      "Chart.js"
     ],
-    "role": "Designed and implemented dashboard flows, authentication-aware UI, data presentation, and deployment setup.",
-    "challenges": "Balanced sensitive financial UX requirements with readable state management and reliable data-driven screens.",
-    "impact": "Highlights SaaS product thinking, financial domain awareness, and scalable frontend architecture.",
-    "githubUrl": "https://github.com/harshgavandit/Banking_App_SaaS.git",
+    "role": "I connected role-oriented React screens to Express endpoints, relational loan models, and dashboard data views.",
+    "challenges": "Keeping loan lifecycle states and role-specific interfaces aligned with API responses and relational records.",
+    "impact": "I connected React dashboards to Express loan endpoints and Sequelize models, with pending, approved, and rejected loan states.",
+    "githubUrl": "https://github.com/harshgavandit/Banking_App_SaaS",
     "demoUrl": "https://banking-app-saas.onrender.com/"
   },
   {
     "id": 4,
     "title": "PERN Stack SaaS Project",
     "category": "PERN SaaS Platform",
-    "overview": "A SaaS application built on the PERN stack with a PostgreSQL-backed data model and full-stack product workflows. The project demonstrates practical relational database design, API development, and responsive React interfaces.",
+    "overview": "A SaaS application built on the PERN stack with a PostgreSQL-backed data model and full-stack product workflows.",
     "features": [
       "PostgreSQL data modeling",
       "RESTful backend workflows",
       "Responsive SaaS dashboard"
     ],
     "technologies": ["PostgreSQL", "Express", "React", "Node.js", "REST API"],
-    "role": "Implemented database-connected backend routes, frontend screens, API integration, and production deployment flow.",
+    "role": "I implemented database-connected backend routes, frontend screens, API integration, and production deployment flow.",
     "challenges": "Structured relational data and API boundaries so the product could remain understandable as features expanded.",
-    "impact": "Demonstrates full-stack SaaS delivery with a relational database foundation and clean separation of concerns.",
-    "githubUrl": "https://github.com/harshgavandit/PERN_STACK_SaaS_Project.git",
+    "impact": "I connected a React SaaS interface to Express endpoints and PostgreSQL records, keeping the data model separate from presentation.",
+    "githubUrl": "https://github.com/harshgavandit/PERN_STACK_SaaS_Project",
     "demoUrl": "https://pern-stack-saas-project.onrender.com/"
   },
   {
     "id": 5,
     "title": "SaaS E-Commerce Website",
     "category": "E-Commerce SaaS",
-    "overview": "A SaaS-style e-commerce web application focused on product discovery, conversion-oriented UI, and scalable storefront structure. The project applies full-stack patterns to support catalog browsing and real-world commerce flows.",
+    "overview": "A SaaS-style e-commerce web application focused on product discovery, conversion-oriented UI, and scalable storefront structure.",
     "features": [
       "Product catalog experience",
       "Conversion-focused storefront UI",
       "Reusable commerce components"
     ],
     "technologies": ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
-    "role": "Built the storefront UI, reusable components, backend integration points, and deployment configuration.",
+    "role": "I built the storefront UI, reusable components, backend integration points, and deployment configuration.",
     "challenges": "Solved layout consistency and product presentation challenges across responsive breakpoints and commerce states.",
-    "impact": "Shows ability to build business-facing web products with clean UI systems and scalable full-stack structure.",
-    "githubUrl": "https://github.com/harshgavandit/SaaS_E-commerce_Website-.git",
+    "impact": "I built reusable storefront components and connected product discovery screens to the application backend.",
+    "githubUrl": "https://github.com/harshgavandit/SaaS_E-commerce_Website-",
     "demoUrl": "https://saas-e-commerce-website-1.onrender.com"
   },
   {
@@ -101,26 +105,26 @@
       "Responsive financial UI"
     ],
     "technologies": ["React", "Node.js", "Express", "MongoDB", "CSS"],
-    "role": "Implemented the frontend experience, reusable UI sections, routing, and deployment-ready project structure.",
+    "role": "I implemented the frontend experience, reusable UI sections, routing, and deployment-ready project structure.",
     "challenges": "Translated a complex financial product into a clean clone while keeping the information hierarchy easy to scan.",
-    "impact": "Demonstrates strong frontend implementation, domain-oriented UI thinking, and product recreation skills.",
-    "githubUrl": "https://github.com/harshgavandit/Zerodha_Clone.git",
+    "impact": "I implemented the trading-style interface, reusable financial product sections, routing, and deployment configuration.",
+    "githubUrl": "https://github.com/harshgavandit/Zerodha_Clone",
     "demoUrl": "https://zerodha-clone-qdgb.onrender.com/"
   },
   {
     "id": 7,
     "title": "Agentic AI System",
     "category": "Agentic AI",
-    "overview": "An AI system designed around autonomous task execution, tool usage, and multi-step reasoning workflows. The project explores how agentic components can coordinate decisions, memory, and execution in a practical application architecture.",
+    "overview": "An AI system designed around autonomous task execution, tool usage, and multi-step reasoning workflows.",
     "features": [
       "Agent workflow orchestration",
       "Tool-augmented reasoning",
       "Modular AI system design"
     ],
     "technologies": ["Python", "FastAPI", "LangChain", "OpenAI API", "Docker"],
-    "role": "Designed agent workflows, integrated LLM calls, organized backend modules, and prepared the project for iterative extension.",
+    "role": "I designed agent workflows, integrated LLM calls, organized backend modules, and prepared the project for iterative extension.",
     "challenges": "Managed unpredictable AI outputs with clearer workflow boundaries, validation points, and maintainable orchestration logic.",
-    "impact": "Highlights applied AI engineering, workflow automation, and practical architecture for intelligent systems.",
+    "impact": "I organized LLM calls and tool execution into modular agent workflows with explicit handoffs between processing steps.",
     "githubUrl": "https://github.com/harshgavandit/Agentic-AI_SYSTEM"
   },
   {
@@ -134,32 +138,32 @@
       "Structured diagnostic workflow"
     ],
     "technologies": ["Python", "FastAPI", "OpenAI API", "REST API", "Logging"],
-    "role": "Built the diagnostic workflow, prompt structure, backend endpoints, and response formatting for developer usability.",
+    "role": "I built the diagnostic workflow, prompt structure, backend endpoints, and response formatting for developer usability.",
     "challenges": "Converted noisy API failures into actionable summaries while keeping the output concise and technically useful.",
-    "impact": "Demonstrates AI-assisted developer productivity, backend observability thinking, and problem-solving automation.",
+    "impact": "I connected API failure inputs to an LLM analysis flow and returned structured debugging guidance through backend endpoints.",
     "githubUrl": "https://github.com/harshgavandit/API_ISSUES_DEBUGGING_AGENT"
   },
   {
     "id": 9,
     "title": "Deep Learning Project",
     "category": "Machine Learning",
-    "overview": "A deep learning project focused on model training, experimentation, and predictive analysis. The work demonstrates practical ML pipeline development from data preparation through model evaluation.",
+    "overview": "A deep learning project focused on model training, experimentation, and predictive analysis. I connected data preparation, training experiments, and model evaluation in a reusable ML pipeline.",
     "features": [
       "Model training workflow",
       "Data preprocessing",
       "Evaluation and performance tracking"
     ],
     "technologies": ["Python", "TensorFlow", "Keras", "NumPy", "Pandas"],
-    "role": "Prepared data, implemented training logic, evaluated model behavior, and documented the experimental workflow.",
+    "role": "I prepared data, implemented training logic, evaluated model behavior, and documented the experimental workflow.",
     "challenges": "Improved model reliability by organizing preprocessing, training, and evaluation into repeatable steps.",
-    "impact": "Shows hands-on understanding of deep learning fundamentals and applied ML project execution.",
+    "impact": "I implemented preprocessing, model training, and evaluation steps with TensorFlow, Keras, and repeatable data preparation.",
     "githubUrl": "https://github.com/harshgavandit/Deep-Learning-Project"
   },
   {
     "id": 10,
     "title": "Multi-Agent Research System",
     "category": "AI Research Automation",
-    "overview": "A multi-agent research workflow that coordinates information gathering, summarization, and answer synthesis. The project focuses on dividing research tasks into specialized agent responsibilities for better coverage and clarity.",
+    "overview": "A multi-agent research workflow that coordinates information gathering, summarization, and answer synthesis.",
     "features": [
       "Research agent coordination",
       "Automated summarization",
@@ -172,9 +176,9 @@
       "Vector Search",
       "FastAPI"
     ],
-    "role": "Designed agent roles, orchestration flow, retrieval logic, and output structure for research-ready responses.",
+    "role": "I designed agent roles, orchestration flow, retrieval logic, and output structure for research-ready responses.",
     "challenges": "Reduced fragmented research outputs by defining clearer handoffs between collection, analysis, and synthesis steps.",
-    "impact": "Demonstrates advanced AI workflow design and practical multi-agent system thinking.",
+    "impact": "I coordinated collection, retrieval, and summarization agents through a structured research workflow.",
     "githubUrl": "https://github.com/harshgavandit/Multi-Agent-Research-System"
   },
   {
@@ -188,16 +192,16 @@
       "Media-focused backend pipeline"
     ],
     "technologies": ["Python", "Flask", "OpenAI API", "FFmpeg", "REST API"],
-    "role": "Built backend workflows for video handling, AI integration, endpoint design, and response preparation.",
+    "role": "I built backend workflows for video handling, AI integration, endpoint design, and response preparation.",
     "challenges": "Handled longer-running media tasks by separating processing steps and keeping the user-facing flow understandable.",
-    "impact": "Shows ability to connect AI capabilities with real-world media automation use cases.",
+    "impact": "I connected video ingestion and FFmpeg processing to a Flask API and AI summarization workflow.",
     "githubUrl": "https://github.com/harshgavandit/AI_VIDEO_ASSISTANT"
   },
   {
     "id": 12,
     "title": "WhatsApp Automation API",
     "category": "Messaging Automation",
-    "overview": "An API-driven WhatsApp automation project for programmatic messaging workflows and integration-ready communication. The project emphasizes backend reliability, endpoint clarity, and automation use cases for business communication.",
+    "overview": "An API-driven WhatsApp automation project for programmatic messaging workflows and integration-ready communication.",
     "features": [
       "Message automation endpoints",
       "Webhook-ready architecture",
@@ -210,48 +214,60 @@
       "Webhooks",
       "JavaScript"
     ],
-    "role": "Implemented API routes, request handling, automation flow structure, and documentation-friendly backend behavior.",
+    "role": "I implemented API routes, request handling, automation flow structure, and documentation-friendly backend behavior.",
     "challenges": "Designed the API to support predictable messaging workflows while keeping integration points clean and testable.",
-    "impact": "Demonstrates backend automation, external service integration, and API-first product thinking.",
+    "impact": "I implemented Express messaging endpoints, request handling, and event-oriented integration workflows.",
     "githubUrl": "https://github.com/harshgavandit/whatsapp-automation-api"
   },
   {
     "id": 13,
     "title": "MERN Authentication Practice",
     "category": "Authentication System",
-    "overview": "A production-oriented MERN authentication system covering secure user registration, login, and protected application flows. The project focuses on the fundamentals required for reliable identity management in full-stack apps.",
+    "overview": "A production-oriented MERN authentication system covering secure user registration, login, and protected application flows.",
     "features": [
       "JWT authentication",
       "Protected routes",
       "Password hashing and user sessions"
     ],
     "technologies": ["React", "Node.js", "Express", "MongoDB", "JWT"],
-    "role": "Built the authentication backend, frontend auth flows, route protection, and validation-aware user experience.",
+    "role": "I built the authentication backend, frontend auth flows, route protection, and validation-aware user experience.",
     "challenges": "Handled session persistence and protected state consistently across frontend and backend boundaries.",
-    "impact": "Provides a reusable authentication foundation for MERN applications and demonstrates security-aware development.",
+    "impact": "I built JWT-based registration and login flows with password hashing and protected application routes.",
     "githubUrl": "https://github.com/harshgavandit/MERN_AUTHENTICATION_Practice"
   },
   {
     "id": 14,
-    "title": "UGC Project",
-    "category": "AI Creator Tool",
-    "overview": "An AI-powered creator platform for generating user-generated content workflows from product and model assets. The project combines authentication, media storage, and credit-style usage patterns into a practical creator experience.",
+    "title": "UGC Content Platform",
+    "category": "Applied AI Platform",
+    "overview": "A creator platform that combines product and model images into marketing imagery and short video. Authenticated users manage generations, credits, and published projects in a React and TypeScript interface.",
     "features": [
-      "AI content generation flow",
-      "Cloud media management",
-      "User authentication and usage tracking"
+      "Clerk-authenticated image and video generation requests",
+      "Google AI generation and Cloudinary image/video storage",
+      "Prisma and PostgreSQL user, credit, and project records",
+      "Generation state and credit restoration after provider failures"
     ],
-    "technologies": ["React", "Node.js", "MongoDB", "Clerk", "Cloudinary"],
-    "role": "Implemented creator workflows, media integration, authentication-aware screens, and reusable product UI components.",
-    "challenges": "Connected AI generation and media storage into a smooth workflow while keeping user actions clear and recoverable.",
-    "impact": "Shows applied AI product development, creator economy awareness, and full-stack integration skills.",
-    "githubUrl": "https://github.com/harshgavandit/ugc-project"
+    "technologies": [
+      "React",
+      "TypeScript",
+      "Node.js",
+      "Express",
+      "Prisma",
+      "PostgreSQL",
+      "Clerk",
+      "Cloudinary",
+      "Google AI"
+    ],
+    "role": "I connected the creator interface, authenticated project endpoints, generation providers, media storage, and relational project state.",
+    "challenges": "Coordinating provider failures, generation state, temporary media, and credit restoration across the image and video request lifecycle.",
+    "impact": "I connected Clerk-authenticated generation requests to Google AI, Cloudinary media uploads, and Prisma/PostgreSQL project records, with credit restoration on provider failures.",
+    "githubUrl": "https://github.com/harshgavandit/ugc-project",
+    "demoUrl": "https://ugc-project-harsh.vercel.app/"
   },
   {
     "id": 15,
     "title": "OpenAI Project",
     "category": "LLM Application",
-    "overview": "An OpenAI-powered application focused on practical LLM integration and user-facing AI workflows. The project demonstrates prompt handling, API integration, and clean delivery of AI-generated responses.",
+    "overview": "An OpenAI-powered application focused on practical LLM integration and user-facing AI workflows.",
     "features": [
       "OpenAI API integration",
       "Prompt-driven workflows",
@@ -264,47 +280,49 @@
       "OpenAI API",
       "REST API"
     ],
-    "role": "Integrated AI endpoints, structured prompt flows, handled client responses, and refined the user experience.",
+    "role": "I integrated AI endpoints, structured prompt flows, handled client responses, and refined the user experience.",
     "challenges": "Managed AI response variability with clearer UI states and structured request/response handling.",
-    "impact": "Demonstrates real-world LLM application development and practical AI product integration.",
+    "impact": "I connected an interactive React interface to server-side OpenAI requests and handled response, loading, and failure states.",
     "githubUrl": "https://github.com/harshgavandit/OpenAI_Project-"
   },
   {
     "id": 16,
     "title": "VidSNAP AI Flask",
     "category": "AI Video Tool",
-    "overview": "A Flask-based AI video utility for media processing and assisted video workflows. The project highlights backend-first AI integration with a lightweight web interface and practical automation patterns.",
+    "overview": "A Flask-based AI video utility for media processing and assisted video workflows.",
     "features": [
       "Flask backend workflow",
       "AI-assisted media processing",
       "Video utility endpoints"
     ],
     "technologies": ["Python", "Flask", "OpenAI API", "FFmpeg", "HTML/CSS"],
-    "role": "Built the Flask app structure, AI integration points, media handling flow, and user-facing request lifecycle.",
+    "role": "I built the Flask app structure, AI integration points, media handling flow, and user-facing request lifecycle.",
     "challenges": "Handled media processing complexity while keeping the application lightweight and easy to operate.",
-    "impact": "Shows Python backend capability, AI media experimentation, and practical Flask application delivery.",
+    "impact": "I implemented a Flask media-processing workflow with AI integration, file handling, and result endpoints.",
     "githubUrl": "https://github.com/harshgavandit/VidSNAP_AI_Flask"
   },
   {
     "id": 17,
-    "title": "AI News To Email Generator",
+    "title": "AI News-to-Email Digest",
     "category": "AI Automation Pipeline",
-    "overview": "An automated pipeline that collects AI news, summarizes content, and sends structured email digests. The project combines scraping, storage, summarization, and scheduled delivery into a business-friendly automation workflow.",
+    "overview": "A Python pipeline that collects AI articles and video transcripts, summarizes selected content, and formats an email digest. SQLAlchemy repositories track source records and digests between processing stages.",
     "features": [
-      "News collection pipeline",
-      "LLM-generated summaries",
-      "Automated email delivery"
+      "Article and video collection with duplicate checks",
+      "Local Ollama / llama3 summarization",
+      "SQLAlchemy repository and digest persistence",
+      "Plaintext and HTML email formatting with SMTP delivery"
     ],
     "technologies": [
       "Python",
       "SQLAlchemy",
       "Docker",
-      "OpenAI API",
-      "Email SMTP"
+      "Ollama",
+      "Pydantic",
+      "SMTP"
     ],
-    "role": "Implemented the content pipeline, database layer, AI summarization flow, email formatting, and container setup.",
-    "challenges": "Turned unstructured news content into concise digest-ready summaries while keeping the process repeatable.",
-    "impact": "Demonstrates automation, AI summarization, and production-minded pipeline design.",
+    "role": "I connected collection, repository access, local model summarization, digest formatting, and container-based execution.",
+    "challenges": "Keeping source identity, summarization failures, and digest persistence consistent across independently run pipeline stages.",
+    "impact": "I connected source collection, duplicate checks, local Ollama summarization, SQLAlchemy persistence, and multipart SMTP digest delivery.",
     "githubUrl": "https://github.com/harshgavandit/AI_News_To_Email_Generator"
   },
   {
@@ -324,25 +342,25 @@
       "REST API",
       "JavaScript"
     ],
-    "role": "Built the upload flow, backend processing endpoints, result presentation, and error-aware user experience.",
+    "role": "I built the upload flow, backend processing endpoints, result presentation, and error-aware user experience.",
     "challenges": "Handled image file inputs and processing states so enhancement results could be delivered consistently.",
-    "impact": "Shows applied computer vision tooling, backend media handling, and user-centered AI feature delivery.",
+    "impact": "I built image upload and processing endpoints with result presentation and recoverable failure states.",
     "githubUrl": "https://github.com/harshgavandit/AI_image_Enhancer-"
   },
   {
     "id": 19,
     "title": "SigmaGPT",
     "category": "Conversational AI",
-    "overview": "A GPT-style conversational AI application focused on prompt interaction, response rendering, and AI-assisted productivity. The project demonstrates practical chatbot UX patterns and API-driven AI experiences.",
+    "overview": "A GPT-style conversational AI application focused on prompt interaction, response rendering, and AI-assisted productivity.",
     "features": [
       "Chat interface",
       "Prompt and response workflow",
       "AI assistant experience"
     ],
     "technologies": ["React", "Node.js", "OpenAI API", "JavaScript", "CSS"],
-    "role": "Implemented the chat UI, request lifecycle, API integration, and response display experience.",
+    "role": "I implemented the chat UI, request lifecycle, API integration, and response display experience.",
     "challenges": "Kept AI conversations readable and responsive while managing loading, error, and empty states.",
-    "impact": "Demonstrates chatbot product thinking, API integration, and interactive AI frontend development.",
+    "impact": "I built a chat interface around server-side model requests, including loading, error, and conversation rendering states.",
     "githubUrl": "https://github.com/harshgavandit/SigmaGPT"
   },
   {
@@ -356,16 +374,16 @@
       "Financial visualization outputs"
     ],
     "technologies": ["Python", "Django", "TensorFlow", "Keras", "Pandas"],
-    "role": "Implemented data processing, prediction workflow integration, API/backend logic, and visual result presentation.",
+    "role": "I implemented data processing, prediction workflow integration, API/backend logic, and visual result presentation.",
     "challenges": "Connected ML model outputs to a web-facing experience while keeping the results understandable for users.",
-    "impact": "Shows applied ML, financial analytics, and backend integration of predictive systems.",
+    "impact": "I connected historical data preparation and model inference to a Django portal with prediction result views.",
     "githubUrl": "https://github.com/harshgavandit/Stock-Prediction_Portal_Python_ML"
   },
   {
     "id": 21,
     "title": "ASP.NET Core Project",
     "category": "Enterprise Web Application",
-    "overview": "An ASP.NET Core application focused on structured backend development, database-backed workflows, and maintainable enterprise patterns. The project demonstrates experience beyond JavaScript stacks with typed server-side architecture.",
+    "overview": "An ASP.NET Core application focused on structured backend development, database-backed workflows, and maintainable enterprise patterns.",
     "features": [
       "MVC-style architecture",
       "Database-backed CRUD workflows",
@@ -378,32 +396,32 @@
       "SQL Server",
       "Razor"
     ],
-    "role": "Built backend controllers, database models, application views, and validation-aware user flows.",
+    "role": "I built backend controllers, database models, application views, and validation-aware user flows.",
     "challenges": "Structured server-side logic and data access patterns for maintainability and predictable application behavior.",
-    "impact": "Demonstrates versatility across enterprise frameworks, typed backend development, and database-driven systems.",
+    "impact": "I implemented ASP.NET Core controllers, Entity Framework models, and validation-aware views for database-backed workflows.",
     "githubUrl": "https://github.com/harshgavandit/ASP.NET-CORE_Project"
   },
   {
     "id": 22,
     "title": "RailTracker UTS PHP",
     "category": "PHP Web Application",
-    "overview": "A PHP-based rail tracking utility focused on transportation workflows, data presentation, and practical user interactions. The project applies traditional web development patterns to a real-world public transit use case.",
+    "overview": "A PHP-based rail tracking utility focused on transportation workflows, data presentation, and practical user interactions.",
     "features": [
       "Rail tracking workflows",
       "Database-backed views",
       "Responsive utility interface"
     ],
     "technologies": ["PHP", "MySQL", "HTML", "CSS", "JavaScript"],
-    "role": "Implemented server-rendered pages, database operations, user flows, and interface refinements.",
+    "role": "I implemented server-rendered pages, database operations, user flows, and interface refinements.",
     "challenges": "Organized transportation data into usable screens while keeping the application lightweight and accessible.",
-    "impact": "Shows practical PHP development, database usage, and problem solving for public-service style applications.",
+    "impact": "I connected PHP pages to MySQL records and built the transport data and navigation views.",
     "githubUrl": "https://github.com/harshgavandit/RailTrackerUTS_PHP"
   },
   {
     "id": 23,
     "title": "DRF Advanced Project",
     "category": "Django REST API",
-    "overview": "An advanced Django REST Framework project focused on API architecture, authentication patterns, and backend scalability. The project demonstrates disciplined API design with Python and Django's production-ready ecosystem.",
+    "overview": "An advanced Django REST Framework project focused on API architecture, authentication patterns, and backend scalability.",
     "features": [
       "REST API architecture",
       "Authentication and permissions",
@@ -416,16 +434,16 @@
       "PostgreSQL",
       "JWT"
     ],
-    "role": "Built API endpoints, serializers, permissions, authentication flows, and database-connected backend logic.",
+    "role": "I built API endpoints, serializers, permissions, authentication flows, and database-connected backend logic.",
     "challenges": "Designed API boundaries and permission handling to keep backend behavior secure, readable, and extensible.",
-    "impact": "Demonstrates strong Python backend capability and REST API engineering for scalable applications.",
+    "impact": "I implemented Django REST Framework endpoints, serializers, authentication, and permission boundaries around PostgreSQL data.",
     "githubUrl": "https://github.com/harshgavandit/DRF_Advanced_Project"
   },
   {
     "id": 24,
     "title": "WebHook API Integration",
     "category": "Integration Engineering",
-    "overview": "A webhook-focused API integration project for receiving external events and processing them through backend workflows. The project emphasizes reliable event handling, endpoint design, and integration-ready architecture.",
+    "overview": "A webhook-focused API integration project for receiving external events and processing them through backend workflows.",
     "features": [
       "Webhook receiver endpoints",
       "Event processing flow",
@@ -438,9 +456,9 @@
       "Webhooks",
       "JavaScript"
     ],
-    "role": "Implemented webhook endpoints, request validation, event routing, and integration-oriented backend structure.",
+    "role": "I implemented webhook endpoints, request validation, event routing, and integration-oriented backend structure.",
     "challenges": "Handled external event payloads predictably while keeping the processing flow clear and easy to extend.",
-    "impact": "Shows backend integration skills, API reliability awareness, and event-driven engineering fundamentals.",
+    "impact": "I built Express webhook endpoints with request validation, event routing, and downstream integration handling.",
     "githubUrl": "https://github.com/harshgavandit/WebHook_API_Integration"
   },
   {
@@ -454,25 +472,25 @@
       "User data management"
     ],
     "technologies": ["Python", "Django", "SQLite", "HTML", "Bootstrap"],
-    "role": "Built Django views, form handling, data models, resume templates, and responsive page layouts.",
+    "role": "I built Django views, form handling, data models, resume templates, and responsive page layouts.",
     "challenges": "Turned multi-section resume data into a structured output flow while keeping the experience simple for users.",
-    "impact": "Demonstrates practical full-stack Django development and product thinking for career-focused tools.",
+    "impact": "I implemented Django forms, data models, and responsive templates that turn structured inputs into a professional resume.",
     "githubUrl": "https://github.com/harshgavandit/DjangoResumeBuilder"
   },
   {
     "id": 26,
     "title": "Office Employee Management System",
     "category": "Business Operations App",
-    "overview": "An employee management system for organizing office staff data, administrative records, and operational workflows. The project focuses on CRUD reliability, simple data management, and business process digitization.",
+    "overview": "An employee management system for organizing office staff data, administrative records, and operational workflows.",
     "features": [
       "Employee record management",
       "Admin CRUD workflows",
       "Searchable operational data"
     ],
     "technologies": ["Python", "Django", "SQLite", "Bootstrap", "HTML/CSS"],
-    "role": "Implemented data models, management views, CRUD flows, validation, and user-facing administration screens.",
+    "role": "I implemented data models, management views, CRUD flows, validation, and user-facing administration screens.",
     "challenges": "Structured office data into reliable workflows that reduce manual tracking and improve administrative clarity.",
-    "impact": "Shows business application development, database-backed CRUD implementation, and maintainable backend workflows.",
+    "impact": "I built employee records, validation, and administrative CRUD views on a Django and SQLite application.",
     "githubUrl": "https://github.com/harshgavandit/Office-Employee-Management-System"
   }
 ]

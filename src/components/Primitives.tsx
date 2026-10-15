@@ -1,31 +1,16 @@
-import { m } from "framer-motion";
-import { useMotionEnabled } from "./MotionPreferences";
 import { ArrowUpRight } from "lucide-react";
 import type { ReactNode } from "react";
-
+import { chapters, chapterNumber, type ChapterId } from "../data/recruiter";
 export function Reveal({
   children,
   className = "",
-  delay = 0,
 }: {
   children: ReactNode;
   className?: string;
   delay?: number;
 }) {
-  const reduce = !useMotionEnabled();
-  return (
-    <m.div
-      className={className}
-      initial={false}
-      whileInView={reduce ? undefined : { y: [14, 0], opacity: [0.8, 1] }}
-      viewport={{ once: true, amount: 0.08 }}
-      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
-    >
-      {children}
-    </m.div>
-  );
+  return <div className={className}>{children}</div>;
 }
-
 export function SectionHeading({
   number,
   label,
@@ -38,18 +23,35 @@ export function SectionHeading({
   description?: string;
 }) {
   return (
-    <Reveal className="section-heading">
-      <div className="eyebrow">
-        <span>{number} /</span> {label}
-      </div>
-      <div className="heading-row">
-        <h2>{title}</h2>
-        {description && <p>{description}</p>}
-      </div>
-    </Reveal>
+    <div className="section-heading">
+      <p className="eyebrow">
+        {number} / {label}
+      </p>
+      <h2>{title}</h2>
+      {description && <p className="section-description">{description}</p>}
+    </div>
   );
 }
-
+export function ChapterHeading({
+  id,
+  title,
+  description,
+}: {
+  id: ChapterId;
+  title: string;
+  description?: string;
+}) {
+  const chapter = chapters.find((item) => item.id === id)!;
+  return (
+    <div className="section-heading">
+      <p className="eyebrow" data-chapter-number={chapterNumber(id)}>
+        {chapterNumber(id)} / {chapter.label}
+      </p>
+      <h2 id={id + "-title"}>{title}</h2>
+      {description && <p className="section-description">{description}</p>}
+    </div>
+  );
+}
 export function ActionLink({
   children,
   href,
@@ -71,11 +73,10 @@ export function ActionLink({
       rel={external ? "noopener noreferrer" : undefined}
     >
       {children}
-      <ArrowUpRight size={17} aria-hidden="true" />
+      <ArrowUpRight size={16} aria-hidden="true" />
     </a>
   );
 }
-
 export function Tags({ items }: { items: string[] }) {
   return (
     <ul className="tags" aria-label="Technologies">

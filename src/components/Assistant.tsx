@@ -9,6 +9,8 @@ import {
   X,
 } from "lucide-react";
 import { profile } from "../data/portfolio";
+import { recruiterPrompts as suggestions } from "../data/recruiter";
+import { isAssistantShortcut } from "../lib/interaction";
 
 type Source = { label: string; href: string };
 type Message = {
@@ -16,22 +18,6 @@ type Message = {
   content: string;
   sources?: Source[];
 };
-const suggestions = [
-  {
-    label: "Explore AI projects",
-    prompt: "Which projects best show Harsh's AI and backend skills?",
-  },
-  {
-    label: "Experience & skills",
-    prompt:
-      "Summarize Harsh's professional experience and main technical skills.",
-  },
-  {
-    label: "Find a role match",
-    prompt:
-      "What kinds of software engineering roles does Harsh's portfolio support, and what should I verify with him?",
-  },
-];
 
 export function Assistant() {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -53,7 +39,21 @@ export function Assistant() {
       setOpen(true);
     };
     window.addEventListener("open-portfolio-assistant", show);
+    const shortcut = (event: KeyboardEvent) => {
+      if (!isAssistantShortcut(event)) return;
+      event.preventDefault();
+      setOpen(true);
+      inputRef.current?.focus({ preventScroll: true });
+    };
+    const legacyHash = () => {
+      if (window.location.hash === "#intelligence") setOpen(true);
+    };
+    window.addEventListener("keydown", shortcut);
+    window.addEventListener("hashchange", legacyHash);
+    legacyHash();
     return () => {
+      window.removeEventListener("keydown", shortcut);
+      window.removeEventListener("hashchange", legacyHash);
       window.removeEventListener("open-portfolio-assistant", show);
       requestRef.current?.abort();
     };
@@ -173,8 +173,8 @@ export function Assistant() {
         aria-controls="portfolio-assistant"
       >
         <MessageCircle size={20} aria-hidden="true" />
-        <span className="assistant-launcher-label">Ask about Harsh</span>
-        <span className="assistant-ai-badge">AI</span>
+        <span className="assistant-launcher-label">Ask Harsh’s AI</span>
+        <kbd>⌘ K</kbd>
       </button>
       <dialog
         ref={dialogRef}
@@ -194,7 +194,7 @@ export function Assistant() {
               <Sparkles size={20} />
             </span>
             <div>
-              <h2 id="assistant-title">Portfolio intelligence</h2>
+              <h2 id="assistant-title">Ask Harsh’s AI</h2>
               <p>Explore Harsh’s work, with sources.</p>
             </div>
             <button
@@ -221,7 +221,11 @@ export function Assistant() {
                 </p>
                 <div className="assistant-suggestions">
                   {suggestions.map((s) => (
-                    <button key={s.label} onClick={() => void send(s.prompt)}>
+                    <button
+                      key={s.label}
+                      title={s.prompt}
+                      onClick={() => void send(s.prompt)}
+                    >
                       {s.label}
                       <ArrowUpRight size={16} aria-hidden="true" />
                     </button>

@@ -4,15 +4,30 @@ import { readFile, readdir, stat } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { createServer } from "../server/app.mjs";
-import { assertHomepage, siteOrigin } from "./prerender-checks.mjs";
+import {
+  assertHomepage,
+  assertArchive,
+  siteOrigin,
+} from "./prerender-checks.mjs";
 import { projects, profile } from "../src/data/portfolio.ts";
+import {
+  chapters,
+  chapterNumber,
+  productionCode,
+} from "../src/data/recruiter.ts";
+import { nextTabIndex, isAssistantShortcut } from "../src/lib/interaction.ts";
 
 let server;
 let origin;
 let html;
+let archive;
 let canonical;
 before(async () => {
   html = await readFile(new URL("../dist/index.html", import.meta.url), "utf8");
+  archive = await readFile(
+    new URL("../dist/archive/index.html", import.meta.url),
+    "utf8",
+  );
   canonical = html.match(/rel="canonical"\s+href="([^"]+)"/)?.[1];
   assert.ok(canonical, "Build the site first with npm run build");
   server = createServer({
@@ -29,10 +44,169 @@ after(async () => {
   await new Promise((resolve) => server.close(resolve));
 });
 
+test("home has five numbered chapters and both navigation surfaces use the same order", () => {
+  const expected = chapters.map((chapter) => chapter.id);
+  const main = html.split('<main id="main"')[1].split("</main>")[0];
+  assert.deepEqual(
+    [...main.matchAll(/<section id="([^"]+)"/g)].map((match) => match[1]),
+    expected,
+  );
+  for (const label of ["Main navigation", "Page chapters"]) {
+    const nav = html.match(
+      new RegExp(
+        '<nav[^>]+aria-label="' + label + '"[^>]*>([\\s\\S]*?)<\\/nav>',
+      ),
+    )[1];
+    assert.deepEqual(
+      [...nav.matchAll(/href="#([^"]+)"/g)].map((match) => match[1]),
+      expected,
+    );
+    assert.deepEqual(
+      [...nav.matchAll(/<span>(\d+)<\/span>/g)].map((match) => match[1]),
+      chapters.map((chapter) => chapterNumber(chapter.id)),
+    );
+  }
+});
+
+test("case studies expose engineering decisions immediately and neither page nests native disclosures", () => {
+  const cards = [
+    ...html.matchAll(/<article class="flagship-card"[\s\S]*?<\/article>/g),
+  ].map((match) => match[0]);
+  assert.equal(cards.length, 4);
+  for (const card of cards) {
+    assert.ok(!card.includes("<details"));
+    for (const content of [
+      "The problem &amp; product",
+      "Architecture &amp; engineering decisions",
+      "Engineering outcome",
+      "GitHub source",
+      "Architecture Flow",
+      "Product Preview",
+      "Implementation Highlights",
+    ])
+      assert.ok(card.includes(content), content);
+    assert.equal((card.match(/class="engineering-bullets"/g) || []).length, 1);
+  }
+  for (const page of [html, archive]) {
+    let depth = 0;
+    for (const match of page.matchAll(/<\/?details\b[^>]*>/g)) {
+      depth += match[0].startsWith("</") ? -1 : 1;
+      assert.ok(depth >= 0 && depth <= 1, "Nested or unbalanced disclosure");
+    }
+    assert.equal(depth, 0);
+  }
+});
+
+test("tabs have connected ARIA relationships and predictable keyboard movement", () => {
+  for (const page of [html, archive]) {
+    const ids = new Set(
+      [...page.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]),
+    );
+    for (const match of page.matchAll(
+      /\baria-(?:controls|labelledby|describedby)="([^"]+)"/g,
+    ))
+      for (const id of match[1].split(" "))
+        assert.ok(ids.has(id), "Missing ARIA target: " + id);
+  }
+  assert.equal((html.match(/role="tablist"/g) || []).length, 5);
+  assert.equal((html.match(/aria-selected="true"/g) || []).length, 5);
+  assert.equal((html.match(/role="tabpanel"/g) || []).length, 15);
+  assert.equal(nextTabIndex("ArrowLeft", 0, 3), 2);
+  assert.equal(nextTabIndex("ArrowRight", 2, 3), 0);
+  assert.equal(nextTabIndex("Home", 2, 3), 0);
+  assert.equal(nextTabIndex("End", 0, 3), 2);
+  assert.equal(nextTabIndex("Escape", 0, 3), null);
+  const event = { key: "k", metaKey: false, ctrlKey: true, altKey: false };
+  assert.equal(isAssistantShortcut(event), true);
+  assert.equal(
+    isAssistantShortcut({ ...event, ctrlKey: false, metaKey: true }),
+    true,
+  );
+  assert.equal(isAssistantShortcut({ ...event, altKey: true }), false);
+  assert.equal(isAssistantShortcut({ ...event, isComposing: true }), false);
+  assert.equal(isAssistantShortcut({ ...event, ctrlKey: false }), false);
+});
+
+test("preview images reserve dimensions and load lazily; generated pages contain clean editorial copy and links", () => {
+  const banned = [
+    ["actual", "project", "capture"],
+    ["updated", "resume"],
+    ["sign-in", "required"],
+    ["implementation", "map", "·", "based", "on", "the", "project"],
+  ].map((words) => words.join(" "));
+  for (const page of [html, archive]) {
+    for (const phrase of banned)
+      assert.ok(!page.toLowerCase().includes(phrase), phrase);
+    for (const match of page.matchAll(/<img\b[^>]*>/g)) {
+      assert.match(match[0], /width="\d+"/);
+      assert.match(match[0], /height="\d+"/);
+      assert.match(match[0], /loading="lazy"/);
+      assert.match(match[0], /alt="[^"]+"/);
+    }
+    for (const match of page.matchAll(/href="(https:[^"]+)"/g))
+      assert.ok(!/\.git(?:[?#]|$)/.test(match[1]), match[1]);
+  }
+});
+
+test("production code excerpt matches the actual request handler", async () => {
+  const server = await readFile(
+    new URL("../server/app.mjs", import.meta.url),
+    "utf8",
+  );
+  const lines = server.split(/\r?\n/).map((line) => line.trim());
+  for (const line of productionCode.filter(Boolean))
+    assert.ok(lines.includes(line.trim()), line);
+});
+
+test("core foreground tokens maintain at least 7:1 contrast against every card surface", async () => {
+  const css = await readFile(
+    new URL("../src/recruiter.css", import.meta.url),
+    "utf8",
+  );
+  const color = (name) =>
+    css.match(new RegExp("--" + name + ": (#[a-f0-9]+)"))[1];
+  const luminance = (hex) => {
+    const c = hex
+      .slice(1)
+      .match(/../g)
+      .map((value) => parseInt(value, 16) / 255)
+      .map((value) =>
+        value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4,
+      );
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  };
+  for (const foreground of ["text", "muted", "accent"])
+    for (const background of ["bg", "surface", "raised"]) {
+      const a = luminance(color(foreground)),
+        b = luminance(color(background));
+      assert.ok(
+        (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05) >= 7,
+        foreground + "/" + background,
+      );
+    }
+  assert.match(css, /prefers-reduced-motion/);
+  assert.match(css, /data-motion="off"/);
+});
+
+test("archive route serves all projects and responds to HEAD without a body", async () => {
+  for (const path of ["/archive", "/archive/"]) {
+    const response = await fetch(origin + path);
+    assert.equal(response.status, 200);
+    assert.equal(await response.text(), archive);
+    const head = await fetch(origin + path, { method: "HEAD" });
+    assert.equal(head.status, 200);
+    assert.equal(await head.text(), "");
+  }
+  assert.match(archive, /<title>Project Archive/);
+});
+
 test("production HTML includes complete portfolio content before executing JavaScript", () => {
   assertHomepage(html, siteOrigin(canonical));
-  assert.equal((html.match(/data-project-id=/g) || []).length, projects.length);
-  assert.match(html, /Portfolio navigation without JavaScript/);
+  assertArchive(archive, siteOrigin(canonical));
+  assert.equal(
+    (archive.match(/data-project-id=/g) || []).length,
+    projects.length,
+  );
   assert.match(html, /data-render-year="\d{4}"/);
 });
 
@@ -101,10 +275,6 @@ test("every HTML image, responsive image candidate, stylesheet, script, and CSS 
       resources.add(url.pathname);
     }
   }
-  assert.ok(
-    resources.has("/studio/signal-poster.png"),
-    "Missing 3D fallback image reference",
-  );
   for (const font of (
     await readdir(new URL("../dist/assets/", import.meta.url))
   ).filter((name) => name.endsWith(".woff2")))
@@ -123,12 +293,13 @@ test("every HTML image, responsive image candidate, stylesheet, script, and CSS 
   }
 });
 
-test("all JavaScript chunks parse and are served as immutable JavaScript, including the lazy 3D renderer", async () => {
+test("all JavaScript chunks parse and are served as immutable JavaScript", async () => {
   const assets = new URL("../dist/assets/", import.meta.url);
   const scripts = (await readdir(assets)).filter((name) =>
     name.endsWith(".js"),
   );
-  assert.ok(scripts.some((name) => name.startsWith("studioRenderer-")));
+  assert.ok(scripts.length > 0);
+  assert.ok(!scripts.some((name) => name.startsWith("studioRenderer-")));
   for (const name of scripts) {
     execFileSync(
       process.execPath,
@@ -153,7 +324,6 @@ test("every section and internal anchor is present and document IDs are unique",
     "about",
     "all-projects",
     "workflow",
-    "intelligence",
     "contact",
   ])
     assert.ok(ids.includes(section), section);
@@ -198,8 +368,8 @@ test("unknown routes return a pre-rendered 404 with noindex; index.html redirect
 test("pre-render validation rejects empty shells, incomplete catalogs, and malformed origins", () => {
   assert.throws(() => assertHomepage('<div id="root"></div>'));
   assert.throws(() =>
-    assertHomepage(
-      html.replace('data-project-id="27"', 'data-omitted="27"'),
+    assertArchive(
+      archive.replace('data-project-id="27"', 'data-omitted="27"'),
       siteOrigin(canonical),
     ),
   );

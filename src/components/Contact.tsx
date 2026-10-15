@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from "react";
 import { ArrowUpRight, Check, Copy } from "lucide-react";
 import { profile } from "../data/portfolio";
-import { ActionLink, Reveal } from "./Primitives";
+import { ActionLink, ChapterHeading, Reveal } from "./Primitives";
 
 export function Contact() {
   const [draft, setDraft] = useState("");
@@ -33,14 +33,14 @@ export function Contact() {
       aria-labelledby="contact-title"
     >
       <div className="section-container">
-        <div className="eyebrow">08 / Let’s connect</div>
+        <ChapterHeading id="contact" title="Let’s build something useful." />
         <div className="contact-layout">
           <Reveal>
-            <h2 id="contact-title">
+            <h3 className="contact-lead">
               Good things start
               <br />
               with a <span className="accent-text">conversation.</span>
-            </h2>
+            </h3>
             <p className="body-copy">
               Have a product to build or a team to grow? I’m open to full-time,
               contract, and freelance opportunities in full-stack and AI
@@ -168,11 +168,11 @@ export function Contact() {
 export function Footer({ year }: { year: number }) {
   return (
     <footer className="section-container site-footer">
-      <a href="#hero" className="footer-brand">
+      <a href="/#hero" className="footer-brand">
         Harsh Gavand<span>Full-Stack & AI Engineer</span>
       </a>
       <p>© {year} · Built by Harsh Gavand</p>
-      <a href="#hero" className="footer-top">
+      <a href="/#hero" className="footer-top">
         Back to top <ArrowUpRight size={16} aria-hidden="true" />
       </a>
     </footer>

@@ -1,21 +1,22 @@
-# Harsh Gavand — Portfolio
+# Harsh Gavand — Full-Stack & AI Engineer
 
-React + TypeScript portfolio with the Signal Studio graphite, ivory, and citrus design, a custom kinetic Three.js sculpture, four curated project exhibits, a searchable 38-project index, and an OpenAI GPT-6 Luna portfolio assistant. Includes an engineering profile, experience timeline, project-linked skills, workflow, and contact draft preparation.
+A React + TypeScript portfolio organized around engineering decisions: five homepage chapters, four immediately readable case studies, a compact eight-repository archive, and a complete searchable 38-project catalog at [/archive](https://harsh-gavand-portfolio-website-ai.onrender.com/archive/).
 
-Production builds pre-render the React page into `dist/index.html`, including every section and a complete native HTML directory of all 38 projects. The client hydrates that markup to add search, filters, 3D, animation, and the assistant. The readable project directory, source links, contact links, and résumé remain available without JavaScript. Live origin: [harsh-gavand-portfolio-website-ai.onrender.com](https://harsh-gavand-portfolio-website-ai.onrender.com/).
+[Live portfolio](https://harsh-gavand-portfolio-website-ai.onrender.com/) · [Refactor verification](verification/recruiter-2026-10-15/README.md) · [Recent AI repository sources](verification/github-projects-2026-10-15/sources.json)
 
-The current presentation leads with “Engineering what’s next,” an original kinetic frame sculpture, and four asymmetric project exhibits. Experience follows selected work directly. The archive opens on a Latest AI collection of 12 public projects pushed on 14 October 2026, with filters for all 34 additional builds. The full six-step process and supplemental product-layer study use native disclosures. Each exhibit reveals its full case study, contribution walkthrough, implementation details, and source links. The engineering index is available through a disclosure, retaining category filters, search, Overview / Architecture / Engineering tabs, selectable nodes, and project-specific assistant prompts. Skill evidence links automatically open the index and select the relevant project; direct project fragments open the matching case study. Shared design tokens and established component styles live in `src/observatory.css`; `src/signal.css` owns the current compositions and responsive refinements. See [current Signal Studio verification](verification/signal-2026-10-15/README.md) and [recent GitHub project sources](verification/github-projects-2026-10-15/sources.json). Earlier visual reports describe earlier versions.
+## Experience and structure
+
+The homepage has one shared chapter definition in `src/data/recruiter.ts`: Introduction, Selected Work, Experience & Impact, Architecture & Skills, and Contact & Résumé. Header navigation, chapter navigation, and headings derive their numbers from that definition.
+
+The hero replaces the abstract WebGL sculpture with a technical widget: an interactive architecture pipeline, a verbatim excerpt from this site's request handler, and a profile with résumé, GitHub, and LinkedIn links. The four case study cards expose product context, engineering decisions, technologies, challenges, and outcomes immediately. Keyboard-accessible tabs switch between architecture flows, product previews, and contribution highlights. There are no nested disclosures.
+
+The eight-row curated archive uses a native disclosure. The complete catalog lives on a separate pre-rendered route with search and All / Latest AI / AI & ML / APIs & Tools / Web & SaaS filters. Every project retains its identity and repository link; original copy was rewritten and inaccurate stack claims were corrected against source code. No invented performance metrics, production scale, payment guarantees, or database guarantees are added.
+
+Experience, education, the supplied portrait, recognition, skills, engineering principles, résumé, contact draft preparation, and the existing assistant remain available. The assistant opens from the header, floating button, or Ctrl/Command+K, with three recruiter prompts. Chat generation and quota contracts are unchanged.
 
 ## Development
 
-Use Node.js **22.18 or newer** (built-in TypeScript stripping is required by the server's shared portfolio data). Use a currently maintained Node LTS release.
-
-```sh
-npm ci
-npm run dev
-```
-
-`npm run dev` starts the API at `127.0.0.1:3001` and Vite at `127.0.0.1:5173`. Vite proxies `/api` to the backend. Both ports must be available. `npm run dev:ui` and `npm run dev:api` can be run separately.
+Use Node.js **22.18 or newer**, required for the server's shared TypeScript data. Install with `npm ci`, then run `npm run dev`. This starts the API at `127.0.0.1:3001` and Vite at `127.0.0.1:5173`; both ports must be available. Vite proxies `/api`. The UI and API can also run separately through `npm run dev:ui` and `npm run dev:api`.
 
 ## OpenAI assistant
 
@@ -56,29 +57,26 @@ npm run build
 npm run test:prerender
 ```
 
-Tests cover preservation of the original catalog/assets/SEO plus assistant input validation, origins, limits, trusted context, source mapping, and provider failure handling. The local HTTP tests need loopback networking. Current OpenAI migration evidence is recorded in `verification/openai-2026-10-13/README.md`; prior Gemini evidence is historical.
+The build automatically runs a browser-free React pre-render step for the homepage, archive, and 404 page. Client code hydrates the same component tree and build year. No API call, credential, running server, or headless browser is needed during the build. HTML is readable before JavaScript runs, including all 38 archive entries and their complete notes.
 
-`npm run build` automatically runs `postbuild`: Vite builds a temporary server entry, React renders the shared components at build time, and the script injects them into the client HTML. No headless browser download, paid API call, secret, or live provider is needed. Build-time checks reject an empty root or incomplete project content. `npm run test:prerender` runs code and local HTTP checks against the built output: all project content, crawler user agents, every HTML/CSS asset reference, JavaScript syntax and chunk serving, document IDs and anchors, consistent SEO metadata, and pre-rendered 404 handling. Run it after building. Build-only server files remain in ignored `dist-ssr`, outside the public `dist` directory.
+The tests cover original project identities and assets, source metadata, assistant validation and failure contracts, quota admission/settlement, crawler user agents, archive routing, every referenced HTML/CSS asset, JavaScript chunk syntax, unique IDs and anchors, chapter numbering, tab relationships and keyboard movement, copy/link cleanup, image attributes, and disclosure nesting. Local HTTP tests require loopback networking. Browser layout and device interaction review is a separate manual check; this refactor was verified at the code and HTTP levels at the user's request.
 
-## Content and assets
+## Content and presentation
 
-- `src/data/projects.json`: preserved original project descriptions, contributions, technologies, and links.
-- `src/data/recentProjects.json`: 12 AI projects added from public repositories pushed within the reviewed 48-hour window. Includes agent workflows, two distinct symposium RAG variants, MCP, voice, support, and hybrid retrieval projects. Entries link to source repositories; no unverified demo URLs or performance metrics are added.
-- `verification/github-projects-2026-10-15/sources.json`: review window, GitHub push timestamps, exact reviewed commits, README references, and inspected implementation paths. The adapted AWS demo retains upstream attribution.
-- `src/data/portfolio.ts`: typed case studies and shared public profile content. Personal details come from the updated September 2026 resume.
-- `src/entry-server.tsx` and `scripts/prerender.mjs`: build-time HTML rendering using the same React components and data as the hydrated client.
-- `public/Harsh_Gavand_Resume.pdf`: exact supplied updated resume. All resume links use this stable URL.
-- `public/projects`: actual captured public demo pages in responsive WebP sizes. Other visuals are labeled implementation maps, not screenshots.
-- `src/observatory.css`: shared tokens, component foundations, responsive chat, focus styles, and motion behavior.
-- `src/signal.css`: Signal Studio hero, asymmetric exhibits, compact process/archive, surface refinements, and responsive adjustments.
-- `src/components/Assistant.tsx`: native chat dialog and conversation lifecycle.
-- `server`: OpenAI generation, portfolio knowledge, validated links, HTTP contracts, and production static serving.
+- `src/data/projects.json` and `src/data/recentProjects.json`: 38 project records, including 12 recent AI repositories.
+- `src/data/portfolio.ts`: shared profile, experience, skills, and four source-reviewed case studies.
+- `src/data/recruiter.ts`: chapter numbers, curated archive, architecture widget, code excerpt, prompts, and principles.
+- `src/recruiter.css`: graphite, ivory, and citrus tokens; high-contrast text; responsive layouts; focus states; 180ms transitions and reduced-motion support.
+- `src/components/Tabs.tsx`: shared ARIA tablist with arrow-key, Home/End, and roving-tabindex behavior.
+- `src/components/ProjectArchive.tsx`: searchable full catalog; initial HTML includes every record.
+- `src/entry-server.tsx` and `scripts/prerender.mjs`: build-time rendering and route metadata.
+- `public/Harsh_Gavand_Resume.pdf`: unchanged supplied résumé at a stable URL.
+- `public/projects`: responsive banking/repository landing-page captures and a UGC gallery image from the project's asset directory. The digest preview describes its email format rather than claiming a live inbox capture.
+- `verification/recruiter-2026-10-15/sources.json`: reviewed flagship commit IDs, paths, and corrections.
 
-Fonts are self-hosted. There are no analytics, external font requests, or image services required at runtime. Chat uses the server's OpenAI connection; portfolio content remains browsable when AI is unavailable.
+Fonts are self-hosted Latin subsets. Images reserve dimensions and load lazily below the fold. The retired Three.js and Framer Motion implementations and dependencies were removed. There is no scroll interception or delayed text reveal. Native scrolling, system reduced motion, and the manual motion control remain supported.
 
-## Contact behavior
-
-The form prepares a `mailto:` draft. It does not claim to send a message. The visitor reviews and sends the draft through their email application. Copy-email and direct email links are available when no default mail client is configured.
+The contact form prepares a `mailto:` draft for the visitor to review and send in their email app. Copy-email and direct email links remain available. GitHub and LinkedIn icon links are in the header corner; the footer aligns identity, copyright, and back-to-top with space for the assistant.
 
 ## Hosting
 
@@ -91,7 +89,7 @@ For the complete portfolio **including the assistant**, use a Node web service:
 - Let the host provide `PORT`. For a Render service behind its single trusted reverse proxy, set `TRUST_PROXY=1`; leave it `0` when directly exposing Node.
 - Health endpoint: `/api/health`. It reports model, allowance limits, and configuration presence. Presence alone does not verify Redis connectivity or OpenAI generation quota; a successful chat request verifies the full path.
 
-The Node service serves pre-rendered `dist/index.html`, assets, résumé, and API routes. Unknown pages receive a pre-rendered 404 with HTTP 404 and `noindex`; `/index.html` redirects to `/`. A static-only host can serve the generated page but cannot run `/api/chat`. The existing Render Node service uses `npm ci --include=dev && npm run build`, starts with `npm run start`, and auto-deploys `main` on commit. Its build lifecycle already invokes pre-rendering; no Render setting change is required.
+The Node service serves pre-rendered `dist/index.html`, the full `dist/archive/index.html` catalog at `/archive` and `/archive/`, assets, résumé, and API routes. Unknown pages receive a pre-rendered 404 with HTTP 404 and `noindex`; `/index.html` redirects to `/`. A static-only host can serve the generated page but cannot run `/api/chat`. The existing Render Node service uses `npm ci --include=dev && npm run build`, starts with `npm run start`, and auto-deploys `main` on commit. Its build lifecycle already invokes pre-rendering; no Render setting change is required.
 
 Metadata defaults to the current public hostname. An optional build-time `SITE_URL` overrides the canonical origin, otherwise Render's `RENDER_EXTERNAL_URL` is used when present. Pre-rendering applies the origin consistently to canonical, Open Graph, Twitter, JSON-LD, robots, and sitemap output. Only an HTTPS origin is accepted. For a custom domain, set `SITE_URL` to that origin before building. Development continues to use `createRoot`; generated production pages use `hydrateRoot`, including a shared build year to prevent footer mismatches across a year boundary.
 
@@ -99,18 +97,4 @@ For a local built preview, run `npm run build` then `npm start`, and use `http:/
 
 No deployment is performed by local development or validation commands.
 
-## Presentation and motion
-
-The hero dynamically loads an original Three.js kinetic frame sculpture when it approaches the viewport. Eleven shared rounded frames assemble into three arrangements, with damped mouse response, drag rotation and a small scroll response. Visitors can select Interface, Systems, or Applied AI, drag with a mouse, rotate through keyboard-accessible buttons, or reset the view. The sculpture is an abstract illustration of connected disciplines, not a verified architecture diagram. Project exhibits use actual supplied project captures or explicitly labeled implementation maps from the published notes.
-
-The supplied photograph appears in About at `public/portrait/harsh-studio.jpg`; the original photograph is retained. All 26 original project records remain unchanged alongside 12 recent additions. The four case studies, experience, skills, recognition, resume, contact draft behavior, and assistant contracts remain available. Globetrek experience bullets were clarified using the existing resume content without adding performance metrics.
-
-The renderer caps device pixel ratio and decorative drawing at 30 frames per second, pauses outside the viewport or when the page is hidden, and disposes its geometry, materials, environment and canvas on unmount. It uses standard materials without a transmission rendering pass. Data-saving or constrained devices retain `public/studio/signal-poster.png`, a real capture of this sculpture. WebGL failures also reveal that still and disable unavailable viewpoint controls while keeping the discipline descriptions usable. System reduced motion and the manual motion toggle disable continuous motion; native scrolling remains in place.
-
-Vite ignores `tmp` and `verification` in its file watcher so locked backup files and screenshot writes cannot interrupt the live preview. Production still builds through Vite and runs through the existing Node service.
-
-## Interactive exploration
-
-The engineering index's detail tabs support arrow keys and Home/End. Featured projects have implementation maps based on existing notes; other projects have explicitly labeled technology maps without invented request sequences. The six-category skills explorer supports keyboard navigation, links to matching projects in the index, and keeps a complete toolkit disclosure available. Experience chapters retain a fixed-header anchor offset. The archive retains filters, empty states, and focus-preserving pagination. The product-layer study remains available in a disclosure. The compact six-step workflow retains stage selection, keyboard controls, active explanations, and optional scroll following. Expanding the full process restores a sticky preview on tablet and desktop. On phones the stages use three columns with 58px targets, and the floating assistant uses a compact icon with its accessible name preserved. GitHub and LinkedIn icon links remain in the header’s right corner on desktop and mobile. The footer stacks the identity and role, aligns copyright and back-to-top, and reserves space for the assistant.
-
-See [Signal Studio verification](verification/signal-2026-10-15/README.md) for the current audit, browser checks, screenshots, responsive results, accessibility scan boundaries, and remaining limits. Earlier verification reports remain historical evidence.
+Earlier verification directories document earlier designs and are retained as historical evidence.

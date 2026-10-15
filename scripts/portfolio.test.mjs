@@ -8,18 +8,48 @@ import {
   caseStudies,
 } from "../src/data/portfolio.ts";
 import { matchesProjectCollection } from "../src/lib/portfolioActions.ts";
+import { curatedArchive } from "../src/data/recruiter.ts";
 const projects = JSON.parse(
   readFileSync(new URL("../src/data/projects.json", import.meta.url), "utf8"),
 );
-test("preserves every original project, its content, technology list, and links", () => {
-  // Fingerprint of the original 26-project catalog before the redesign.
-  const fingerprint = createHash("sha256")
-    .update(JSON.stringify(projects))
-    .digest("hex");
-  assert.equal(
-    fingerprint,
-    "7a0c0a3819da71090a935eeb08f570eb8f1f232e5abde1f0924ba53b14ac739c",
+test("curated archive references eight distinct catalog projects and flagship stacks match reviewed source", () => {
+  assert.equal(curatedArchive.length, 8);
+  assert.equal(new Set(curatedArchive.map((item) => item.projectId)).size, 8);
+  for (const item of curatedArchive)
+    assert.ok(catalog.some((project) => project.id === item.projectId));
+  const stack = (id) =>
+    catalog.find((project) => project.id === id).technologies;
+  for (const value of ["Prisma", "PostgreSQL", "Google AI"])
+    assert.ok(stack(14).includes(value));
+  assert.ok(!stack(14).includes("MongoDB"));
+  assert.ok(stack(3).includes("Sequelize"));
+  for (const value of ["Next.js", "Plaid", "Appwrite"])
+    assert.ok(!stack(3).includes(value));
+  assert.ok(stack(17).includes("Ollama"));
+  assert.equal(caseStudies.length, 4);
+  for (const study of caseStudies) assert.equal(study.engineering.length, 3);
+});
+test("preserves all original project identities while correcting editorial copy", () => {
+  const identities = JSON.parse(
+    readFileSync(
+      new URL("./fixtures/project-identities.json", import.meta.url),
+      "utf8",
+    ),
   );
+  assert.deepEqual(
+    projects.map(({ id, githubUrl }) => ({ id, githubUrl })),
+    identities,
+  );
+  for (const project of catalog) {
+    assert.match(project.impact, /^I /);
+    assert.match(project.role, /^I /);
+    assert.ok(
+      project.features.length &&
+        project.challenges.length &&
+        project.overview.length,
+    );
+    assert.ok(!project.githubUrl.endsWith(".git"));
+  }
 });
 test("all project identifiers are unique and repository/demo links are valid HTTPS URLs", () => {
   assert.equal(new Set(catalog.map((p) => p.id)).size, catalog.length);

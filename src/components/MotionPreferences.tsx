@@ -6,7 +6,6 @@ import {
   useSyncExternalStore,
   type ReactNode,
 } from "react";
-import { MotionConfig } from "framer-motion";
 import { Pause, Play } from "lucide-react";
 
 const MotionPreferences = createContext({
@@ -51,9 +50,7 @@ export function MotionPreferencesProvider({
         toggle: () => setPaused((value) => !value),
       }}
     >
-      <MotionConfig reducedMotion={enabled ? "user" : "always"}>
-        {children}
-      </MotionConfig>
+      {children}
     </MotionPreferences.Provider>
   );
 }
