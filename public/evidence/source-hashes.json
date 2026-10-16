@@ -1,0 +1,15 @@
+{
+  "algorithm": "SHA-256 of reviewed local source bytes",
+  "files": {
+    "news/app/agent/email_agent.py": "f7556ef80c63991b770ed1df6ed51dea0ae405a372dbd4c303233725bc1e02de",
+    "news/app/services/email.py": "1268f4bca42c6423bfd9b516f51b310a8eb326e1caab006eaf318527570c9d7f",
+    "harness/app/tools/banking_tools.py": "acb922b004f3d12d741158fd55fc8d086b764c92e8c995d6b0e20a059994ff1b",
+    "harness/app/services/policy_service.py": "7477dfafa43324b452d90f9c750ef948d84017849eb92ecaf78a2d3ca055c640",
+    "harness/app/services/transfer_service.py": "57dda9370389e41ccfcba283f7ae98177b0f94f18bd7019f88c4a0d7f98680a8",
+    "harness/app/services/transaction_executor.py": "504b7c087057400e432d81f2daf27e031cae9b8efc2a06e96c8e8cea5acc121b",
+    "harness/app/mock_data.py": "80214751432cf7c5bb5a911cf65da1414148a4047c18df713e3918fe74e3e8d7",
+    "harness/app/limits.py": "3242f542913fe8bff429f3062a63b6ae608ba3900c92581bb2be7b3cc476df6a",
+    "harness/app/audit.py": "1d8e25aa579112dcd9101b6aac453122b90cf480f51e4e51166be333f7eaa447",
+    "harness/app/config.py": "a32c9ab159f770c9662d78fc1146f4e32174f3940df1ffe008c209a88002a1e4"
+  }
+}

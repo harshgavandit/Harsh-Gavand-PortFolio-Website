@@ -1,9 +1,9 @@
-import { ArrowDown } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { chapterNumber } from "../data/recruiter";
-import { ActionLink } from "./Primitives";
-import { EngineeringShowcase } from "./EngineeringShowcase";
+import { ActionLink, Tags } from "./Primitives";
 import { profile } from "../data/portfolio";
-import { HeroStack } from "./HeroStack";
+import { primaryStack } from "../data/workPresentation";
+
 export function Hero() {
   return (
     <section
@@ -17,55 +17,73 @@ export function Hero() {
           <p className="eyebrow" data-chapter-number={chapterNumber("hero")}>
             {chapterNumber("hero")} / Introduction
           </p>
-          <p className="hero-name">HARSH GAVAND / FULL-STACK & AI ENGINEER</p>
+          <p className="hero-name">
+            HARSH GAVAND / FULL-STACK &amp; AI ENGINEER
+          </p>
           <h1 id="hero-title">
-            I build the interface.
+            Full-stack products.
             <br />
             <span>
-              And the system
+              AI with clear
               <br />
-              behind it.
+              boundaries.
             </span>
           </h1>
           <p className="hero-description">
-            Full-stack applications, backend APIs, and applied AI workflows —
-            from the data model and provider integration to the interface people
-            use.
+            React interfaces, Python and Node.js services, and AI workflows with
+            explicit state and failure handling. From business applications at
+            GlobeTrek to independent media and agent systems.
+          </p>
+          <p className="hero-tenure">
+            <strong>2+ years</strong> building full-stack products, backend
+            services, and applied AI workflows.
           </p>
           <div className="actions">
             <ActionLink href="#projects" primary>
               Explore selected work
             </ActionLink>
-            <ActionLink href="#contact">Get in touch</ActionLink>
-            <ActionLink href={profile.resume} external className="hero-resume">
+            <ActionLink href={profile.resume} external>
               View Resume (PDF)
             </ActionLink>
           </div>
           <p className="hero-location">
             <span className="status-dot" aria-hidden="true" />
-            {profile.availability}
+            Mumbai, India · Remote only
           </p>
+          <Tags items={primaryStack} />
         </div>
-        <EngineeringShowcase />
-      </div>
-      <div className="hero-credibility">
-        <a href="#projects" className="role-proof">
-          <strong>Full-Stack AI Engineer</strong>
-          <span>Async AI pipelines · RBAC · Distributed state</span>
-        </a>
-        <a href="#experience" className="experience-proof">
-          <strong>2+ Years</strong>
-          <span>of building full-stack, backend and AI engineering</span>
-        </a>
         <a
-          className="hero-scroll"
-          href="#projects"
-          aria-label="Continue to selected work"
+          className="hero-project"
+          href="/work/ugc-platform/"
+          aria-label="Explore UGC Content Studio case study"
         >
-          <ArrowDown size={20} aria-hidden="true" />
+          <div className="hero-project-top">
+            <span className="eyebrow">Selected build / 01</span>
+            <ArrowUpRight size={20} aria-hidden="true" />
+          </div>
+          <div className="hero-product-image">
+            <img
+              src="/evidence/ugc-workspace.png"
+              width={1280}
+              height={900}
+              loading="eager"
+              fetchPriority="high"
+              alt="UGC Content Studio sample workspace with bundled reference images and a saved sample output"
+            />
+          </div>
+          <div className="hero-project-caption">
+            <h2>UGC Content Studio</h2>
+            <p>Authenticated references → AI generation → persisted media</p>
+            <span>Read-only sample workspace · Explore the workflow ↗</span>
+          </div>
         </a>
       </div>
-      <HeroStack />
+      <div className="hero-employment">
+        <span>Previously</span>
+        <a href="#experience">GlobeTrek · AI-Native Full-Stack Developer</a>
+        <span aria-hidden="true">/</span>
+        <a href="#experience">HRP Enterprises · Full-Stack Developer</a>
+      </div>
     </section>
   );
 }

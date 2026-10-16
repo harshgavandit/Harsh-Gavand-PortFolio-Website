@@ -355,7 +355,7 @@ export const experience = [
     role: "AI-Native Full-Stack Developer",
     period: "Nov 2025 — Sep 2026",
     shipment:
-      "Django + React business applications with REST services, relational records, and SQL reporting.",
+      "End-to-end full-stack applications and automation tools for internal company processes.",
     tech: [
       "Django",
       "React",
@@ -374,7 +374,7 @@ export const experience = [
     points: [
       "Production API architecture: Engineered Python and JavaScript REST services, asynchronous tasks, and third-party integrations to support complete Django + React business workflows.",
       "Relational modeling & reporting: Designed SQL schemas and reusable reporting queries to keep operational records consistent across product screens and downstream reports.",
-      "Full-stack delivery & review: Owned features from interface state through deployment, using code reviews and shared implementation patterns to keep releases maintainable.",
+      "End-to-end ownership: Delivered full-stack applications and internal automation tools in a full-time role, from interface and API implementation through application delivery.",
     ],
   },
   {
@@ -401,9 +401,9 @@ export const experience = [
       "Git",
     ],
     points: [
-      "Responsive product architecture: Engineered interfaces supporting 1,000+ concurrent users across browsers and screen sizes with no reported compatibility issues.",
-      "API-driven rendering & performance: Integrated asynchronous REST data flows across 10+ pages, reducing average page load time by 30%.",
-      "Interface reliability & defect resolution: Fixed 20+ UI defects through device and screen-size corrections, improving consistency across responsive layouts.",
+      "Responsive interfaces: Delivered browser and screen-size adaptations across product screens, with no cross-browser compatibility issues reported in the résumé.",
+      "API-driven rendering: Integrated asynchronous REST data flows across 10+ pages; the résumé reports a 30% average page-load improvement.",
+      "Interface reliability: Resolved 20+ reported UI defects through device and screen-size corrections across responsive layouts.",
     ],
   },
 ];
@@ -433,7 +433,7 @@ export const skills = [
       "Validated API boundaries, shared rate limits, async tasks, and idempotent quota settlement.",
     proofs: [
       { label: "Production experience", href: "#experience" },
-      { label: "Quota lifecycle", href: "#hero" },
+      { label: "Quota lifecycle", href: "#engineering-lab" },
     ],
     items: [
       "Node.js",

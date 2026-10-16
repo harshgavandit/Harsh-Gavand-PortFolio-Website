@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import {
   ArrowUp,
   ArrowUpRight,
-  MessageCircle,
   RotateCcw,
   Sparkles,
   Square,
@@ -22,6 +21,7 @@ type Message = {
 export function Assistant() {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const openerRef = useRef<HTMLElement | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<AbortController | null>(null);
   const generationRef = useRef(0);
@@ -34,6 +34,10 @@ export function Assistant() {
 
   useEffect(() => {
     const show = (event: Event) => {
+      const active = document.activeElement as HTMLElement | null;
+      openerRef.current = active?.closest("#mobile-navigation")
+        ? document.querySelector<HTMLElement>(".menu-toggle")
+        : active;
       const prompt = (event as CustomEvent<{ prompt?: string }>).detail?.prompt;
       if (typeof prompt === "string" && prompt) setInput(prompt.slice(0, 2000));
       setOpen(true);
@@ -42,6 +46,7 @@ export function Assistant() {
     const shortcut = (event: KeyboardEvent) => {
       if (!isAssistantShortcut(event)) return;
       event.preventDefault();
+      openerRef.current = document.activeElement as HTMLElement | null;
       setOpen(true);
       inputRef.current?.focus({ preventScroll: true });
     };
@@ -165,17 +170,6 @@ export function Assistant() {
 
   return (
     <>
-      <button
-        className="assistant-launcher"
-        onClick={() => setOpen(true)}
-        aria-haspopup="dialog"
-        aria-expanded={open}
-        aria-controls="portfolio-assistant"
-      >
-        <MessageCircle size={20} aria-hidden="true" />
-        <span className="assistant-launcher-label">Ask Harsh’s AI</span>
-        <kbd>⌘ K</kbd>
-      </button>
       <dialog
         ref={dialogRef}
         id="portfolio-assistant"
@@ -186,7 +180,16 @@ export function Assistant() {
           event.preventDefault();
           close();
         }}
-        onClose={() => setOpen(false)}
+        onClose={() => {
+          setOpen(false);
+          const opener = openerRef.current;
+          if (opener?.isConnected && opener.getClientRects().length)
+            opener.focus({ preventScroll: true });
+          else
+            document
+              .querySelector<HTMLElement>(".header-ask, .menu-toggle")
+              ?.focus({ preventScroll: true });
+        }}
       >
         <div className="assistant-shell">
           <header className="assistant-header">

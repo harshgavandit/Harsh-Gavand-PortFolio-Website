@@ -16,7 +16,8 @@
     { "source": "/api/:path*", "destination": "/api/index?__path=:path*" }
   ],
   "redirects": [
-    { "source": "/index.html", "destination": "/", "permanent": true }
+    { "source": "/index.html", "destination": "/", "permanent": true },
+    { "source": "/work/lendflow", "destination": "/work/banking-saas/", "permanent": true }
   ],
   "headers": [
     {

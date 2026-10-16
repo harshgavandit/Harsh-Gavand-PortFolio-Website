@@ -1,20 +1,12 @@
-import {
-  ArrowDown,
-  ArrowRight,
-  ArrowUpRight,
-  ExternalLink,
-} from "lucide-react";
-import {
-  caseStudies,
-  projects,
-  type CaseStudy,
-  type Project,
-} from "../data/portfolio";
+import { ArrowDown, ArrowRight, ArrowUpRight } from "lucide-react";
+import { projects, type CaseStudy, type Project } from "../data/portfolio";
 import { curatedArchive } from "../data/recruiter";
-import { ActionLink, ChapterHeading, LeadStatement, Tags } from "./Primitives";
-import { Tabs } from "./Tabs";
-import { SystemFlow } from "./SystemFlow";
+import { ChapterHeading, LeadStatement, Tags } from "./Primitives";
+import { ProductEvidence } from "./ProductEvidence";
+import { featuredStudies } from "../data/workPresentation";
+import { caseEvidence } from "../data/caseEvidence";
 export function ProjectNotes({ project }: { project: Project }) {
+  const evidence = caseEvidence[project.slug];
   return (
     <div className="project-notes">
       <div>
@@ -34,147 +26,21 @@ export function ProjectNotes({ project }: { project: Project }) {
         <p>{project.challenges}</p>
       </div>
       <div>
-        <h4>System Impact &amp; Guarantees</h4>
+        <h4>Verified behavior &amp; limitations</h4>
         <p>{project.impact}</p>
-      </div>
-    </div>
-  );
-}
-function ProductPreview({
-  study,
-  project,
-}: {
-  study: CaseStudy;
-  project: Project;
-}) {
-  return (
-    <div className="product-preview">
-      <div className="browser-frame">
-        <div className="browser-toolbar">
-          <span>
-            <i />
-            <i />
-            <i />
-          </span>
-          <span>
-            {project.demoUrl
-              ? new URL(project.demoUrl).hostname
-              : "digest / email output"}
-          </span>
-          <ExternalLink size={12} aria-hidden="true" />
-        </div>
-        {study.image ? (
-          <img
-            src={`/projects/${study.image}-1280.webp`}
-            srcSet={`/projects/${study.image}-640.webp 640w, /projects/${study.image}-1280.webp 1280w`}
-            sizes="(min-width: 1000px) 42vw, 100vw"
-            width={1280}
-            height={722}
-            loading="lazy"
-            alt={study.imageAlt}
-          />
-        ) : project.id === 14 ? (
-          <div
-            className="studio-workspace"
-            aria-label="Illustrative UGC studio workspace"
-          >
-            <div className="studio-pipeline-header">
-              <span className="eyebrow">
-                Studio workspace / interface study
-              </span>
-              <h4>Workspace: Brand Shoot #14</h4>
-              <div className="studio-workspace-status">
-                <span>
-                  <i aria-hidden="true" />
-                  Status: Completed
-                </span>
-                <span>Credits: 5 / image · 10 / video</span>
-              </div>
-            </div>
-            <div className="generation-preview">
-              <img
-                src="/projects/ugc-gallery-640.webp"
-                srcSet="/projects/ugc-gallery-320.webp 320w, /projects/ugc-gallery-640.webp 640w"
-                sizes="(min-width:1000px) 200px, (min-width:520px) 35vw, 75vw"
-                width={640}
-                height={1147}
-                loading="lazy"
-                alt="UGC project gallery image of a model with a suitcase"
-              />
-              <div>
-                <span className="eyebrow">Generation pipeline</span>
-                <dl className="studio-io">
-                  <div>
-                    <dt>Input 01 / Product reference</dt>
-                    <dd>Suitcase asset + product description</dd>
-                  </div>
-                  <div>
-                    <dt>Input 02 / Model conditioning</dt>
-                    <dd>Model reference image + generation prompt</dd>
-                  </div>
-                  <div>
-                    <dt>Output / Cloudinary CDN</dt>
-                    <dd>Generated image + short video asset</dd>
-                  </div>
-                </dl>
-                <p className="studio-state">
-                  Clerk identity → Google AI → persisted media URLs
-                </p>
-              </div>
-            </div>
-            <p className="studio-caption">
-              Interface reconstruction using the project’s gallery asset. Credit
-              values show configured generation costs.
-            </p>
-          </div>
-        ) : (
-          <div className="email-preview">
-            <span className="eyebrow">Email delivery format</span>
-            <h4>One digest. Two formats.</h4>
-            <div>
-              <strong>Plain text</strong>
-              <p>
-                A readable summary with links back to the collected articles and
-                transcripts.
-              </p>
-            </div>
-            <div>
-              <strong>HTML email</strong>
-              <p>
-                A greeting, introduction, article headings, formatted summaries,
-                and source links.
-              </p>
-            </div>
-            <p>text/plain + text/html · SMTP delivery</p>
-          </div>
+        {evidence && (
+          <>
+            <ul>
+              {evidence.limitations.map((item) => (
+                <li key={item}>{item}</li>
+              ))}
+            </ul>
+            <a className="text-link" href={`/work/${project.slug}/`}>
+              Inspect verification &amp; pinned source ↗
+            </a>
+          </>
         )}
       </div>
-      <p className="preview-note">
-        {study.previewNote}
-        {study.hostingNote && (
-          <span className="hosting-note">{study.hostingNote}</span>
-        )}
-      </p>
-      {project.demoUrl ? (
-        <a
-          className="text-link"
-          href={project.demoUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Open the product <ArrowUpRight size={14} aria-hidden="true" />
-        </a>
-      ) : (
-        <a
-          className="text-link"
-          href={project.githubUrl + "/blob/main/app/services/email.py"}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Inspect the email formatter{" "}
-          <ArrowUpRight size={14} aria-hidden="true" />
-        </a>
-      )}
     </div>
   );
 }
@@ -195,61 +61,46 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
           </div>
           <h3 id={`${project.slug}-title`}>{study.shortName}</h3>
         </div>
-        <div className="actions demo-actions">
-          {project.demoUrl && (
-            <ActionLink href={project.demoUrl} primary external>
-              Live demo
-            </ActionLink>
-          )}
-          <span className="demo-access" title={study.accessDescription}>
-            {study.accessMode}
-          </span>
-          <ActionLink
-            href={project.githubUrl}
-            primary={!project.demoUrl}
-            external
-          >
-            GitHub source
-          </ActionLink>
-        </div>
+        <a className="text-link" href={`/work/${project.slug}/`}>
+          Explore case study <ArrowUpRight size={18} aria-hidden="true" />
+        </a>
       </header>
+      <p className="flagship-summary">{study.summary}</p>
       <div className="flagship-body">
+        <div className="flagship-visual">
+          <ProductEvidence slug={project.slug} />
+        </div>
         <div className="engineering-breakdown">
-          <p className="product-summary">{study.summary}</p>
-          <h4>Architecture & engineering decisions</h4>
+          <h4>The engineering focus</h4>
           <ul className="engineering-bullets">
-            {study.engineering.map((point) => (
+            {study.engineering.slice(0, 1).map((point) => (
               <li key={point}>
                 <LeadStatement text={point} />
               </li>
             ))}
           </ul>
-          <Tags items={project.technologies} />
-          <div className="engineering-impact">
-            <span className="eyebrow">System Impact &amp; Guarantees</span>
-            <p>{project.impact}</p>
-          </div>
-        </div>
-        <div className="flagship-visual">
-          <Tabs
-            id={`case-${project.slug}`}
-            label={`${study.shortName} technical preview`}
-            items={[
-              {
-                label: "Product Preview",
-                content: <ProductPreview study={study} project={project} />,
-              },
-              {
-                label: "System Architecture",
-                content: <SystemFlow study={study} slug={project.slug} />,
-              },
-            ]}
-          />
+          <Tags items={project.technologies.slice(0, 5)} />
+          <p className="project-boundary">
+            {project.id === 33
+              ? "Mock banking simulation · no real money movement"
+              : project.id === 17
+                ? "Local pipeline · sample formatter output"
+                : "Personal project · read-only sample available"}
+          </p>
+          <a
+            className="text-link"
+            href={project.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub source <ArrowUpRight size={14} aria-hidden="true" />
+          </a>
         </div>
       </div>
       <footer className="flagship-footer">
-        <a href={`/archive#${project.slug}`}>
-          Full project notes <ArrowRight size={14} aria-hidden="true" />
+        <a href={`/work/${project.slug}/`}>
+          Decisions, failure paths & verification{" "}
+          <ArrowRight size={14} aria-hidden="true" />
         </a>
       </footer>
     </article>
@@ -265,13 +116,20 @@ export function FeaturedWork() {
     >
       <ChapterHeading
         id="projects"
-        title="Four systems. The engineering behind them."
-        description="AI media generation, lending workflows, repository discovery, and automated news delivery."
+        title="Selected work. Built end to end."
+        description="Product delivery, relational workflows, and deterministic controls around AI. Explore the working interfaces, then the decisions behind them."
       />
       <div className="flagship-list">
-        {caseStudies.map((study, index) => (
+        {featuredStudies.map((study, index) => (
           <CaseStudyCard key={study.projectId} study={study} index={index} />
         ))}
+      </div>
+      <div id="github-replica" className="additional-work">
+        <span>Also built</span>
+        <a href="/work/github-replica/">
+          DevGraph · repository discovery and issue relationships ↗
+        </a>
+        <a href="/archive">All 38 repositories ↗</a>
       </div>
       <MoreWork />
     </section>

@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { projects } from "../data/portfolio";
 import { ActionLink, Tags } from "./Primitives";
 import { ProjectNotes } from "./Work";
+import { workPath } from "../lib/projectNavigation";
 import { matchesProjectCollection } from "../lib/portfolioActions";
 
 export function ProjectArchive() {
@@ -90,6 +91,11 @@ export function ProjectArchive() {
               </header>
               <p>{project.overview}</p>
               <Tags items={project.technologies} />
+              {workPath(project.slug) && (
+                <a className="text-link" href={workPath(project.slug)!}>
+                  Focused case study ↗
+                </a>
+              )}
               <details>
                 <summary>Contribution, engineering decisions & outcome</summary>
                 <ProjectNotes project={project} />

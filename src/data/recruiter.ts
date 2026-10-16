@@ -23,8 +23,8 @@ export const recruiterPrompts = [
     prompt: "How does Harsh integrate AI/LLMs into production web apps?",
   },
   {
-    label: "Full-stack / Backend fit",
-    prompt: "Why is Harsh a strong fit for a Full-Stack / Backend SWE role?",
+    label: "Project evidence & limitations",
+    prompt: "Which published projects demonstrate backend engineering, and what limitations should a reviewer know?",
   },
 ];
 

@@ -1,0 +1,58 @@
+PORTFOLIO EVIDENCE — 16 OCTOBER 2026
+
+These artifacts contain synthetic examples, not customer data or live banking/news results.
+
+NEWS DIGEST
+news-digest.html and news-digest.txt were rendered by the news project's existing
+digest_to_html function and EmailDigestResponse.to_markdown method with two synthetic
+entries. Editorial text and ranking scores were supplied by the reproduction script.
+Links point to pinned public source files; they are not claims of collected news.
+Assertions checked that both entries and their source links appear in both outputs.
+
+The exact formatter/model definitions were compiled from the local source AST without
+importing provider setup or loading .env. Python Markdown 3.7 performed the formatter's
+Markdown conversion; Pydantic 2 constructed the original digest model. No replacement
+formatter or invented application screenshot was used.
+
+The reviewed news checkout is at 0608f9a99dec2308ae9dcdebce840e5ce958445e. Its local
+provider integration has edits; the extracted digest model/to_markdown methods and
+app/services/email.py formatter match the linked committed methods. No provider code
+was executed. This is formatter evidence only: no scraper, model, database, ranking,
+scheduler, or SMTP delivery was run.
+
+BANKING AGENT HARNESS
+banking-harness.json records actual calls to the unchanged local banking tools and
+services at 2b8b094bc80bef18f75b1e50c5235c77d5a246c9. The reproduction loader bypasses
+ADK/provider startup and .env loading, provides a lightweight ToolContext fixture,
+and sets the approval lifetime to the code default (24 hours). The executor outcome
+is explicitly set to the project's mock SUCCESS mode. Policy, mock accounts, pending
+state, limits, audit, transfer tools, and executor functions are the source modules.
+
+Executed assertions:
+- Valid proposal leaves mock balance at 200000 before confirmation.
+- Later explicit confirmation succeeds and changes mock balance to 199000.
+- Repeat confirmation returns NO_PENDING_TRANSFER.
+- Blocked beneficiary is rejected with mock balance unchanged at 200000.
+- Same invocation cannot confirm its own proposal.
+- A separate session with separate state has no pending transfer to approve.
+
+Names and account suffixes in the transcript come from the project's existing mock
+fixtures. They are synthetic. The sample proves these deterministic function paths;
+it does not prove a model conversation, live banking, ADK browser operation, Redis
+integration, durable state, or production concurrency.
+
+OTHER CASE STUDIES
+UGC, LendFlow, and DevGraph records were checked against their implementation source.
+Their case-study verification labels explicitly say source review. Such inspection
+is not a successful provider call, live database transaction, public deployment check,
+benchmark, or security certification. Ownership descriptions follow the portfolio's
+reported scope; repository inspection alone does not independently audit authorship.
+Decision explanations are implementation analysis, not quotations from author interviews.
+
+REPRODUCTION
+Source script: docs/evidence/reproduce.py in the portfolio repository.
+Dependencies: Python 3.11+, Pydantic 2, Markdown 3.7.
+Pass --news-source and --harness-source paths to local checkouts. The optional
+--extra-python-path supports an isolated dependency directory. No source project is
+modified. Only the portfolio's public/evidence output files are written.
+source-hashes.json records SHA-256 digests of the exact local files read for execution.

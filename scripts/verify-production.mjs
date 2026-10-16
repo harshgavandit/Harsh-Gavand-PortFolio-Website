@@ -7,6 +7,8 @@ import {
   siteOrigin,
 } from "./prerender-checks.mjs";
 import { profile } from "../src/data/portfolio.ts";
+import { workStudies } from "../src/data/workPresentation.ts";
+import { projects } from "../src/data/portfolio.ts";
 
 // HTTP and generated-code verification only. Does not open a browser or call chat.
 const origin = siteOrigin(process.argv[2] || profile.site);
@@ -24,8 +26,21 @@ const archiveResponse = await request("/archive/");
 assert.equal(archiveResponse.status, 200);
 const archive = await archiveResponse.text();
 assertArchive(archive, origin);
+const workPages = [];
+for (const study of workStudies) {
+  const project = projects.find((item) => item.id === study.projectId);
+  const path = `/work/${project.slug}/`;
+  const response = await request(path);
+  assert.equal(response.status, 200, path);
+  const html = await response.text();
+  assert.ok(html.includes(`href="${origin}${path}"`), path + " canonical");
+  assert.ok(html.includes('id="verification-title"'), path + " evidence");
+  assert.ok(html.includes('data-prerendered="true"'), path + " initial HTML");
+  assert.ok(!html.includes('<div id="root"></div>'), path + " empty shell");
+  workPages.push(html);
+}
 const resources = new Set();
-for (const html of [home, archive]) {
+for (const html of [home, archive, ...workPages]) {
   for (const match of html.matchAll(
     /\b(?:src|href)="(\/[^"?#]+\.(?:js|css|woff2|png|jpe?g|webp|svg|pdf))(?:#[^"]*)?"/g,
   ))
@@ -116,6 +131,7 @@ const report = {
   flagshipCards: 4,
   curatedRows: 8,
   archiveProjects: 38,
+  caseStudyPages: workPages.length,
   assets,
   googlebotHTMLMatches: true,
   unknownPageStatus: 404,

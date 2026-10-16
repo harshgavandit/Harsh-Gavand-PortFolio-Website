@@ -132,7 +132,7 @@ export function Navigation() {
               aria-haspopup="dialog"
               aria-controls="portfolio-assistant"
             >
-              Ask Harsh’s AI <kbd>⌘ K</kbd>
+              Find relevant work <kbd>⌘ K</kbd>
             </button>
             <a
               className="header-resume"
@@ -198,7 +198,7 @@ export function Navigation() {
           >
             Resume <ArrowUpRight size={16} aria-hidden="true" />
           </a>
-          <button onClick={ask}>Ask Harsh’s AI · Ctrl / ⌘ K</button>
+          <button onClick={ask}>Find relevant work · Ctrl / ⌘ K</button>
           <MotionToggle />
         </div>
       </header>

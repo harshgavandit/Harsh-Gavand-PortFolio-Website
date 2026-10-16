@@ -4,21 +4,31 @@ A React + TypeScript portfolio organized around engineering decisions: five home
 
 [Live portfolio](https://harshgavand.dev/) · [Refactor verification](verification/recruiter-scan-2026-10-15/README.md) · [Recent AI repository sources](verification/github-projects-2026-10-15/sources.json)
 
+## Recruiter review path
+
+The homepage puts a compact role summary, professional experience, six primary technologies, and an authentic public-sample capture ahead of selected work. The complete résumé stack remains under **View full stack** in Skills. The quota simulator is available under **Engineering field notes**, and the contact draft composer is optional. Assistant access stays in navigation and Ctrl/Command+K.
+
+Five static case studies live at `/work/ugc-platform/`, `/work/banking-saas/`, `/work/banking-agent-harness/`, `/work/news-automation/`, and `/work/github-replica/`. They separate ownership, implementation analysis, failure handling, source verification, and limitations. `/archive` preserves all 38 repositories and legacy fragment mappings. The four homepage selections feature UGC, LendFlow, the Banking Agent Harness, and News Automation.
+
+Preview captures come from the actual applications' labelled public sample workspaces, with synthetic data. The news sample is output from the original formatter; harness scenarios execute deterministic functions against a mock ledger. See [evidence reproduction](docs/evidence/README.md) for exact boundaries. No email delivery, external model generation, or real financial operation is represented as verified by those artifacts.
+
+The linked UGC public route uses `/demo`. Render-hosted LendFlow and DevGraph also accept `/?demo=1` so direct links work without depending on a dashboard-level SPA rewrite. Their authenticated application routes stay separate from the public fixtures. GlobeTrek's full-time delivery/automation scope is user-confirmed; HRP metrics are identified as résumé-reported because benchmark evidence has not been supplied.
+
 ## Experience and structure
 
 The homepage has one shared chapter definition in `src/data/recruiter.ts`: Introduction, Selected Work, Experience & Impact, Architecture & Skills, and Contact. Header navigation, its hidden mobile menu, and headings derive their numbers from that definition.
 
-The hero opens on an interactive Request Lifecycle Trace, with a verbatim excerpt from the executed quota lifecycle in its Implementation tab. The four case study cards expose concise product context, bold architectural decisions, technologies, and system impact immediately. Each case study opens on its visual Product Preview. Its System Architecture tab provides five keyboard-operable stages with a live contract and technical-detail callout. There are no nested disclosures.
+The hero leads with a public UGC workspace capture and links to selected work. Four homepage cards provide a product preview, concise engineering focus, and case-study link. Focused case studies expose five keyboard-operable architecture stages, implementation decisions, and source evidence. The optional engineering lab retains the Request Lifecycle Trace and implementation language switcher. Native disclosures keep the complete stack and contact composer available without dominating the initial scan.
 
 The eight-row curated archive uses a native disclosure. The complete catalog lives on a separate pre-rendered route with search and All / Latest AI / AI & ML / APIs & Tools / Web & SaaS filters. Every project retains its identity and repository link; original copy was rewritten and inaccurate stack claims were corrected against source code. No invented performance metrics, production scale, payment guarantees, or database guarantees are added.
 
-Experience, education, the supplied portrait, recognition, skills, engineering principles, contact draft preparation, and the existing assistant remain available. The assistant opens from the header, floating button, or Ctrl/Command+K, with three recruiter prompts. The chat response contract remains unchanged; quota cancellation and settlement recovery are described below.
+Experience, education, the supplied portrait, recognition, skills, engineering principles, contact draft preparation, and the existing assistant remain available. The assistant opens from the header or mobile navigation, or Ctrl/Command+K, with three recruiter prompts. The chat response contract remains unchanged; quota cancellation and settlement recovery are described below.
 
 The attached résumé is exported to `public/resume.pdf`, linked from the desktop header, mobile menu, hero, contact section, and assistant sources. The original Word document remains outside the repository. The two-page PDF preserves its text, formatting, and hyperlinks and was visually checked before publication. Contact also provides a Copy Email control with visible and live-region feedback.
 
 Availability is remote-only, shared between the hero, profile and contact badge. The primary recruiter address is `harshgavand2@gmail.com`; the earlier address remains an alternate. The supplied neon HG artwork is used in the header and favicon through small web derivatives.
 
-The hero proof strip identifies the role as Full-Stack AI Engineer and describes 2+ years of full-stack, backend and AI engineering. A full-width stack panel groups the résumé's technologies and capabilities into six readable categories with visible labels and decorative logo marks. The data includes the résumé's project libraries as well as its Technical Skills section, with TypeScript retained from the established portfolio. Brand marks use one self-hosted SVG sprite; source metadata and license notices are in `public/stack`, and no runtime icon CDN or icon font is required.
+The introduction identifies the role as Full-Stack AI Engineer and describes 2+ years of full-stack, backend and AI engineering. A disclosed stack panel groups the résumé's technologies and capabilities into six readable categories with visible labels and decorative logo marks. The data includes the résumé's project libraries as well as its Technical Skills section, with TypeScript retained from the established portfolio. Brand marks use one self-hosted SVG sprite; source metadata and license notices are in `public/stack`, and no runtime icon CDN or icon font is required.
 
 Experience includes shipment banners, three architectural highlights per role, and a sprint grid. The skills matrix links production patterns to real project and experience anchors. PromptWars participation text is supplied by the owner; no competition ranking or public repository link is invented.
 

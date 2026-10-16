@@ -1,0 +1,31 @@
+{
+  "capturedOn": "2026-10-16",
+  "viewport": {
+    "width": 1280,
+    "height": 900
+  },
+  "captures": [
+    {
+      "file": "public/evidence/ugc-workspace.png",
+      "source": "http://127.0.0.1:5193/demo",
+      "repository": "harshgavandit/ugc-project",
+      "revision": "3394b05ffc6a6d9c80b284f6927b2d97aebc72f3",
+      "state": "Bundled references plus saved synthetic sample output; no generation or account access."
+    },
+    {
+      "file": "public/evidence/lendflow-workspace.png",
+      "source": "http://127.0.0.1:5192/demo",
+      "repository": "harshgavandit/Banking_App_SaaS",
+      "revision": "5e3be48687f6dd0d740f3d1aa3ebdf71e2ac5197",
+      "state": "Fictional application in lender document review; read-only."
+    },
+    {
+      "file": "public/evidence/devgraph-workspace.png",
+      "source": "http://127.0.0.1:5196/demo",
+      "repository": "harshgavandit/GitHub_Replica",
+      "revision": "5d6d381a159c7e991e0aef7da0c296f70d7cf348",
+      "state": "Bundled fictional public repository overview; read-only."
+    }
+  ],
+  "note": "Captured by the browser from real sample app components. Later query-entry compatibility commits do not alter these fixtures. These captures do not demonstrate live provider results, customer adoption, or real financial transactions."
+}

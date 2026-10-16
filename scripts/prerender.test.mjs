@@ -76,34 +76,22 @@ test("home has five numbered chapters with one header navigation and a hidden mo
   }
 });
 
-test("case studies expose engineering decisions immediately and neither page nests native disclosures", () => {
+test("selected work leads with evidence and links to focused case studies", () => {
   const cards = [
     ...html.matchAll(/<article class="flagship-card"[\s\S]*?<\/article>/g),
   ].map((match) => match[0]);
   assert.equal(cards.length, 4);
   for (const card of cards) {
-    assert.ok(!card.includes("<details"));
-    for (const content of [
-      "Architecture &amp; engineering decisions",
-      "System Impact &amp; Guarantees",
-      "GitHub source",
-      "System Architecture",
-      "Product Preview",
-    ])
-      assert.ok(card.includes(content), content);
-    assert.equal((card.match(/class="engineering-bullets"/g) || []).length, 1);
-    assert.ok(!card.includes("The problem &amp; product"));
-    assert.equal((card.match(/<li><strong>/g) || []).length, 3);
-    assert.match(card, /class="flagship-footer"><a/);
+    assert.match(card, /Explore case study/);
+    assert.match(card, /href="\/work\/[a-z-]+\/"/);
+    assert.match(card, /GitHub source/);
+    assert.doesNotMatch(
+      card,
+      /System Impact &amp; Guarantees|Interface reconstruction/,
+    );
   }
-  for (const page of [html, archive]) {
-    let depth = 0;
-    for (const match of page.matchAll(/<\/?details\b[^>]*>/g)) {
-      depth += match[0].startsWith("</") ? -1 : 1;
-      assert.ok(depth >= 0 && depth <= 1, "Nested or unbalanced disclosure");
-    }
-    assert.equal(depth, 0);
-  }
+  assert.match(html, /id="banking-agent-harness"/);
+  assert.match(html, /id="github-replica"/);
 });
 
 test("tabs have connected ARIA relationships and predictable keyboard movement", () => {
@@ -117,9 +105,9 @@ test("tabs have connected ARIA relationships and predictable keyboard movement",
       for (const id of match[1].split(" "))
         assert.ok(ids.has(id), "Missing ARIA target: " + id);
   }
-  assert.equal((html.match(/role="tablist"/g) || []).length, 5);
-  assert.equal((html.match(/aria-selected="true"/g) || []).length, 5);
-  assert.equal((html.match(/role="tabpanel"/g) || []).length, 10);
+  assert.equal((html.match(/role="tablist"/g) || []).length, 1);
+  assert.equal((html.match(/aria-selected="true"/g) || []).length, 1);
+  assert.equal((html.match(/role="tabpanel"/g) || []).length, 2);
   assert.equal(nextTabIndex("ArrowLeft", 0, 3), 2);
   assert.equal(nextTabIndex("ArrowRight", 2, 3), 0);
   assert.equal(nextTabIndex("Home", 2, 3), 0);
@@ -152,6 +140,12 @@ test("preview images reserve dimensions and load lazily; generated pages contain
       if (match[0].includes('class="brand-logo"')) {
         assert.match(match[0], /loading="eager"/);
         assert.match(match[0], /alt=""/);
+      } else if (
+        match[0].includes('fetchPriority="high"') ||
+        match[0].includes('fetchpriority="high"')
+      ) {
+        assert.match(match[0], /loading="eager"/);
+        assert.match(match[0], /alt="[^"]+"/);
       } else {
         assert.match(match[0], /loading="lazy"/);
         assert.match(match[0], /alt="[^"]+"/);
@@ -442,41 +436,12 @@ test("pre-render validation rejects empty shells, incomplete catalogs, and malfo
   );
 });
 
-test("product imagery is the default case tab and public fragment URLs are semantic", () => {
+test("project fragments stay semantic and remote-only availability is consistent", () => {
   for (const project of projects) {
     assert.match(project.slug, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
     assert.ok(archive.includes('id="' + project.slug + '"'));
   }
-  assert.equal(
-    new Set(projects.map((project) => project.slug)).size,
-    projects.length,
-  );
-  for (const slug of [
-    "ugc-platform",
-    "banking-saas",
-    "github-replica",
-    "news-automation",
-  ]) {
-    assert.ok(html.includes('id="' + slug + '"'));
-    assert.match(
-      html,
-      new RegExp('id="case-' + slug + '-tab-0"[^>]+aria-selected="true"'),
-    );
-    assert.match(
-      html,
-      new RegExp('id="case-' + slug + '-panel-0"(?![^>]*hidden=)[^>]*>'),
-    );
-  }
-  for (const page of [html, archive])
-    assert.ok(!/href="[^"\s]*#(?:archive-)?project-\d+/.test(page));
-  assert.equal(semanticFragment("#project-14"), "#ugc-platform");
-  assert.equal(semanticFragment("#archive-project-3"), "#banking-saas");
-  assert.equal(semanticFragment("#skills"), "#skills");
-  assert.ok(!html.includes("Implementation Highlights"));
-  assert.match(
-    html,
-    /Mumbai, India · Open to Full-Stack, Backend &amp; AI Engineering Roles \(Remote only\)/,
-  );
+  assert.match(html, /Remote only/);
   assert.doesNotMatch(html, /relocat/i);
 });
 
@@ -496,18 +461,15 @@ test("phase two exposes brand, language, replay, shipment and skills proof contr
 });
 
 test("hero proof shows the requested role, experience wording, and complete categorized logo stack", async () => {
+  const hero = html.split('id="hero"')[1].split("</section>")[0];
+  assert.match(hero, /FULL-STACK &amp; AI ENGINEER/);
+  assert.match(hero, /2\+ years/);
   assert.match(
-    html,
-    /class="role-proof"><strong>Full-Stack AI Engineer<\/strong>/,
+    hero,
+    /building full-stack products, backend services, and applied AI workflows/,
   );
-  assert.match(
-    html,
-    /<strong>2\+ Years<\/strong><span>of building full-stack, backend and AI engineering<\/span>/,
-  );
-  assert.doesNotMatch(
-    html,
-    /class="architecture-proof"|End-to-end systems|2\+ yrs/,
-  );
+  assert.doesNotMatch(hero, /stack-chip|request-trace/);
+  assert.match(html, /<details class="full-stack-disclosure"/);
   assert.equal((html.match(/class="stack-category"/g) || []).length, 6);
   assert.equal(
     (html.match(/class="stack-chip"/g) || []).length,
@@ -534,7 +496,7 @@ test("the header, hero lists and code preview contain meaningful accessible cont
   assert.doesNotMatch(html, /<li\b[^>]*>\s*<\/li>/);
   assert.match(header, /<span>05<\/span>Contact/);
   assert.match(html, /href="#projects"[^>]*>Explore selected work/);
-  assert.match(html, /href="#contact"[^>]*>Get in touch/);
+  assert.match(html, /href="\/resume.pdf"[^>]*>View Resume/);
   assert.match(html, /quota\.releaseOrEnqueueRetry\(/);
 });
 
@@ -565,36 +527,54 @@ test("request trace is the default hero tab with accounting-safe scenario contro
   );
 });
 
-test("architecture pipelines expose named keyboard controls and a linked contract callout", () => {
-  const flows = [
-    ...html.matchAll(/<figure class="case-flow">([\s\S]*?)<\/figure>/g),
-  ];
-  assert.equal(flows.length, 4);
-  for (const [, flow] of flows) {
-    assert.equal((flow.match(/<button\b/g) || []).length, 5);
-    assert.equal((flow.match(/aria-pressed="true"/g) || []).length, 1);
-    assert.match(flow, /role="status" aria-live="polite" aria-atomic="true"/);
-    assert.match(flow, /Contract \/<\/span>/);
-    assert.match(flow, /Technical detail \/<\/span>/);
+test("architecture pipelines and evidence are rendered on focused work pages", async () => {
+  for (const slug of [
+    "ugc-platform",
+    "banking-saas",
+    "github-replica",
+    "news-automation",
+    "banking-agent-harness",
+  ]) {
+    for (const suffix of ["", "/"]) {
+      const response = await fetch(origin + "/work/" + slug + suffix);
+      assert.equal(response.status, 200, slug + suffix);
+      const page = await response.text();
+      assert.equal((page.match(/<h1(?:\s|>)/g) || []).length, 1);
+      assert.ok(page.includes(`href="${siteOrigin(canonical)}/work/${slug}/"`));
+      assert.match(page, /Verified behavior &amp; limitations/);
+      assert.match(page, /Alternative &amp; tradeoff/);
+      assert.match(page, /id="walkthrough"/);
+      assert.match(page, /role="status" aria-live="polite" aria-atomic="true"/);
+      assert.equal(
+        (page.match(/aria-pressed="true"/g) || []).length >= 1,
+        true,
+      );
+      assert.match(page, /blob\/[a-f0-9]{40}\//);
+      const head = await fetch(origin + "/work/" + slug + suffix, {
+        method: "HEAD",
+      });
+      assert.equal(head.status, 200);
+      assert.equal(await head.text(), "");
+    }
   }
-  assert.match(html, />Copy Email<\/button>/);
-  assert.match(html, /Async AI pipelines · RBAC · Distributed state/);
+  assert.equal((await fetch(origin + "/work/not-a-project/")).status, 404);
 });
 
-test("UGC preview shows a composite studio with inputs, media output and sourced credit costs", () => {
-  const preview = html.match(
-    /id="case-ugc-platform-panel-0"[^>]*>([\s\S]*?)id="case-ugc-platform-panel-1"/,
-  )[1];
-  for (const label of [
-    "Workspace: Brand Shoot #14",
-    "Status: Completed",
-    "Credits: 5 / image · 10 / video",
-    "Input 01 / Product reference",
-    "Input 02 / Model conditioning",
-    "Output / Cloudinary CDN",
-  ])
-    assert.ok(preview.includes(label), label);
-  assert.match(preview, /ugc-gallery-640\.webp/);
-  assert.match(preview, /Interface reconstruction/);
-  assert.doesNotMatch(preview, /Atomic Lock Settled|1080p/);
+test("sample artifacts and preview captures are delivered with the correct content types", async () => {
+  for (const path of [
+    "/evidence/ugc-workspace.png",
+    "/evidence/lendflow-workspace.png",
+    "/evidence/devgraph-workspace.png",
+    "/evidence/news-digest.html",
+    "/evidence/banking-harness.json",
+  ]) {
+    const response = await fetch(origin + path);
+    assert.equal(response.status, 200, path);
+    if (path.endsWith(".png"))
+      assert.match(response.headers.get("content-type"), /image\/png/);
+    if (path.endsWith(".html"))
+      assert.match(await response.text(), /synthetic/i);
+    if (path.endsWith(".json"))
+      assert.equal((await response.json()).scenarios.length, 3);
+  }
 });

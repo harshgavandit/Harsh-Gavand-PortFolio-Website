@@ -282,7 +282,8 @@
   },
   {
     "id": 15,
-    "title": "OpenAI Project",
+    "title": "MemoryGraph AI — Personal Archive & Search",
+    "aliases": ["OpenAI Project"],
     "category": "LLM Application",
     "overview": "An OpenAI-powered application focused on practical LLM integration and user-facing AI workflows.",
     "features": [

@@ -2,7 +2,9 @@ import { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
-import { semanticFragment } from "./lib/projectNavigation";
+import { semanticFragment, workPage, workPath } from "./lib/projectNavigation";
+import { WorkDetail } from "./components/WorkDetail";
+import { profile } from "./data/portfolio";
 import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
 import { FeaturedWork } from "./components/Work";
@@ -36,6 +38,56 @@ export default function Portfolio({
 }) {
   const { pathname, hash } = useLocation();
   useEffect(() => {
+    const slug = pathname.match(/^\/work\/([^/]+)\/?$/)?.[1];
+    const page = workPage(slug);
+    const known =
+      pathname === "/" || pathname.replace(/\/$/, "") === "/archive" || !!page;
+    const title = page
+      ? `${page.study.shortName} | Harsh Gavand`
+      : pathname.replace(/\/$/, "") === "/archive"
+        ? "Project Archive | Harsh Gavand — Full-Stack & AI Engineer"
+        : known
+          ? "Harsh Gavand | Full-Stack & AI Engineer"
+          : "Page not found | Harsh Gavand";
+    document.title = title;
+    const canonical =
+      profile.site +
+      (page
+        ? workPath(page.project.slug)
+        : pathname.replace(/\/$/, "") === "/archive"
+          ? "/archive/"
+          : "/");
+    document
+      .querySelector('link[rel="canonical"]')
+      ?.setAttribute("href", canonical);
+    document
+      .querySelector('meta[property="og:url"]')
+      ?.setAttribute("content", canonical);
+    document
+      .querySelector('meta[property="og:title"]')
+      ?.setAttribute("content", title);
+    document
+      .querySelector('meta[name="twitter:title"]')
+      ?.setAttribute("content", title);
+    const description =
+      page?.study.summary ||
+      "Harsh Gavand — Full-Stack & AI Engineer in Mumbai. Explore MERN, Python, SaaS, and AI projects with implementation details, live demos, and source code.";
+    for (const selector of [
+      'meta[name="description"]',
+      'meta[property="og:description"]',
+      'meta[name="twitter:description"]',
+    ])
+      document.querySelector(selector)?.setAttribute("content", description);
+    let robots = document.querySelector<HTMLMetaElement>('meta[name="robots"]');
+    if (!known && !robots) {
+      robots = document.createElement("meta");
+      robots.name = "robots";
+      document.head.append(robots);
+    }
+    if (!known && robots) robots.content = "noindex, follow";
+    if (known && robots) robots.remove();
+  }, [pathname]);
+  useEffect(() => {
     const fragment = semanticFragment(hash);
     if (fragment === hash) return;
     window.history.replaceState(
@@ -66,6 +118,7 @@ export default function Portfolio({
           }
         />
         <Route path="/archive" element={<ProjectArchive />} />
+        <Route path="/work/:slug" element={<WorkDetail />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer year={year} />

@@ -1,0 +1,58 @@
+{
+  "provenance": "Executed unchanged deterministic banking tool/service source with synthetic in-memory accounts and mocked SUCCESS executor setting. ADK/provider startup and .env loading were omitted; ToolContext is a lightweight fixture and approval lifetime is the code default of 24 hours. This verifies these function paths only, not model behavior, live banking, production concurrency, or cross-process state.",
+  "scenarios": [
+    {
+      "id": "success",
+      "label": "Explicit later-turn confirmation",
+      "steps": [
+        {
+          "label": "Initiate synthetic transfer",
+          "value": "{\"account_last4\": \"5678\", \"amount\": 1000, \"beneficiary_name\": \"Aaron Johnson\", \"status\": \"PENDING_CONFIRMATION\"}"
+        },
+        {
+          "label": "Later user turn: confirm",
+          "value": "{\"amount\": 1000, \"beneficiary_name\": \"Aaron Johnson\", \"new_balance\": 199000.0, \"status\": \"SUCCESS\", \"transaction_id\": \"TXN001\"}"
+        },
+        {
+          "label": "Repeat confirmation",
+          "value": "{\"reason\": \"There is no pending transfer to confirm.\", \"status\": \"NO_PENDING_TRANSFER\"}"
+        }
+      ],
+      "outcome": "Mock transaction succeeds once; balance changes from 200000 to 199000. This is an in-memory simulation, with no bank connection."
+    },
+    {
+      "id": "rejected",
+      "label": "Blocked beneficiary rejected",
+      "steps": [
+        {
+          "label": "Attempt transfer to blocked mock beneficiary",
+          "value": "{\"reason\": \"Beneficiary 'Nick Anderson' is blocked and cannot receive transfers.\", \"status\": \"REJECTED\"}"
+        },
+        {
+          "label": "Balance after rejection",
+          "value": "{\"account\": \"savings\", \"balance\": 200000, \"daily_limit\": 100000, \"daily_used\": 25000, \"status\": \"ACTIVE\"}"
+        }
+      ],
+      "outcome": "Deterministic beneficiary policy rejects the request; mock balance remains unchanged."
+    },
+    {
+      "id": "confirmation-required",
+      "label": "Same-turn or other-session confirmation blocked",
+      "steps": [
+        {
+          "label": "Initiate synthetic transfer",
+          "value": "{\"account_last4\": \"5678\", \"amount\": 1000, \"beneficiary_name\": \"Aaron Johnson\", \"status\": \"PENDING_CONFIRMATION\"}"
+        },
+        {
+          "label": "Confirm during original invocation",
+          "value": "{\"reason\": \"Reply 'confirm' in a later turn to approve the staged transfer.\", \"status\": \"CONFIRMATION_REQUIRED\"}"
+        },
+        {
+          "label": "Confirm with separate session state",
+          "value": "{\"reason\": \"There is no pending transfer to confirm.\", \"status\": \"NO_PENDING_TRANSFER\"}"
+        }
+      ],
+      "outcome": "Original invocation cannot approve its own proposal; a separate session has no staged transfer. No mock money moves."
+    }
+  ]
+}

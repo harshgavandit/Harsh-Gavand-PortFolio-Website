@@ -5,7 +5,10 @@ import {
   assertHomepage,
   assertArchive,
   siteOrigin,
+  escapeHTML,
 } from "./prerender-checks.mjs";
+import { workStudies } from "../src/data/workPresentation.ts";
+import { workPage } from "../src/lib/projectNavigation.ts";
 import { profile, projects } from "../src/data/portfolio.ts";
 
 // Generate HTML from the same components and data as the client, without a
@@ -70,14 +73,48 @@ await writeFile(
   new URL("../dist/archive/index.html", import.meta.url),
   archive,
 );
+const workLocations = [];
+for (const study of workStudies) {
+  const project = projects.find((item) => item.id === study.projectId);
+  const location = `/work/${project.slug}/`;
+  const title = escapeHTML(`${study.shortName} | Harsh Gavand`);
+  const content = documentFor(location)
+    .replace(/<title>.*?<\/title>/s, `<title>${title}</title>`)
+    .replace(/(rel="canonical"\s+href=")[^"]+"/, `$1${origin}${location}"`)
+    .replace(/(property="og:url"\s+content=")[^"]+"/, `$1${origin}${location}"`)
+    .replace(/(property="og:title"\s+content=")[^"]+"/, `$1${title}"`)
+    .replace(
+      /(name="description"\s+content=")[^"]+"/,
+      `$1${escapeHTML(study.summary)}"`,
+    )
+    .replace(/(name="twitter:title"\s+content=")[^"]+"/, `$1${title}"`)
+    .replace(
+      /(name="twitter:description"\s+content=")[^"]+"/,
+      `$1${escapeHTML(study.summary)}"`,
+    )
+    .replace(
+      /(property="og:description"\s+content=")[^"]+"/,
+      `$1${escapeHTML(study.summary)}"`,
+    );
+  if (!workPage(project.slug) || !content.includes('id="verification-title"'))
+    throw new Error("Missing work page evidence: " + location);
+  await mkdir(new URL(`../dist${location}`, import.meta.url), {
+    recursive: true,
+  });
+  await writeFile(
+    new URL(`../dist${location}index.html`, import.meta.url),
+    content,
+  );
+  workLocations.push(location);
+}
 await writeFile(
   new URL("../dist/robots.txt", import.meta.url),
   `User-agent: *\nAllow: /\nSitemap: ${origin}/sitemap.xml\n`,
 );
 await writeFile(
   new URL("../dist/sitemap.xml", import.meta.url),
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${origin}/</loc></url><url><loc>${origin}/archive/</loc></url></urlset>\n`,
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${origin}/</loc></url><url><loc>${origin}/archive/</loc></url>${workLocations.map((location) => `<url><loc>${origin}${location}</loc></url>`).join("")}</urlset>\n`,
 );
 console.log(
-  `Pre-rendered home, archive (${projects.length} projects), and 404. Canonical origin: ${origin}`,
+  `Pre-rendered home, archive (${projects.length} projects), ${workLocations.length} case studies, and 404. Canonical origin: ${origin}`,
 );

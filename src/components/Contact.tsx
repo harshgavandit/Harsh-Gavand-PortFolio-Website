@@ -33,18 +33,17 @@ export function Contact() {
       aria-labelledby="contact-title"
     >
       <div className="section-container">
-        <ChapterHeading id="contact" title="Let’s build something useful." />
+        <ChapterHeading id="contact" title="Let’s talk about the role." />
         <div className="contact-layout">
           <Reveal>
             <h3 className="contact-lead">
-              Good things start
+              Full-stack, backend
               <br />
-              with a <span className="accent-text">conversation.</span>
+              &amp; applied AI.
             </h3>
             <p className="body-copy">
-              Have a product to build or a team to grow? I’m open to full-time,
-              contract, and freelance opportunities in full-stack and AI
-              engineering.
+              I’m open to remote full-time, contract, and freelance
+              opportunities in full-stack and AI engineering.
             </p>
             <a className="contact-email" href={`mailto:${profile.email}`}>
               {profile.email}
@@ -80,77 +79,76 @@ export function Contact() {
               <span className="status-dot" aria-hidden="true" />
               {profile.availability}
             </p>
-            <p className="alternate-email">
-              Also reachable at{" "}
-              <a href={`mailto:${profile.alternateEmail}`}>
-                {profile.alternateEmail}
-              </a>
-            </p>
           </Reveal>
           <Reveal className="contact-form-wrap">
-            <h3>A little about your idea.</h3>
-            <p>
-              Prepare an email draft. You review and send it from your email
-              app.
-            </p>
-            <form
-              onSubmit={prepare}
-              onChange={() => {
-                setDraft("");
-                setNotice("");
-              }}
-            >
-              <div className="form-row">
+            <details className="contact-compose">
+              <summary>
+                Help compose a message <span>Optional email draft</span>
+              </summary>
+              <h3>A little about your idea.</h3>
+              <p>
+                Prepare an email draft. You review and send it from your email
+                app.
+              </p>
+              <form
+                onSubmit={prepare}
+                onChange={() => {
+                  setDraft("");
+                  setNotice("");
+                }}
+              >
+                <div className="form-row">
+                  <label>
+                    Your name
+                    <input
+                      name="name"
+                      autoComplete="name"
+                      required
+                      maxLength={100}
+                      placeholder="Alex Morgan"
+                    />
+                  </label>
+                  <label>
+                    Email address
+                    <input
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      required
+                      maxLength={200}
+                      placeholder="alex@company.com"
+                    />
+                  </label>
+                </div>
                 <label>
-                  Your name
+                  What’s on your mind?
                   <input
-                    name="name"
-                    autoComplete="name"
-                    required
-                    maxLength={100}
-                    placeholder="Alex Morgan"
+                    name="subject"
+                    maxLength={160}
+                    placeholder="A role, a product, a collaboration…"
                   />
                 </label>
                 <label>
-                  Email address
-                  <input
-                    name="email"
-                    type="email"
-                    autoComplete="email"
+                  Tell me a little more
+                  <textarea
+                    name="message"
                     required
-                    maxLength={200}
-                    placeholder="alex@company.com"
+                    maxLength={2500}
+                    rows={4}
+                    placeholder="The idea, the opportunity, or the challenge."
                   />
                 </label>
-              </div>
-              <label>
-                What’s on your mind?
-                <input
-                  name="subject"
-                  maxLength={160}
-                  placeholder="A role, a product, a collaboration…"
-                />
-              </label>
-              <label>
-                Tell me a little more
-                <textarea
-                  name="message"
-                  required
-                  maxLength={2500}
-                  rows={4}
-                  placeholder="The idea, the opportunity, or the challenge."
-                />
-              </label>
-              <button type="submit" className="button button-primary">
-                Prepare email draft{" "}
-                <ArrowUpRight size={17} aria-hidden="true" />
-              </button>
-            </form>
-            {draft && (
-              <ActionLink href={draft} primary>
-                Open email app to send
-              </ActionLink>
-            )}
+                <button type="submit" className="button button-primary">
+                  Prepare email draft{" "}
+                  <ArrowUpRight size={17} aria-hidden="true" />
+                </button>
+              </form>
+              {draft && (
+                <ActionLink href={draft} primary>
+                  Open email app to send
+                </ActionLink>
+              )}
+            </details>
           </Reveal>
         </div>
         <p role="status" className="contact-notice">

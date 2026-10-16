@@ -233,6 +233,10 @@ export function createApplication(config) {
       });
       return res.end();
     }
+    if (["/work/lendflow", "/work/lendflow/"].includes(pathname)) {
+      res.writeHead(308, { Location: "/work/banking-saas/" });
+      return res.end();
+    }
     try {
       const file = resolve(dist, "." + pathname);
       if (!file.startsWith(dist + sep) && file !== dist)
@@ -241,7 +245,9 @@ export function createApplication(config) {
         return json(res, 404, { error: "Not found." });
       let target = ["/archive", "/archive/"].includes(pathname)
         ? resolve(dist, "archive/index.html")
-        : file;
+        : /^\/work\/[a-z0-9-]+\/?$/.test(pathname)
+          ? resolve(dist, "." + pathname, "index.html")
+          : file;
       let status = pathname === "/404.html" ? 404 : 200;
       const fallback = () => {
         status = pathname === "/" ? 200 : 404;

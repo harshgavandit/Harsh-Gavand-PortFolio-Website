@@ -7,6 +7,7 @@ import {
   caseStudies,
   engineeringSprints,
 } from "../src/data/portfolio.ts";
+import { caseEvidence } from "../src/data/caseEvidence.ts";
 import { resumeStackGroups } from "../src/data/heroStack.ts";
 
 export class ChatError extends Error {
@@ -96,6 +97,15 @@ export function knowledgeFor(messages) {
     })
     .sort((a, b) => b.score - a.score);
   return {
+    caseEvidence: Object.fromEntries(
+      ranked
+        .slice(0, 5)
+        .flatMap(({ project }) =>
+          caseEvidence[project.slug]
+            ? [[project.slug, caseEvidence[project.slug]]]
+            : [],
+        ),
+    ),
     profile,
     about: aboutProfile,
     experience,
