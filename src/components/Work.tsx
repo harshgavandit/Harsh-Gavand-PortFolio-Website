@@ -95,7 +95,7 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
                   ? "Local pipeline · sample formatter output"
                   : "Personal project · read-only sample available"}
           </p>
-          {community && project.demoUrl && (
+          {project.demoUrl && (
             <div className="actions">
               <ActionLink href={project.demoUrl} external primary>
                 Visit live website
