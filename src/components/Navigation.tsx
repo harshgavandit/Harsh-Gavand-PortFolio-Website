@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { profile } from "../data/portfolio";
-import { chapters, chapterNumber } from "../data/recruiter";
+import { chapters } from "../data/recruiter";
 import { MotionToggle } from "./MotionPreferences";
 import { GitHubMark, LinkedInMark } from "./CornerSocials";
 
@@ -119,7 +119,6 @@ export function Navigation() {
                   home && active === chapter.id ? "location" : undefined
                 }
               >
-                <span>{chapterNumber(chapter.id)}</span>
                 {chapter.navLabel}
               </a>
             ))}
@@ -185,7 +184,6 @@ export function Navigation() {
                 href={target(chapter.id)}
                 onClick={() => setOpen(false)}
               >
-                <span>{chapterNumber(chapter.id)}</span>
                 {chapter.label}
               </a>
             ))}

@@ -13,7 +13,6 @@ import {
 import { projects } from "../src/data/portfolio.ts";
 import {
   chapters,
-  chapterNumber,
   productionCode,
   pythonQuotaCode,
 } from "../src/data/recruiter.ts";
@@ -50,7 +49,7 @@ after(async () => {
   await new Promise((resolve) => server.close(resolve));
 });
 
-test("home has five numbered chapters with one header navigation and a hidden mobile menu", () => {
+test("home has five chapters with unnumbered navigation and a hidden mobile menu", () => {
   const expected = chapters.map((chapter) => chapter.id);
   const main = html.split('<main id="main"')[1].split("</main>")[0];
   assert.deepEqual(
@@ -71,7 +70,7 @@ test("home has five numbered chapters with one header navigation and a hidden mo
     );
     assert.deepEqual(
       [...nav.matchAll(/<span>(\d+)<\/span>/g)].map((match) => match[1]),
-      chapters.map((chapter) => chapterNumber(chapter.id)),
+      [],
     );
   }
 });
@@ -494,7 +493,7 @@ test("the header, hero lists and code preview contain meaningful accessible cont
   )[1];
   assert.doesNotMatch(header, /<div\b[^>]*>\s*<\/div>/);
   assert.doesNotMatch(html, /<li\b[^>]*>\s*<\/li>/);
-  assert.match(header, /<span>05<\/span>Contact/);
+  assert.match(header, /href="#contact">Contact<\/a>/);
   assert.match(html, /href="#projects"[^>]*>Explore selected work/);
   assert.match(html, /href="\/resume.pdf"[^>]*>View Resume/);
   assert.match(html, /quota\.releaseOrEnqueueRetry\(/);
