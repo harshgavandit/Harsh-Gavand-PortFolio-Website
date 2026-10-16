@@ -172,6 +172,7 @@ export async function generateVoice({
   generate,
   transcribeAudio,
   speakAudio,
+  onAccounting,
 }) {
   signal.throwIfAborted();
   const reservation = await quota.reserve(VOICE_RESERVATION);
@@ -179,11 +180,13 @@ export async function generateVoice({
     inFlight = 0,
     dispatched = false,
     result,
-    failure;
+    failure,
+    textUsage;
   try {
     signal.throwIfAborted();
     inFlight = TRANSCRIPTION_BOUND;
     dispatched = true;
+    onAccounting?.({ providerCall: true, allowanceMicros: reservation.amount });
     const transcription = await transcribeAudio(audio, { signal });
     completed += transcriptionCost(transcription.usage);
     inFlight = 0;
@@ -207,12 +210,18 @@ export async function generateVoice({
     signal.throwIfAborted();
     inFlight = estimate.amount;
     const reply = await generate(messages, signal, request);
+    textUsage = reply.usage;
     completed += usageCost(reply.usage, estimate);
     inFlight = 0;
     signal.throwIfAborted();
     if (typeof reply.answer !== "string" || !reply.answer.trim())
       throw new Error("Invalid reply");
-    result = { transcript, answer: reply.answer, sources: sourceLinks(reply), evidence: reply.evidence || [] };
+    result = {
+      transcript,
+      answer: reply.answer,
+      sources: sourceLinks(reply),
+      evidence: reply.evidence || [],
+    };
     const input = spokenText(reply.answer);
     inFlight = input.length * 30;
     try {
@@ -238,6 +247,12 @@ export async function generateVoice({
       actual,
     });
   }
+  onAccounting?.({
+    providerCall: dispatched,
+    allowanceMicros: actual,
+    inputTokens: textUsage?.input_tokens || 0,
+    outputTokens: textUsage?.output_tokens || 0,
+  });
   if (failure) throw failure;
   signal.throwIfAborted();
   return result;

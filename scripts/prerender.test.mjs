@@ -80,12 +80,15 @@ test("home has five chapters with unnumbered navigation and a hidden mobile menu
   }
 });
 
-test("voice entry controls are prerendered without autoplay and the static welcome serves as audio", async () => {
-  assert.match(html, /Text chat/);
-  assert.match(html, /Voice guide/);
-  assert.match(html, /Listen to welcome/);
-  assert.match(html, /Welcome transcript/);
-  assert.match(html, /AI-generated voice/);
+test("assistant entry is prerendered and voice implementation loads on demand without autoplay", async () => {
+  assert.match(html, /aria-label="Ask Harsh’s AI"/);
+  assert.doesNotMatch(html, /<dialog/);
+  const voiceSource = await readFile(
+    new URL("../src/components/VoiceGuide.tsx", import.meta.url),
+    "utf8",
+  );
+  assert.match(voiceSource, /Listen to welcome/);
+  assert.match(voiceSource, /Microphone starts only when you choose/);
   assert.doesNotMatch(html, /<audio[^>]+autoplay/i);
   const response = await fetch(origin + "/voice/welcome.mp3");
   assert.equal(response.status, 200);
@@ -117,7 +120,9 @@ test("AI workspace directly loads as complete HTML with accessible tools, correc
 
 test("selected work leads with evidence and links to focused case studies", () => {
   const cards = [
-    ...html.matchAll(/<article class="flagship-card"[\s\S]*?<\/article>/g),
+    ...html.matchAll(
+      /<article class="flagship-card(?:\s[^\"]*)?"[\s\S]*?<\/article>/g,
+    ),
   ].map((match) => match[0]);
   assert.equal(cards.length, featuredStudies.length);
   for (const card of cards) {

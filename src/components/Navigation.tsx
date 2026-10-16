@@ -125,12 +125,7 @@ export function Navigation() {
           </nav>
           <div className="header-actions">
             <MotionToggle className="header-motion" />
-            <button
-              className="header-ask"
-              onClick={ask}
-              aria-haspopup="dialog"
-              aria-controls="portfolio-assistant"
-            >
+            <button className="header-ask" onClick={ask} aria-haspopup="dialog">
               Ask AI <kbd>⌘ K</kbd>
             </button>
             <a

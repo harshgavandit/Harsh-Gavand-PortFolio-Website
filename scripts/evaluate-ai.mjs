@@ -11,15 +11,30 @@ if (!process.argv.includes("--live"))
     "Use --live for an explicitly paid evaluation with synthetic public inputs.",
   );
 const remote = process.argv.find((arg) => arg.startsWith("--url="))?.slice(6);
+const repeats = remote
+  ? 1
+  : Number(
+      process.argv.find((arg) => arg.startsWith("--repeat="))?.slice(9) || 2,
+    );
+if (!Number.isInteger(repeats) || repeats < 1 || repeats > 3)
+  throw new Error("Use one to three explicit benchmark repetitions.");
 if (remote && remote !== "https://harshgavand.dev")
   throw new Error(
     "Remote smoke checks are restricted to the canonical portfolio.",
   );
+const evaluatedRevision = await runtimeDigest();
 let server;
 let origin = remote;
 if (!origin) {
   // Controlled local evaluation permits this fixed dataset; production admission is unchanged.
-  server = createServer({ ...loadConfig(), clientLimit: 20, globalLimit: 20 });
+  server = createServer({
+    ...loadConfig(),
+    clientLimit: aiEvalCases.length * repeats + 5,
+    globalLimit: aiEvalCases.length * repeats + 5,
+    // Repetitions measure fresh provider output, never a previous sample answer.
+    guideCache: { get: async () => null, put: async () => {} },
+    metrics: { record: async () => {} },
+  });
   await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
   origin = `http://127.0.0.1:${server.address().port}`;
 }
@@ -28,60 +43,62 @@ const cases = remote
   : aiEvalCases;
 const results = [];
 try {
-  for (const item of cases) {
-    const path = item.kind === "guide" ? "/api/chat" : `/api/ai/${item.kind}`;
-    const body =
-      item.kind === "guide"
-        ? { messages: [{ role: "user", content: item.text }] }
-        : { text: item.text };
-    const started = performance.now();
-    let response, data, grading;
-    try {
-      response = await fetch(origin + path, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-        signal: AbortSignal.timeout(35000),
-      });
-      data = await response.json();
-      grading = response.ok
-        ? gradeCase(item, data)
-        : {
-            passed: false,
-            checks: [
-              {
-                name: `HTTP ${response.status} (${data.code || "unavailable"})`,
-                passed: false,
-              },
-            ],
-          };
-    } catch {
-      grading = {
-        passed: false,
-        checks: [
-          { name: "request completed within time budget", passed: false },
-        ],
+  for (let repetition = 1; repetition <= repeats; repetition++)
+    for (const item of cases) {
+      const path = item.kind === "guide" ? "/api/chat" : `/api/ai/${item.kind}`;
+      const body =
+        item.kind === "guide"
+          ? { messages: [{ role: "user", content: item.text }] }
+          : { text: item.text };
+      const started = performance.now();
+      let response, data, grading;
+      try {
+        response = await fetch(origin + path, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+          signal: AbortSignal.timeout(35000),
+        });
+        data = await response.json();
+        grading = response.ok
+          ? gradeCase(item, data)
+          : {
+              passed: false,
+              checks: [
+                {
+                  name: `HTTP ${response.status} (${data.code || "unavailable"})`,
+                  passed: false,
+                },
+              ],
+            };
+      } catch {
+        grading = {
+          passed: false,
+          checks: [
+            { name: "request completed within time budget", passed: false },
+          ],
+        };
+      }
+      const result = {
+        id: item.id,
+        kind: item.kind,
+        repetition,
+        passed: grading.passed,
+        checks: grading.checks
+          .filter((check) => check.passed)
+          .map((check) => check.name),
+        failedChecks: grading.checks
+          .filter((check) => !check.passed)
+          .map((check) => check.name),
+        elapsedMs: Math.round(performance.now() - started),
+        allowanceCostUsd: data?.execution?.allowanceCostUsd || 0,
+        output: data,
       };
+      results.push(result);
+      console.log(
+        `${result.passed ? "PASS" : "FAIL"} ${result.id}${result.failedChecks.length ? ": " + result.failedChecks.join(", ") : ""}`,
+      );
     }
-    const result = {
-      id: item.id,
-      kind: item.kind,
-      passed: grading.passed,
-      checks: grading.checks
-        .filter((check) => check.passed)
-        .map((check) => check.name),
-      failedChecks: grading.checks
-        .filter((check) => !check.passed)
-        .map((check) => check.name),
-      elapsedMs: Math.round(performance.now() - started),
-      allowanceCostUsd: data?.execution?.allowanceCostUsd || 0,
-      output: data,
-    };
-    results.push(result);
-    console.log(
-      `${result.passed ? "PASS" : "FAIL"} ${result.id}${result.failedChecks.length ? ": " + result.failedChecks.join(", ") : ""}`,
-    );
-  }
 } finally {
   if (server) {
     server.closeAllConnections();
@@ -100,21 +117,62 @@ const report = {
   model: "gpt-6-luna",
   evaluatedAt: new Date().toISOString(),
   sourceSnapshot: sourceSnapshot.digest,
-  runtimeDigest: await runtimeDigest(),
+  runtimeDigest: evaluatedRevision,
   environment: remote ? "production-http-smoke" : "local-http-real-provider",
+  dataset: {
+    uniqueCases: cases.length,
+    repetitions: repeats,
+    labelSource:
+      "Source-derived expectations and synthetic fixtures; not independently human-labelled",
+    graderVersion: 2,
+  },
   cases: results.map(({ output: _output, ...result }) => result),
   retrieval: { passed: retrievalPassed, total: retrievalCases.length },
   summary: {
     passed: results.filter((result) => result.passed).length,
     total: results.length,
     medianLatencyMs: latencies[Math.floor(latencies.length / 2)],
+    p95LatencyMs:
+      latencies[
+        Math.min(latencies.length - 1, Math.ceil(latencies.length * 0.95) - 1)
+      ],
+    inputTokens: results.reduce(
+      (sum, row) => sum + (row.output?.execution?.inputTokens || 0),
+      0,
+    ),
+    outputTokens: results.reduce(
+      (sum, row) => sum + (row.output?.execution?.outputTokens || 0),
+      0,
+    ),
     allowanceCostUsd:
       Math.round(
         results.reduce((sum, result) => sum + result.allowanceCostUsd, 0) *
           1000000,
       ) / 1000000,
   },
+  classification: {
+    matrix: Object.fromEntries(
+      ["billing", "access", "bug", "feature", "other"].map((expected) => [
+        expected,
+        Object.fromEntries(
+          ["billing", "access", "bug", "feature", "other"].map((actual) => [
+            actual,
+            results.filter(
+              (row) =>
+                cases.find((item) => item.id === row.id)?.category ===
+                  expected && row.output?.category === actual,
+            ).length,
+          ]),
+        ),
+      ]),
+    ),
+  },
 };
+assert.equal(
+  await runtimeDigest(),
+  evaluatedRevision,
+  "AI runtime changed during evaluation; rerun against a stable revision.",
+);
 await mkdir(new URL("../tmp/ai-evaluation/", import.meta.url), {
   recursive: true,
 });
@@ -131,12 +189,12 @@ if (!remote) {
     JSON.stringify(report, null, 2) + "\n",
   );
   await mkdir(
-    new URL("../verification/ai-workspace-2026-10-17/", import.meta.url),
+    new URL("../verification/audit-polish-2026-10-17/", import.meta.url),
     { recursive: true },
   );
   await writeFile(
     new URL(
-      "../verification/ai-workspace-2026-10-17/evaluation.json",
+      "../verification/audit-polish-2026-10-17/evaluation.json",
       import.meta.url,
     ),
     JSON.stringify(report, null, 2) + "\n",

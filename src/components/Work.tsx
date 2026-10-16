@@ -55,7 +55,7 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
   const community = communityProjects.some((item) => item.id === project.id);
   return (
     <article
-      className="flagship-card"
+      className={`flagship-card flagship-${project.slug}`}
       id={project.slug}
       tabIndex={-1}
       aria-labelledby={`${project.slug}-title`}
@@ -64,6 +64,9 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
         <div>
           <div className="flagship-kicker">
             <span className="category-badge">{project.category}</span>
+            {community && (
+              <span className="community-label">Community contribution</span>
+            )}
           </div>
           <h3 id={`${project.slug}-title`}>{study.shortName}</h3>
         </div>

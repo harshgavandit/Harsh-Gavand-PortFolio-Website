@@ -1,8 +1,43 @@
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
+import { execFileSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 import { sourceAllowlist } from "./source-allowlist.mjs";
 
+// Release bootstrap: index only committed, allowlisted portfolio files so their
+// immutable links can be published together with the generated corpus/report.
+// The default path always fetches published public revisions from GitHub.
+const localPortfolio = process.argv.includes("--committed-portfolio");
+const root = fileURLToPath(new URL("../", import.meta.url));
+const git = (...args) =>
+  execFileSync("git", args, {
+    cwd: root,
+    encoding: "utf8",
+    maxBuffer: 1000000,
+  }).trimEnd();
+if (
+  localPortfolio &&
+  !/^https:\/\/github\.com\/harshgavandit\/Harsh-Gavand-PortFolio-Website(?:\.git)?\/?$/i.test(
+    git("remote", "get-url", "origin"),
+  )
+)
+  throw new Error(
+    "Committed portfolio indexing requires the expected public repository origin.",
+  );
+
 const hash = (value) => createHash("sha256").update(value).digest("hex");
+let previous;
+try {
+  previous = JSON.parse(
+    await readFile(
+      new URL("../server/knowledge/source-index.json", import.meta.url),
+      "utf8",
+    ),
+  );
+} catch {
+  /* Initial index. */
+}
+let reused = 0;
 const headers = {
   Accept: "application/vnd.github+json",
   "User-Agent": "Harsh-Portfolio-Source-Indexer",
@@ -30,11 +65,14 @@ for (const entry of sourceAllowlist) {
     throw new Error(
       "Only explicitly allowlisted public repositories can be indexed.",
     );
-  const commit = (
-    await api(
-      `repos/harshgavandit/${entry.repo}/commits/${repository.default_branch}`,
-    )
-  ).sha;
+  const commit =
+    localPortfolio && entry.slug === "portfolio"
+      ? git("rev-parse", "HEAD")
+      : (
+          await api(
+            `repos/harshgavandit/${entry.repo}/commits/${repository.default_branch}`,
+          )
+        ).sha;
   if (!/^[a-f0-9]{40}$/.test(commit))
     throw new Error("Invalid source revision.");
   repositories.push({
@@ -52,13 +90,32 @@ for (const entry of sourceAllowlist) {
       /node_modules|\.env|secret|credential/i.test(path)
     )
       throw new Error("Invalid allowlisted source path.");
-    const url = `https://raw.githubusercontent.com/harshgavandit/${entry.repo}/${commit}/${path}`;
-    const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
-    if (!response.ok)
-      throw new Error(
-        `Source unavailable: ${entry.repo}/${path} (${response.status}).`,
-      );
-    const text = (await response.text()).replace(/\r\n/g, "\n");
+    const cached = previous?.files?.find(
+      (file) =>
+        file.repo === entry.repo &&
+        file.commit === commit &&
+        file.path === path &&
+        hash(file.text) === file.sha256,
+    );
+    let text;
+    if (localPortfolio && entry.slug === "portfolio") {
+      text = execFileSync("git", ["show", `${commit}:${path}`], {
+        cwd: root,
+        encoding: "utf8",
+        maxBuffer: 1000000,
+      }).replace(/\r\n/g, "\n");
+    } else if (cached) {
+      text = cached.text;
+      reused++;
+    } else {
+      const url = `https://raw.githubusercontent.com/harshgavandit/${entry.repo}/${commit}/${path}`;
+      const response = await fetch(url, { signal: AbortSignal.timeout(15000) });
+      if (!response.ok)
+        throw new Error(
+          `Source unavailable: ${entry.repo}/${path} (${response.status}).`,
+        );
+      text = (await response.text()).replace(/\r\n/g, "\n");
+    }
     if (
       Buffer.byteLength(text) > 65000 ||
       /sk-(?:proj-)?[a-zA-Z0-9_-]{24,}|gh[pousr]_[a-zA-Z0-9]{30,}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/.test(
@@ -117,5 +174,5 @@ await writeFile(
   ) + "\n",
 );
 console.log(
-  `Indexed ${files.length} explicitly selected public files from ${repositories.length} repositories. Snapshot ${snapshot.digest.slice(0, 12)}.`,
+  `Indexed ${files.length} explicitly selected public files from ${repositories.length} repositories (${reused} unchanged files reused). Snapshot ${snapshot.digest.slice(0, 12)}.`,
 );

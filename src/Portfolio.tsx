@@ -1,9 +1,8 @@
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect, type ComponentType } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { semanticFragment, workPage, workPath } from "./lib/projectNavigation";
-import { WorkDetail } from "./components/WorkDetail";
 import { profile } from "./data/portfolio";
 import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
@@ -11,10 +10,28 @@ import { FeaturedWork } from "./components/Work";
 import { Experience, Skills } from "./components/Profile";
 import { MotionPreferencesProvider } from "./components/MotionPreferences";
 import { Contact, Footer } from "./components/Contact";
-import { Assistant } from "./components/Assistant";
-import { ProjectArchive } from "./components/ProjectArchive";
+import { AssistantEntry } from "./components/AssistantEntry";
 import { DemoWarmup } from "./components/DemoWarmup";
-import { AIWorkspace } from "./components/AIWorkspace";
+const LazyWork = lazy(() =>
+  import("./components/WorkDetail").then((module) => ({
+    default: module.WorkDetail,
+  })),
+);
+const LazyArchive = lazy(() =>
+  import("./components/ProjectArchive").then((module) => ({
+    default: module.ProjectArchive,
+  })),
+);
+const LazyAI = lazy(() =>
+  import("./components/AIWorkspace").then((module) => ({
+    default: module.AIWorkspace,
+  })),
+);
+export type PageComponents = {
+  Work: ComponentType;
+  Archive: ComponentType;
+  AI: ComponentType;
+};
 
 function NotFound() {
   return (
@@ -34,9 +51,14 @@ function NotFound() {
 }
 export default function Portfolio({
   year = new Date().getFullYear(),
+  pages,
 }: {
   year?: number;
+  pages?: PageComponents;
 }) {
+  const Work = pages?.Work || LazyWork;
+  const Archive = pages?.Archive || LazyArchive;
+  const AI = pages?.AI || LazyAI;
   const { pathname, hash } = useLocation();
   useEffect(() => {
     const slug = pathname.match(/^\/work\/([^/]+)\/?$/)?.[1];
@@ -115,26 +137,38 @@ export default function Portfolio({
       </a>
       <Navigation />
       <DemoWarmup />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <main id="main" tabIndex={-1}>
-              <Hero />
-              <FeaturedWork />
-              <Experience />
-              <Skills />
-              <Contact />
-            </main>
-          }
-        />
-        <Route path="/archive" element={<ProjectArchive />} />
-        <Route path="/ai" element={<AIWorkspace />} />
-        <Route path="/work/:slug" element={<WorkDetail />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Suspense
+        fallback={
+          <main
+            id="main"
+            className="section-container route-loading"
+            role="status"
+          >
+            Opening the page…
+          </main>
+        }
+      >
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <main id="main" tabIndex={-1}>
+                <Hero />
+                <FeaturedWork />
+                <Experience />
+                <Skills />
+                <Contact />
+              </main>
+            }
+          />
+          <Route path="/archive" element={<Archive />} />
+          <Route path="/ai" element={<AI />} />
+          <Route path="/work/:slug" element={<Work />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
       <Footer year={year} />
-      <Assistant />
+      <AssistantEntry />
       <Analytics
         mode={import.meta.env.DEV ? "development" : "production"}
         route={pathname}

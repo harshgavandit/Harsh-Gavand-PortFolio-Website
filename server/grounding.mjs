@@ -66,6 +66,21 @@ const aliases = [
   [/\bportfolio\b|quota-lifecycle|quota reservation/i, "portfolio"],
 ];
 
+// File intent supplements lexical ranking. An exported constructor can match a
+// question well while omitting the Lua/dispatch code that actually enforces it.
+const portfolioIntents = [
+  {
+    query: /voice|transcript|speech costs/i,
+    path: /\/voice\.mjs$/,
+    terms: "transcription speech usage accounting",
+  },
+  {
+    query: /admission|concurren|rate.?limit/i,
+    path: /\/admission\.mjs$/,
+    terms: "atomic redis EVAL ADMIT_SCRIPT lease",
+  },
+];
+
 export function retrievalQuery(messages) {
   if (typeof messages === "string") return messages;
   const users = messages.filter((message) => message.role === "user");
@@ -78,12 +93,16 @@ export function retrievalQuery(messages) {
 export function retrieveCode(queryOrMessages, limit = 4) {
   const query = retrievalQuery(queryOrMessages);
   const selected = aliases.find(([pattern]) => pattern.test(query))?.[1];
-  const queryTerms = [...new Set(terms(query))];
+  const intent =
+    selected === "portfolio"
+      ? portfolioIntents.find((item) => item.query.test(query))
+      : undefined;
+  const queryTerms = [...new Set(terms(query + " " + (intent?.terms || "")))];
   if (!queryTerms.length) return [];
   const ranked = chunks
     .filter((chunk) => !selected || chunk.slug === selected)
     .map((chunk) => {
-      let score = 0;
+      let score = intent?.path.test(chunk.path) ? 14 : 0;
       for (const term of queryTerms) {
         const tf = chunk.tokens.filter((token) => token === term).length;
         const df = frequency.get(term) || 0;

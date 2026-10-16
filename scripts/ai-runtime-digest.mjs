@@ -6,6 +6,9 @@ export async function runtimeDigest() {
     "server/openai.mjs",
     "server/grounding.mjs",
     "server/ai-tools.mjs",
+    "server/evidence-policy.mjs",
+    "server/ai-operations.mjs",
+    "server/voice.mjs",
     "server/quota.mjs",
     "server/quota-lifecycle.mjs",
     "server/knowledge/source-index.json",
@@ -15,6 +18,7 @@ export async function runtimeDigest() {
     "src/data/workPresentation.ts",
     "src/data/caseEvidence.ts",
     "scripts/ai-eval-cases.mjs",
+    "scripts/evaluate-ai.mjs",
   ];
   const hash = createHash("sha256");
   for (const file of files) {

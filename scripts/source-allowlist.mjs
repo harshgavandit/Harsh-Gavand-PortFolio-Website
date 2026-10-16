@@ -8,6 +8,11 @@ export const sourceAllowlist = [
       "server/quota.mjs",
       "server/admission.mjs",
       "server/voice.mjs",
+      "server/openai.mjs",
+      "server/ai-tools.mjs",
+      "server/grounding.mjs",
+      "server/evidence-policy.mjs",
+      "server/ai-operations.mjs",
     ],
   },
   {

@@ -2,6 +2,7 @@ import { ChatError, knowledgeFor } from "./openai.mjs";
 import { experience, profile, skills } from "../src/data/portfolio.ts";
 import { sourceSnapshot } from "./grounding.mjs";
 import { workStudies } from "../src/data/workPresentation.ts";
+import { capabilityKeys, supportedEvidence } from "./evidence-policy.mjs";
 
 const propertyString = { type: "string" };
 const object = (properties) => ({
@@ -68,12 +69,19 @@ export function buildTask(kind, body, model) {
         id: `experience-${i}`,
         label: `${role.company} · experience`,
         href: "/#experience",
+        kind: "employment",
+        capabilities: capabilityKeys(role.tech.join(" ") + " " + role.shipment),
+        implementationCapabilities: capabilityKeys(
+          role.shipment + " " + JSON.stringify(role.points),
+        ),
         text: JSON.stringify(role),
       })),
       {
         id: "profile",
         label: "Profile & contact",
         href: "/#contact",
+        kind: "profile",
+        capabilities: [],
         text: JSON.stringify({
           name: profile.name,
           availability: profile.availability,
@@ -83,11 +91,18 @@ export function buildTask(kind, body, model) {
         id: "skills",
         label: "Published skills",
         href: "/#skills",
+        kind: "skill",
+        capabilities: capabilityKeys(JSON.stringify(skills)),
         text: JSON.stringify(skills),
       },
       ...knowledge.projectDetails.map((project) => ({
         id: `project-${project.id}`,
         label: project.title,
+        kind: "project",
+        capabilities: capabilityKeys(project.technologies.join(" ")),
+        implementationCapabilities: capabilityKeys(
+          [project.overview, project.role, ...project.features].join(" "),
+        ),
         href: workStudies.some((study) => study.projectId === project.id)
           ? `/work/${project.slug}/`
           : `/archive#${project.slug}`,
@@ -188,9 +203,7 @@ export function normalizeTask(task, value) {
       });
       return {
         requirement: row.requirement,
-        assessment: evidence.length ? row.assessment : "not_shown",
-        explanation: row.explanation,
-        evidence,
+        ...supportedEvidence(row, evidence),
       };
     });
     return {

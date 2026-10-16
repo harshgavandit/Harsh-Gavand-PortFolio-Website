@@ -77,7 +77,7 @@ export function assertHomepage(html, origin = profile.site) {
     "Decorative chapter numbers must stay removed",
   );
   assert.equal(
-    (html.match(/class="flagship-card"/g) || []).length,
+    (html.match(/class="flagship-card(?:\s[^\"]*)?"/g) || []).length,
     featuredStudies.length,
   );
   assert.ok(html.includes('id="all-projects"'));

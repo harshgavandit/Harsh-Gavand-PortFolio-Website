@@ -25,4 +25,5 @@ jobs:
       - run: npm test
       - run: npm run build
       - run: npm run test:prerender
+      - run: node scripts/check-ai-release.mjs
       # Paid provider evaluations are an explicit local release step, never a PR-secret dependency.

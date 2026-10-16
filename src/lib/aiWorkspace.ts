@@ -18,6 +18,8 @@ export type Execution = {
   allowanceCostUsd: number;
   sourceSnapshot: string;
   completedAt: string;
+  cache?: "hit" | "miss";
+  cacheCreatedAt?: string;
 };
 export type GuideResult = {
   answer: string;

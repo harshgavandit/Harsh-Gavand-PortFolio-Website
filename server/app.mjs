@@ -17,6 +17,7 @@ import { generateWithQuota } from "./quota-lifecycle.mjs";
 import { validateVoice, generateVoice, transcribe, speak } from "./voice.mjs";
 import { buildTask, normalizeTask, taskExecution } from "./ai-tools.mjs";
 import { reservationFor, usageCost } from "./quota.mjs";
+import { AIMetrics, PublicGuideCache } from "./ai-operations.mjs";
 
 const defaultDist = resolve(
   fileURLToPath(new URL("../dist/", import.meta.url)),
@@ -62,6 +63,12 @@ export function createApplication(config) {
     ((messages, signal, request) =>
       generateReply(messages, { apiKey, model, signal, request }));
   const clients = new Map();
+  const metrics =
+    config.metrics ||
+    (config.production ? new AIMetrics({ store: quota }) : null);
+  const guideCache =
+    config.guideCache ||
+    (config.production ? new PublicGuideCache({ store: quota }) : null);
   let global = { count: 0, reset: Date.now() + windowMs };
   let concurrent = 0;
   function json(res, status, body, retryAfter) {
@@ -99,6 +106,24 @@ export function createApplication(config) {
           resetTimezone: "UTC",
         },
       });
+    if (pathname === "/api/ai/metrics" && req.method === "GET") {
+      try {
+        const report = await metrics?.snapshot();
+        if (!report)
+          return json(res, 503, {
+            error: "Aggregate metrics are unavailable.",
+          });
+        res.writeHead(200, {
+          "Content-Type": "application/json",
+          "Cache-Control": "public, max-age=60",
+        });
+        return res.end(JSON.stringify(report));
+      } catch {
+        return json(res, 503, {
+          error: "Aggregate metrics are temporarily unavailable.",
+        });
+      }
+    }
     if (
       [
         "/api/chat",
@@ -107,218 +132,292 @@ export function createApplication(config) {
         "/api/ai/triage",
       ].includes(pathname)
     ) {
-      const voice = pathname === "/api/voice/chat";
-      const taskKind = pathname.startsWith("/api/ai/")
-        ? pathname.split("/").at(-1)
-        : null;
-      const started = performance.now();
-      const requestId = randomUUID();
-      if (req.method !== "POST") {
-        res.setHeader("Allow", "POST");
-        return json(res, 405, { error: "Use POST." });
-      }
-      if (req.headers.origin && !allowedOrigins.includes(req.headers.origin))
-        return json(res, 403, { error: "This origin is not allowed." });
-      if (!req.headers["content-type"]?.startsWith("application/json"))
-        return json(res, 415, { error: "Send JSON." });
-      if (!apiKey)
-        return json(res, 503, {
-          error:
-            "The assistant is not configured yet. Please contact Harsh directly.",
-          code: "not_configured",
-        });
-      let inFlight = false;
-      let admissionLease;
-      const controller = new AbortController();
-      // Leave Vercel time to settle accounting and release the shared lease.
-      const requestSignal = voice
-        ? AbortSignal.any([controller.signal, AbortSignal.timeout(45000)])
-        : controller.signal;
-      const abort = () => {
-        if (!res.writableEnded) controller.abort();
+      const metricStarted = performance.now();
+      const measured = {
+        kind:
+          pathname === "/api/voice/chat"
+            ? "voice"
+            : pathname.startsWith("/api/ai/")
+              ? pathname.split("/").at(-1)
+              : "guide",
+        providerCall: false,
+        cacheHit: false,
+        inputTokens: 0,
+        outputTokens: 0,
+        allowanceMicros: 0,
       };
-      res.on("close", abort);
-      req.on("aborted", abort);
-      req.on("error", abort);
+      const publicRequestId = randomUUID();
       try {
-        const chunks = [];
-        let bytes = 0;
-        for await (const chunk of req) {
-          bytes += chunk.length;
-          if (bytes > (voice ? 900000 : taskKind ? 28000 : 16384))
-            throw new ChatError(
-              413,
-              "too_large",
-              "The request is too large. Please shorten your question.",
-            );
-          chunks.push(chunk);
+        const voice = pathname === "/api/voice/chat";
+        const taskKind = pathname.startsWith("/api/ai/")
+          ? pathname.split("/").at(-1)
+          : null;
+        const started = performance.now();
+        const requestId = publicRequestId;
+        if (req.method !== "POST") {
+          res.setHeader("Allow", "POST");
+          return json(res, 405, { error: "Use POST." });
         }
-        let body;
+        if (req.headers.origin && !allowedOrigins.includes(req.headers.origin))
+          return json(res, 403, { error: "This origin is not allowed." });
+        if (!req.headers["content-type"]?.startsWith("application/json"))
+          return json(res, 415, { error: "Send JSON." });
+        if (!apiKey)
+          return json(res, 503, {
+            error:
+              "The assistant is not configured yet. Please contact Harsh directly.",
+            code: "not_configured",
+          });
+        let inFlight = false;
+        let admissionLease;
+        const controller = new AbortController();
+        // Leave Vercel time to settle accounting and release the shared lease.
+        const requestSignal = voice
+          ? AbortSignal.any([controller.signal, AbortSignal.timeout(45000)])
+          : controller.signal;
+        const abort = () => {
+          if (!res.writableEnded) controller.abort();
+        };
+        res.on("close", abort);
+        req.on("aborted", abort);
+        req.on("error", abort);
         try {
-          body = JSON.parse(Buffer.concat(chunks).toString("utf8"));
-        } catch {
-          throw new ChatError(400, "invalid_json", "Send a valid question.");
-        }
-        const voiceInput = voice ? validateVoice(body) : null;
-        const task = taskKind ? buildTask(taskKind, body, model) : null;
-        const messages = voice || task ? null : validateMessages(body);
-        const now = Date.now();
-        for (const [key, value] of clients)
-          if (value.reset <= now) clients.delete(key);
-        if (global.reset <= now) global = { count: 0, reset: now + windowMs };
-        // Only trust the nearest forwarded hop when explicitly enabled behind a trusted proxy.
-        const ip = trustProxy
-          ? String(req.headers["x-forwarded-for"] || req.socket.remoteAddress)
-              .split(",")
-              .at(-1)
-              .trim()
-          : req.socket.remoteAddress;
-        const client = clients.get(ip) || { count: 0, reset: now + windowMs };
-        if (config.admission) {
-          admissionLease = await config.admission.acquire(ip);
-        } else {
-          if (
-            client.count >= clientLimit ||
-            global.count >= globalLimit ||
-            concurrent >= 3
-          )
-            throw new ChatError(
-              429,
-              "rate_limit",
-              "The assistant is busy. Please try again shortly or use the contact links.",
+          const chunks = [];
+          let bytes = 0;
+          for await (const chunk of req) {
+            bytes += chunk.length;
+            if (bytes > (voice ? 900000 : taskKind ? 28000 : 16384))
+              throw new ChatError(
+                413,
+                "too_large",
+                "The request is too large. Please shorten your question.",
+              );
+            chunks.push(chunk);
+          }
+          let body;
+          try {
+            body = JSON.parse(Buffer.concat(chunks).toString("utf8"));
+          } catch {
+            throw new ChatError(400, "invalid_json", "Send a valid question.");
+          }
+          const voiceInput = voice ? validateVoice(body) : null;
+          const task = taskKind ? buildTask(taskKind, body, model) : null;
+          const messages = voice || task ? null : validateMessages(body);
+          const now = Date.now();
+          for (const [key, value] of clients)
+            if (value.reset <= now) clients.delete(key);
+          if (global.reset <= now) global = { count: 0, reset: now + windowMs };
+          // Only trust the nearest forwarded hop when explicitly enabled behind a trusted proxy.
+          const ip = trustProxy
+            ? String(req.headers["x-forwarded-for"] || req.socket.remoteAddress)
+                .split(",")
+                .at(-1)
+                .trim()
+            : req.socket.remoteAddress;
+          const client = clients.get(ip) || { count: 0, reset: now + windowMs };
+          if (config.admission) {
+            admissionLease = await config.admission.acquire(ip);
+          } else {
+            if (
+              client.count >= clientLimit ||
+              global.count >= globalLimit ||
               concurrent >= 3
-                ? 5
-                : Math.max(
-                    1,
-                    Math.ceil(
-                      ((client.count >= clientLimit
-                        ? client.reset
-                        : global.reset) -
-                        now) /
-                        1000,
+            )
+              throw new ChatError(
+                429,
+                "rate_limit",
+                "The assistant is busy. Please try again shortly or use the contact links.",
+                concurrent >= 3
+                  ? 5
+                  : Math.max(
+                      1,
+                      Math.ceil(
+                        ((client.count >= clientLimit
+                          ? client.reset
+                          : global.reset) -
+                          now) /
+                          1000,
+                      ),
                     ),
-                  ),
+              );
+            client.count++;
+            global.count++;
+            clients.set(ip, client);
+            concurrent++;
+            inFlight = true;
+          }
+          await config.beforeGenerate?.();
+          if (task) {
+            const result = await generateWithQuota({
+              request: task.request,
+              quota,
+              signal: controller.signal,
+              generate: async (request, { signal }) => {
+                measured.providerCall = true;
+                measured.allowanceMicros = reservationFor(request).amount;
+                const output = await (
+                  config.generateTask ||
+                  ((request, options) =>
+                    generateStructured(request, { apiKey, ...options }))
+                )(request, { signal });
+                return {
+                  normalized: normalizeTask(task, output),
+                  usage: output.usage,
+                };
+              },
+            });
+            controller.signal.throwIfAborted();
+            const execution = taskExecution(
+              requestId,
+              started,
+              result,
+              usageCost(result.usage, reservationFor(task.request)),
             );
-          client.count++;
-          global.count++;
-          clients.set(ip, client);
-          concurrent++;
-          inFlight = true;
-        }
-        await config.beforeGenerate?.();
-        if (task) {
+            Object.assign(measured, {
+              inputTokens: execution.inputTokens,
+              outputTokens: execution.outputTokens,
+              allowanceMicros: Math.round(execution.allowanceCostUsd * 1000000),
+            });
+            if (config.production)
+              console.info(
+                JSON.stringify({
+                  event: "portfolio_ai_complete",
+                  task: taskKind,
+                  ...execution,
+                }),
+              );
+            json(res, 200, { ...result.normalized, execution });
+            return;
+          }
+          if (voice) {
+            const result = await generateVoice({
+              ...voiceInput,
+              quota,
+              model,
+              signal: requestSignal,
+              generate,
+              onAccounting: (value) => Object.assign(measured, value),
+              transcribeAudio:
+                config.voiceTranscribe ||
+                ((audio, { signal }) => transcribe(audio, { apiKey, signal })),
+              speakAudio:
+                config.voiceSpeak ||
+                ((text, { signal }) => speak(text, { apiKey, signal })),
+            });
+            json(res, 200, result);
+            return;
+          }
+          const cached = await guideCache?.get(messages);
+          if (cached) {
+            measured.cacheHit = true;
+            const execution = {
+              ...taskExecution(
+                requestId,
+                started,
+                { usage: { input_tokens: 0, output_tokens: 0 } },
+                0,
+              ),
+              cache: "hit",
+              cacheCreatedAt: cached.cacheCreatedAt,
+            };
+            json(res, 200, {
+              answer: cached.answer,
+              sources: sourceLinks(cached),
+              evidence: cached.evidence,
+              execution,
+            });
+            return;
+          }
+          const request = buildRequest(messages, model);
           const result = await generateWithQuota({
-            request: task.request,
+            request,
             quota,
             signal: controller.signal,
-            generate: async (request, { signal }) => {
-              const output = await (
-                config.generateTask ||
-                ((request, options) =>
-                  generateStructured(request, { apiKey, ...options }))
-              )(request, { signal });
-              return {
-                normalized: normalizeTask(task, output),
-                usage: output.usage,
-              };
+            generate: (reservedRequest, { signal }) => {
+              measured.providerCall = true;
+              measured.allowanceMicros = reservationFor(reservedRequest).amount;
+              return generate(messages, signal, reservedRequest);
             },
           });
-          controller.signal.throwIfAborted();
+          if (typeof result.answer !== "string" || !result.answer.trim())
+            throw new Error("Invalid response");
           const execution = taskExecution(
             requestId,
             started,
             result,
-            usageCost(result.usage, reservationFor(task.request)),
+            usageCost(result.usage, reservationFor(request)),
           );
+          Object.assign(measured, {
+            inputTokens: execution.inputTokens,
+            outputTokens: execution.outputTokens,
+            allowanceMicros: Math.round(execution.allowanceCostUsd * 1000000),
+          });
           if (config.production)
             console.info(
               JSON.stringify({
                 event: "portfolio_ai_complete",
-                task: taskKind,
+                task: "guide",
                 ...execution,
               }),
             );
-          json(res, 200, { ...result.normalized, execution });
-          return;
-        }
-        if (voice) {
-          const result = await generateVoice({
-            ...voiceInput,
-            quota,
-            model,
-            signal: requestSignal,
-            generate,
-            transcribeAudio:
-              config.voiceTranscribe ||
-              ((audio, { signal }) => transcribe(audio, { apiKey, signal })),
-            speakAudio:
-              config.voiceSpeak ||
-              ((text, { signal }) => speak(text, { apiKey, signal })),
+          json(res, 200, {
+            answer: result.answer,
+            sources: sourceLinks(result),
+            evidence: result.evidence || [],
+            execution: { ...execution, cache: "miss" },
           });
-          json(res, 200, result);
-          return;
+          await guideCache?.put(messages, result);
+        } catch (error) {
+          if (!res.destroyed)
+            json(
+              res,
+              error instanceof ChatError ? error.status : 502,
+              {
+                error:
+                  error instanceof ChatError
+                    ? error.message
+                    : "The assistant is temporarily unavailable. Please try again.",
+                code: error instanceof ChatError ? error.code : "unavailable",
+              },
+              error instanceof ChatError ? error.retryAfter : undefined,
+            );
+        } finally {
+          if (inFlight) concurrent--;
+          if (admissionLease) {
+            try {
+              await config.admission.release(admissionLease);
+            } catch {
+              // The shared lease expires even if this cleanup cannot reach Redis.
+              console.error(
+                JSON.stringify({ event: "admission_release_unavailable" }),
+              );
+            }
+          }
+          res.off("close", abort);
+          req.off("aborted", abort);
+          req.off("error", abort);
         }
-        const request = buildRequest(messages, model);
-        const result = await generateWithQuota({
-          request,
-          quota,
-          signal: controller.signal,
-          generate: (reservedRequest, { signal }) =>
-            generate(messages, signal, reservedRequest),
-        });
-        if (typeof result.answer !== "string" || !result.answer.trim())
-          throw new Error("Invalid response");
-        const execution = taskExecution(
-          requestId,
-          started,
-          result,
-          usageCost(result.usage, reservationFor(request)),
-        );
-        if (config.production)
-          console.info(
+        return;
+      } finally {
+        const status =
+          res.destroyed && !res.writableEnded ? 499 : res.statusCode;
+        if (config.production && status !== 200)
+          console.error(
             JSON.stringify({
-              event: "portfolio_ai_complete",
-              task: "guide",
-              ...execution,
+              event: "portfolio_ai_failure",
+              requestId: publicRequestId,
+              task: measured.kind,
+              status,
+              elapsedMs: Math.round(performance.now() - metricStarted),
+              providerDispatched: measured.providerCall,
             }),
           );
-        json(res, 200, {
-          answer: result.answer,
-          sources: sourceLinks(result),
-          evidence: result.evidence || [],
-          execution,
+        await metrics?.record({
+          ...measured,
+          status,
+          elapsedMs: Math.round(performance.now() - metricStarted),
         });
-      } catch (error) {
-        if (!res.destroyed)
-          json(
-            res,
-            error instanceof ChatError ? error.status : 502,
-            {
-              error:
-                error instanceof ChatError
-                  ? error.message
-                  : "The assistant is temporarily unavailable. Please try again.",
-              code: error instanceof ChatError ? error.code : "unavailable",
-            },
-            error instanceof ChatError ? error.retryAfter : undefined,
-          );
-      } finally {
-        if (inFlight) concurrent--;
-        if (admissionLease) {
-          try {
-            await config.admission.release(admissionLease);
-          } catch {
-            // The shared lease expires even if this cleanup cannot reach Redis.
-            console.error(
-              JSON.stringify({ event: "admission_release_unavailable" }),
-            );
-          }
-        }
-        res.off("close", abort);
-        req.off("aborted", abort);
-        req.off("error", abort);
       }
-      return;
     }
     if (pathname.startsWith("/api/"))
       return json(res, 404, { error: "Not found." });

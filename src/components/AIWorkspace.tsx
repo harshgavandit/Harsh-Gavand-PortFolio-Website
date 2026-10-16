@@ -18,6 +18,7 @@ import type {
 } from "../lib/aiWorkspace";
 import sourceSummary from "../data/sourceSummary.json";
 import quality from "../data/aiQuality.json";
+import { Operations } from "./AIOperations";
 
 const indiaDate = (value: string) =>
   new Intl.DateTimeFormat("en-IN", {
@@ -113,6 +114,16 @@ function ExecutionDetails({ data }: { data?: Execution }) {
           <dt>Model</dt>
           <dd>{data.model}</dd>
         </div>
+        {data.cache && (
+          <div>
+            <dt>Execution</dt>
+            <dd>
+              {data.cache === "hit"
+                ? "Versioned public-answer cache · no new model call"
+                : "Live model request"}
+            </dd>
+          </div>
+        )}
         <div>
           <dt>Server time</dt>
           <dd>{(data.elapsedMs / 1000).toFixed(2)}s</dd>
@@ -508,6 +519,7 @@ export function AIWorkspace() {
           { label: "Ticket triage", content: <TicketWorkbench /> },
         ]}
       />
+      <Operations />
       <section className="ai-quality" aria-labelledby="ai-quality-title">
         <div>
           <span className="eyebrow">
@@ -556,6 +568,23 @@ export function AIWorkspace() {
                 : "Not run"}{" "}
               · Source snapshot: {quality.sourceSnapshot.slice(0, 12)}
             </p>
+            {"dataset" in quality && (
+              <p className="ai-tool-note">
+                {
+                  (
+                    quality.dataset as {
+                      uniqueCases: number;
+                      repetitions: number;
+                    }
+                  ).uniqueCases
+                }{" "}
+                distinct synthetic cases ·{" "}
+                {(quality.dataset as { repetitions: number }).repetitions}{" "}
+                repetitions. Expectations come from source inspection and
+                fixture labels; this is not an independently human-labelled
+                benchmark.
+              </p>
+            )}
             <details>
               <summary>Inspect cases and grading boundaries</summary>
               <ul>
@@ -566,8 +595,8 @@ export function AIWorkspace() {
                     checks: string[];
                     elapsedMs: number;
                   }[]
-                ).map((item) => (
-                  <li key={item.id}>
+                ).map((item, index) => (
+                  <li key={`${item.id}-${index}`}>
                     <strong>
                       {item.passed ? "Pass" : "Fail"} · {item.id}
                     </strong>

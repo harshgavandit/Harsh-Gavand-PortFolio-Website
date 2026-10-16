@@ -1,6 +1,6 @@
 import { spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { dirname, resolve, delimiter } from "node:path";
 import { fileURLToPath } from "node:url";
 import { npmEnvironment } from "./npm-environment.mjs";
 
@@ -9,6 +9,11 @@ if (!args.length)
   throw new Error("Provide npm arguments, such as ci or run build.");
 const root = fileURLToPath(new URL("../", import.meta.url));
 const env = npmEnvironment(process.env);
+const pathKey =
+  Object.keys(env).find((key) => key.toLowerCase() === "path") || "PATH";
+// npm scripts must use the selected Node installation too, including when the
+// desktop shell has a different system-wide major version earlier in PATH.
+env[pathKey] = dirname(process.execPath) + delimiter + (env[pathKey] || "");
 const bundledCli = [
   resolve(dirname(process.execPath), "node_modules/npm/bin/npm-cli.js"),
   resolve(dirname(process.execPath), "../node_modules/npm/bin/npm-cli.js"),

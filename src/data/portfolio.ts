@@ -364,7 +364,7 @@ export const experience = [
     role: "AI-Native Full-Stack Developer",
     period: "Nov 2025 — Sep 2026",
     shipment:
-      "End-to-end full-stack applications and automation tools for internal company processes.",
+      "Quotation building, invoice generation, and automated email tools for internal operations.",
     tech: [
       "Django",
       "React",
@@ -383,7 +383,7 @@ export const experience = [
     points: [
       "Production API architecture: Engineered Python and JavaScript REST services, asynchronous tasks, and third-party integrations to support complete Django + React business workflows.",
       "Relational modeling & reporting: Designed SQL schemas and reusable reporting queries to keep operational records consistent across product screens and downstream reports.",
-      "End-to-end ownership: Delivered full-stack applications and internal automation tools in a full-time role, from interface and API implementation through application delivery.",
+      "Workflow automation: Delivered quotation-building, invoice-generation, and automated email tools, owning the full-stack implementation and application delivery in a full-time role.",
     ],
   },
   {
@@ -411,7 +411,7 @@ export const experience = [
     ],
     points: [
       "Responsive interfaces: Built product screens with consistent layouts and interactions across browsers, devices, and screen sizes.",
-      "API-driven rendering: Integrated asynchronous REST data flows across 10+ pages and improved average page-load time by 30%.",
+      "API-driven rendering: Integrated asynchronous REST data flows across 10+ pages, with loading and error states for data-driven product screens.",
       "Interface reliability: Resolved 20+ UI defects through device testing and screen-size corrections across responsive layouts.",
     ],
   },

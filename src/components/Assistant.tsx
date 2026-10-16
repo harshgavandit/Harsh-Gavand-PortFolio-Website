@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import {
   ArrowUp,
   ArrowUpRight,
-  MessageCircle,
   RotateCcw,
   Sparkles,
   Square,
@@ -23,22 +22,32 @@ type Message = {
   evidence?: Evidence[];
 };
 
-export function Assistant() {
+export function Assistant({
+  initialRequest,
+  onOpenChange,
+}: {
+  initialRequest: { prompt: string; opener: HTMLElement | null };
+  onOpenChange: (open: boolean) => void;
+}) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const openerRef = useRef<HTMLElement | null>(null);
+  const openerRef = useRef<HTMLElement | null>(initialRequest.opener);
   const endRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<AbortController | null>(null);
   const generationRef = useRef(0);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(initialRequest.prompt);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [retryAllowed, setRetryAllowed] = useState(true);
   const [mode, setMode] = useState<"text" | "voice">("text");
   const [voiceReset, setVoiceReset] = useState(0);
+
+  useEffect(() => {
+    onOpenChange(open);
+  }, [open, onOpenChange]);
 
   useEffect(() => {
     const show = (event: Event) => {
@@ -191,21 +200,6 @@ export function Assistant() {
 
   return (
     <>
-      <button
-        type="button"
-        className="assistant-launcher"
-        onClick={(event) => {
-          openerRef.current = event.currentTarget;
-          setOpen(true);
-        }}
-        aria-haspopup="dialog"
-        aria-expanded={open}
-        aria-controls="portfolio-assistant"
-      >
-        <MessageCircle size={20} aria-hidden="true" />
-        <span className="assistant-launcher-label">Ask Harsh’s AI</span>
-        <kbd aria-hidden="true">⌘ K</kbd>
-      </button>
       <dialog
         ref={dialogRef}
         id="portfolio-assistant"

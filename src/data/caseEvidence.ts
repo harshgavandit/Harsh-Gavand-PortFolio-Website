@@ -92,7 +92,7 @@ export const caseEvidence: Record<string, CaseEvidence> = {
       choice:
         "Persist project status and media URLs around the provider workflow, with compensating credit increments in caught failure paths.",
       alternative:
-        "Keep generation state only in the browser and treat every provider request as an immediate result.",
+        "A durable worker would claim a persisted job, store the provider operation, and resume bounded polling outside the original HTTP request. It adds worker scheduling, leases, and reconciliation; the current request-bound implementation avoids that infrastructure but cannot recover every interruption.",
       reason:
         "Persisted status and error fields let the interface recover the latest job state after a reload. Credit compensation handles caught provider errors, while interrupted or concurrent requests need separate safeguards.",
     },

@@ -20,18 +20,18 @@ export function Hero() {
             HARSH GAVAND / FULL-STACK &amp; AI ENGINEER
           </p>
           <h1 id="hero-title">
-            Full-stack products.
+            From business workflows.
             <br />
             <span>
-              AI with clear
+              To applied AI
               <br />
-              boundaries.
+              systems.
             </span>
           </h1>
           <p className="hero-description">
-            React interfaces, Python and Node.js services, and AI workflows with
-            explicit state and failure handling. From business applications at
-            GlobeTrek to independent media and agent systems.
+            Delivered quotation, invoicing, and email-automation tools at
+            GlobeTrek. Explore the React interfaces, Python and Node.js APIs,
+            and applied AI workflows behind my work.
           </p>
           <p className="hero-tenure">
             <strong>2+ years</strong> building full-stack products, backend
