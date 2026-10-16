@@ -20,9 +20,9 @@ export function Hero() {
             HARSH GAVAND / FULL-STACK &amp; AI ENGINEER
           </p>
           <h1 id="hero-title">
-            I help Founder's
+            I Help Founder's
             <br />
-            <span>Build Reliable and scalable Products.</span>
+            <span>Build Reliable And Scalable Products.</span>
           </h1>
           <p className="hero-tenure">
             <strong>2+ years</strong> building full-stack products, backend
