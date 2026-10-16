@@ -68,6 +68,24 @@ const notFound = documentFor("/404")
   );
 await writeFile(new URL("../dist/index.html", import.meta.url), homepage);
 await writeFile(new URL("../dist/404.html", import.meta.url), notFound);
+const ai = documentFor("/ai")
+  .replace(/<title>.*?<\/title>/s, "<title>AI Workspace | Harsh Gavand</title>")
+  .replace(/(rel="canonical"\s+href=")[^"]+"/, `$1${origin}/ai/"`)
+  .replace(/(property="og:url"\s+content=")[^"]+"/, `$1${origin}/ai/"`)
+  .replace(
+    /(property="og:title"\s+content=")[^"]+"/,
+    '$1AI Workspace | Harsh Gavand"',
+  )
+  .replace(
+    /(name="twitter:title"\s+content=")[^"]+"/,
+    '$1AI Workspace | Harsh Gavand"',
+  )
+  .replace(
+    /((?:name="description"|property="og:description"|name="twitter:description")\s+content=")[^"]+"/g,
+    '$1Explore a source-grounded technical guide, evidence-based role comparison, and live AI support-ticket triage by Harsh Gavand."',
+  );
+await mkdir(new URL("../dist/ai/", import.meta.url), { recursive: true });
+await writeFile(new URL("../dist/ai/index.html", import.meta.url), ai);
 await mkdir(new URL("../dist/archive/", import.meta.url), { recursive: true });
 await writeFile(
   new URL("../dist/archive/index.html", import.meta.url),
@@ -113,7 +131,7 @@ await writeFile(
 );
 await writeFile(
   new URL("../dist/sitemap.xml", import.meta.url),
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${origin}/</loc></url><url><loc>${origin}/archive/</loc></url>${workLocations.map((location) => `<url><loc>${origin}${location}</loc></url>`).join("")}</urlset>\n`,
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${origin}/</loc></url><url><loc>${origin}/archive/</loc></url><url><loc>${origin}/ai/</loc></url>${workLocations.map((location) => `<url><loc>${origin}${location}</loc></url>`).join("")}</urlset>\n`,
 );
 console.log(
   `Pre-rendered home, archive (${archiveProjects.length} projects), ${workLocations.length} case studies, and 404. Canonical origin: ${origin}`,

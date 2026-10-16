@@ -14,6 +14,7 @@ import { Contact, Footer } from "./components/Contact";
 import { Assistant } from "./components/Assistant";
 import { ProjectArchive } from "./components/ProjectArchive";
 import { DemoWarmup } from "./components/DemoWarmup";
+import { AIWorkspace } from "./components/AIWorkspace";
 
 function NotFound() {
   return (
@@ -40,23 +41,31 @@ export default function Portfolio({
   useEffect(() => {
     const slug = pathname.match(/^\/work\/([^/]+)\/?$/)?.[1];
     const page = workPage(slug);
+    const ai = pathname.replace(/\/$/, "") === "/ai";
     const known =
-      pathname === "/" || pathname.replace(/\/$/, "") === "/archive" || !!page;
-    const title = page
-      ? `${page.study.shortName} | Harsh Gavand`
-      : pathname.replace(/\/$/, "") === "/archive"
-        ? "Project Archive | Harsh Gavand — Full-Stack & AI Engineer"
-        : known
-          ? "Harsh Gavand | Full-Stack & AI Engineer"
-          : "Page not found | Harsh Gavand";
+      pathname === "/" ||
+      pathname.replace(/\/$/, "") === "/archive" ||
+      ai ||
+      !!page;
+    const title = ai
+      ? "AI Workspace | Harsh Gavand"
+      : page
+        ? `${page.study.shortName} | Harsh Gavand`
+        : pathname.replace(/\/$/, "") === "/archive"
+          ? "Project Archive | Harsh Gavand — Full-Stack & AI Engineer"
+          : known
+            ? "Harsh Gavand | Full-Stack & AI Engineer"
+            : "Page not found | Harsh Gavand";
     document.title = title;
     const canonical =
       profile.site +
-      (page
-        ? workPath(page.project.slug)
-        : pathname.replace(/\/$/, "") === "/archive"
-          ? "/archive/"
-          : "/");
+      (ai
+        ? "/ai/"
+        : page
+          ? workPath(page.project.slug)
+          : pathname.replace(/\/$/, "") === "/archive"
+            ? "/archive/"
+            : "/");
     document
       .querySelector('link[rel="canonical"]')
       ?.setAttribute("href", canonical);
@@ -70,7 +79,9 @@ export default function Portfolio({
       .querySelector('meta[name="twitter:title"]')
       ?.setAttribute("content", title);
     const description =
-      page?.study.summary ||
+      (ai
+        ? "Explore a source-grounded technical guide, evidence-based role comparison, and live AI support-ticket triage by Harsh Gavand."
+        : page?.study.summary) ||
       "Harsh Gavand — Full-Stack & AI Engineer in Mumbai. Explore MERN, Python, SaaS, and AI projects with implementation details, live demos, and source code.";
     for (const selector of [
       'meta[name="description"]',
@@ -118,6 +129,7 @@ export default function Portfolio({
           }
         />
         <Route path="/archive" element={<ProjectArchive />} />
+        <Route path="/ai" element={<AIWorkspace />} />
         <Route path="/work/:slug" element={<WorkDetail />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

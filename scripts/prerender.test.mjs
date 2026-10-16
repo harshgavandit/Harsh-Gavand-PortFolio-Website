@@ -93,6 +93,28 @@ test("voice entry controls are prerendered without autoplay and the static welco
   assert.ok((await response.arrayBuffer()).byteLength > 1000);
 });
 
+test("AI workspace directly loads as complete HTML with accessible tools, correct SEO, and no backend corpus exposure", async () => {
+  for (const path of ["/ai", "/ai/"]) {
+    const response = await fetch(origin + path);
+    assert.equal(response.status, 200);
+    const page = await response.text();
+    assert.match(page, /<title>AI Workspace \| Harsh Gavand<\/title>/);
+    assert.match(page, /rel="canonical"[^>]+\/ai\//);
+    assert.match(page, /id="code-question"/);
+    assert.match(page, /id="role-description"/);
+    assert.match(page, /id="ticket-input"/);
+    assert.equal((page.match(/role="tabpanel"/g) || []).length, 3);
+    assert.match(page, /Run live triage/);
+    assert.match(page, /Indexed repositories and commits/);
+    assert.ok(!page.includes('<div id="root"></div>'));
+  }
+  assert.equal(
+    (await fetch(origin + "/server/knowledge/source-index.json")).status,
+    404,
+  );
+  assert.match(await (await fetch(origin + "/sitemap.xml")).text(), /\/ai\//);
+});
+
 test("selected work leads with evidence and links to focused case studies", () => {
   const cards = [
     ...html.matchAll(/<article class="flagship-card"[\s\S]*?<\/article>/g),

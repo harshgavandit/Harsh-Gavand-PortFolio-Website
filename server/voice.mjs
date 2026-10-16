@@ -212,7 +212,7 @@ export async function generateVoice({
     signal.throwIfAborted();
     if (typeof reply.answer !== "string" || !reply.answer.trim())
       throw new Error("Invalid reply");
-    result = { transcript, answer: reply.answer, sources: sourceLinks(reply) };
+    result = { transcript, answer: reply.answer, sources: sourceLinks(reply), evidence: reply.evidence || [] };
     const input = spokenText(reply.answer);
     inFlight = input.length * 30;
     try {

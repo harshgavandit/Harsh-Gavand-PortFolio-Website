@@ -2,6 +2,7 @@ export type ConversationMessage = {
   role: "user" | "assistant";
   content: string;
   sources?: { label: string; href: string }[];
+  evidence?: import("./aiWorkspace").CodeEvidence[];
 };
 
 export function voiceHistory(messages: ConversationMessage[]) {

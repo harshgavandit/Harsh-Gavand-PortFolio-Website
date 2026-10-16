@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "indexedAt": "2026-10-16T19:02:27.279Z",
+  "digest": "bdc1449fc030defbad135f54c3e0f8512eb7da8c8a549b274a8f117c242d28aa",
+  "fileCount": 23,
+  "repositories": [
+    {
+      "repo": "Harsh-Gavand-PortFolio-Website",
+      "slug": "portfolio",
+      "title": "Portfolio AI backend",
+      "commit": "02ff4ff29a81fd6d3dd04852dd051dace01dc11f",
+      "url": "https://github.com/harshgavandit/Harsh-Gavand-PortFolio-Website",
+      "files": 4
+    },
+    {
+      "repo": "ugc-project",
+      "slug": "ugc-platform",
+      "title": "UGC Content Studio",
+      "commit": "3394b05ffc6a6d9c80b284f6927b2d97aebc72f3",
+      "url": "https://github.com/harshgavandit/ugc-project",
+      "files": 4
+    },
+    {
+      "repo": "Banking_App_SaaS",
+      "slug": "banking-saas",
+      "title": "LendFlow",
+      "commit": "ef597f8cd79a30d79db2ebf51c7b7816b5a2ac0a",
+      "url": "https://github.com/harshgavandit/Banking_App_SaaS",
+      "files": 3
+    },
+    {
+      "repo": "banking-agent-harness",
+      "slug": "banking-agent-harness",
+      "title": "Banking Agent Harness",
+      "commit": "2b8b094bc80bef18f75b1e50c5235c77d5a246c9",
+      "url": "https://github.com/harshgavandit/banking-agent-harness",
+      "files": 4
+    },
+    {
+      "repo": "support-ticket-classifier",
+      "slug": "ai-support-ticket-classifier",
+      "title": "AI Support Ticket Classifier",
+      "commit": "64563514137a13d99c43b806868172c4719e14c8",
+      "url": "https://github.com/harshgavandit/support-ticket-classifier",
+      "files": 5
+    },
+    {
+      "repo": "rag-documentation-assistant",
+      "slug": "hybrid-rag-documentation-assistant",
+      "title": "Hybrid RAG Documentation Assistant",
+      "commit": "3d021d9d178d85a17e61bb22c92d18f65abcd284",
+      "url": "https://github.com/harshgavandit/rag-documentation-assistant",
+      "files": 3
+    }
+  ]
+}

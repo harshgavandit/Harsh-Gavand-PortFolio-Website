@@ -7,6 +7,7 @@ import "./fonts.css";
 import "./recruiter.css";
 import "./evidence.css";
 import "./voice.css";
+import "./ai-workspace.css";
 
 const root = document.getElementById("root")!;
 const prerendered = root.dataset.prerendered === "true";

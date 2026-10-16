@@ -170,6 +170,7 @@ export function VoiceGuide({
         role: "assistant",
         content: data.answer,
         sources: data.sources,
+        evidence: data.evidence,
       });
       setDestination(voiceDestination(data.transcript));
       releaseAudio();

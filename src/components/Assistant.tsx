@@ -12,12 +12,15 @@ import { profile } from "../data/portfolio";
 import { isAssistantShortcut } from "../lib/interaction";
 import { VoiceGuide } from "./VoiceGuide";
 import { AssistantQuestions } from "./AssistantQuestions";
+import { CodeEvidence } from "./CodeEvidence";
+import type { CodeEvidence as Evidence } from "../lib/aiWorkspace";
 
 type Source = { label: string; href: string };
 type Message = {
   role: "user" | "assistant";
   content: string;
   sources?: Source[];
+  evidence?: Evidence[];
 };
 
 export function Assistant() {
@@ -162,7 +165,12 @@ export function Assistant() {
       if (generation !== generationRef.current) return;
       setMessages([
         ...next,
-        { role: "assistant", content: data.answer, sources: data.sources },
+        {
+          role: "assistant",
+          content: data.answer,
+          sources: data.sources,
+          evidence: data.evidence,
+        },
       ]);
     } catch (failure) {
       if (generation !== generationRef.current) return;
@@ -262,6 +270,9 @@ export function Assistant() {
             >
               Voice guide
             </button>
+            <a href="/ai/" className="assistant-workspace-link" onClick={close}>
+              AI workspace <ArrowUpRight size={14} aria-hidden="true" />
+            </a>
           </div>
           <div className="assistant-scroll" ref={scrollRef}>
             <VoiceGuide
@@ -311,6 +322,7 @@ export function Assistant() {
                     {message.role === "user" ? "You" : "Harsh’s assistant"}
                   </span>
                   <p>{message.content}</p>
+                  <CodeEvidence items={message.evidence} />
                   {!!message.sources?.length && (
                     <nav
                       className="assistant-sources"

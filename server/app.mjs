@@ -2,17 +2,21 @@ import { createServer as httpServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import { resolve, extname, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import { randomUUID } from "node:crypto";
 import {
   ChatError,
   validateMessages,
   generateReply,
   sourceLinks,
   buildRequest,
+  generateStructured,
 } from "./openai.mjs";
 
 import { RedisQuota } from "./quota.mjs";
 import { generateWithQuota } from "./quota-lifecycle.mjs";
 import { validateVoice, generateVoice, transcribe, speak } from "./voice.mjs";
+import { buildTask, normalizeTask, taskExecution } from "./ai-tools.mjs";
+import { reservationFor, usageCost } from "./quota.mjs";
 
 const defaultDist = resolve(
   fileURLToPath(new URL("../dist/", import.meta.url)),
@@ -95,8 +99,20 @@ export function createApplication(config) {
           resetTimezone: "UTC",
         },
       });
-    if (pathname === "/api/chat" || pathname === "/api/voice/chat") {
+    if (
+      [
+        "/api/chat",
+        "/api/voice/chat",
+        "/api/ai/recruiter",
+        "/api/ai/triage",
+      ].includes(pathname)
+    ) {
       const voice = pathname === "/api/voice/chat";
+      const taskKind = pathname.startsWith("/api/ai/")
+        ? pathname.split("/").at(-1)
+        : null;
+      const started = performance.now();
+      const requestId = randomUUID();
       if (req.method !== "POST") {
         res.setHeader("Allow", "POST");
         return json(res, 405, { error: "Use POST." });
@@ -129,7 +145,7 @@ export function createApplication(config) {
         let bytes = 0;
         for await (const chunk of req) {
           bytes += chunk.length;
-          if (bytes > (voice ? 900000 : 16384))
+          if (bytes > (voice ? 900000 : taskKind ? 28000 : 16384))
             throw new ChatError(
               413,
               "too_large",
@@ -144,7 +160,8 @@ export function createApplication(config) {
           throw new ChatError(400, "invalid_json", "Send a valid question.");
         }
         const voiceInput = voice ? validateVoice(body) : null;
-        const messages = voice ? null : validateMessages(body);
+        const task = taskKind ? buildTask(taskKind, body, model) : null;
+        const messages = voice || task ? null : validateMessages(body);
         const now = Date.now();
         for (const [key, value] of clients)
           if (value.reset <= now) clients.delete(key);
@@ -189,6 +206,41 @@ export function createApplication(config) {
           inFlight = true;
         }
         await config.beforeGenerate?.();
+        if (task) {
+          const result = await generateWithQuota({
+            request: task.request,
+            quota,
+            signal: controller.signal,
+            generate: async (request, { signal }) => {
+              const output = await (
+                config.generateTask ||
+                ((request, options) =>
+                  generateStructured(request, { apiKey, ...options }))
+              )(request, { signal });
+              return {
+                normalized: normalizeTask(task, output),
+                usage: output.usage,
+              };
+            },
+          });
+          controller.signal.throwIfAborted();
+          const execution = taskExecution(
+            requestId,
+            started,
+            result,
+            usageCost(result.usage, reservationFor(task.request)),
+          );
+          if (config.production)
+            console.info(
+              JSON.stringify({
+                event: "portfolio_ai_complete",
+                task: taskKind,
+                ...execution,
+              }),
+            );
+          json(res, 200, { ...result.normalized, execution });
+          return;
+        }
         if (voice) {
           const result = await generateVoice({
             ...voiceInput,
@@ -216,7 +268,26 @@ export function createApplication(config) {
         });
         if (typeof result.answer !== "string" || !result.answer.trim())
           throw new Error("Invalid response");
-        json(res, 200, { answer: result.answer, sources: sourceLinks(result) });
+        const execution = taskExecution(
+          requestId,
+          started,
+          result,
+          usageCost(result.usage, reservationFor(request)),
+        );
+        if (config.production)
+          console.info(
+            JSON.stringify({
+              event: "portfolio_ai_complete",
+              task: "guide",
+              ...execution,
+            }),
+          );
+        json(res, 200, {
+          answer: result.answer,
+          sources: sourceLinks(result),
+          evidence: result.evidence || [],
+          execution,
+        });
       } catch (error) {
         if (!res.destroyed)
           json(
@@ -269,11 +340,13 @@ export function createApplication(config) {
         return json(res, 404, { error: "Not found." });
       if (pathname.split("/").some((part) => part.startsWith(".")))
         return json(res, 404, { error: "Not found." });
-      let target = ["/archive", "/archive/"].includes(pathname)
-        ? resolve(dist, "archive/index.html")
-        : /^\/work\/[a-z0-9-]+\/?$/.test(pathname)
-          ? resolve(dist, "." + pathname, "index.html")
-          : file;
+      let target = ["/ai", "/ai/"].includes(pathname)
+        ? resolve(dist, "ai/index.html")
+        : ["/archive", "/archive/"].includes(pathname)
+          ? resolve(dist, "archive/index.html")
+          : /^\/work\/[a-z0-9-]+\/?$/.test(pathname)
+            ? resolve(dist, "." + pathname, "index.html")
+            : file;
       let status = pathname === "/404.html" ? 404 : 200;
       const fallback = () => {
         status = pathname === "/" ? 200 : 404;

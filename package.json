@@ -14,7 +14,9 @@
     "lint": "eslint src --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
-    "test": "node --test scripts/portfolio.test.mjs scripts/chat.test.mjs scripts/openai.test.mjs scripts/quota.test.mjs scripts/quota-lifecycle.test.mjs scripts/npm-environment.test.mjs scripts/vercel.test.mjs scripts/admission.test.mjs scripts/work-pages.test.mjs scripts/voice.test.mjs scripts/voice-client.test.mjs",
+    "test": "node --test scripts/portfolio.test.mjs scripts/chat.test.mjs scripts/openai.test.mjs scripts/quota.test.mjs scripts/quota-lifecycle.test.mjs scripts/npm-environment.test.mjs scripts/vercel.test.mjs scripts/admission.test.mjs scripts/work-pages.test.mjs scripts/voice.test.mjs scripts/voice-client.test.mjs scripts/grounding.test.mjs scripts/ai-tools.test.mjs",
+    "ai:index": "node scripts/sync-source-index.mjs",
+    "ai:eval": "node scripts/evaluate-ai.mjs",
     "format": "prettier --write src scripts/*.mjs index.html vite.config.js tsconfig.json eslint.config.js vercel.json"
   },
   "dependencies": {

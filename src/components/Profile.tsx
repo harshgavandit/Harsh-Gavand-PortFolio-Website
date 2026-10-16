@@ -227,6 +227,19 @@ export function Skills() {
         ))}
       </div>
 
+      <aside className="ai-workspace-teaser">
+        <div>
+          <span className="eyebrow">Try the implementation</span>
+          <h3>A working AI workspace.</h3>
+          <p>
+            Ask the code, compare a role, or run a live ticket-classification
+            workflow.
+          </p>
+        </div>
+        <a className="button button-secondary" href="/ai/">
+          Explore AI tools ↗
+        </a>
+      </aside>
       <details className="full-stack-disclosure" id="workflow">
         <summary>
           View full stack <span>Languages, frameworks & infrastructure</span>

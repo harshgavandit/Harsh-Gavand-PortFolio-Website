@@ -23,7 +23,11 @@ export default [
       parser: tsParser,
       ecmaVersion: "latest",
       sourceType: "module",
-      globals: { ...globals.browser, ...globals.es2022 },
+      globals: {
+        ...globals.browser,
+        ...globals.es2022,
+        __AI_RUNTIME_DIGEST__: "readonly",
+      },
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
     plugins: {

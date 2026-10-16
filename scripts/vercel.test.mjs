@@ -107,6 +107,38 @@ test("production defaults to the Vercel custom domain", () => {
   assert.equal(profile.site, "https://harshgavand.dev");
 });
 
+test("rewritten AI workspace tasks use shared admission and settle before releasing the lease", async (t) => {
+  const f = await fixture(t, {
+    generateTask: async () => ({
+      category: "billing",
+      priority: "normal",
+      summary: "Duplicate charge",
+      rationale: "Billing review needed.",
+      needsReview: false,
+      usage: { input_tokens: 30, output_tokens: 20 },
+    }),
+  });
+  const response = await f.chat({
+    path: "/api/index?__path=ai/triage",
+    body: JSON.stringify({
+      text: "My subscription was charged twice this month.",
+    }),
+  });
+  assert.equal(response.status, 200);
+  const result = await response.json();
+  assert.equal(result.category, "billing");
+  assert.equal(result.actionsExecuted, 0);
+  assert.ok(result.execution.requestId);
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.deepEqual(f.events, [
+    ["admit", "203.0.113.42"],
+    ["retry", 1],
+    "reserve",
+    "settle",
+    "release",
+  ]);
+});
+
 test("rewritten voice calls share Vercel admission, recovery, reservation, and lease cleanup", async (t) => {
   const { chat, events } = await fixture(t, {
     voiceTranscribe: async () => {
@@ -230,10 +262,14 @@ test("direct and rewritten chat invocations await shared admission, recovery and
     const response = await f.chat({ path });
     assert.equal(response.status, 200);
     assert.equal(response.headers.get("cache-control"), "no-store");
-    assert.deepEqual(await response.json(), {
-      answer: "Published portfolio answer.",
-      sources: [{ label: "Contact Harsh", href: "/#contact" }],
-    });
+    const data = await response.json();
+    assert.equal(data.answer, "Published portfolio answer.");
+    assert.deepEqual(data.sources, [
+      { label: "Contact Harsh", href: "/#contact" },
+    ]);
+    assert.deepEqual(data.evidence, []);
+    assert.equal(data.execution.model, "gpt-6-luna");
+    assert.ok(data.execution.requestId && data.execution.elapsedMs >= 0);
     assert.deepEqual(f.events, [
       ["admit", "203.0.113.42"],
       ["retry", 1],
