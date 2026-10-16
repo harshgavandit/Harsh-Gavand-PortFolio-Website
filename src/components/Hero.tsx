@@ -25,8 +25,11 @@ export function Hero() {
             <span>Build Reliable And Scalable Products.</span>
           </h1>
           <p className="hero-tenure">
-            <strong>2+ years</strong> building full-stack products, backend
-            services, and applied AI workflows.
+            <strong>2+ years</strong>{" "}
+            <span>
+              building full-stack products, backend services, and applied AI
+              workflows.
+            </span>
           </p>
           <div className="actions">
             <ActionLink href="#projects" primary>
