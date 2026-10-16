@@ -58,11 +58,11 @@ export function WorkDetail() {
       >
         <ProductEvidence slug={project.slug} />
         <div className="work-demo-copy">
-          <span className="eyebrow">Product evidence</span>
-          <h2 id="walkthrough-title">Inspect the workflow.</h2>
+          <span className="eyebrow">Product walkthrough</span>
+          <h2 id="walkthrough-title">Explore the workflow.</h2>
           <p>
             {sampleURL
-              ? "Explore the sample workflow without creating an account. The application renders bundled fixtures through its public preview interface."
+              ? "Try the sample workspace without creating an account. Explore the interface with built-in sample data."
               : study.previewNote}
           </p>
           {sampleURL && (
@@ -71,8 +71,7 @@ export function WorkDetail() {
                 Open sample workspace
               </ActionLink>
               <p className="evidence-caption">
-                Read-only fixtures · no sign-in · no real generation or
-                financial action
+                Read-only demo · sample data · no sign-in
               </p>
             </>
           )}
@@ -124,10 +123,10 @@ export function WorkDetail() {
         />
       </section>
       <section className="work-section" aria-labelledby="verification-title">
-        <h2 id="verification-title">Verified behavior &amp; limitations.</h2>
+        <h2 id="verification-title">Implementation details.</h2>
         <div className="work-verification">
           <div>
-            <h3>What the evidence establishes</h3>
+            <h3>How it works</h3>
             <ul>
               {evidence.verifiedBehavior.map((item) => (
                 <li key={item}>{item}</li>
@@ -135,7 +134,7 @@ export function WorkDetail() {
             </ul>
           </div>
           <div>
-            <h3>Boundaries &amp; remaining work</h3>
+            <h3>Constraints &amp; next steps</h3>
             <ul>
               {evidence.limitations.map((item) => (
                 <li key={item}>{item}</li>
@@ -143,7 +142,7 @@ export function WorkDetail() {
             </ul>
           </div>
         </div>
-        <div className="source-list" aria-label="Verification evidence">
+        <div className="source-list" aria-label="Code and examples">
           {evidence.verification.map((item) => (
             <a
               key={item.href}
@@ -157,11 +156,9 @@ export function WorkDetail() {
         </div>
       </section>
       <section className="work-section" aria-labelledby="sources-title">
-        <h2 id="sources-title">Inspect the source.</h2>
+        <h2 id="sources-title">Source code.</h2>
         <p>
-          References are pinned to the reviewed revision. Public sample screens
-          demonstrate the interface with fixtures; source review and executed
-          checks are labelled separately.
+          Explore the controllers, schemas, and services behind this project.
         </p>
         <div className="source-list">
           {evidence.sources.map((item) => (

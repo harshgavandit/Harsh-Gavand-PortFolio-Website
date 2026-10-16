@@ -540,7 +540,7 @@ test("architecture pipelines and evidence are rendered on focused work pages", a
       const page = await response.text();
       assert.equal((page.match(/<h1(?:\s|>)/g) || []).length, 1);
       assert.ok(page.includes(`href="${siteOrigin(canonical)}/work/${slug}/"`));
-      assert.match(page, /Verified behavior &amp; limitations/);
+      assert.match(page, /Implementation details/);
       assert.match(page, /Alternative &amp; tradeoff/);
       assert.match(page, /id="walkthrough"/);
       assert.match(page, /role="status" aria-live="polite" aria-atomic="true"/);
@@ -572,7 +572,7 @@ test("sample artifacts and preview captures are delivered with the correct conte
     if (path.endsWith(".png"))
       assert.match(response.headers.get("content-type"), /image\/png/);
     if (path.endsWith(".html"))
-      assert.match(await response.text(), /synthetic/i);
+      assert.match(await response.text(), /Sample Edition/);
     if (path.endsWith(".json"))
       assert.equal((await response.json()).scenarios.length, 3);
   }

@@ -26,7 +26,7 @@ export function ProjectNotes({ project }: { project: Project }) {
         <p>{project.challenges}</p>
       </div>
       <div>
-        <h4>Verified behavior &amp; limitations</h4>
+        <h4>Outcome &amp; technical scope</h4>
         <p>{project.impact}</p>
         {evidence && (
           <>
@@ -36,7 +36,7 @@ export function ProjectNotes({ project }: { project: Project }) {
               ))}
             </ul>
             <a className="text-link" href={`/work/${project.slug}/`}>
-              Inspect verification &amp; pinned source ↗
+              Architecture &amp; source code ↗
             </a>
           </>
         )}
@@ -99,7 +99,7 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
       </div>
       <footer className="flagship-footer">
         <a href={`/work/${project.slug}/`}>
-          Decisions, failure paths & verification{" "}
+          Architecture, tradeoffs & failure handling{" "}
           <ArrowRight size={14} aria-hidden="true" />
         </a>
       </footer>

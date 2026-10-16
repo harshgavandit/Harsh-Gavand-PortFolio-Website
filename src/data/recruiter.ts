@@ -23,8 +23,9 @@ export const recruiterPrompts = [
     prompt: "How does Harsh integrate AI/LLMs into production web apps?",
   },
   {
-    label: "Project evidence & limitations",
-    prompt: "Which published projects demonstrate backend engineering, and what limitations should a reviewer know?",
+    label: "Backend project walkthrough",
+    prompt:
+      "Walk me through Harsh's backend projects, their architecture, and the main tradeoffs.",
   },
 ];
 

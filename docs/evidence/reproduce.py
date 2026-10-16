@@ -64,21 +64,21 @@ def main():
     extract(news_app / "services/email.py", {"markdown_to_html", "digest_to_html"}, formatter)
     digest = email_model.EmailDigestResponse(
         introduction=email_model.EmailIntroduction(
-            greeting="AI digest — synthetic formatter sample",
-            introduction="This illustrative digest uses invented editorial text and public source-code links. It demonstrates the project's existing HTML and plaintext formatting. No collection, model generation, ranking, or email delivery was run.",
+            greeting="AI Engineering Digest — Sample Edition",
+            introduction="A sample digest about email formatting and daily pipeline stages. Links point to the implementation. This preview uses sample content and does not send email.",
         ),
         articles=[
             email_model.RankedArticleDetail(
                 digest_id="synthetic-formatter", rank=1, relevance_score=8.0,
-                title="Inspect the source-linked email formatter",
-                summary="Synthetic example: a structured digest entry becomes a heading, a readable summary, and a source link. This text was supplied by the portfolio evidence script; it is not scraped news or a model response.",
+                title="Source-linked email formatting",
+                summary="Structured digest entries become email sections with a heading, summary, and source link. The same content is available as HTML and plaintext.",
                 url="https://github.com/harshgavandit/AI_News_To_Email_Generator/blob/0608f9a99dec2308ae9dcdebce840e5ce958445e/app/services/email.py",
                 article_type="synthetic source walkthrough",
             ),
             email_model.RankedArticleDetail(
                 digest_id="synthetic-runner", rank=2, relevance_score=7.0,
-                title="Follow the pipeline's stage results",
-                summary="Synthetic example: the daily runner records scraping, processing, digest, and email stages. The linked implementation is the evidence; this sample makes no claim that a scheduled run or SMTP delivery succeeded.",
+                title="Daily pipeline status",
+                summary="The daily runner records collection, processing, digest generation, and email delivery separately, with stage results and total run duration.",
                 url="https://github.com/harshgavandit/AI_News_To_Email_Generator/blob/0608f9a99dec2308ae9dcdebce840e5ce958445e/app/daily_runner.py",
                 article_type="synthetic source walkthrough",
             ),
@@ -88,9 +88,9 @@ def main():
     body_text = digest.to_markdown()
     assert body_html.count('class="article-link"') == 2
     assert all(article.url in body_html and article.url in body_text for article in digest.articles)
-    assert "synthetic formatter sample" in body_html
-    (output / "news-digest.html").write_text(body_html, encoding="utf-8")
-    (output / "news-digest.txt").write_text(body_text.rstrip() + "\n", encoding="utf-8")
+    assert "Sample Edition" in body_html
+    (output / "news-digest.html").write_text(body_html, encoding="utf-8", newline="\n")
+    (output / "news-digest.txt").write_text(body_text.rstrip() + "\n", encoding="utf-8", newline="\n")
     for relative in ["app/agent/email_agent.py", "app/services/email.py"]:
         remember(args.news_source, relative, "news")
 
@@ -137,7 +137,7 @@ def main():
     assert confirmed["status"] == "SUCCESS" and confirmed["new_balance"] == 199000
     assert repeated["status"] == "NO_PENDING_TRANSFER"
     scenarios.append({"id": "success", "label": "Explicit later-turn confirmation",
-        "steps": [step("Initiate synthetic transfer", staged), step("Later user turn: confirm", confirmed), step("Repeat confirmation", repeated)],
+        "steps": [step("Start sample transfer", staged), step("Later user turn: confirm", confirmed), step("Repeat confirmation", repeated)],
         "outcome": "Mock transaction succeeds once; balance changes from 200000 to 199000. This is an in-memory simulation, with no bank connection."})
 
     mock_data.reset_state()
@@ -159,14 +159,14 @@ def main():
     assert other_session["status"] == "NO_PENDING_TRANSFER"
     assert tools.get_balance()["balance"] == 200000
     scenarios.append({"id": "confirmation-required", "label": "Same-turn or other-session confirmation blocked",
-        "steps": [step("Initiate synthetic transfer", staged), step("Confirm during original invocation", early), step("Confirm with separate session state", other_session)],
+        "steps": [step("Start sample transfer", staged), step("Confirm during original invocation", early), step("Confirm with separate session state", other_session)],
         "outcome": "Original invocation cannot approve its own proposal; a separate session has no staged transfer. No mock money moves."})
 
     artifact = {"provenance": "Executed unchanged deterministic banking tool/service source with synthetic in-memory accounts and mocked SUCCESS executor setting. ADK/provider startup and .env loading were omitted; ToolContext is a lightweight fixture and approval lifetime is the code default of 24 hours. This verifies these function paths only, not model behavior, live banking, production concurrency, or cross-process state.", "scenarios": scenarios}
-    (output / "banking-harness.json").write_text(json.dumps(artifact, indent=2) + "\n", encoding="utf-8")
+    (output / "banking-harness.json").write_text(json.dumps(artifact, indent=2) + "\n", encoding="utf-8", newline="\n")
     for relative in ["app/tools/banking_tools.py", "app/services/policy_service.py", "app/services/transfer_service.py", "app/services/transaction_executor.py", "app/mock_data.py", "app/limits.py", "app/audit.py", "app/config.py"]:
         remember(args.harness_source, relative, "harness")
-    (output / "source-hashes.json").write_text(json.dumps({"algorithm": "SHA-256 of reviewed local source bytes", "files": source_hashes}, indent=2) + "\n", encoding="utf-8")
+    (output / "source-hashes.json").write_text(json.dumps({"algorithm": "SHA-256 of reviewed local source bytes", "files": source_hashes}, indent=2) + "\n", encoding="utf-8", newline="\n")
     print("PASS: actual email formatter rendered two synthetic source-linked entries in HTML and plaintext")
     print("PASS: deterministic harness success, blocked beneficiary, same-turn confirmation, other-session isolation, and repeat-confirmation assertions")
     print("No model, SMTP, scraper, Redis, database, or banking network calls were made.")

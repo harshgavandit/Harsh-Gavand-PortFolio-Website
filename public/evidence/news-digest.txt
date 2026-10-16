@@ -1,20 +1,20 @@
-AI digest — synthetic formatter sample
+AI Engineering Digest — Sample Edition
 
-This illustrative digest uses invented editorial text and public source-code links. It demonstrates the project's existing HTML and plaintext formatting. No collection, model generation, ranking, or email delivery was run.
+A sample digest about email formatting and daily pipeline stages. Links point to the implementation. This preview uses sample content and does not send email.
 
 ---
 
-## Inspect the source-linked email formatter
+## Source-linked email formatting
 
-Synthetic example: a structured digest entry becomes a heading, a readable summary, and a source link. This text was supplied by the portfolio evidence script; it is not scraped news or a model response.
+Structured digest entries become email sections with a heading, summary, and source link. The same content is available as HTML and plaintext.
 
 [Read more →](https://github.com/harshgavandit/AI_News_To_Email_Generator/blob/0608f9a99dec2308ae9dcdebce840e5ce958445e/app/services/email.py)
 
 ---
 
-## Follow the pipeline's stage results
+## Daily pipeline status
 
-Synthetic example: the daily runner records scraping, processing, digest, and email stages. The linked implementation is the evidence; this sample makes no claim that a scheduled run or SMTP delivery succeeded.
+The daily runner records collection, processing, digest generation, and email delivery separately, with stage results and total run duration.
 
 [Read more →](https://github.com/harshgavandit/AI_News_To_Email_Generator/blob/0608f9a99dec2308ae9dcdebce840e5ce958445e/app/daily_runner.py)
 

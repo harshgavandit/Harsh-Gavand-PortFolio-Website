@@ -6,7 +6,7 @@ export const harnessStudy: CaseStudy = {
   problem:
     "Keep model-selected actions inside deterministic transaction rules.",
   summary:
-    "A banking simulation that puts policy checks, a separate confirmation turn, and execution verification between an AI agent and a mock ledger.",
+    "A banking simulation that validates model-selected transfers in Python, requires a separate confirmation turn, and checks results against an in-memory ledger.",
   engineering: [
     "Policy before execution: Validate beneficiaries, balance, and transfer limits in Python before a mock transaction is allowed.",
     "Confirmation state: Require explicit confirmation in a later invocation, and invalidate pending approval when transfer details change.",
@@ -14,7 +14,7 @@ export const harnessStudy: CaseStudy = {
   ],
   contributions: [],
   previewNote:
-    "Local deterministic harness output with synthetic accounts. No real funds, bank integration, or provider call.",
+    "Replay transfer scenarios with sample accounts and an in-memory ledger. No real funds are moved.",
   accessMode: "Read-only policy replay",
   accessDescription:
     "Explore deterministic mock transfer outcomes without an account or API key",
@@ -23,13 +23,13 @@ export const harnessStudy: CaseStudy = {
   recovery:
     "Changed transfer details invalidate pending confirmation; execution results are checked against the mock ledger.",
   diagram: {
-    title: "Agent intent to verified mock execution",
+    title: "From agent intent to a confirmed transaction",
     nodes: [
       "Agent tool intent",
       "Deterministic policy",
       "Later-turn confirmation",
       "Mock execution",
-      "Outcome verification",
+      "Result validation",
     ],
     details: [
       "Tool arguments describe a requested action, not permission",
@@ -43,7 +43,7 @@ export const harnessStudy: CaseStudy = {
       "Transfer intent → allow or reject",
       "Pending intent + later confirmation → permission",
       "Permitted request → mock transaction",
-      "Mock transaction → verified outcome",
+      "Mock transaction → checked ledger result",
     ],
     caption:
       "A local banking simulation, with deterministic controls around model-selected tools.",

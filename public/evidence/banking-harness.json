@@ -6,7 +6,7 @@
       "label": "Explicit later-turn confirmation",
       "steps": [
         {
-          "label": "Initiate synthetic transfer",
+          "label": "Start sample transfer",
           "value": "{\"account_last4\": \"5678\", \"amount\": 1000, \"beneficiary_name\": \"Aaron Johnson\", \"status\": \"PENDING_CONFIRMATION\"}"
         },
         {
@@ -40,7 +40,7 @@
       "label": "Same-turn or other-session confirmation blocked",
       "steps": [
         {
-          "label": "Initiate synthetic transfer",
+          "label": "Start sample transfer",
           "value": "{\"account_last4\": \"5678\", \"amount\": 1000, \"beneficiary_name\": \"Aaron Johnson\", \"status\": \"PENDING_CONFIRMATION\"}"
         },
         {

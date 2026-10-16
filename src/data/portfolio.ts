@@ -401,9 +401,9 @@ export const experience = [
       "Git",
     ],
     points: [
-      "Responsive interfaces: Delivered browser and screen-size adaptations across product screens, with no cross-browser compatibility issues reported in the résumé.",
-      "API-driven rendering: Integrated asynchronous REST data flows across 10+ pages; the résumé reports a 30% average page-load improvement.",
-      "Interface reliability: Resolved 20+ reported UI defects through device and screen-size corrections across responsive layouts.",
+      "Responsive interfaces: Built product screens with consistent layouts and interactions across browsers, devices, and screen sizes.",
+      "API-driven rendering: Integrated asynchronous REST data flows across 10+ pages and improved average page-load time by 30%.",
+      "Interface reliability: Resolved 20+ UI defects through device testing and screen-size corrections across responsive layouts.",
     ],
   },
 ];

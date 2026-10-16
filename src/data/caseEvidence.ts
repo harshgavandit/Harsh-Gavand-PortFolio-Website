@@ -30,41 +30,41 @@ export const caseEvidence: Record<string, CaseEvidence> = {
     context:
       "Turn product and model reference uploads into an image, then an optional short video, while tracking the account's credits and project processing state.",
     ownership:
-      "full-stack generation endpoints, account-scoped project records, media integrations, and the creation/result interface.",
+      "Full-stack generation endpoints, account-scoped project records, media integrations, and the creation/result interface.",
     decision: {
       choice:
         "Persist project status and media URLs around the provider workflow, with compensating credit increments in caught failure paths.",
       alternative:
         "Keep generation state only in the browser and treat every provider request as an immediate result.",
       reason:
-        "stored processing/error fields give subsequent project reads a concrete result to display, while explicit compensation handles caught provider errors. Separate mutations still require care around interrupted or concurrent requests.",
+        "Persisted status and error fields let the interface recover the latest job state after a reload. Credit compensation handles caught provider errors, while interrupted or concurrent requests need separate safeguards.",
     },
     verifiedBehavior: [
-      "Source review: image generation accepts reference uploads, deducts five credits, calls the image provider, and stores the generated Cloudinary URL.",
-      "Source review: video generation polls the provider operation until done, uploads its output, and updates project processing state.",
-      "Source review: caught image-generation failures record project error state and attempt to restore deducted credits.",
-      "Source review: project lookup combines the project identifier with the authenticated Clerk user identifier.",
+      "Image generation accepts reference uploads, deducts five credits, calls the image provider, and stores the generated Cloudinary URL.",
+      "Video generation polls the provider operation, uploads the result, and updates the project's processing state.",
+      "Caught image-generation failures store an error and attempt to restore deducted credits.",
+      "Project queries combine the project ID with the authenticated Clerk user ID to scope account access.",
     ],
     verification: [
       {
-        label: "Source review: generation and recovery controller",
+        label: "Generation & recovery controller",
         href: `${ugc}/server/src/modules/projects/project.controller.ts`,
       },
       {
-        label: "Source review: relational project and credit fields",
+        label: "Project & credit schema",
         href: `${ugc}/server/prisma/schema.prisma`,
       },
     ],
     limitations: [
-      "These records establish source behavior. They do not establish a successful paid provider generation or production load test.",
-      "Credit checks, deduction, provider work, and compensation are separate operations. This is not evidence of atomic billing or universal rollback; some video early returns occur after deduction.",
-      "Video polling has no demonstrated bounded completion guarantee in this source snapshot.",
+      "The public demo uses saved media. Live generation requires provider credentials and account credits.",
+      "Credit updates and provider requests are separate operations. Interrupted video requests can leave credits deducted; a durable reservation ledger would close that gap.",
+      "Video polling currently has no timeout. A bounded worker with cancellation would prevent jobs from running indefinitely.",
     ],
     failure: {
       trigger:
         "The image provider throws or returns no usable image after credits have been deducted.",
       handling:
-        "The catch path stores the error when a project exists, clears its generating flag, attempts a five-credit increment, captures the exception, and returns an error response. Compensation itself can fail; no database transaction spanning the provider call is claimed.",
+        "The catch handler stores the project error, clears the generating flag, attempts a five-credit refund, and returns an error response. Refunds use a separate database update, so failed compensation needs retry handling.",
     },
     sources: [
       {
@@ -81,41 +81,41 @@ export const caseEvidence: Record<string, CaseEvidence> = {
     context:
       "Organize loan applications and review outcomes across borrower, lender, and administrator interfaces using shared loan records.",
     ownership:
-      "React role-oriented views, Express loan handlers, JWT account access, and relational loan/user modeling.",
+      "React borrower and lender views, Express loan handlers, JWT authentication, and relational loan/user models.",
     decision: {
       choice:
         "Represent review outcomes as pending, approved, and rejected values on a shared Sequelize loan record.",
       alternative:
         "Track approval only as separate interface flags or an unstructured status string.",
       reason:
-        "a common enum makes application creation and approve/reject handlers write the same vocabulary. It does not by itself enforce authorized state transitions or prevent concurrent review updates.",
+        "A shared status enum keeps application creation and decision handlers consistent. Authorization and concurrent decision handling still require controller guards and transactional updates.",
     },
     verifiedBehavior: [
-      "Source review: application creation writes the authenticated account identifier and an initial pending status.",
-      "Source review: approval and rejection look up a loan, return 404 if absent, assign an explicit status, and save it.",
-      "Source review: principal and interest use DECIMAL fields and borrowerId references a user record.",
-      "Source review: loan routes use JWT authentication middleware.",
+      "New applications store the authenticated account ID and start with a pending status.",
+      "Decision handlers look up the loan, return 404 when absent, and persist an approved or rejected status.",
+      "Principal and interest use DECIMAL fields, with borrowerId linking each loan to its user record.",
+      "JWT middleware authenticates requests to loan routes.",
     ],
     verification: [
       {
-        label: "Source review: application and review handlers",
+        label: "Application & decision handlers",
         href: `${lending}/backend/controllers/loanController.js`,
       },
       {
-        label: "Source review: loan schema",
+        label: "Loan schema",
         href: `${lending}/backend/models/loanModel.js`,
       },
     ],
     limitations: [
-      "Role-oriented screens do not establish complete server-side role authorization. The reviewed loan routes apply authentication without a demonstrated reviewer-role check.",
-      "The source snapshot contains a hard-coded demonstration JWT secret; it is not evidence of production-ready account security.",
-      "The risk classification is example amount/term logic. No regulated underwriting accuracy, funds transfer, concurrent decision safety, or live database result is asserted here.",
+      "Loan routes authenticate accounts but need additional server-side role checks for approval and rejection.",
+      "The demo uses a hard-coded JWT secret. Production deployment requires managed secrets and stronger account controls.",
+      "Risk categories use example amount/term rules. The app is a lending workflow demo, with no real underwriting or funds transfer.",
     ],
     failure: {
       trigger:
-        "A reviewer submits an approval or rejection for a loan identifier that cannot be found.",
+        "An approval or rejection request references a loan that does not exist.",
       handling:
-        "The handler returns a 404 response before assigning a status. Other caught errors return 500; this review did not execute database failures or verify a general rollback mechanism.",
+        "The handler returns 404 before changing the status. Other caught failures return 500; transaction-backed updates are needed for concurrent decisions and database rollback.",
     },
     sources: [
       {
@@ -137,41 +137,41 @@ export const caseEvidence: Record<string, CaseEvidence> = {
     context:
       "Make personal and suggested repositories navigable, with repository documents linked to owners and issues.",
     ownership:
-      "repository discovery and search UI, Express repository handlers, and MongoDB owner/issue relationships.",
+      "Repository discovery and search UI, Express repository handlers, and MongoDB owner/issue relationships.",
     decision: {
       choice:
         "Load personal and suggested repository feeds independently and filter the loaded personal feed by name in client state.",
       alternative:
         "Send a repository search request for every change to the search field.",
       reason:
-        "filtering the existing array avoids a search request on each keystroke. The tradeoff is that results cover the loaded personal feed and can become stale until reloaded.",
+        "Filtering the loaded array avoids a network request on each keystroke. Results cover the personal feed already in memory and refresh when that feed reloads.",
     },
     verifiedBehavior: [
-      "Source review: the dashboard maintains separate personal repositories, suggestions, search query, and filtered-result state.",
-      "Source review: a query/state effect filters personal repository names with a case-insensitive substring match.",
-      "Source review: repository creation rejects missing names and malformed owner ObjectIds before saving.",
-      "Source review: repository reads populate owner and issue document references; a separate query lists records by owner.",
+      "The dashboard separates personal repositories, suggestions, search input, and filtered results.",
+      "Search filters loaded personal repository names with a case-insensitive substring match.",
+      "Repository creation rejects missing names and malformed owner ObjectIds before saving.",
+      "Repository queries populate owner and issue references; an owner-scoped query lists personal records.",
     ],
     verification: [
       {
-        label: "Source review: loaded-feed search state",
+        label: "Repository search state",
         href: `${repositories}/frontend-main/src/components/dashboard/Dashboard.jsx`,
       },
       {
-        label: "Source review: repository validation and queries",
+        label: "Repository validation & queries",
         href: `${repositories}/backend-main/controllers/repoController.js`,
       },
     ],
     limitations: [
-      "Client-side feed reuse is not a shared cache, a benchmark, or proof of large-dataset scalability.",
-      "The reviewed dashboard snapshot uses localhost API URLs. A public URL alone does not verify a working deployed repository journey.",
-      "A visibility field and valid owner identifier do not establish complete privacy enforcement or authorization. Live database and multi-user access paths were not exercised for this case study.",
+      "Search covers the loaded feed. Large collections would need server-side search and pagination.",
+      "The public sample uses built-in data. Account-backed repository operations require a configured API endpoint.",
+      "Identifier validation and visibility fields need per-user authorization checks to protect private repositories and mutations.",
     ],
     failure: {
       trigger:
         "A create request omits the repository name or supplies a malformed owner identifier.",
       handling:
-        "The create handler returns 400 before constructing and saving a repository. Other caught repository errors return a server-error response; database recovery was not executed in this source review.",
+        "Validation returns 400 before creating a repository document. Other caught errors return a server-error response; database recovery needs explicit retry or transaction handling.",
     },
     sources: [
       {
@@ -192,49 +192,45 @@ export const caseEvidence: Record<string, CaseEvidence> = {
     context:
       "Collect articles and transcripts, persist source identities, generate digest entries, and compose a source-linked email with stage-level run results.",
     ownership:
-      "source collection and repository methods, digest orchestration, and plaintext/HTML email composition and delivery integration.",
+      "Source collection and persistence, digest orchestration, and plaintext/HTML email composition with SMTP integration.",
     decision: {
       choice:
         "Separate collection, content processing, digest generation, and email delivery, with a results dictionary and per-stage counts.",
       alternative:
         "Treat the entire daily job as one opaque success/failure operation.",
       reason:
-        "stage results preserve where processing stopped and distinguish digest failures from delivery failures. They aid inspection but do not provide durable retries or exactly-once execution.",
+        "Stage results show where a run stopped and separate digest errors from delivery errors. Durable retries and duplicate-send protection remain separate concerns.",
     },
     verifiedBehavior: [
-      "Executed locally: the actual digest_to_html formatter and EmailDigestResponse.to_markdown method rendered two synthetic entries and retained their source links.",
-      "Source review: repository methods check stored GUIDs or video IDs before creating source records.",
-      "Source review: the daily runner records scraping, processing, digest, email, duration, and overall success fields.",
-      "Source review: digest processing counts failed or absent model results; email setup validates recipient and sender configuration before SMTP use.",
+      "The HTML and plaintext formatters turn structured digest entries into readable emails with source links.",
+      "Repository methods check stored GUIDs or video IDs before creating source records.",
+      "The daily runner tracks collection, processing, digest generation, delivery, duration, and overall success.",
+      "Digest processing counts missing or failed model results. Email setup validates sender and recipient configuration before SMTP use.",
     ],
     verification: [
       {
-        label: "Executed synthetic formatter sample — HTML",
+        label: "Sample digest — HTML",
         href: "/evidence/news-digest.html",
       },
       {
-        label: "Executed synthetic formatter sample — plaintext",
+        label: "Sample digest — plaintext",
         href: "/evidence/news-digest.txt",
       },
       {
-        label: "Execution provenance and boundaries",
-        href: "/evidence/provenance.txt",
-      },
-      {
-        label: "Source review: daily runner",
+        label: "Daily pipeline runner",
         href: `${news}/app/daily_runner.py`,
       },
     ],
     limitations: [
-      "The sample text is explicitly synthetic. No scraper, model, ranking, database, scheduler, or SMTP send was executed to produce it.",
-      "Identity lookup before insert is a source-level duplicate check, not proof of exactly-once ingestion under concurrency.",
-      "The source snapshot's model integration and the deterministic email formatter are separate verification boundaries; this sample proves formatting only.",
+      "The preview renders sample content through the email formatter. It does not collect news, call a model, or send email.",
+      "Source-ID checks reduce duplicates. Concurrent ingestion needs database uniqueness constraints and transactional inserts.",
+      "Generation and SMTP delivery require separate configuration. A durable queue would make failed deliveries recoverable across process restarts.",
     ],
     failure: {
       trigger:
         "No recent digests are available, article ranking returns no result, or email configuration is missing.",
       handling:
-        "Generation/configuration raises ValueError and send_digest_email returns a success:false error result. Other exceptions reach the daily runner's outer error handler; a successful formatter sample does not prove email delivery.",
+        "Missing content or configuration raises ValueError. Email failures return a success:false result, while the runner captures other exceptions in its run result.",
     },
     sources: [
       {
@@ -274,38 +270,34 @@ export const caseEvidence: Record<string, CaseEvidence> = {
       alternative:
         "Rely on a system-prompt instruction or a model-supplied skip-confirmation flag.",
       reason:
-        "confirm_transfer reads the actual staged record, invocation identifier, and user text, then revalidates current policy. The execution gate can be inspected and tested independently of model responses.",
+        "confirm_transfer checks the staged record, invocation ID, and user text before revalidating policy. Keeping this gate in Python lets it run independently of model responses.",
     },
     verifiedBehavior: [
-      "Executed locally: initiating a valid synthetic request leaves the mock balance unchanged; explicit confirmation in a later invocation produces SUCCESS and updates the mock balance from 200000 to 199000.",
-      "Executed locally: repeat confirmation returns NO_PENDING_TRANSFER; confirmation within the initiating invocation returns CONFIRMATION_REQUIRED.",
-      "Executed locally: a blocked mock beneficiary returns REJECTED with unchanged balance, and a separate session cannot confirm the first session's proposal.",
-      "Source review: amount validation checks finite positive values and decimal precision, confirmation rechecks current balance/policy, and SUCCESS/PENDING/FAILED outcomes come from a separate mock executor.",
+      "A valid transfer starts in PENDING_CONFIRMATION without changing the balance. A later confirmation completes the sample transfer and updates the in-memory ledger.",
+      "Repeat confirmation returns NO_PENDING_TRANSFER. Confirmation in the initiating turn returns CONFIRMATION_REQUIRED.",
+      "Blocked beneficiaries return REJECTED without a balance change. Pending transfers are isolated by session.",
+      "Amount validation checks finite positive values and decimal precision. Confirmation rechecks balance and policy before calling a separate mock executor.",
     ],
     verification: [
       {
-        label: "Executed deterministic scenarios — JSON transcript",
+        label: "Transfer scenarios — JSON",
         href: "/evidence/banking-harness.json",
       },
       {
-        label: "Execution provenance and boundaries",
-        href: "/evidence/provenance.txt",
-      },
-      {
-        label: "Source review: additional confirmation/policy tests",
+        label: "Confirmation & policy tests",
         href: `${harness}/tests/test_banking.py`,
       },
     ],
     limitations: [
-      "This is an in-memory banking simulation. No real accounts, banking API, payment rail, or durable transaction ledger are connected.",
-      "The executed scenarios call real deterministic functions with a synthetic ToolContext fixture. They do not verify an LLM conversation, ADK browser flow, Upstash quota integration, or live provider availability.",
-      "Pending approvals use session state, while mock accounts and transactions are process-local. Cross-process persistence and production concurrency are outside the verified behavior.",
+      "This is an in-memory banking simulation with sample accounts and no connection to a bank or payment network.",
+      "The replay uses saved tool outputs. Running the conversational agent requires separate model and quota-store configuration.",
+      "Approvals live in session state, while accounts and transactions are process-local. Multiple workers would need shared persistence and concurrency controls.",
     ],
     failure: {
       trigger:
         "The agent attempts confirmation during the original invocation, without a matching staged session proposal, or after deterministic validation rejects the request.",
       handling:
-        "The tool returns an explicit confirmation-required, no-pending-transfer, or rejected status. The executed rejection and confirmation checks leave the mock balance unchanged; policy is revalidated again before execution.",
+        "The tool returns confirmation-required, no-pending-transfer, or rejected without changing the balance. Policy is checked again immediately before execution.",
     },
     sources: [
       {

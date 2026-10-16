@@ -27,7 +27,7 @@ export function ProductEvidence({ slug }: { slug: string }) {
       <figure className="harness-evidence">
         <figcaption>
           Deterministic policy replay{" "}
-          <span>Executed locally · synthetic ledger</span>
+          <span>Sample accounts · in-memory ledger</span>
         </figcaption>
         <div
           role="group"
@@ -57,10 +57,12 @@ export function ProductEvidence({ slug }: { slug: string }) {
           {scenario.outcome}
         </p>
         <details className="artifact-provenance">
-          <summary>How this was checked</summary>
-          <p className="evidence-caption">{harnessOutput.provenance}</p>
+          <summary>Scenario data</summary>
+          <p className="evidence-caption">
+            Saved runs using in-memory accounts.
+          </p>
           <a className="text-link" href="/evidence/banking-harness.json">
-            Inspect recorded output ↗
+            View scenario JSON ↗
           </a>
         </details>
       </figure>
@@ -69,8 +71,7 @@ export function ProductEvidence({ slug }: { slug: string }) {
     return (
       <figure className="digest-evidence">
         <figcaption>
-          Generated email artifact{" "}
-          <span>Synthetic input · actual project formatter</span>
+          Sample email digest <span>HTML &amp; plaintext output</span>
         </figcaption>
         <iframe
           srcDoc={digestHTML}
@@ -87,8 +88,8 @@ export function ProductEvidence({ slug }: { slug: string }) {
           Read complete sample digest ↗
         </a>
         <p className="evidence-caption">
-          Generated locally without a model request or SMTP delivery. Source
-          URLs identify the synthetic sample’s references.
+          Sample content rendered by the email formatter. No email is sent from
+          this preview.
         </p>
       </figure>
     );
@@ -102,10 +103,7 @@ export function ProductEvidence({ slug }: { slug: string }) {
         alt={capture.alt}
         loading="lazy"
       />
-      <figcaption>
-        Captured from the app’s public sample workspace. Bundled fixtures
-        demonstrate the interface; no real customer account or provider request.
-      </figcaption>
+      <figcaption>Public demo workspace with sample data.</figcaption>
     </figure>
   ) : null;
 }

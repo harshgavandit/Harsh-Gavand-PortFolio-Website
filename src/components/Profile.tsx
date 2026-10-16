@@ -71,16 +71,8 @@ export function Experience() {
               </ul>
 
               <details className="role-context">
-                <summary>Tools & reported scope</summary>
+                <summary>Technologies</summary>
                 <Tags items={job.tech} />
-                {index === 1 && (
-                  <p>
-                    Résumé-reported scope: 10+ pages, 20+ UI fixes, 30% average
-                    page-load improvement, and interfaces used in an application
-                    supporting 1,000+ concurrent users. Baseline measurements
-                    and load-test conditions are not published here.
-                  </p>
-                )}
               </details>
             </div>
           </article>
@@ -204,9 +196,9 @@ export function Skills() {
       <ChapterHeading
         id="skills"
 
-        title="Capabilities, with evidence."
+        title="Tools, systems & implementation."
 
-        description="Four areas of practice. Follow the work to inspect the implementation."
+        description="The technologies and patterns I use across applications, APIs, data, and AI workflows."
       />
 
       <div className="skills-grid">
@@ -225,11 +217,11 @@ export function Skills() {
             <div
               className="skill-proofs"
 
-              aria-label={`${group.title} proof links`}
+              aria-label={`${group.title} projects`}
             >
               {group.proofs.map((proof) => (
                 <a key={proof.href} href={proof.href}>
-                  Proof: {proof.label} ↗
+                  {proof.label} ↗
                 </a>
               ))}
             </div>
@@ -239,8 +231,7 @@ export function Skills() {
 
       <details className="full-stack-disclosure" id="workflow">
         <summary>
-          View full stack{" "}
-          <span>Complete résumé-backed tools and technologies</span>
+          View full stack <span>Languages, frameworks & infrastructure</span>
         </summary>
         <HeroStack />
         <div className="additional-stack">
