@@ -1328,6 +1328,53 @@ textarea:focus {
 .assistant-suggestions button:hover {
   border-color: var(--accent);
 }
+.assistant-suggestions button svg {
+  flex-shrink: 0;
+}
+.assistant-suggestions button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.assistant-more-questions {
+  margin-top: 14px;
+}
+.assistant-more-questions > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding-block: 10px;
+  cursor: pointer;
+  color: var(--accent);
+  font-size: 13px;
+  list-style: none;
+}
+.assistant-more-questions > summary::-webkit-details-marker {
+  display: none;
+}
+.assistant-more-questions[open] > summary svg {
+  transform: rotate(180deg);
+}
+.assistant-question-group {
+  margin-top: 18px;
+}
+.assistant-question-group h4 {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+}
+.assistant-question-group .assistant-suggestions {
+  margin-top: 9px;
+}
+.assistant-messages + .assistant-question-bank {
+  margin-top: 16px;
+}
+@media (min-width: 640px) {
+  .assistant-suggestions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
 .assistant-messages {
   display: grid;
   gap: 18px;

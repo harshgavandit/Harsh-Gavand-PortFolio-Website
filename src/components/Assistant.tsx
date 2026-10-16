@@ -9,9 +9,9 @@ import {
   X,
 } from "lucide-react";
 import { profile } from "../data/portfolio";
-import { recruiterPrompts as suggestions } from "../data/recruiter";
 import { isAssistantShortcut } from "../lib/interaction";
 import { VoiceGuide } from "./VoiceGuide";
+import { AssistantQuestions } from "./AssistantQuestions";
 
 type Source = { label: string; href: string };
 type Message = {
@@ -84,7 +84,7 @@ export function Assistant() {
     dialogRef.current?.close();
   }, [open]);
   useEffect(() => {
-    if (open && mode === "text")
+    if (open && mode === "text" && messages.length)
       endRef.current?.scrollIntoView({ block: "nearest" });
   }, [messages, busy, error, open, mode]);
   useEffect(() => {
@@ -292,18 +292,7 @@ export function Assistant() {
                   skills. You can also paste a short job description to discuss
                   the fit.
                 </p>
-                <div className="assistant-suggestions">
-                  {suggestions.map((s) => (
-                    <button
-                      key={s.label}
-                      title={s.prompt}
-                      onClick={() => void send(s.prompt)}
-                    >
-                      {s.label}
-                      <ArrowUpRight size={16} aria-hidden="true" />
-                    </button>
-                  ))}
-                </div>
+                <AssistantQuestions onSelect={(prompt) => void send(prompt)} />
               </div>
             )}
             <div
@@ -366,6 +355,13 @@ export function Assistant() {
                 )}
                 <a href={`mailto:${profile.email}`}>Email Harsh</a>
               </div>
+            )}
+            {!!messages.length && mode === "text" && (
+              <AssistantQuestions
+                compact
+                disabled={busy}
+                onSelect={(prompt) => void send(prompt)}
+              />
             )}
             <div ref={endRef} />
           </div>

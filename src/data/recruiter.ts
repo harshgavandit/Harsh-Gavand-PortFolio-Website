@@ -10,17 +10,97 @@ export type ChapterId = (typeof chapters)[number]["id"];
 
 export const recruiterPrompts = [
   {
-    label: "Backend & API architecture",
-    prompt: "Summarize Harsh's backend & API architecture experience",
-  },
-  {
-    label: "AI / LLM integration",
-    prompt: "How does Harsh integrate AI/LLMs into production web apps?",
-  },
-  {
-    label: "Backend project walkthrough",
+    label: "Give me a quick introduction",
     prompt:
-      "Walk me through Harsh's backend projects, their architecture, and the main tradeoffs.",
+      "Give me a quick introduction to Harsh: his professional experience, engineering strengths, and the kinds of products he has built.",
+  },
+  {
+    label: "Which project should I explore first?",
+    prompt:
+      "Which of Harsh's projects should I explore first for full-stack, backend, or applied AI engineering? Explain what each one demonstrates and link me to it.",
+  },
+  {
+    label: "What’s his professional experience?",
+    prompt:
+      "What did Harsh personally deliver at GlobeTrek and HRP Enterprises? Tell me about his responsibilities, end-to-end ownership, business applications, and automation work.",
+  },
+  {
+    label: "How does he build backend APIs?",
+    prompt:
+      "How does Harsh design backend APIs? Walk me through project examples of request validation, authentication, data modeling, and the main engineering tradeoffs.",
+  },
+  {
+    label: "How does he use AI and LLMs?",
+    prompt:
+      "How does Harsh use AI and LLMs in full-stack applications? Compare his work on media generation, agent workflows, and retrieval, including the main limitations.",
+  },
+  {
+    label: "Which roles fit his experience?",
+    prompt:
+      "Which full-stack, backend, or applied AI roles fit Harsh's experience, and where are the gaps? What is his availability? I can share a job description for a closer comparison.",
+  },
+];
+
+export const recruiterPromptGroups = [
+  {
+    title: "Project walkthroughs",
+    questions: [
+      {
+        label: "How does UGC Content Studio work?",
+        prompt:
+          "How does UGC Content Studio work from asset upload to AI generation and media delivery? Explain the processing states, credit handling, tradeoffs, and limitations, and link to the case study.",
+      },
+      {
+        label: "How does LendFlow handle lending?",
+        prompt:
+          "How does LendFlow handle borrower, lender, and administrator workflows? Explain its authorization, shared loan data, lifecycle states, and current limitations, and link to the case study.",
+      },
+      {
+        label: "What did he build for Agri Samaj?",
+        prompt:
+          "What did Harsh build for the Agri Samaj community? Explain the Marathi-English experience, business registration, approvals, and private uploads. Show me the live website, case study, and source code.",
+      },
+    ],
+  },
+  {
+    title: "AI & backend decisions",
+    questions: [
+      {
+        label: "How does he build AI agents?",
+        prompt:
+          "How does Harsh build AI agents while keeping actions within application rules? Use the Banking Agent Harness and another project to explain policy checks, confirmation, approvals, and simulation limits.",
+      },
+      {
+        label: "How does his RAG search work?",
+        prompt:
+          "How does Harsh's RAG search combine vector and keyword retrieval? Explain its ranking, source grounding, tradeoffs, and limitations, and show me the project.",
+      },
+      {
+        label: "How does he handle failures?",
+        prompt:
+          "How do Harsh's projects handle provider timeouts, cancelled requests, quota settlement, and retries? Walk me through concrete recovery mechanisms and any remaining limitations.",
+      },
+    ],
+  },
+  {
+    title: "Engineering approach",
+    questions: [
+      {
+        label: "How does he protect user data?",
+        prompt:
+          "How does Harsh protect user data? Show project examples of authentication, role-based access, ownership checks, private uploads, and input validation, including their limits.",
+      },
+      {
+        label: "How does he test and deploy?",
+        prompt:
+          "How does Harsh test and deploy his applications? Show concrete examples of automated tests, API checks, production builds, and deployment configuration from his projects.",
+      },
+      {
+        label: "What would he improve next?",
+        prompt:
+          "What would be the most useful next improvements to Harsh's projects? Explain the current limitations and engineering tradeoffs, and distinguish suggested next steps from features already built.",
+      },
+    ],
   },
 ];
 
