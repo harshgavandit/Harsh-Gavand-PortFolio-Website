@@ -12,9 +12,6 @@ export function Hero() {
     >
       <div className="hero-layout">
         <div className="hero-copy">
-          <p className="hero-name">
-            HARSH GAVAND / FULL-STACK &amp; AI ENGINEER
-          </p>
           <h1 id="hero-title" data-chapter="hero">
             I Help Founder's
             <br />

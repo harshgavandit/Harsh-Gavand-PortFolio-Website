@@ -6,6 +6,29 @@ import { chapters } from "../data/recruiter";
 import { MotionToggle } from "./MotionPreferences";
 import { GitHubMark, LinkedInMark } from "./CornerSocials";
 
+function SocialLinks() {
+  return (
+    <div className="header-socials">
+      <a
+        href={profile.github}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Harsh on GitHub"
+      >
+        <GitHubMark />
+      </a>
+      <a
+        href={profile.linkedin}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Harsh on LinkedIn"
+      >
+        <LinkedInMark />
+      </a>
+    </div>
+  );
+}
+
 export function Navigation() {
   const { pathname } = useLocation();
   const [active, setActive] = useState("hero");
@@ -107,7 +130,8 @@ export function Navigation() {
               loading="eager"
             />
             <span className="brand-caption">
-              Harsh Gavand<small>Full-Stack & AI Engineer</small>
+              <strong className="brand-name">Harsh Gavand</strong>
+              <small>Full-Stack &amp; AI Engineer</small>
             </span>
           </a>
           <nav className="desktop-nav" aria-label="Main navigation">
@@ -136,24 +160,7 @@ export function Navigation() {
             >
               Resume <ArrowUpRight size={14} aria-hidden="true" />
             </a>
-            <div className="header-socials">
-              <a
-                href={profile.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Harsh on GitHub"
-              >
-                <GitHubMark />
-              </a>
-              <a
-                href={profile.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Harsh on LinkedIn"
-              >
-                <LinkedInMark />
-              </a>
-            </div>
+            <SocialLinks />
             <button
               className="menu-toggle"
               ref={toggleRef}
@@ -193,6 +200,7 @@ export function Navigation() {
           </a>
           <button onClick={ask}>Ask Harsh’s AI · Ctrl / ⌘ K</button>
           <MotionToggle />
+          <SocialLinks />
         </div>
       </header>
     </>

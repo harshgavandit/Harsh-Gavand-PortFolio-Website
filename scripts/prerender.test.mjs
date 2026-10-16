@@ -523,9 +523,14 @@ test("phase two exposes brand, language, replay, shipment and skills proof contr
   assert.match(html, /aria-label="Copy email harshgavand2@gmail.com"/);
 });
 
-test("hero proof shows the requested role, experience wording, and complete categorized logo stack", async () => {
+test("header branding, hero experience wording, and complete categorized logo stack are present", async () => {
   const hero = html.split('id="hero"')[1].split("</section>")[0];
-  assert.match(hero, /FULL-STACK &amp; AI ENGINEER/);
+  const header = html
+    .split('<header class="site-header">')[1]
+    .split("</header>")[0];
+  assert.match(header, /class="brand-name">Harsh Gavand<\/strong>/);
+  assert.match(header, /<small>Full-Stack &amp; AI Engineer<\/small>/);
+  assert.doesNotMatch(hero, /class="hero-name"/);
   assert.match(hero, /2\+ years/);
   assert.match(
     hero,
