@@ -1,4 +1,3 @@
-import { ArrowUpRight } from "lucide-react";
 import { ActionLink, Tags } from "./Primitives";
 import { profile } from "../data/portfolio";
 import { primaryStack } from "../data/workPresentation";
@@ -13,13 +12,10 @@ export function Hero() {
     >
       <div className="hero-layout">
         <div className="hero-copy">
-          <p className="eyebrow" data-chapter="hero">
-            Introduction
-          </p>
           <p className="hero-name">
             HARSH GAVAND / FULL-STACK &amp; AI ENGINEER
           </p>
-          <h1 id="hero-title">
+          <h1 id="hero-title" data-chapter="hero">
             I Help Founder's
             <br />
             <span>Build Reliable And Scalable Products.</span>
@@ -45,31 +41,16 @@ export function Hero() {
           </p>
           <Tags items={primaryStack} />
         </div>
-        <a
-          className="hero-project"
-          href="/work/ugc-platform/"
-          aria-label="Explore UGC Content Studio case study"
-        >
-          <div className="hero-project-top">
-            <span className="eyebrow">Selected build</span>
-            <ArrowUpRight size={20} aria-hidden="true" />
-          </div>
-          <div className="hero-product-image">
-            <img
-              src="/evidence/ugc-workspace.png"
-              width={1280}
-              height={900}
-              loading="eager"
-              fetchPriority="high"
-              alt="UGC Content Studio sample workspace with bundled reference images and a saved sample output"
-            />
-          </div>
-          <div className="hero-project-caption">
-            <h2>UGC Content Studio</h2>
-            <p>Authenticated references → AI generation → persisted media</p>
-            <span>Read-only sample workspace · Explore the workflow ↗</span>
-          </div>
-        </a>
+        <figure className="hero-portrait">
+          <img
+            src="/portrait/harsh-studio.jpg"
+            width={335}
+            height={745}
+            loading="eager"
+            fetchPriority="high"
+            alt="Harsh Gavand"
+          />
+        </figure>
       </div>
       <div className="hero-employment">
         <span>Previously</span>

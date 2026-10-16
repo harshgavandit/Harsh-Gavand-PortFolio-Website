@@ -122,12 +122,13 @@ export default function Portfolio({
   }, [pathname]);
   useEffect(() => {
     const fragment = semanticFragment(hash);
-    if (fragment === hash) return;
-    window.history.replaceState(
-      window.history.state,
-      "",
-      pathname + window.location.search + fragment,
-    );
+    if (!fragment) return;
+    if (fragment !== hash)
+      window.history.replaceState(
+        window.history.state,
+        "",
+        pathname + window.location.search + fragment,
+      );
     document.getElementById(fragment.slice(1))?.scrollIntoView();
   }, [pathname, hash]);
   return (

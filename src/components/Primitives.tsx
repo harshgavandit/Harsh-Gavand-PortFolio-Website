@@ -1,6 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import type { ReactNode } from "react";
-import { chapters, type ChapterId } from "../data/recruiter";
+import type { ChapterId } from "../data/recruiter";
 export function Reveal({
   children,
   className = "",
@@ -38,13 +38,11 @@ export function ChapterHeading({
   title: string;
   description?: string;
 }) {
-  const chapter = chapters.find((item) => item.id === id)!;
   return (
     <div className="section-heading">
-      <p className="eyebrow" data-chapter={id}>
-        {chapter.label}
-      </p>
-      <h2 id={id + "-title"}>{title}</h2>
+      <h2 id={id + "-title"} data-chapter={id}>
+        {title}
+      </h2>
       {description && <p className="section-description">{description}</p>}
     </div>
   );
