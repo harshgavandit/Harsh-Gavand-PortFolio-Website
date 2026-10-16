@@ -69,7 +69,7 @@ export function WorkDetail() {
           <h2 id="walkthrough-title">Explore the workflow.</h2>
           <p>
             {sampleURL
-              ? "Try the sample workspace without creating an account. Explore the interface with built-in sample data."
+              ? "Explore the demo workspace with sample data."
               : study.previewNote}
           </p>
           {sampleURL && (
@@ -77,9 +77,7 @@ export function WorkDetail() {
               <ActionLink href={sampleURL} external primary>
                 Open sample workspace
               </ActionLink>
-              <p className="evidence-caption">
-                Read-only demo · sample data · no sign-in
-              </p>
+              <p className="evidence-caption">Read-only demo · no sign-in</p>
             </>
           )}
           <p>
@@ -141,7 +139,7 @@ export function WorkDetail() {
             </ul>
           </div>
           <div>
-            <h3>Constraints &amp; next steps</h3>
+            <h3>Design considerations</h3>
             <ul>
               {evidence.limitations.map((item) => (
                 <li key={item}>{item}</li>

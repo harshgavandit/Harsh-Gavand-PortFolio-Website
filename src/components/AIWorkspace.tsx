@@ -108,7 +108,7 @@ function ExecutionDetails({ data }: { data?: Execution }) {
   if (!data) return null;
   return (
     <details className="ai-execution">
-      <summary>Inspect this request</summary>
+      <summary>Request details</summary>
       <dl>
         <div>
           <dt>Model</dt>
@@ -118,9 +118,7 @@ function ExecutionDetails({ data }: { data?: Execution }) {
           <div>
             <dt>Execution</dt>
             <dd>
-              {data.cache === "hit"
-                ? "Versioned public-answer cache · no new model call"
-                : "Live model request"}
+              {data.cache === "hit" ? "Cached answer" : "Live model request"}
             </dd>
           </div>
         )}
@@ -136,22 +134,19 @@ function ExecutionDetails({ data }: { data?: Execution }) {
           </dd>
         </div>
         <div>
-          <dt>Allowance charged</dt>
+          <dt>Budget used</dt>
           <dd>${data.allowanceCostUsd.toFixed(6)}</dd>
         </div>
         <div>
-          <dt>Source snapshot</dt>
+          <dt>Code revision</dt>
           <dd>{data.sourceSnapshot}</dd>
         </div>
         <div>
-          <dt>Request</dt>
+          <dt>Request ID</dt>
           <dd>{data.requestId}</dd>
         </div>
       </dl>
-      <p>
-        Measured for this request. Allowance includes a pricing safety margin
-        and is not an invoice amount. Inputs are not stored by this site.
-      </p>
+      <p>Budget usage includes the service’s pricing margin.</p>
     </details>
   );
 }
@@ -182,8 +177,8 @@ function TechnicalGuide() {
         <span className="eyebrow">Read the implementation</span>
         <h2>Ask the code.</h2>
         <p>
-          Explore decisions in selected public repositories. Answers can include
-          the actual source excerpt, file lines, and immutable commit.
+          Ask how a project works and follow the answer to the relevant files
+          and lines of code.
         </p>
         <div className="ai-samples">
           {codeSamples.map((sample) => (
@@ -198,10 +193,6 @@ function TechnicalGuide() {
             </button>
           ))}
         </div>
-        <p className="ai-tool-note">
-          The index uses local BM25-style lexical retrieval over versioned code
-          snapshots. It does not browse your files or execute code.
-        </p>
       </div>
       <div className="ai-tool-surface">
         <form
@@ -271,9 +262,9 @@ function RecruiterWorkspace() {
   const [text, setText] = useState("");
   const api = useAIRequest<RecruiterResult>("/api/ai/recruiter");
   const labels = {
-    supported: "Supported",
-    partial: "Partial evidence",
-    not_shown: "Not shown",
+    supported: "Experience match",
+    partial: "Related experience",
+    not_shown: "No direct match",
   };
   return (
     <div className="ai-tool-layout">
@@ -281,15 +272,10 @@ function RecruiterWorkspace() {
         <span className="eyebrow">Requirements → relevant work</span>
         <h2>Compare a role.</h2>
         <p>
-          Paste the technical requirements of a role. Get a concise comparison
-          against published experience and projects, with direct supporting
-          links and explicit gaps.
+          Compare a role’s technical requirements with my experience and
+          projects, with links to the relevant work.
         </p>
-        <p className="ai-tool-note">
-          This compares professional evidence; it does not produce a hiring
-          score. Use a public job description and omit personal or confidential
-          information.
-        </p>
+        <p className="ai-tool-note">Use a public job description.</p>
         <button
           type="button"
           className="button button-secondary"
@@ -370,12 +356,11 @@ function TicketWorkbench() {
   return (
     <div className="ai-tool-layout">
       <div className="ai-tool-intro">
-        <span className="eyebrow">A bounded AI workflow</span>
+        <span className="eyebrow">Support automation</span>
         <h2>Run ticket triage.</h2>
         <p>
-          Turn a fictional support request into a category, priority, and
-          routing recommendation. Ambiguous or sensitive requests stay with a
-          human.
+          Classify a sample support ticket by topic and priority, with a review
+          flag for sensitive or ambiguous requests.
         </p>
         <div className="ai-samples">
           {ticketSamples.map((sample) => (
@@ -391,10 +376,7 @@ function TicketWorkbench() {
           ))}
         </div>
         <p className="ai-tool-note">
-          This is a portfolio adaptation of the support-classification workflow
-          running on the portfolio’s Node API. The original project uses FastAPI
-          and LangGraph. No tickets are created, refunds issued, or account
-          changes executed.
+          Node.js API · Adapted from my FastAPI and LangGraph classifier.
         </p>
         <a
           className="text-link"
@@ -412,7 +394,7 @@ function TicketWorkbench() {
             void api.run({ text });
           }}
         >
-          <label htmlFor="ticket-input">Fictional support ticket</label>
+          <label htmlFor="ticket-input">Sample support ticket</label>
           <textarea
             id="ticket-input"
             rows={6}
@@ -423,9 +405,7 @@ function TicketWorkbench() {
             required
           />
           <p className="ai-input-note">
-            Use sample data only. Common email, phone, payment, and credential
-            patterns are redacted before OpenAI receives the text. Redaction
-            cannot guarantee removal of every identifier.
+            Use an example ticket without personal details.
           </p>
           <div className="ai-form-actions">
             <button
@@ -433,7 +413,7 @@ function TicketWorkbench() {
               className="button button-primary"
               disabled={api.busy || text.trim().length < 12}
             >
-              <Play size={15} aria-hidden="true" /> Run live triage
+              <Play size={15} aria-hidden="true" /> Classify ticket
             </button>
             {api.busy && (
               <button type="button" className="button" onClick={api.stop}>
@@ -451,7 +431,7 @@ function TicketWorkbench() {
             >
               {api.result.needsReview
                 ? "Human review recommended"
-                : "Classification ready"}
+                : "Triage result"}
             </span>
             <h3>{api.result.summary}</h3>
             <div className="ai-result-facts">
@@ -461,13 +441,10 @@ function TicketWorkbench() {
               <span>
                 Priority <strong>{api.result.priority}</strong>
               </span>
-              <span>
-                Actions executed <strong>{api.result.actionsExecuted}</strong>
-              </span>
             </div>
             <p>{api.result.rationale}</p>
             <details className="ai-redacted">
-              <summary>Inspect the redacted model input</summary>
+              <summary>Redacted input</summary>
               <p>{api.result.redactedInput}</p>
               <small>
                 {api.result.redactedFields.length
@@ -490,24 +467,23 @@ export function AIWorkspace() {
         <a className="text-link" href="/#projects">
           ← Back to selected work
         </a>
-        <span className="eyebrow">Live AI workspace</span>
+        <span className="eyebrow">AI workspace</span>
         <h1>
-          Explore the work.
+          Explore the code.
           <br />
-          Inspect the system.
+          Try the tools.
         </h1>
         <p>
-          Ask implementation questions, compare a role, or run an AI workflow.
-          Every request uses the same bounded backend as the portfolio
-          assistant.
+          Ask about a project, match a role to my experience, or classify a
+          support ticket.
         </p>
         <div className="ai-workspace-facts">
           <span>
             <GitBranch size={15} aria-hidden="true" />
-            {sourceSummary.repositories.length} public repositories
+            {sourceSummary.repositories.length} repositories
           </span>
-          <span>{sourceSummary.fileCount} selected source files</span>
-          <span>Versioned code citations</span>
+          <span>{sourceSummary.fileCount} source files</span>
+          <span>File &amp; line references</span>
         </div>
       </div>
       <Tabs
@@ -523,19 +499,17 @@ export function AIWorkspace() {
       <section className="ai-quality" aria-labelledby="ai-quality-title">
         <div>
           <span className="eyebrow">
-            <FlaskConical size={15} aria-hidden="true" /> Quality checks
+            <FlaskConical size={15} aria-hidden="true" /> Evaluation
           </span>
-          <h2 id="ai-quality-title">Measured, with limits.</h2>
+          <h2 id="ai-quality-title">Evaluation results.</h2>
           <p>
-            Controlled checks use real model requests and synthetic inputs.
-            These are release checks, not production traffic statistics or a
-            comprehensive accuracy guarantee.
+            Code answers, role comparisons, and ticket routing tested against a
+            fixed set of example requests.
           </p>
           {quality.status === "completed" &&
             quality.runtimeDigest !== __AI_RUNTIME_DIGEST__ && (
               <p className="ai-request-error">
-                These results describe an earlier backend revision. The current
-                revision has not completed this evaluation run.
+                Evaluation update pending for this release.
               </p>
             )}
         </div>
@@ -546,13 +520,13 @@ export function AIWorkspace() {
                 <strong>
                   {quality.summary.passed}/{quality.summary.total}
                 </strong>
-                <span>Automated response checks</span>
+                <span>Response checks passed</span>
               </div>
               <div>
                 <strong>
                   {quality.retrieval.passed}/{quality.retrieval.total}
                 </strong>
-                <span>Source-retrieval checks</span>
+                <span>Retrieval checks passed</span>
               </div>
               <div>
                 <strong>
@@ -566,7 +540,6 @@ export function AIWorkspace() {
               {quality.evaluatedAt
                 ? `${indiaDate(quality.evaluatedAt)} IST`
                 : "Not run"}{" "}
-              · Source snapshot: {quality.sourceSnapshot.slice(0, 12)}
             </p>
             {"dataset" in quality && (
               <p className="ai-tool-note">
@@ -578,15 +551,13 @@ export function AIWorkspace() {
                     }
                   ).uniqueCases
                 }{" "}
-                distinct synthetic cases ·{" "}
-                {(quality.dataset as { repetitions: number }).repetitions}{" "}
-                repetitions. Expectations come from source inspection and
-                fixture labels; this is not an independently human-labelled
-                benchmark.
+                test cases ·{" "}
+                {(quality.dataset as { repetitions: number }).repetitions} runs
+                per case
               </p>
             )}
             <details>
-              <summary>Inspect cases and grading boundaries</summary>
+              <summary>Test cases and methodology</summary>
               <ul>
                 {(
                   quality.cases as {
@@ -608,9 +579,9 @@ export function AIWorkspace() {
                 ))}
               </ul>
               <p>
-                Automated assertions check expected categories, explicit gaps,
-                refusal behavior, and valid source references. They do not
-                establish that every sentence is correct. Runtime fingerprint:{" "}
+                Fixed synthetic dataset covering source references, expected
+                facts, ticket categories, refusals, and unsupported
+                requirements. Build revision:{" "}
                 <code>{quality.runtimeDigest.slice(0, 12)}</code>.
               </p>
             </details>
@@ -621,7 +592,7 @@ export function AIWorkspace() {
           </p>
         )}
         <details>
-          <summary>Indexed repositories and commits</summary>
+          <summary>Source repositories</summary>
           <ul>
             {sourceSummary.repositories.map((repo) => (
               <li key={repo.repo}>
@@ -638,19 +609,15 @@ export function AIWorkspace() {
               </li>
             ))}
           </ul>
-          <p>
-            Selected public files, indexed {indiaDate(sourceSummary.indexedAt)}{" "}
-            IST. Answers describe those versions; later repository changes may
-            not be reflected.
-          </p>
         </details>
       </section>
-      <p className="ai-page-privacy">
-        Inputs are sent to OpenAI after submission. This site keeps form input
-        and results in page memory only; it does not save job descriptions or
-        tickets. AI output can be wrong. Shared usage limits may temporarily
-        pause live tools.
-      </p>
+      <details className="ai-page-privacy">
+        <summary>Privacy</summary>
+        <p>
+          Requests are processed by OpenAI. This site doesn’t save your
+          questions, job descriptions, or tickets.
+        </p>
+      </details>
     </main>
   );
 }

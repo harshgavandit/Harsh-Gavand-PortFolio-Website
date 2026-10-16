@@ -1,6 +1,6 @@
 AI Engineering Digest — Sample Edition
 
-A sample digest about email formatting and daily pipeline stages. Links point to the implementation. This preview uses sample content and does not send email.
+A sample edition featuring source-linked email formatting and daily pipeline summaries.
 
 ---
 

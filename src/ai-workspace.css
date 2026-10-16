@@ -401,8 +401,16 @@
 .ai-page-privacy {
   margin-top: 28px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 13px;
   max-width: 850px;
+}
+.ai-page-privacy > summary {
+  cursor: pointer;
+  padding-block: 12px;
+  width: fit-content;
+}
+.ai-page-privacy > p {
+  line-height: 1.7;
 }
 .ai-workspace-teaser {
   display: flex;

@@ -32,15 +32,10 @@ export function ProjectNotes({ project }: { project: Project }) {
         <p>{project.challenges}</p>
       </div>
       <div>
-        <h4>Outcome &amp; technical scope</h4>
+        <h4>Outcome</h4>
         <p>{project.impact}</p>
         {evidence && (
           <>
-            <ul>
-              {evidence.limitations.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
             <a className="text-link" href={`/work/${project.slug}/`}>
               Architecture &amp; source code ↗
             </a>
@@ -93,7 +88,7 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
             {community
               ? "Open source · Marathi & English · Live on Vercel"
               : project.id === 33
-                ? "Mock banking simulation · no real money movement"
+                ? "Banking simulation · Python policy engine"
                 : project.id === 17
                   ? "Local pipeline · sample formatter output"
                   : "Personal project · read-only sample available"}

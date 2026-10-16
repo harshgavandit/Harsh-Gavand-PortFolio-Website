@@ -144,10 +144,8 @@ export function RequestTrace() {
             : (announcement ?? scenario.status)}
       </p>
       <p className="trace-disclosure">
-        Deterministic state-machine trace with illustrative token values:
-        completion settles actual usage, pre-dispatch failures roll back, and
-        uncertain upstream usage remains reserved. Known-usage settlement
-        failures use durable retries with dead-letter handling.
+        Quota lifecycle simulation: settle completed usage, release pre-dispatch
+        reservations, and retain estimates for uncertain upstream usage.
       </p>
     </div>
   );

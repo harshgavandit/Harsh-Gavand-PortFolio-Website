@@ -20,7 +20,7 @@ export function CodeEvidence({ items }: { items?: Evidence[] }) {
             <code>{item.text}</code>
           </pre>
           <a href={item.href} target="_blank" rel="noopener noreferrer">
-            Open exact source · {item.commit.slice(0, 7)}{" "}
+            View on GitHub · {item.commit.slice(0, 7)}{" "}
             <ArrowUpRight size={14} aria-hidden="true" />
           </a>
         </details>

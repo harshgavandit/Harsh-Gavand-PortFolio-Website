@@ -92,8 +92,7 @@ export function ProductEvidence({ slug }: { slug: string }) {
           Read complete sample digest ↗
         </a>
         <p className="evidence-caption">
-          Sample content rendered by the email formatter. No email is sent from
-          this preview.
+          Sample edition · Rendered by the project’s email formatter.
         </p>
       </figure>
     );
@@ -110,7 +109,7 @@ export function ProductEvidence({ slug }: { slug: string }) {
       <figcaption>
         {slug === "agri-samaj-community-platform"
           ? "Agri Samaj live website · Marathi–English community platform"
-          : "Public demo workspace with sample data."}
+          : "Demo workspace"}
       </figcaption>
     </figure>
   ) : null;

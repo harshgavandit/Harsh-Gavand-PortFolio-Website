@@ -88,7 +88,7 @@ test("assistant entry is prerendered and voice implementation loads on demand wi
     "utf8",
   );
   assert.match(voiceSource, /Listen to welcome/);
-  assert.match(voiceSource, /Microphone starts only when you choose/);
+  assert.match(voiceSource, /onClick=\{\(\) => void record\(\)\}/);
   assert.doesNotMatch(html, /<audio[^>]+autoplay/i);
   const response = await fetch(origin + "/voice/welcome.mp3");
   assert.equal(response.status, 200);
@@ -107,8 +107,8 @@ test("AI workspace directly loads as complete HTML with accessible tools, correc
     assert.match(page, /id="role-description"/);
     assert.match(page, /id="ticket-input"/);
     assert.equal((page.match(/role="tabpanel"/g) || []).length, 3);
-    assert.match(page, /Run live triage/);
-    assert.match(page, /Indexed repositories and commits/);
+    assert.match(page, /Classify ticket/);
+    assert.match(page, /Source repositories/);
     assert.ok(!page.includes('<div id="root"></div>'));
   }
   assert.equal(

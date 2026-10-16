@@ -21,9 +21,7 @@ export function Contact() {
     setDraft(
       `mailto:${profile.email}?subject=${encodeURIComponent(String(data.get("subject") || "Portfolio enquiry"))}&body=${encodeURIComponent(body)}`,
     );
-    setNotice(
-      "Your draft is ready. Open your email app below to review and send it. Nothing has been sent.",
-    );
+    setNotice("Draft ready. Open your email app to send it.");
   }
   return (
     <section

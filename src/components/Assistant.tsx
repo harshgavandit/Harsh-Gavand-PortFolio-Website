@@ -435,10 +435,11 @@ export function Assistant({
                 Clear chat
               </button>
             </div>
-            <p id="assistant-disclosure">
-              Powered by OpenAI. Messages are sent to OpenAI; this site keeps
-              chat only until you clear it or reload. AI can make mistakes.
-            </p>
+            {mode === "text" && (
+              <p id="assistant-disclosure">
+                Messages go to OpenAI. This site doesn’t save your chat.
+              </p>
+            )}
           </footer>
         </div>
       </dialog>

@@ -352,9 +352,7 @@ export function VoiceGuide({
         </a>
       )}
       <p className="voice-privacy">
-        AI-generated voice · Microphone starts only when you choose. Your
-        recording is sent to OpenAI after you finish; this site doesn’t save
-        audio.
+        Voice processed by OpenAI. This site doesn’t save recordings.
       </p>
       <details className="voice-transcript">
         <summary>Welcome transcript</summary>

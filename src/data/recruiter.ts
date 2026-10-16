@@ -32,7 +32,7 @@ export const recruiterPrompts = [
   {
     label: "How does he use AI and LLMs?",
     prompt:
-      "How does Harsh use AI and LLMs in full-stack applications? Compare his work on media generation, agent workflows, and retrieval, including the main limitations.",
+      "How does Harsh use AI and LLMs in full-stack applications? Use examples from media generation, agent workflows, and retrieval.",
   },
   {
     label: "Which roles fit his experience?",
@@ -48,12 +48,12 @@ export const recruiterPromptGroups = [
       {
         label: "How does UGC Content Studio work?",
         prompt:
-          "How does UGC Content Studio work from asset upload to AI generation and media delivery? Explain the processing states, credit handling, tradeoffs, and limitations, and link to the case study.",
+          "How does UGC Content Studio work from asset upload to AI generation and media delivery? Walk through processing states and credit handling, and link to the case study.",
       },
       {
         label: "How does LendFlow handle lending?",
         prompt:
-          "How does LendFlow handle borrower, lender, and administrator workflows? Explain its authorization, shared loan data, lifecycle states, and current limitations, and link to the case study.",
+          "How does LendFlow handle borrower, lender, and administrator workflows? Walk through account access, shared loan data, and lifecycle states, and link to the case study.",
       },
       {
         label: "What did he build for Agri Samaj?",
@@ -68,17 +68,17 @@ export const recruiterPromptGroups = [
       {
         label: "How does he build AI agents?",
         prompt:
-          "How does Harsh build AI agents while keeping actions within application rules? Use the Banking Agent Harness and another project to explain policy checks, confirmation, approvals, and simulation limits.",
+          "How does Harsh build AI agents while keeping actions within application rules? Use the Banking Agent Harness and another project to explain policy checks, confirmation, and approvals.",
       },
       {
         label: "How does his RAG search work?",
         prompt:
-          "How does Harsh's RAG search combine vector and keyword retrieval? Explain its ranking, source grounding, tradeoffs, and limitations, and show me the project.",
+          "How does Harsh's RAG search combine vector and keyword retrieval? Walk through retrieval, ranking, and source references, and show me the project.",
       },
       {
         label: "How does he handle failures?",
         prompt:
-          "How do Harsh's projects handle provider timeouts, cancelled requests, quota settlement, and retries? Walk me through concrete recovery mechanisms and any remaining limitations.",
+          "How do Harsh's projects handle provider timeouts, cancelled requests, quota settlement, and retries? Walk me through the recovery flow in a project.",
       },
     ],
   },
@@ -88,7 +88,7 @@ export const recruiterPromptGroups = [
       {
         label: "How does he protect user data?",
         prompt:
-          "How does Harsh protect user data? Show project examples of authentication, role-based access, ownership checks, private uploads, and input validation, including their limits.",
+          "How does Harsh protect user data? Show project examples of authentication, role-based access, ownership checks, private uploads, and input validation.",
       },
       {
         label: "How does he test and deploy?",
@@ -98,7 +98,7 @@ export const recruiterPromptGroups = [
       {
         label: "What would he improve next?",
         prompt:
-          "What would be the most useful next improvements to Harsh's projects? Explain the current limitations and engineering tradeoffs, and distinguish suggested next steps from features already built.",
+          "What would be the most useful next improvements to Harsh's projects? Suggest the next technical improvements and explain how they would build on the current implementation.",
       },
     ],
   },

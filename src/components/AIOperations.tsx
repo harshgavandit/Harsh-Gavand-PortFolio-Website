@@ -13,7 +13,7 @@ type Metrics = {
 };
 export function Operations() {
   const [metrics, setMetrics] = useState<Metrics | null>(null);
-  const [status, setStatus] = useState("Loading anonymous aggregate counters…");
+  const [status, setStatus] = useState("Loading metrics…");
   useEffect(() => {
     let active = true;
     const controller = new AbortController();
@@ -35,10 +35,7 @@ export function Operations() {
         if (!controller.signal.aborted) setMetrics(data as Metrics);
       })
       .catch(() => {
-        if (active)
-          setStatus(
-            "Live counters are temporarily unavailable. The tools remain available under the shared usage allowance.",
-          );
+        if (active) setStatus("Metrics are temporarily unavailable.");
       })
       .finally(() => window.clearTimeout(timer));
     return () => {
@@ -51,21 +48,19 @@ export function Operations() {
     <section className="ai-operations" aria-labelledby="operations-title">
       <div className="ai-operations-heading">
         <div>
-          <span className="eyebrow">Operating the system</span>
-          <h2 id="operations-title">Live service counters.</h2>
+          <span className="eyebrow">Service metrics</span>
+          <h2 id="operations-title">Live performance.</h2>
         </div>
-        <span className="operations-period">Last 7 UTC calendar days</span>
+        <span className="operations-period">Last 7 days · UTC</span>
       </div>
       <p>
-        Successful requests, failures, and public-answer cache hits share the
-        same accounting boundary. These counters retain no questions, job
-        descriptions, ticket content, audio, or client identifiers.
+        Request volume, cache usage, and response times across the AI tools.
       </p>
       {metrics ? (
         <>
           <dl className="operations-stats">
             <div>
-              <dt>Requests observed</dt>
+              <dt>Requests</dt>
               <dd>{metrics.requests.toLocaleString()}</dd>
             </div>
             <div>
@@ -75,11 +70,11 @@ export function Operations() {
               </dd>
             </div>
             <div>
-              <dt>Public cache hits</dt>
+              <dt>Cache hits</dt>
               <dd>{metrics.cacheHits}</dd>
             </div>
             <div>
-              <dt>Provider-backed p95</dt>
+              <dt>Response p95</dt>
               <dd>
                 {metrics.uncachedP95UpperMs === null
                   ? "Collecting"
@@ -87,28 +82,24 @@ export function Operations() {
               </dd>
             </div>
             <div>
-              <dt>Allowance accounted</dt>
+              <dt>Budget used</dt>
               <dd>${metrics.allowanceCostUsd.toFixed(4)}</dd>
             </div>
           </dl>
           <p className="ai-tool-note">
-            {metrics.providerCalls} provider-backed requests in this window. The
-            p95 value is a latency-bucket upper bound, including failures; small
-            samples do not establish an SLA. Allowance includes a conservative
-            margin and is not an invoice.
+            {metrics.providerCalls} model requests this week.
           </p>
         </>
       ) : (
         <p role="status">{status}</p>
       )}
       <details>
-        <summary>Collection and recovery</summary>
+        <summary>Metric definitions</summary>
         <p>
-          Collection began with this release. Counters expire after 31 days.
-          Only the four public implementation-question samples can reuse cached
-          answers, keyed by source snapshot and prompt version; custom inputs
-          are never cached. Cache or monitoring failures do not bypass admission
-          or spending protection.
+          P95 shows the upper latency bucket for model requests, including
+          failures. Budget usage includes a pricing margin. Redis counters
+          expire after 31 days; answers to the four preset code questions are
+          cached for six hours. Custom inputs stay out of the cache.
         </p>
         <a
           className="text-link"
@@ -116,7 +107,7 @@ export function Operations() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Inspect aggregate JSON ↗
+          Metrics API ↗
         </a>
       </details>
     </section>
