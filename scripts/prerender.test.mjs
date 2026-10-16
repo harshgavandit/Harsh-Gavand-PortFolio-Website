@@ -80,6 +80,19 @@ test("home has five chapters with unnumbered navigation and a hidden mobile menu
   }
 });
 
+test("voice entry controls are prerendered without autoplay and the static welcome serves as audio", async () => {
+  assert.match(html, /Text chat/);
+  assert.match(html, /Voice guide/);
+  assert.match(html, /Listen to welcome/);
+  assert.match(html, /Welcome transcript/);
+  assert.match(html, /AI-generated voice/);
+  assert.doesNotMatch(html, /<audio[^>]+autoplay/i);
+  const response = await fetch(origin + "/voice/welcome.mp3");
+  assert.equal(response.status, 200);
+  assert.equal(response.headers.get("content-type"), "audio/mpeg");
+  assert.ok((await response.arrayBuffer()).byteLength > 1000);
+});
+
 test("selected work leads with evidence and links to focused case studies", () => {
   const cards = [
     ...html.matchAll(/<article class="flagship-card"[\s\S]*?<\/article>/g),

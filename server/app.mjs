@@ -12,6 +12,7 @@ import {
 
 import { RedisQuota } from "./quota.mjs";
 import { generateWithQuota } from "./quota-lifecycle.mjs";
+import { validateVoice, generateVoice, transcribe, speak } from "./voice.mjs";
 
 const defaultDist = resolve(
   fileURLToPath(new URL("../dist/", import.meta.url)),
@@ -30,6 +31,7 @@ const mime = {
   ".woff2": "font/woff2",
   ".txt": "text/plain",
   ".xml": "application/xml",
+  ".mp3": "audio/mpeg",
 };
 
 export function createApplication(config) {
@@ -82,6 +84,7 @@ export function createApplication(config) {
       return json(res, 200, {
         status: "ok",
         assistantConfigured: Boolean(apiKey),
+        voiceGuideConfigured: Boolean(apiKey && quota.configured),
         model,
         runtime: config.vercel ? "vercel" : "node",
         scheduledRecoveryConfigured: Boolean(config.cronSecret),
@@ -92,7 +95,8 @@ export function createApplication(config) {
           resetTimezone: "UTC",
         },
       });
-    if (pathname === "/api/chat") {
+    if (pathname === "/api/chat" || pathname === "/api/voice/chat") {
+      const voice = pathname === "/api/voice/chat";
       if (req.method !== "POST") {
         res.setHeader("Allow", "POST");
         return json(res, 405, { error: "Use POST." });
@@ -110,6 +114,10 @@ export function createApplication(config) {
       let inFlight = false;
       let admissionLease;
       const controller = new AbortController();
+      // Leave Vercel time to settle accounting and release the shared lease.
+      const requestSignal = voice
+        ? AbortSignal.any([controller.signal, AbortSignal.timeout(45000)])
+        : controller.signal;
       const abort = () => {
         if (!res.writableEnded) controller.abort();
       };
@@ -121,7 +129,7 @@ export function createApplication(config) {
         let bytes = 0;
         for await (const chunk of req) {
           bytes += chunk.length;
-          if (bytes > 16384)
+          if (bytes > (voice ? 900000 : 16384))
             throw new ChatError(
               413,
               "too_large",
@@ -135,7 +143,8 @@ export function createApplication(config) {
         } catch {
           throw new ChatError(400, "invalid_json", "Send a valid question.");
         }
-        const messages = validateMessages(body);
+        const voiceInput = voice ? validateVoice(body) : null;
+        const messages = voice ? null : validateMessages(body);
         const now = Date.now();
         for (const [key, value] of clients)
           if (value.reset <= now) clients.delete(key);
@@ -180,6 +189,23 @@ export function createApplication(config) {
           inFlight = true;
         }
         await config.beforeGenerate?.();
+        if (voice) {
+          const result = await generateVoice({
+            ...voiceInput,
+            quota,
+            model,
+            signal: requestSignal,
+            generate,
+            transcribeAudio:
+              config.voiceTranscribe ||
+              ((audio, { signal }) => transcribe(audio, { apiKey, signal })),
+            speakAudio:
+              config.voiceSpeak ||
+              ((text, { signal }) => speak(text, { apiKey, signal })),
+          });
+          json(res, 200, result);
+          return;
+        }
         const request = buildRequest(messages, model);
         const result = await generateWithQuota({
           request,

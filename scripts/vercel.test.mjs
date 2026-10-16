@@ -9,6 +9,7 @@ import { ChatError } from "../server/openai.mjs";
 import { readFileSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { encodeVoiceWav } from "../src/lib/voiceAudio.ts";
 
 async function fixture(t, overrides = {}) {
   const events = [];
@@ -104,6 +105,45 @@ async function fixture(t, overrides = {}) {
 
 test("production defaults to the Vercel custom domain", () => {
   assert.equal(profile.site, "https://harshgavand.dev");
+});
+
+test("rewritten voice calls share Vercel admission, recovery, reservation, and lease cleanup", async (t) => {
+  const { chat, events } = await fixture(t, {
+    voiceTranscribe: async () => {
+      events.push("transcribe");
+      return {
+        text: "Tell me about Harsh",
+        usage: { input_tokens: 100, output_tokens: 5 },
+      };
+    },
+    voiceSpeak: async () => {
+      events.push("speak");
+      return Buffer.from("ID3-speech");
+    },
+  });
+  const samples = Float32Array.from(
+    { length: 16000 },
+    (_, i) => Math.sin(i / 12) * 0.2,
+  );
+  const audio = Buffer.from(encodeVoiceWav(samples, 16000)).toString("base64");
+  const response = await chat({
+    path: "/api/index?__path=voice/chat",
+    body: JSON.stringify({ audio, messages: [] }),
+  });
+  assert.equal(response.status, 200);
+  assert.equal((await response.json()).audioType, "audio/mpeg");
+  // The response can complete just before the awaited lease cleanup.
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.deepEqual(events, [
+    ["admit", "203.0.113.42"],
+    ["retry", 1],
+    "reserve",
+    "transcribe",
+    "generate",
+    "speak",
+    "settle",
+    "release",
+  ]);
 });
 
 test("production origin configuration accepts an optional trailing root slash", () => {

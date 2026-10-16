@@ -11,6 +11,7 @@ import {
 import { profile } from "../data/portfolio";
 import { recruiterPrompts as suggestions } from "../data/recruiter";
 import { isAssistantShortcut } from "../lib/interaction";
+import { VoiceGuide } from "./VoiceGuide";
 
 type Source = { label: string; href: string };
 type Message = {
@@ -24,6 +25,7 @@ export function Assistant() {
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const openerRef = useRef<HTMLElement | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<AbortController | null>(null);
   const generationRef = useRef(0);
   const [open, setOpen] = useState(false);
@@ -32,6 +34,8 @@ export function Assistant() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [retryAllowed, setRetryAllowed] = useState(true);
+  const [mode, setMode] = useState<"text" | "voice">("text");
+  const [voiceReset, setVoiceReset] = useState(0);
 
   useEffect(() => {
     const show = (event: Event) => {
@@ -40,7 +44,10 @@ export function Assistant() {
         ? document.querySelector<HTMLElement>(".menu-toggle")
         : active;
       const prompt = (event as CustomEvent<{ prompt?: string }>).detail?.prompt;
-      if (typeof prompt === "string" && prompt) setInput(prompt.slice(0, 2000));
+      if (typeof prompt === "string" && prompt) {
+        setInput(prompt.slice(0, 2000));
+        setMode("text");
+      }
       setOpen(true);
     };
     window.addEventListener("open-portfolio-assistant", show);
@@ -77,8 +84,12 @@ export function Assistant() {
     dialogRef.current?.close();
   }, [open]);
   useEffect(() => {
-    if (open) endRef.current?.scrollIntoView({ block: "nearest" });
-  }, [messages, busy, error, open]);
+    if (open && mode === "text")
+      endRef.current?.scrollIntoView({ block: "nearest" });
+  }, [messages, busy, error, open, mode]);
+  useEffect(() => {
+    if (mode === "voice") scrollRef.current?.scrollTo({ top: 0 });
+  }, [mode, open]);
 
   function stop() {
     generationRef.current++;
@@ -92,6 +103,7 @@ export function Assistant() {
     setOpen(false);
   }
   function clear() {
+    setVoiceReset((value) => value + 1);
     generationRef.current++;
     requestRef.current?.abort();
     requestRef.current = null;
@@ -103,7 +115,7 @@ export function Assistant() {
     inputRef.current?.focus();
   }
   async function send(text?: string, retry = false) {
-    if (requestRef.current) return;
+    if (requestRef.current || mode !== "text") return;
     const question = (text ?? input).trim();
     if (!retry && (!question || question.length > 2000)) return;
     const previous =
@@ -214,7 +226,7 @@ export function Assistant() {
             </span>
             <div>
               <h2 id="assistant-title">Ask Harsh’s AI</h2>
-              <p>Explore Harsh’s work, with sources.</p>
+              <p>Explore Harsh’s work, in text or voice.</p>
             </div>
             <button
               className="assistant-icon"
@@ -224,8 +236,50 @@ export function Assistant() {
               <X size={20} />
             </button>
           </header>
-          <div className="assistant-scroll">
-            {!messages.length && (
+          <div
+            className="assistant-modes"
+            role="group"
+            aria-label="Conversation mode"
+          >
+            <button
+              type="button"
+              aria-pressed={mode === "text"}
+              onClick={() => {
+                setMode("text");
+                window.setTimeout(() => inputRef.current?.focus(), 0);
+              }}
+            >
+              Text chat
+            </button>
+            <button
+              type="button"
+              aria-pressed={mode === "voice"}
+              onClick={() => {
+                if (busy) stop();
+                setError("");
+                setMode("voice");
+              }}
+            >
+              Voice guide
+            </button>
+          </div>
+          <div className="assistant-scroll" ref={scrollRef}>
+            <VoiceGuide
+              active={open && mode === "voice"}
+              resetKey={voiceReset}
+              messages={messages}
+              onAnswer={(question, answer) => {
+                setMessages((previous) => [
+                  ...(previous.at(-1)?.role === "user"
+                    ? previous.slice(0, -1)
+                    : previous),
+                  { role: "user", content: question },
+                  answer,
+                ]);
+              }}
+              onNavigate={close}
+            />
+            {!messages.length && mode === "text" && (
               <div className="assistant-welcome">
                 <span className="eyebrow">A useful place to start</span>
                 <h3>
@@ -285,7 +339,7 @@ export function Assistant() {
                           }
                           rel="noopener noreferrer"
                           onClick={() => {
-                            if (source.href.startsWith("/#")) close();
+                            if (source.href.startsWith("/")) close();
                           }}
                         >
                           {source.label}
@@ -316,65 +370,72 @@ export function Assistant() {
             <div ref={endRef} />
           </div>
           <footer className="assistant-composer">
-            <form
-              onSubmit={(event) => {
-                event.preventDefault();
-                void send();
-              }}
-            >
-              <label className="sr-only" htmlFor="assistant-question">
-                Your question about Harsh
-              </label>
-              <textarea
-                ref={inputRef}
-                id="assistant-question"
-                value={input}
-                onChange={(event) => setInput(event.target.value)}
-                maxLength={2000}
-                rows={2}
-                placeholder="Ask about a project, skill, or role…"
-                aria-describedby="assistant-disclosure"
-                onKeyDown={(event) => {
-                  if (
-                    event.key === "Enter" &&
-                    !event.shiftKey &&
-                    !event.nativeEvent.isComposing
-                  ) {
+            {mode === "text" && (
+              <>
+                <form
+                  onSubmit={(event) => {
                     event.preventDefault();
-                    if (!busy) void send();
-                  }
-                }}
-              />
-              {busy ? (
-                <button
-                  type="button"
-                  className="assistant-send"
-                  onClick={stop}
-                  aria-label="Stop response"
+                    void send();
+                  }}
                 >
-                  <Square size={17} />
-                </button>
-              ) : (
-                <button
-                  type="submit"
-                  className="assistant-send"
-                  disabled={!input.trim()}
-                  aria-label="Send question"
-                >
-                  <ArrowUp size={20} />
-                </button>
-              )}
-            </form>
+                  <label className="sr-only" htmlFor="assistant-question">
+                    Your question about Harsh
+                  </label>
+                  <textarea
+                    ref={inputRef}
+                    id="assistant-question"
+                    value={input}
+                    onChange={(event) => setInput(event.target.value)}
+                    maxLength={2000}
+                    rows={2}
+                    placeholder="Ask about a project, skill, or role…"
+                    aria-describedby="assistant-disclosure"
+                    onKeyDown={(event) => {
+                      if (
+                        event.key === "Enter" &&
+                        !event.shiftKey &&
+                        !event.nativeEvent.isComposing
+                      ) {
+                        event.preventDefault();
+                        if (!busy) void send();
+                      }
+                    }}
+                  />
+                  {busy ? (
+                    <button
+                      type="button"
+                      className="assistant-send"
+                      onClick={stop}
+                      aria-label="Stop response"
+                    >
+                      <Square size={17} />
+                    </button>
+                  ) : (
+                    <button
+                      type="submit"
+                      className="assistant-send"
+                      disabled={!input.trim()}
+                      aria-label="Send question"
+                    >
+                      <ArrowUp size={20} />
+                    </button>
+                  )}
+                </form>
+              </>
+            )}
             <div className="assistant-composer-meta">
-              <span>{input.length}/2,000</span>
+              <span>
+                {mode === "text"
+                  ? `${input.length}/2,000`
+                  : "Voice and text share this conversation"}
+              </span>
               <button onClick={clear} disabled={!messages.length && !input}>
                 Clear chat
               </button>
             </div>
             <p id="assistant-disclosure">
-              Powered by OpenAI GPT-6 Luna. Messages are sent to OpenAI; this
-              site keeps chat only until you clear it or reload. AI can make
-              mistakes.
+              Powered by OpenAI. Messages are sent to OpenAI; this site keeps
+              chat only until you clear it or reload. AI can make mistakes.
             </p>
           </footer>
         </div>

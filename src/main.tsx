@@ -6,6 +6,7 @@ import Portfolio from "./Portfolio";
 import "./fonts.css";
 import "./recruiter.css";
 import "./evidence.css";
+import "./voice.css";
 
 const root = document.getElementById("root")!;
 const prerendered = root.dataset.prerendered === "true";
