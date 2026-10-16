@@ -69,9 +69,82 @@ export const ticketSamples = [
 ];
 export const roleSample =
   "We are hiring a full-stack engineer with React, TypeScript, Node.js or Python, relational database design, and experience integrating AI APIs. The role also requires production Kafka operations and five years of Go experience.";
-export const codeSamples = [
-  "Where does the portfolio release a quota reservation when a client aborts?",
-  "How does UGC refund credits when generation fails?",
-  "How does the banking agent harness require later-turn confirmation?",
-  "How does the RAG project combine BM25 and vector search?",
+export const codeSampleGroups = [
+  {
+    label: "Start here",
+    questions: [
+      {
+        label: "Which projects best show your full-stack and AI skills?",
+        prompt:
+          "Which of Harsh's projects best demonstrate full-stack and applied AI engineering? Explain his contributions and key architecture decisions, and link to the relevant work.",
+      },
+      {
+        label: "What have you delivered in your professional roles?",
+        prompt:
+          "What did Harsh personally deliver at GlobeTrek and HRP Enterprises? Explain his responsibilities, the business problems he worked on, and his published contributions.",
+      },
+      {
+        label: "How do you design backend APIs and databases?",
+        prompt:
+          "How does Harsh design backend APIs and databases? Use UGC Content Studio to explain request validation, authentication, data modeling, and ownership checks, with code references.",
+      },
+      {
+        label: "How do you test your projects, and what are their limitations?",
+        prompt:
+          "How is the Banking Agent Harness tested? Use its tests and implementation to explain the transfer scenarios covered, what is simulated, and the limits of the available evidence.",
+      },
+    ],
+  },
+  {
+    label: "Project walkthroughs",
+    questions: [
+      {
+        label: "How does UGC Content Studio generate content from an upload?",
+        prompt:
+          "Walk through UGC Content Studio from asset upload to AI generation and media delivery. Explain the request flow, processing states, and credit handling, with code references.",
+      },
+      {
+        label: "How does LendFlow handle borrower and lender workflows?",
+        prompt:
+          "How does LendFlow handle borrower, lender, and administrator workflows? Explain authentication, loan creation, review, and lifecycle states using the available code.",
+      },
+      {
+        label: "When does the ticket classifier ask for human review?",
+        prompt:
+          "How does the support-ticket classifier validate AI output, redact personal information, and decide when a ticket needs human review? Show the relevant implementation.",
+      },
+      {
+        label: "How does the RAG project combine BM25 and vector search?",
+        prompt:
+          "How does the RAG project combine BM25 and vector search with Reciprocal Rank Fusion, and retain source references in its answers? Show the relevant code.",
+      },
+    ],
+  },
+  {
+    label: "Reliability & safety",
+    questions: [
+      {
+        label:
+          "Where does the portfolio release a quota reservation when a client aborts?",
+        prompt:
+          "Where does the portfolio release a quota reservation when a client aborts? Explain cancellation, settlement, and recovery with code references.",
+      },
+      {
+        label: "How does UGC refund credits when generation fails?",
+        prompt:
+          "How does UGC refund credits when generation fails? Walk through the failure path and its tests with code references.",
+      },
+      {
+        label:
+          "How does the banking agent harness require later-turn confirmation?",
+        prompt:
+          "How does the banking agent harness validate transfer policy and require later-turn confirmation before mock execution? Show the relevant code and explain what happens when transfer details change.",
+      },
+      {
+        label: "How does the portfolio keep AI usage within its budget?",
+        prompt:
+          "How does the portfolio enforce request limits and shared AI spending budgets before calling a model? Explain admission, quota reservation, and settlement using code references.",
+      },
+    ],
+  },
 ];

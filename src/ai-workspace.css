@@ -140,6 +140,33 @@
   font-size: 12px;
   line-height: 1.8;
 }
+.ai-question-topics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+}
+.ai-question-topics button {
+  min-height: 44px;
+  padding: 9px 12px;
+  border-radius: 8px;
+  background: var(--raised);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: left;
+}
+.ai-question-topics button:hover,
+.ai-question-topics button[aria-pressed="true"] {
+  border-color: var(--accent);
+  color: var(--text);
+}
+.ai-question-topics button[aria-pressed="true"] {
+  background: var(--surface);
+}
+.ai-question-topics + .ai-samples {
+  margin-top: 12px;
+}
 .ai-samples {
   display: grid;
   gap: 9px;

@@ -9,7 +9,11 @@ import {
 } from "lucide-react";
 import { Tabs } from "./Tabs";
 import { CodeEvidence } from "./CodeEvidence";
-import { codeSamples, roleSample, ticketSamples } from "../lib/aiWorkspace";
+import {
+  codeSampleGroups,
+  roleSample,
+  ticketSamples,
+} from "../lib/aiWorkspace";
 import type {
   Execution,
   GuideResult,
@@ -170,25 +174,60 @@ function RequestState({ busy, error }: { busy: boolean; error: string }) {
 
 function TechnicalGuide() {
   const [question, setQuestion] = useState("");
+  const [sampleGroup, setSampleGroup] = useState(0);
+  const questionInput = useRef<HTMLTextAreaElement>(null);
   const api = useAIRequest<GuideResult>("/api/chat");
+  const group = codeSampleGroups[sampleGroup];
   return (
     <div className="ai-tool-layout">
       <div className="ai-tool-intro">
         <span className="eyebrow">Read the implementation</span>
         <h2>Ask the code.</h2>
         <p>
-          Ask how a project works and follow the answer to the relevant files
-          and lines of code.
+          Explore my experience and how my projects work, with links to the
+          relevant work and code.
         </p>
-        <div className="ai-samples">
-          {codeSamples.map((sample) => (
+        <p className="ai-tool-note">
+          Pick a topic, then click a question to ask it. You can also write your
+          own.
+        </p>
+        <div
+          className="ai-question-topics"
+          role="group"
+          aria-label="Question topics"
+        >
+          {codeSampleGroups.map((topic, index) => (
             <button
               type="button"
-              key={sample}
-              disabled={api.busy}
-              onClick={() => setQuestion(sample)}
+              key={topic.label}
+              aria-pressed={sampleGroup === index}
+              aria-controls="code-suggested-questions"
+              onClick={() => setSampleGroup(index)}
             >
-              {sample}
+              {topic.label}
+            </button>
+          ))}
+        </div>
+        <div
+          id="code-suggested-questions"
+          className="ai-samples"
+          role="group"
+          aria-label={`${group.label} questions`}
+        >
+          {group.questions.map((sample) => (
+            <button
+              type="button"
+              key={sample.label}
+              disabled={api.busy}
+              onClick={() => {
+                setQuestion(sample.prompt);
+                void api.run({
+                  messages: [{ role: "user", content: sample.prompt }],
+                });
+                questionInput.current?.focus();
+              }}
+            >
+              {sample.label}
               <ArrowUpRight size={15} aria-hidden="true" />
             </button>
           ))}
@@ -206,11 +245,12 @@ function TechnicalGuide() {
           <label htmlFor="code-question">Your implementation question</label>
           <textarea
             id="code-question"
+            ref={questionInput}
             value={question}
             onChange={(event) => setQuestion(event.target.value)}
             maxLength={2000}
             rows={4}
-            placeholder="Where is cancellation handled?"
+            placeholder="Ask about my experience, a project, or an engineering decision…"
             required
           />
           <div className="ai-form-actions">
