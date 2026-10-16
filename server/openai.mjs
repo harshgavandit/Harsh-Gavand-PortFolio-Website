@@ -4,10 +4,10 @@ import {
   experience,
   skills,
   projects,
-  caseStudies,
   engineeringSprints,
 } from "../src/data/portfolio.ts";
 import { caseEvidence } from "../src/data/caseEvidence.ts";
+import { workStudies } from "../src/data/workPresentation.ts";
 import { resumeStackGroups } from "../src/data/heroStack.ts";
 
 export class ChatError extends Error {
@@ -92,7 +92,7 @@ export function knowledgeFor(messages) {
               (stack.includes(t) ? 3 : 0) +
               (content.includes(t) ? 1 : 0),
             0,
-          ) + (caseStudies.some((c) => c.projectId === p.id) ? 0.5 : 0),
+          ) + (workStudies.some((c) => c.projectId === p.id) ? 0.5 : 0),
       };
     })
     .sort((a, b) => b.score - a.score);
@@ -122,7 +122,7 @@ export function knowledgeFor(messages) {
       technologies,
     })),
     projectDetails: ranked.slice(0, 5).map(({ project }) => project),
-    caseStudyNotes: caseStudies.filter((study) =>
+    caseStudyNotes: workStudies.filter((study) =>
       ranked.slice(0, 5).some(({ project }) => project.id === study.projectId),
     ),
     note: "Only facts published in the portfolio are available. Employment dates are as published; do not turn a completed position into current employment. Private information, compensation and up-to-date availability are not established by this context. Direct those questions to the contact link.",

@@ -51,10 +51,76 @@ export const harnessStudy: CaseStudy = {
   },
 };
 
-export const workStudies = [...caseStudies, harnessStudy];
+export const communityStudy: CaseStudy = {
+  projectId: 39,
+  shortName: "Agri Samaj — Open-Source Community Platform",
+  problem: "A shared digital home for the Agri Samaj community.",
+  summary:
+    "An open-source Marathi–English platform built specifically for the Agri Samaj community. It helps people discover local businesses, support community entrepreneurs, access publications and announcements, and stay connected through shared community services.",
+  engineering: [
+    "Community workflows: Built a bilingual Next.js platform with business discovery, five-step entrepreneur registration, saved drafts, application tracking, and administrative approvals.",
+    "Access & document privacy: Bound protected routes to active database accounts and roles, validated upload ownership, and kept verification documents in private storage.",
+    "Relational publishing: Modeled business applications, categories, publications, announcements, and audit logs in PostgreSQL through Prisma, exposing approved directory fields to public visitors.",
+  ],
+  contributions: [
+    {
+      label: "Product",
+      description: "Marathi–English business discovery and community content.",
+    },
+    {
+      label: "Backend",
+      description:
+        "Validated routes, account-scoped registration, approvals, and private files.",
+    },
+    {
+      label: "Data",
+      description:
+        "Prisma/PostgreSQL models, migrations, rate limits, and audit logs.",
+    },
+  ],
+  previewNote:
+    "Browse the live directory and community content without an account. Business registration and administrative tools require sign-in.",
+  accessMode: "Open Source · Live Community Platform",
+  accessDescription:
+    "Public Marathi–English community website, deployed on Vercel",
+  takeaway:
+    "Bilingual community services backed by relational workflows, server-side access checks, and private document storage.",
+  recovery:
+    "Invalid or unowned uploads are rejected before registration is saved. Drafts let applicants complete the process over multiple sessions.",
+  diagram: {
+    title: "Community application to an approved public listing",
+    nodes: [
+      "Marathi–English UI",
+      "Session & validation",
+      "Application workflow",
+      "Prisma / PostgreSQL",
+      "Approved directory",
+    ],
+    details: [
+      "Business discovery, a five-step registration form, and account dashboards",
+      "HttpOnly JWT session, active account/role checks, Zod payload validation, and rate limits",
+      "Draft persistence, applicant ownership, upload ownership checks, and administrative decisions",
+      "Relational business/category records, application states, audit logs, and private upload references",
+      "Approved-only business queries with search, category/location filters, and bounded pagination",
+    ],
+    contracts: [
+      "Visitor or applicant input → localized application request",
+      "Account + validated payload → permitted route action",
+      "Owned application + private uploads → draft or submitted record",
+      "Application decision → persisted business state",
+      "Approved records → public business fields only",
+    ],
+    caption:
+      "Community discovery and entrepreneur onboarding with separate public and private data paths.",
+    chapterNodes: [[0], [1, 2], [3, 4]],
+  },
+};
+
+export const workStudies = [...caseStudies, harnessStudy, communityStudy];
 export const featuredStudies = [
   caseStudies[0],
   caseStudies[1],
+  communityStudy,
   harnessStudy,
   caseStudies[3],
 ];

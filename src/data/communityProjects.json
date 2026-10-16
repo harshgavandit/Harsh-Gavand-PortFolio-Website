@@ -1,0 +1,30 @@
+[
+  {
+    "id": 39,
+    "slug": "agri-samaj-community-platform",
+    "title": "Agri Samaj — Community Platform",
+    "category": "Open-Source Community Platform",
+    "overview": "An open-source Marathi–English platform built specifically for the Agri Samaj community. It helps people discover local businesses, support community entrepreneurs, access publications and announcements, and stay connected through shared community services.",
+    "features": [
+      "Marathi–English interface with a searchable, approved business directory",
+      "Five-step entrepreneur registration with saved drafts and application tracking",
+      "Administrative approval workflows, publications, announcements, and inquiries",
+      "Private document uploads with authenticated access and server-side role checks"
+    ],
+    "technologies": [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Prisma",
+      "PostgreSQL",
+      "JWT",
+      "Vercel Blob"
+    ],
+    "role": "Built the bilingual interface, business registration and approval workflows, database models, API routes, private uploads, and administrative tools.",
+    "challenges": "Separated approved public business information from private application documents while maintaining Marathi–English content, draft persistence, and role-scoped administration.",
+    "impact": "Brings business discovery, entrepreneur onboarding, publications, and community administration into one open-source platform that contributors can adapt and improve.",
+    "githubUrl": "https://github.com/harshgavandit/agri-samaj-community-platform",
+    "demoUrl": "https://agri-samaj-community-platform.vercel.app"
+  }
+]

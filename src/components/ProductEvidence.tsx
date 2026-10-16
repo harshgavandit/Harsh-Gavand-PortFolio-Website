@@ -3,6 +3,10 @@ import harnessOutput from "../../public/evidence/banking-harness.json";
 import digestHTML from "../../public/evidence/news-digest.html?raw";
 
 const captures: Record<string, { src: string; alt: string }> = {
+  "agri-samaj-community-platform": {
+    src: "/evidence/agri-samaj-workspace.png",
+    alt: "Agri Samaj live Marathi homepage with community business search, entrepreneur registration, directory, and publications",
+  },
   "ugc-platform": {
     src: "/evidence/ugc-workspace.png",
     alt: "UGC Content Studio sample workspace showing reference inputs, saved output, and generation status",
@@ -103,7 +107,11 @@ export function ProductEvidence({ slug }: { slug: string }) {
         alt={capture.alt}
         loading="lazy"
       />
-      <figcaption>Public demo workspace with sample data.</figcaption>
+      <figcaption>
+        {slug === "agri-samaj-community-platform"
+          ? "Agri Samaj live website · Marathi–English community platform"
+          : "Public demo workspace with sample data."}
+      </figcaption>
     </figure>
   ) : null;
 }

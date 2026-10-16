@@ -1,5 +1,4 @@
 import { ArrowUpRight } from "lucide-react";
-import { chapterNumber } from "../data/recruiter";
 import { ActionLink, Tags } from "./Primitives";
 import { profile } from "../data/portfolio";
 import { primaryStack } from "../data/workPresentation";
@@ -14,8 +13,8 @@ export function Hero() {
     >
       <div className="hero-layout">
         <div className="hero-copy">
-          <p className="eyebrow" data-chapter-number={chapterNumber("hero")}>
-            {chapterNumber("hero")} / Introduction
+          <p className="eyebrow" data-chapter="hero">
+            Introduction
           </p>
           <p className="hero-name">
             HARSH GAVAND / FULL-STACK &amp; AI ENGINEER
@@ -58,7 +57,7 @@ export function Hero() {
           aria-label="Explore UGC Content Studio case study"
         >
           <div className="hero-project-top">
-            <span className="eyebrow">Selected build / 01</span>
+            <span className="eyebrow">Selected build</span>
             <ArrowUpRight size={20} aria-hidden="true" />
           </div>
           <div className="hero-product-image">

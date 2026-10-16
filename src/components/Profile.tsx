@@ -202,11 +202,9 @@ export function Skills() {
       />
 
       <div className="skills-grid">
-        {skills.map((group, index) => (
+        {skills.map((group) => (
           <article key={group.title}>
-            <span className="eyebrow">
-              0{index + 1} / {group.title}
-            </span>
+            <span className="eyebrow">{group.title}</span>
 
             <h3>{group.description}</h3>
 

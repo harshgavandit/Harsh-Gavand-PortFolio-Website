@@ -5,6 +5,7 @@ import { createHash } from "node:crypto";
 import {
   projects as catalog,
   latestAIProjects,
+  communityProjects,
   caseStudies,
   profile,
   experience,
@@ -193,7 +194,10 @@ test("all recently pushed AI repositories are included once, discoverable, and t
       "utf8",
     ),
   );
-  assert.equal(catalog.length, 38);
+  assert.equal(
+    catalog.length,
+    projects.length + latestAIProjects.length + communityProjects.length,
+  );
   assert.equal(latestAIProjects.length, 12);
   assert.equal(sources.projects.length, 12);
   assert.deepEqual(

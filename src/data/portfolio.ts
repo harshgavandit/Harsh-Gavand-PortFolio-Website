@@ -1,5 +1,6 @@
 import sourceProjects from "./projects.json" with { type: "json" };
 import recentSourceProjects from "./recentProjects.json" with { type: "json" };
+import communitySourceProjects from "./communityProjects.json" with { type: "json" };
 
 export interface Project {
   id: number;
@@ -57,11 +58,19 @@ export const profile = {
 };
 
 export const latestAIProjects: Project[] = recentSourceProjects;
+export const communityProjects: Project[] = communitySourceProjects;
 const latestAIIds = new Set(latestAIProjects.map((project) => project.id));
 export function isLatestAIProject(projectId: number) {
   return latestAIIds.has(projectId);
 }
-export const projects: Project[] = [...latestAIProjects, ...sourceProjects];
+export const projects: Project[] = [
+  ...communityProjects,
+  ...latestAIProjects,
+  ...sourceProjects,
+];
+export const archiveProjects = projects.filter(
+  (project) => !communityProjects.some((item) => item.id === project.id),
+);
 export function projectSlug(id: number) {
   const project = projects.find((item) => item.id === id);
   if (!project) throw new Error("Unknown project");

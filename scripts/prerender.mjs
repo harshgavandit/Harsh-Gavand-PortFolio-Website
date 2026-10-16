@@ -9,7 +9,7 @@ import {
 } from "./prerender-checks.mjs";
 import { workStudies } from "../src/data/workPresentation.ts";
 import { workPage } from "../src/lib/projectNavigation.ts";
-import { profile, projects } from "../src/data/portfolio.ts";
+import { profile, projects, archiveProjects } from "../src/data/portfolio.ts";
 
 // Generate HTML from the same components and data as the client, without a
 // browser download, network requests, API credentials, or a running dev server.
@@ -116,5 +116,5 @@ await writeFile(
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${origin}/</loc></url><url><loc>${origin}/archive/</loc></url>${workLocations.map((location) => `<url><loc>${origin}${location}</loc></url>`).join("")}</urlset>\n`,
 );
 console.log(
-  `Pre-rendered home, archive (${projects.length} projects), ${workLocations.length} case studies, and 404. Canonical origin: ${origin}`,
+  `Pre-rendered home, archive (${archiveProjects.length} projects), ${workLocations.length} case studies, and 404. Canonical origin: ${origin}`,
 );

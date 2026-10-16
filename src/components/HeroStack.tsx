@@ -52,16 +52,13 @@ export function HeroStack() {
         <p>From interfaces and APIs to AI, data, and cloud delivery.</p>
       </div>
       <div className="hero-stack-grid">
-        {resumeStackGroups.map((group, index) => (
+        {resumeStackGroups.map((group) => (
           <article
             className="stack-category"
             key={group.id}
             aria-labelledby={`stack-${group.id}`}
           >
-            <h3 id={`stack-${group.id}`}>
-              <span aria-hidden="true">0{index + 1}</span>
-              {group.title}
-            </h3>
+            <h3 id={`stack-${group.id}`}>{group.title}</h3>
             <ul className="stack-items" aria-label={group.title}>
               {group.items.map((item) => (
                 <li key={item.name} className="stack-chip">

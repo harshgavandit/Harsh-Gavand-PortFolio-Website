@@ -633,12 +633,8 @@ kbd {
   color: var(--muted);
   margin-bottom: 13px;
 }
-.flagship-kicker > span:first-child {
-  color: var(--accent);
-}
 .category-badge {
-  padding-left: 15px;
-  border-left: 1px solid var(--line);
+  color: var(--accent);
 }
 .flagship-header h3 {
   font-size: 1.9rem;

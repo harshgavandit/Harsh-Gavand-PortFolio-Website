@@ -1,24 +1,24 @@
 # Harsh Gavand — Full-Stack & AI Engineer
 
-A React + TypeScript portfolio organized around engineering decisions: five homepage chapters, four immediately readable case studies, a compact eight-repository archive, and a complete searchable 38-project catalog at [/archive](https://harshgavand.dev/archive/).
+A React + TypeScript portfolio organized around engineering decisions: five homepage chapters, five featured projects, a compact eight-repository archive, and a searchable 38-project catalog at [/archive](https://harshgavand.dev/archive/). Agri Samaj is featured on the homepage alongside UGC and LendFlow, outside the archive.
 
 [Live portfolio](https://harshgavand.dev/) · [Refactor verification](verification/recruiter-scan-2026-10-15/README.md) · [Recent AI repository sources](verification/github-projects-2026-10-15/sources.json)
 
 ## Recruiter review path
 
-The homepage puts a compact role summary, professional experience, six primary technologies, and an authentic public-sample capture ahead of selected work. The complete résumé stack remains under **View full stack** in Skills. The quota simulator is available under **Engineering field notes**, and the contact draft composer is optional. Assistant access stays in navigation and Ctrl/Command+K.
+The homepage puts a compact role summary, professional experience, six primary technologies, and an authentic public-sample capture ahead of selected work. The complete stack remains under **View full stack** in Skills. The quota simulator is available under **Engineering field notes**, and the contact draft composer is optional. Assistant access is available from the corner launcher, navigation, and Ctrl/Command+K.
 
-Five static case studies live at `/work/ugc-platform/`, `/work/banking-saas/`, `/work/banking-agent-harness/`, `/work/news-automation/`, and `/work/github-replica/`. They separate ownership, implementation analysis, failure handling, source verification, and limitations. `/archive` preserves all 38 repositories and legacy fragment mappings. The four homepage selections feature UGC, LendFlow, the Banking Agent Harness, and News Automation.
+Six static case studies live at `/work/ugc-platform/`, `/work/banking-saas/`, `/work/agri-samaj-community-platform/`, `/work/banking-agent-harness/`, `/work/news-automation/`, and `/work/github-replica/`. They cover ownership, implementation, tradeoffs, and failure handling. `/archive` preserves its 38 repositories and legacy fragment mappings. The five homepage selections feature UGC, LendFlow, Agri Samaj, the Banking Agent Harness, and News Automation. Agri Samaj links to the [live website](https://agri-samaj-community-platform.vercel.app) and its [MIT-licensed source](https://github.com/harshgavandit/agri-samaj-community-platform): a Marathi–English platform for business discovery, entrepreneur registration, publications, and community services.
 
 Preview captures come from the actual applications' labelled public sample workspaces, with synthetic data. The news sample is output from the original formatter; harness scenarios execute deterministic functions against a mock ledger. See [evidence reproduction](docs/evidence/README.md) for exact boundaries. No email delivery, external model generation, or real financial operation is represented as verified by those artifacts.
 
-The linked UGC public route uses `/demo`. Render-hosted LendFlow and DevGraph also accept `/?demo=1` so direct links work without depending on a dashboard-level SPA rewrite. Their authenticated application routes stay separate from the public fixtures. GlobeTrek's full-time delivery/automation scope is user-confirmed; HRP metrics are identified as résumé-reported because benchmark evidence has not been supplied.
+The linked UGC public route uses `/demo`. Render-hosted LendFlow and DevGraph also accept `/?demo=1` so direct links work without depending on a dashboard-level SPA rewrite. Their authenticated application routes stay separate from the public fixtures. GlobeTrek's full-time delivery/automation scope is user-confirmed; existing HRP figures come from the supplied résumé, with no invented measurement baseline.
 
 ## Experience and structure
 
-The homepage has one shared chapter definition in `src/data/recruiter.ts`: Introduction, Selected Work, Experience & Impact, Architecture & Skills, and Contact. Header navigation, its hidden mobile menu, and headings derive their numbers from that definition.
+The homepage has one shared chapter definition in `src/data/recruiter.ts`: Introduction, Selected Work, Experience & Impact, Architecture & Skills, and Contact. Navigation, section headings, and project/skills cards use plain labels without decorative numbering.
 
-The hero leads with a public UGC workspace capture and links to selected work. Four homepage cards provide a product preview, concise engineering focus, and case-study link. Focused case studies expose five keyboard-operable architecture stages, implementation decisions, and source evidence. The optional engineering lab retains the Request Lifecycle Trace and implementation language switcher. Native disclosures keep the complete stack and contact composer available without dominating the initial scan.
+The hero leads with a public UGC workspace capture and links to selected work. Five homepage cards provide a product preview, concise engineering focus, and case-study link. Agri Samaj uses a capture of its real public homepage. Focused case studies expose five keyboard-operable architecture stages, implementation decisions, and source links. The optional engineering lab retains the Request Lifecycle Trace and implementation language switcher. Native disclosures keep the complete stack and contact composer available without dominating the initial scan.
 
 The eight-row curated archive uses a native disclosure. The complete catalog lives on a separate pre-rendered route with search and All / Latest AI / AI & ML / APIs & Tools / Web & SaaS filters. Every project retains its identity and repository link; original copy was rewritten and inaccurate stack claims were corrected against source code. No invented performance metrics, production scale, payment guarantees, or database guarantees are added.
 
@@ -46,7 +46,7 @@ The assistant uses **`gpt-6-luna`** through the OpenAI Responses API. Requests u
 
 Configure `OPENAI_API_KEY` and `OPENAI_MODEL=gpt-6-luna` in the service environment. Local development reads the existing `D:\PortFolio-Harsh\.env`, after any repository `.env.local` or `.env`; process variables take precedence. Restart the API after environment changes. Never prefix the key with `VITE_` or put it in browser code. Production deliberately does not load the parent-directory env file.
 
-The browser sends bounded conversation history to same-origin `/api/chat`. The server supplies published profile, About, experience, skills, all 38 project index entries, and the five most relevant project details, including existing case-study architecture and contribution notes. OpenAI returns text and references; the server maps references to existing portfolio links. Chat is held in page memory only. This service does not store conversation text. Redis stores only aggregate allowance counters and anonymous reservation records. Messages and portfolio context are sent to OpenAI; `store=false` disables stored Responses, while provider retention follows the account's applicable data controls.
+The browser sends bounded conversation history to same-origin `/api/chat`. The server supplies published profile, About, experience, skills, all 39 project index entries, and the five most relevant project details, including existing case-study architecture and contribution notes. OpenAI returns text and references; the server maps references to existing portfolio links. Chat is held in page memory only. This service does not store conversation text. Redis stores only aggregate allowance counters and anonymous reservation records. Messages and portfolio context are sent to OpenAI; `store=false` disables stored Responses, while provider retention follows the account's applicable data controls.
 
 Controls include suggestions, follow-up questions, a 2,000-character input limit, loading, stop, retry, clear, project/contact references, and keyboard dismissal. Provider quota, invalid configuration, timeout, and incomplete output become clear user-facing errors. On Vercel, atomic Redis admission enforces ten requests per hashed client and sixty globally per ten-minute window, with at most three active generation leases across all function instances. Leases expire after two minutes if an invocation cannot clean up. Standalone local serving retains its per-process guards. The additional global daily and monthly allowances below remain persistent and shared across instances.
 
@@ -81,14 +81,14 @@ npm run build
 npm run test:prerender
 ```
 
-The build automatically runs a browser-free React pre-render step for the homepage, archive, and 404 page. Client code hydrates the same component tree and build year. No API call, credential, running server, or headless browser is needed during the build. HTML is readable before JavaScript runs, including all 38 archive entries and their complete notes.
+The build automatically runs a browser-free React pre-render step for the homepage, archive, case studies, and 404 page. Client code hydrates the same component tree and build year. No API call, credential, running server, or headless browser is needed during the build. HTML is readable before JavaScript runs, including the five featured projects and all 38 archive entries with their complete notes.
 
 The tests cover original project identities and assets, source metadata, assistant validation and failure contracts, quota admission, pre-dispatch rollback, durable retries, dead letters, crawler user agents, archive routing, every referenced HTML/CSS asset, JavaScript chunk syntax, unique IDs and anchors, chapter numbering, tab relationships and keyboard movement, copy/link cleanup, image attributes, and disclosure nesting. Local HTTP tests require loopback networking. Browser layout and device interaction review is a separate manual check; this refactor was verified at the code and HTTP levels at the user's request.
 
 ## Content and presentation
 
-- `src/data/projects.json` and `src/data/recentProjects.json`: 38 project records, including 12 recent AI repositories.
-- `src/data/portfolio.ts`: shared profile, experience, skills, and four source-reviewed case studies.
+- `src/data/projects.json`, `src/data/recentProjects.json`, and `src/data/communityProjects.json`: 39 project records, including 12 recent AI repositories and the homepage-only Agri Samaj community platform.
+- `src/data/portfolio.ts` and `src/data/workPresentation.ts`: shared profile, experience, skills, archive selection, and six case studies.
 - `src/data/recruiter.ts`: chapter numbers, curated archive, architecture widget, code excerpt, prompts, and principles.
 - `src/recruiter.css`: graphite, ivory, and citrus tokens; high-contrast text; responsive layouts; focus states; 180ms transitions and reduced-motion support.
 - `src/components/RequestTrace.tsx` and `src/lib/requestTrace.ts`: a completed happy path, pre-dispatch rollback, and uncertain upstream timeout scenarios. Token values and timings are illustrative; the accounting decisions match the live lifecycle without making network requests or changing balances.

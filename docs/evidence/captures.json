@@ -6,6 +6,13 @@
   },
   "captures": [
     {
+      "file": "public/evidence/agri-samaj-workspace.png",
+      "source": "https://agri-samaj-community-platform.vercel.app/",
+      "repository": "harshgavandit/agri-samaj-community-platform",
+      "revision": "07c4b0e18d911a4668b9f696116e65236e8a29a1",
+      "state": "Public Marathi homepage, captured without signing in or submitting data."
+    },
+    {
       "file": "public/evidence/ugc-workspace.png",
       "source": "http://127.0.0.1:5193/demo",
       "repository": "harshgavandit/ugc-project",
@@ -27,5 +34,5 @@
       "state": "Bundled fictional public repository overview; read-only."
     }
   ],
-  "note": "Captured by the browser from real sample app components. Later query-entry compatibility commits do not alter these fixtures. These captures do not demonstrate live provider results, customer adoption, or real financial transactions."
+  "note": "Agri Samaj shows its real public homepage. Other captures use real sample app components; later query-entry compatibility commits do not alter those fixtures. These captures do not demonstrate customer adoption, live provider results, or real financial transactions."
 }

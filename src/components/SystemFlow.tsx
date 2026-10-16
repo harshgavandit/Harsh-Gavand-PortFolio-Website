@@ -25,7 +25,6 @@ export function SystemFlow({
               onPointerEnter={() => setActive(index)}
               onFocus={() => setActive(index)}
             >
-              <span>{String(index + 1).padStart(2, "0")}</span>
               <strong>{node}</strong>
             </button>
             {index < diagram.nodes.length - 1 && (

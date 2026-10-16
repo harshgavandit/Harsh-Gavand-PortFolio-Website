@@ -7,11 +7,6 @@ export const chapters = [
 ] as const;
 
 export type ChapterId = (typeof chapters)[number]["id"];
-export function chapterNumber(id: ChapterId) {
-  return String(
-    chapters.findIndex((chapter) => chapter.id === id) + 1,
-  ).padStart(2, "0");
-}
 
 export const recruiterPrompts = [
   {

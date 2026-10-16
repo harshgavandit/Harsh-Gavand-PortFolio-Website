@@ -10,7 +10,12 @@ import {
   siteOrigin,
   escapeHTML,
 } from "./prerender-checks.mjs";
-import { projects } from "../src/data/portfolio.ts";
+import {
+  projects,
+  communityProjects,
+  archiveProjects,
+} from "../src/data/portfolio.ts";
+import { featuredStudies } from "../src/data/workPresentation.ts";
 import {
   chapters,
   productionCode,
@@ -79,7 +84,7 @@ test("selected work leads with evidence and links to focused case studies", () =
   const cards = [
     ...html.matchAll(/<article class="flagship-card"[\s\S]*?<\/article>/g),
   ].map((match) => match[0]);
-  assert.equal(cards.length, 4);
+  assert.equal(cards.length, featuredStudies.length);
   for (const card of cards) {
     assert.match(card, /Explore case study/);
     assert.match(card, /href="\/work\/[a-z-]+\/"/);
@@ -91,6 +96,22 @@ test("selected work leads with evidence and links to focused case studies", () =
   }
   assert.match(html, /id="banking-agent-harness"/);
   assert.match(html, /id="github-replica"/);
+  for (const project of communityProjects) {
+    const card = html.match(
+      new RegExp(
+        `<article[^>]*id="${project.slug}"[^>]*>([\\s\\S]*?)<\\/article>`,
+      ),
+    )?.[1];
+    assert.ok(card, "Community project must be visible on the homepage");
+    assert.ok(card.includes(escapeHTML(project.overview)));
+    assert.ok(card.includes(`href="${project.demoUrl}"`));
+    assert.ok(card.includes(`href="${project.githubUrl}"`));
+    assert.ok(card.includes('src="/evidence/agri-samaj-workspace.png"'));
+    assert.ok(
+      !archive.includes(`id="${project.slug}"`),
+      "Community project stays on the homepage, outside the archive",
+    );
+  }
 });
 
 test("tabs have connected ARIA relationships and predictable keyboard movement", () => {
@@ -224,7 +245,7 @@ test("production HTML includes complete portfolio content before executing JavaS
   assertArchive(archive, siteOrigin(canonical));
   assert.equal(
     (archive.match(/data-project-id=/g) || []).length,
-    projects.length,
+    archiveProjects.length,
   );
   assert.match(html, /data-render-year="\d{4}"/);
 });
@@ -438,7 +459,10 @@ test("pre-render validation rejects empty shells, incomplete catalogs, and malfo
 test("project fragments stay semantic and remote-only availability is consistent", () => {
   for (const project of projects) {
     assert.match(project.slug, /^[a-z0-9]+(?:-[a-z0-9]+)*$/);
-    assert.ok(archive.includes('id="' + project.slug + '"'));
+    assert.equal(
+      archive.includes('id="' + project.slug + '"'),
+      archiveProjects.some((item) => item.id === project.id),
+    );
   }
   assert.match(html, /Remote only/);
   assert.doesNotMatch(html, /relocat/i);
@@ -533,6 +557,7 @@ test("architecture pipelines and evidence are rendered on focused work pages", a
     "github-replica",
     "news-automation",
     "banking-agent-harness",
+    "agri-samaj-community-platform",
   ]) {
     for (const suffix of ["", "/"]) {
       const response = await fetch(origin + "/work/" + slug + suffix);
@@ -564,6 +589,7 @@ test("sample artifacts and preview captures are delivered with the correct conte
     "/evidence/ugc-workspace.png",
     "/evidence/lendflow-workspace.png",
     "/evidence/devgraph-workspace.png",
+    "/evidence/agri-samaj-workspace.png",
     "/evidence/news-digest.html",
     "/evidence/banking-harness.json",
   ]) {

@@ -7,8 +7,12 @@ import {
   siteOrigin,
 } from "./prerender-checks.mjs";
 import { profile } from "../src/data/portfolio.ts";
-import { workStudies } from "../src/data/workPresentation.ts";
-import { projects } from "../src/data/portfolio.ts";
+import { workStudies, featuredStudies } from "../src/data/workPresentation.ts";
+import {
+  projects,
+  archiveProjects,
+  communityProjects,
+} from "../src/data/portfolio.ts";
 
 // HTTP and generated-code verification only. Does not open a browser or call chat.
 const origin = siteOrigin(process.argv[2] || profile.site);
@@ -26,6 +30,20 @@ const archiveResponse = await request("/archive/");
 assert.equal(archiveResponse.status, 200);
 const archive = await archiveResponse.text();
 assertArchive(archive, origin);
+for (const project of communityProjects) {
+  assert.ok(
+    home.includes(`id="${project.slug}"`),
+    "Community project must be featured on the homepage",
+  );
+  assert.ok(
+    home.includes(`href="${project.demoUrl}"`),
+    "Missing community live URL",
+  );
+  assert.ok(
+    !archive.includes(`data-project-id="${project.id}"`),
+    "Community project must stay outside the archive",
+  );
+}
 const workPages = [];
 for (const study of workStudies) {
   const project = projects.find((item) => item.id === study.projectId);
@@ -128,9 +146,9 @@ const report = {
   homeBytes: Buffer.byteLength(home),
   archiveBytes: Buffer.byteLength(archive),
   chapters: 5,
-  flagshipCards: 4,
+  flagshipCards: featuredStudies.length,
   curatedRows: 8,
-  archiveProjects: 38,
+  archiveProjects: archiveProjects.length,
   caseStudyPages: workPages.length,
   assets,
   googlebotHTMLMatches: true,
@@ -144,7 +162,8 @@ const report = {
   scheduledRecoveryConfigured: healthInfo.scheduledRecoveryConfigured,
   invalidChatStatus: 400,
   unauthenticatedCronStatus: 401,
-  browserReview: "This script verifies HTTP delivery; browser review is recorded separately.",
+  browserReview:
+    "This script verifies HTTP delivery; browser review is recorded separately.",
   providerCalls: 0,
 };
 await mkdir(new URL("../tmp/", import.meta.url), { recursive: true });

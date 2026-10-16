@@ -1,11 +1,40 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 import { generateReply, knowledgeFor, sourceLinks } from "../server/openai.mjs";
-import { projects, latestAIProjects } from "../src/data/portfolio.ts";
+import { matchesProjectCollection } from "../src/lib/portfolioActions.ts";
+import {
+  projects,
+  latestAIProjects,
+  communityProjects,
+} from "../src/data/portfolio.ts";
 
 const messages = [
   { role: "user", content: "Tell me about the AI News-to-Email Digest." },
 ];
+test("Agri Samaj is discoverable with its community description and live/source links", () => {
+  const project = communityProjects.find(
+    (item) => item.slug === "agri-samaj-community-platform",
+  );
+  assert.ok(project);
+  assert.equal(
+    project.demoUrl,
+    "https://agri-samaj-community-platform.vercel.app",
+  );
+  const knowledge = knowledgeFor([
+    { role: "user", content: "Tell me about the Agri Samaj community website" },
+  ]);
+  assert.ok(knowledge.projectDetails.some((item) => item.id === project.id));
+  assert.ok(
+    knowledge.caseStudyNotes.some((item) => item.projectId === project.id),
+  );
+  assert.match(project.overview, /open-source.*Agri Samaj community/);
+  assert.equal(matchesProjectCollection(project, "Web & SaaS"), true);
+  assert.equal(matchesProjectCollection(project, "Latest AI"), false);
+  assert.deepEqual(sourceLinks({ projectIds: [project.id], sections: [] }), [
+    { label: `${project.title} · source`, href: project.githubUrl },
+    { label: `${project.title} · demo`, href: project.demoUrl },
+  ]);
+});
 test("retrieval includes the relevant project and complete public project index", () => {
   const knowledge = knowledgeFor(messages);
   assert.equal(knowledge.projectIndex.length, projects.length);

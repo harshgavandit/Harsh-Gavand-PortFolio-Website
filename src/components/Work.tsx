@@ -1,7 +1,13 @@
 import { ArrowDown, ArrowRight, ArrowUpRight } from "lucide-react";
-import { projects, type CaseStudy, type Project } from "../data/portfolio";
+import {
+  communityProjects,
+  archiveProjects,
+  projects,
+  type CaseStudy,
+  type Project,
+} from "../data/portfolio";
 import { curatedArchive } from "../data/recruiter";
-import { ChapterHeading, LeadStatement, Tags } from "./Primitives";
+import { ActionLink, ChapterHeading, LeadStatement, Tags } from "./Primitives";
 import { ProductEvidence } from "./ProductEvidence";
 import { featuredStudies } from "../data/workPresentation";
 import { caseEvidence } from "../data/caseEvidence";
@@ -44,8 +50,9 @@ export function ProjectNotes({ project }: { project: Project }) {
     </div>
   );
 }
-function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
+function CaseStudyCard({ study }: { study: CaseStudy }) {
   const project = projects.find((item) => item.id === study.projectId)!;
+  const community = communityProjects.some((item) => item.id === project.id);
   return (
     <article
       className="flagship-card"
@@ -56,7 +63,6 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
       <header className="flagship-header">
         <div>
           <div className="flagship-kicker">
-            <span>{String(index + 1).padStart(2, "0")}</span>
             <span className="category-badge">{project.category}</span>
           </div>
           <h3 id={`${project.slug}-title`}>{study.shortName}</h3>
@@ -81,12 +87,21 @@ function CaseStudyCard({ study, index }: { study: CaseStudy; index: number }) {
           </ul>
           <Tags items={project.technologies.slice(0, 5)} />
           <p className="project-boundary">
-            {project.id === 33
-              ? "Mock banking simulation · no real money movement"
-              : project.id === 17
-                ? "Local pipeline · sample formatter output"
-                : "Personal project · read-only sample available"}
+            {community
+              ? "Open source · Marathi & English · Live on Vercel"
+              : project.id === 33
+                ? "Mock banking simulation · no real money movement"
+                : project.id === 17
+                  ? "Local pipeline · sample formatter output"
+                  : "Personal project · read-only sample available"}
           </p>
+          {community && project.demoUrl && (
+            <div className="actions">
+              <ActionLink href={project.demoUrl} external primary>
+                Visit live website
+              </ActionLink>
+            </div>
+          )}
           <a
             className="text-link"
             href={project.githubUrl}
@@ -120,8 +135,8 @@ export function FeaturedWork() {
         description="Product delivery, relational workflows, and deterministic controls around AI. Explore the working interfaces, then the decisions behind them."
       />
       <div className="flagship-list">
-        {featuredStudies.map((study, index) => (
-          <CaseStudyCard key={study.projectId} study={study} index={index} />
+        {featuredStudies.map((study) => (
+          <CaseStudyCard key={study.projectId} study={study} />
         ))}
       </div>
       <div id="github-replica" className="additional-work">
@@ -129,7 +144,7 @@ export function FeaturedWork() {
         <a href="/work/github-replica/">
           DevGraph · repository discovery and issue relationships ↗
         </a>
-        <a href="/archive">All 38 repositories ↗</a>
+        <a href="/archive">All {archiveProjects.length} repositories ↗</a>
       </div>
       <MoreWork />
     </section>

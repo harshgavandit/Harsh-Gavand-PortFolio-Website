@@ -19,6 +19,8 @@ const news =
   "https://github.com/harshgavandit/AI_News_To_Email_Generator/blob/0608f9a99dec2308ae9dcdebce840e5ce958445e";
 const harness =
   "https://github.com/harshgavandit/banking-agent-harness/blob/2b8b094bc80bef18f75b1e50c5235c77d5a246c9";
+const agri =
+  "https://github.com/harshgavandit/agri-samaj-community-platform/blob/07c4b0e18d911a4668b9f696116e65236e8a29a1";
 
 /**
  * Implementation decisions below are source analysis, not reconstructed author
@@ -26,6 +28,61 @@ const harness =
  * Verification links distinguish source inspection from executed synthetic checks.
  */
 export const caseEvidence: Record<string, CaseEvidence> = {
+  "agri-samaj-community-platform": {
+    context:
+      "Give the Agri Samaj community one place to discover local entrepreneurs, register businesses, access publications, and follow community announcements in Marathi or English.",
+    ownership:
+      "End-to-end Next.js interface, business onboarding and approval routes, Prisma/PostgreSQL data models, private uploads, and administration tools.",
+    decision: {
+      choice:
+        "Separate approved public business fields from private application records and uploaded documents.",
+      alternative:
+        "Expose the registration record directly as a public directory entry.",
+      reason:
+        "Applicants can submit detailed documents without publishing them. The directory selects approved businesses, while account and upload checks control access to application data.",
+    },
+    verifiedBehavior: [
+      "Public directory queries include approved businesses only, with search, category/location filters, and pagination limited to 50 records per request.",
+      "Registration validates the payload, active category, application ownership, and attached uploads before saving.",
+      "HttpOnly JWT sessions are checked against the current active database account and role.",
+      "Marathi–English screens cover business discovery, registration, publications, announcements, and community administration.",
+    ],
+    verification: [
+      {
+        label: "Directory route",
+        href: `${agri}/src/app/api/businesses/route.ts`,
+      },
+      {
+        label: "Registration route",
+        href: `${agri}/src/app/api/businesses/register/route.ts`,
+      },
+      { label: "Account & role checks", href: `${agri}/src/lib/auth.ts` },
+    ],
+    limitations: [
+      "New business listings need administrative approval before they appear publicly.",
+      "Publication content, advertising rates, and announcements are maintained by administrators; availability depends on published records.",
+      "The optional census module is disabled by default and restricted to authorized teams.",
+    ],
+    failure: {
+      trigger:
+        "An applicant attaches another account's file, selects an inactive category, or tries to edit a business they do not own.",
+      handling:
+        "The registration route rejects invalid uploads/categories with 400 and unauthorized edits with 403 before writing the application. Missing business records return 404.",
+    },
+    sources: [
+      {
+        label: "Business registration & ownership",
+        href: `${agri}/src/app/api/businesses/register/route.ts`,
+      },
+      {
+        label: "Approved public directory",
+        href: `${agri}/src/app/api/businesses/route.ts`,
+      },
+      { label: "Private upload checks", href: `${agri}/src/lib/uploads.ts` },
+      { label: "Database schema", href: `${agri}/prisma/schema.prisma` },
+      { label: "MIT license", href: `${agri}/LICENSE` },
+    ],
+  },
   "ugc-platform": {
     context:
       "Turn product and model reference uploads into an image, then an optional short video, while tracking the account's credits and project processing state.",

@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { projects } from "../data/portfolio";
+import { archiveProjects as projects } from "../data/portfolio";
 import { ActionLink, Tags } from "./Primitives";
 import { ProjectNotes } from "./Work";
 import { workPath } from "../lib/projectNavigation";
@@ -30,8 +30,8 @@ export function ProjectArchive() {
       <h1>The complete build log.</h1>
       <p className="archive-intro">
         Applications, APIs, AI experiments, and the implementation details
-        behind them. Start with the selected work for four complete case
-        studies.
+        behind them. Start with the selected work for complete product
+        walkthroughs.
       </p>
       <div className="archive-controls">
         <label htmlFor="archive-search">

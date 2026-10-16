@@ -110,9 +110,7 @@ export function RequestTrace() {
               }
             >
               <div className="trace-stage-label">
-                <span>
-                  0{index + 1} / {detail.title}
-                </span>
+                <span>{detail.title}</span>
                 {running && index === step ? (
                   <LoaderCircle
                     className="trace-spinner"
