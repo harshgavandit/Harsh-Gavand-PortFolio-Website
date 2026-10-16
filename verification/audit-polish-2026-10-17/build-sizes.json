@@ -1,0 +1,20 @@
+{
+  "measurement": "Local Vite production artifact sizes, not field performance",
+  "entryJavaScript": {
+    "file": "index-BBQM884V.js",
+    "bytes": 326089,
+    "gzipBytes": 104755
+  },
+  "stylesheet": {
+    "file": "index-C6N5seCJ.css",
+    "bytes": 68662,
+    "gzipBytes": 13662
+  },
+  "deferredChunks": [
+    "AIWorkspace-DgSSMbY7.js",
+    "Assistant-BxEu0wZG.js",
+    "CodeEvidence-DK8MCQRQ.js",
+    "ProjectArchive-CHyBpWvk.js",
+    "WorkDetail-lDPv3leF.js"
+  ]
+}
