@@ -144,7 +144,7 @@ const report = {
   scheduledRecoveryConfigured: healthInfo.scheduledRecoveryConfigured,
   invalidChatStatus: 400,
   unauthenticatedCronStatus: 401,
-  browserReview: "Not performed; user requested code-level verification only.",
+  browserReview: "This script verifies HTTP delivery; browser review is recorded separately.",
   providerCalls: 0,
 };
 await mkdir(new URL("../tmp/", import.meta.url), { recursive: true });

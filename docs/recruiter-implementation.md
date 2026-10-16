@@ -27,3 +27,10 @@ Employment metrics are reported in the supplied résumé. Baselines, analytics, 
 
 - Final browser checks: 320/390/768/1440 reflow, all five case pages at320, 200% text on desktop/mobile, reduced-motion media emulation, mobile navigation, stack disclosure, keyboard tabs, language switch, assistant dismissal/focus return, digest frame, and deterministic failure replay. No real generation or email was sent.
 - Linked app final main revisions: UGC3394b05; LendFlowef597f8; DevGraph5565d08. Public sample URLs verified by HTTP/browser. Portfolio does not require access to their private accounts.
+
+## Published verification — 2026-10-16
+
+- Implementation revision `187a4ee0c4b03b0eb90467b85383b912fbe2ee9c` was pushed to `main`; Vercel reported a successful deployment for that exact revision.
+- Public HTTP verification confirmed the homepage, archive, five case studies, twelve assets, résumé, sitemap behavior, Googlebot HTML parity, real 404 responses, API health, invalid-chat rejection, and cron authentication. No paid provider request was made.
+- The user explicitly authorized the final live browser check. The deployed homepage was visually reviewed and captured; Selected Work begins at approximately 822px at a 1440×900 viewport, compared with approximately 1,820px in the original audit.
+- Browser review is recorded here separately from the HTTP-only production verifier. Real-user Core Web Vitals and Vercel field performance were not measured in this pass.
