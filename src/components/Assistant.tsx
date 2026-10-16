@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   ArrowUp,
   ArrowUpRight,
+  MessageCircle,
   RotateCcw,
   Sparkles,
   Square,
@@ -170,6 +171,21 @@ export function Assistant() {
 
   return (
     <>
+      <button
+        type="button"
+        className="assistant-launcher"
+        onClick={(event) => {
+          openerRef.current = event.currentTarget;
+          setOpen(true);
+        }}
+        aria-haspopup="dialog"
+        aria-expanded={open}
+        aria-controls="portfolio-assistant"
+      >
+        <MessageCircle size={20} aria-hidden="true" />
+        <span className="assistant-launcher-label">Ask Harsh’s AI</span>
+        <kbd aria-hidden="true">⌘ K</kbd>
+      </button>
       <dialog
         ref={dialogRef}
         id="portfolio-assistant"
