@@ -29,8 +29,6 @@ export function Experience() {
         id="experience"
 
         title="Professional experience."
-
-        description="Business applications, operational data, and responsive product delivery."
       />
 
       <div className="experience-list">
