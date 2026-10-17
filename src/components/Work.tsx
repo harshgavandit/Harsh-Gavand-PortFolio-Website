@@ -7,7 +7,7 @@ import {
   type Project,
 } from "../data/portfolio";
 import { curatedArchive } from "../data/recruiter";
-import { ActionLink, ChapterHeading, LeadStatement, Tags } from "./Primitives";
+import { ActionLink, LeadStatement, Tags } from "./Primitives";
 import { ProductEvidence } from "./ProductEvidence";
 import { featuredStudies } from "../data/workPresentation";
 import { caseEvidence } from "../data/caseEvidence";
@@ -123,15 +123,11 @@ export function FeaturedWork() {
   return (
     <section
       id="projects"
+      data-chapter="projects"
       className="section section-container"
       tabIndex={-1}
-      aria-labelledby="projects-title"
+      aria-label="Selected work"
     >
-      <ChapterHeading
-        id="projects"
-        title="Selected work. Built end to end."
-        description="Product delivery, relational workflows, and deterministic controls around AI. Explore the working interfaces, then the decisions behind them."
-      />
       <div className="flagship-list">
         {featuredStudies.map((study) => (
           <CaseStudyCard key={study.projectId} study={study} />
