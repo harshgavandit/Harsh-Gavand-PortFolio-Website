@@ -410,18 +410,6 @@ kbd {
 .mobile-menu {
   display: none;
 }
-.motion-toggle {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  border: 0;
-  padding: 6px;
-  font: 0.6rem var(--mono);
-  background: none;
-  min-height: 36px;
-  color: var(--muted);
-  white-space: nowrap;
-}
 .hero {
   padding-block: 64px 0;
 }
@@ -2509,28 +2497,6 @@ html[data-motion="off"] *::after {
   transition: none !important;
 }
 
-.header-motion.motion-toggle {
-  width: 44px;
-  min-height: 44px;
-  justify-content: center;
-  border: 1px solid rgba(221, 237, 205, 0.16);
-  border-radius: 12px;
-  color: var(--text);
-  background: rgba(255, 255, 255, 0.025);
-}
-.header-motion svg {
-  width: 17px;
-  height: 17px;
-  stroke-width: 2.5;
-}
-.header-motion.motion-toggle:hover {
-  border-color: rgba(208, 245, 157, 0.45);
-  background: rgba(208, 245, 157, 0.1);
-  color: var(--accent);
-}
-.header-motion span {
-  display: none;
-}
 .hero-location {
   align-items: flex-start;
   line-height: 1.8;
@@ -2698,11 +2664,6 @@ html[data-motion="off"] *::after {
 }
 .skills-grid > article:last-child {
   grid-column: 1/-1;
-}
-@media (max-width: 999px) {
-  .header-motion {
-    display: none;
-  }
 }
 @media (max-width: 700px) {
   .demo-actions {

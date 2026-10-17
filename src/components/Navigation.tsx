@@ -3,7 +3,6 @@ import { useLocation } from "react-router-dom";
 import { ArrowUpRight, Menu, X } from "lucide-react";
 import { profile } from "../data/portfolio";
 import { chapters } from "../data/recruiter";
-import { MotionToggle } from "./MotionPreferences";
 import { GitHubMark, LinkedInMark } from "./CornerSocials";
 
 function SocialLinks() {
@@ -148,7 +147,6 @@ export function Navigation() {
             ))}
           </nav>
           <div className="header-actions">
-            <MotionToggle className="header-motion" />
             <button className="header-ask" onClick={ask} aria-haspopup="dialog">
               Ask AI <kbd>⌘ K</kbd>
             </button>
@@ -199,7 +197,6 @@ export function Navigation() {
             Resume <ArrowUpRight size={16} aria-hidden="true" />
           </a>
           <button onClick={ask}>Ask Harsh’s AI · Ctrl / ⌘ K</button>
-          <MotionToggle />
           <SocialLinks />
         </div>
       </header>
