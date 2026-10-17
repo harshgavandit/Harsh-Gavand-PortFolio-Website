@@ -1271,7 +1271,7 @@ textarea:focus {
   grid-column: 2;
   grid-row: 1;
   color: var(--muted);
-  font: 0.6875rem/1.7 var(--mono);
+  font: 500 0.875rem/1.6 var(--mono);
   text-align: center;
 }
 .footer-top {
@@ -1781,7 +1781,7 @@ textarea:focus {
     border-left: 0;
   }
   .site-footer > p {
-    font-size: 0.625rem;
+    font-size: 0.75rem;
   }
   .site-header {
     top: 12px;
@@ -2257,7 +2257,7 @@ textarea:focus {
   .site-footer > p {
     grid-column: 1/-1;
     grid-row: 2;
-    font-size: 0.625rem;
+    font-size: clamp(0.6875rem, 3.2vw, 0.75rem);
     text-align: left;
   }
   .footer-brand {

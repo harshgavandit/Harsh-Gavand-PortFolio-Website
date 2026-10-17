@@ -262,7 +262,7 @@ export function Assistant({
                 setMode("voice");
               }}
             >
-              Voice guide
+              Voice assistant
             </button>
             <a href="/ai/" className="assistant-workspace-link" onClick={close}>
               AI workspace <ArrowUpRight size={14} aria-hidden="true" />

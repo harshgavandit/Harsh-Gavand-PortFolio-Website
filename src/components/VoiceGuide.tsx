@@ -25,7 +25,7 @@ const labels: Record<Phase, string> = {
   permission: "Waiting for microphone permission…",
   listening: "Listening — finish when you’re ready",
   processing: "Transcribing and preparing your answer…",
-  speaking: "Harsh’s AI guide is speaking",
+  speaking: "Harsh’s AI voice assistant is speaking",
 };
 
 export function VoiceGuide({
@@ -252,9 +252,13 @@ export function VoiceGuide({
   }
 
   return (
-    <section className="voice-guide" hidden={!active} aria-label="Voice guide">
+    <section
+      className="voice-guide"
+      hidden={!active}
+      aria-label="Harsh’s AI voice assistant"
+    >
       <div className="voice-guide-heading">
-        <span className="eyebrow">Your portfolio guide</span>
+        <span className="eyebrow">Harsh’s AI voice assistant</span>
         <button
           type="button"
           className="voice-mute"
@@ -357,8 +361,8 @@ export function VoiceGuide({
       <details className="voice-transcript">
         <summary>Welcome transcript</summary>
         <p>
-          Hi, welcome to Harsh’s portfolio. I’m his AI guide. Ask me about his
-          projects, experience, or the systems he’s built.
+          Hi, welcome to Harsh’s portfolio. I’m Harsh’s AI voice assistant. Ask me
+          about his projects, experience, or the systems he’s built.
         </p>
       </details>
     </section>

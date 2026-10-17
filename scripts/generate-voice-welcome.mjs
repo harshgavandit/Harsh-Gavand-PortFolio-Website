@@ -6,7 +6,7 @@ const config = loadConfig();
 if (!config.apiKey)
   throw new Error("Set OPENAI_API_KEY locally before generating the welcome.");
 const input =
-  "Hi, welcome to Harsh’s portfolio. I’m his AI guide. Ask me about his projects, experience, or the systems he’s built.";
+  "Hi, welcome to Harsh’s portfolio. I’m Harsh’s AI voice assistant. Ask me about his projects, experience, or the systems he’s built.";
 const audio = await speak(input, {
   apiKey: config.apiKey,
   signal: AbortSignal.timeout(20000),
