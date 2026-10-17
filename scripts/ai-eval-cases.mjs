@@ -143,9 +143,9 @@ export const aiEvalCases = [
     partial: /node/i,
   },
   {
-    id: "role-confirmed-automation",
+    id: "role-confirmed-ai-workflows",
     kind: "recruiter",
-    text: "We need experience creating quotation building, invoice generation, and automated email tools.",
+    text: "We need experience building Next.js frontends, GenAI workflow modules, and LangChain and LangGraph agents.",
     supported: true,
   },
   {

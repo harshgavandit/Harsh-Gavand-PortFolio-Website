@@ -397,7 +397,10 @@ test("availability, experience shipments and architectural skills carry concrete
     assert.ok(group.proofs.length >= 2);
   }
   for (const job of experience) {
-    assert.equal(job.points.length, 3);
+    assert.equal(
+      job.points.length,
+      job.company === "Globetrek Engineering Corporation" ? 9 : 6,
+    );
     assert.ok(job.shipment.length > 40);
     assert.ok(job.points.every((point) => point.includes(": ")));
   }
