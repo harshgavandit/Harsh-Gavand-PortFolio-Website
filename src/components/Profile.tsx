@@ -19,18 +19,14 @@ export function Experience() {
     <section
       id="experience"
 
+      data-chapter="experience"
+
       className="section section-container"
 
       tabIndex={-1}
 
-      aria-labelledby="experience-title"
+      aria-label="Professional experience"
     >
-      <ChapterHeading
-        id="experience"
-
-        title="Professional experience."
-      />
-
       <div className="experience-list">
         {experience.map((job, index) => (
           <article
