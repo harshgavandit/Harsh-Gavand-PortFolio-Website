@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { ArrowUpRight, Check, Copy } from "lucide-react";
+import { ArrowUp, ArrowUpRight, Check, Copy } from "lucide-react";
 import { profile } from "../data/portfolio";
 import { ActionLink, ChapterHeading, Reveal } from "./Primitives";
 
@@ -161,11 +161,17 @@ export function Footer({ year }: { year: number }) {
   return (
     <footer className="section-container site-footer">
       <a href="/#hero" className="footer-brand">
-        Harsh Gavand<span>Full-Stack & AI Engineer</span>
+        <span className="footer-name">
+          <span>Harsh</span> <span>Gavand</span>
+        </span>
+        <span className="footer-role">Full-Stack &amp; AI Engineer</span>
       </a>
       <p>© {year} · Built by Harsh Gavand</p>
       <a href="/#hero" className="footer-top">
-        Back to top <ArrowUpRight size={16} aria-hidden="true" />
+        <span>Back to top</span>
+        <span className="footer-top-icon">
+          <ArrowUp size={28} strokeWidth={2.5} aria-hidden="true" />
+        </span>
       </a>
     </footer>
   );

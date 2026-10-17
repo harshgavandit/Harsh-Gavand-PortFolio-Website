@@ -94,19 +94,6 @@
   object-fit: cover;
   object-position: 50% 42%;
 }
-.hero-employment {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px 24px;
-  margin-top: 32px;
-  padding: 22px 0;
-  border-block: 1px solid var(--line);
-  font-size: 0.8rem;
-}
-.hero-employment > span {
-  color: var(--muted);
-}
 .section {
   padding-block: 64px;
 }
@@ -601,15 +588,6 @@
   }
   .hero-portrait {
     margin-top: 4px;
-  }
-  .hero-employment {
-    display: grid;
-    gap: 10px;
-    font-size: 0.8rem;
-    margin-top: 24px;
-  }
-  .hero-employment > span[aria-hidden] {
-    display: none;
   }
   .section {
     padding-block: 40px;

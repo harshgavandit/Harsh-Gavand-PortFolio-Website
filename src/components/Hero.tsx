@@ -49,12 +49,6 @@ export function Hero() {
           />
         </figure>
       </div>
-      <div className="hero-employment">
-        <span>Previously</span>
-        <a href="#experience">GlobeTrek · AI-Native Full-Stack Developer</a>
-        <span aria-hidden="true">/</span>
-        <a href="#experience">HRP Enterprises · Full-Stack Developer</a>
-      </div>
     </section>
   );
 }
