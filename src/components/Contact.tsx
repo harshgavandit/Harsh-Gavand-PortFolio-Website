@@ -166,11 +166,11 @@ export function Footer({ year }: { year: number }) {
         </span>
         <span className="footer-role">Full-Stack &amp; AI Engineer</span>
       </a>
-      <p>© {year} · Built by Harsh Gavand</p>
+      <p>@Harsh Gavand {year} Inc. All rights reserved</p>
       <a href="/#hero" className="footer-top">
         <span>Back to top</span>
         <span className="footer-top-icon">
-          <ArrowUp size={28} strokeWidth={2.5} aria-hidden="true" />
+          <ArrowUp size={18} strokeWidth={2.5} aria-hidden="true" />
         </span>
       </a>
     </footer>
