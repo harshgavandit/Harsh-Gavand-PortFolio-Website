@@ -532,9 +532,10 @@ test("header branding, hero experience wording, and complete categorized logo st
   assert.match(header, /<small>Full-Stack &amp; AI Engineer<\/small>/);
   assert.doesNotMatch(hero, /class="hero-name"/);
   assert.match(hero, /2\+ years/);
+  assert.match(hero, /Full-Stack Software Developer with/);
   assert.match(
     hero,
-    /building full-stack products, backend services, and applied AI workflows/,
+    /hands-on experience designing, developing, and deploying end-to-end web applications, scalable backend services, and AI-powered solutions\./,
   );
   assert.doesNotMatch(hero, /stack-chip|request-trace/);
   assert.match(html, /<details class="full-stack-disclosure"/);

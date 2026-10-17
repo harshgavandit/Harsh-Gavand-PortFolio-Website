@@ -55,14 +55,10 @@
   );
 }
 .hero-tenure strong {
-  flex-shrink: 0;
   color: var(--accent);
-  font-family: "Space Grotesk Variable", sans-serif;
-  font-size: clamp(1.35rem, 1.8vw, 1.65rem);
+  font-family: inherit;
+  font-size: inherit;
   font-weight: 700;
-  letter-spacing: -0.04em;
-  line-height: 1.2;
-  text-transform: capitalize;
   white-space: nowrap;
 }
 .hero-tenure > span {
