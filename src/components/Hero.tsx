@@ -1,6 +1,5 @@
-import { ActionLink, Tags } from "./Primitives";
+import { ActionLink } from "./Primitives";
 import { profile } from "../data/portfolio";
-import { primaryStack } from "../data/workPresentation";
 
 export function Hero() {
   return (
@@ -36,7 +35,6 @@ export function Hero() {
             <span className="status-dot" aria-hidden="true" />
             Mumbai, India · Remote only
           </p>
-          <Tags items={primaryStack} />
         </div>
         <figure className="hero-portrait">
           <img
