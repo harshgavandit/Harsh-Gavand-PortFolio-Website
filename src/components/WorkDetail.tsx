@@ -32,7 +32,6 @@ export function WorkDetail() {
         ← Selected work
       </a>
       <header className="work-intro">
-        <span className="eyebrow">{project.category}</span>
         <h1>{study.shortName}</h1>
         <p>{study.summary}</p>
         <div className="actions">

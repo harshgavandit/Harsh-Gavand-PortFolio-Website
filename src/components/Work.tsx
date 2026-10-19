@@ -1,6 +1,5 @@
 import { ArrowDown, ArrowRight, ArrowUpRight, LockKeyhole } from "lucide-react";
 import {
-  communityProjects,
   archiveProjects,
   projects,
   type CaseStudy,
@@ -48,7 +47,6 @@ export function ProjectNotes({ project }: { project: Project }) {
 }
 function CaseStudyCard({ study }: { study: CaseStudy }) {
   const project = projects.find((item) => item.id === study.projectId)!;
-  const community = communityProjects.some((item) => item.id === project.id);
   return (
     <article
       className={`flagship-card flagship-${project.slug}`}
@@ -58,12 +56,6 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
     >
       <header className="flagship-header">
         <div>
-          <div className="flagship-kicker">
-            <span className="category-badge">{project.category}</span>
-            {community && (
-              <span className="community-label">Community contribution</span>
-            )}
-          </div>
           <h3 id={`${project.slug}-title`}>{study.shortName}</h3>
         </div>
         <a className="text-link" href={`/work/${project.slug}/`}>
@@ -145,7 +137,6 @@ function PrivateProjectCard({ project }: { project: PrivateProject }) {
       <header className="flagship-header">
         <div>
           <div className="flagship-kicker">
-            <span className="category-badge">{project.category}</span>
             <span className="private-project-badge">
               <LockKeyhole size={13} aria-hidden="true" />
               Private internal project

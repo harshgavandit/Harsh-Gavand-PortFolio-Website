@@ -367,7 +367,7 @@
 .project-directory-list h2 {
   font-size: clamp(1.25rem, 1.7vw, 1.6rem);
   line-height: 1.35;
-  margin-top: 10px;
+  margin-top: 0;
 }
 .project-directory-list article > p {
   max-width: 90ch;

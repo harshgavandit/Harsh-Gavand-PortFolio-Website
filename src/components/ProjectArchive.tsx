@@ -75,7 +75,6 @@ export function ProjectArchive() {
             <article>
               <header>
                 <div>
-                  <span className="eyebrow">{project.category}</span>
                   <h2>{project.title}</h2>
                 </div>
                 <div className="actions">
