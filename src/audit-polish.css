@@ -21,10 +21,6 @@
 .flagship-agri-samaj-community-platform {
   border-top: 2px solid #edc6a4;
 }
-.flagship-banking-agent-harness .flagship-body,
-.flagship-news-automation .flagship-body {
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-}
 .flagship-agri-samaj-community-platform .category-badge {
   color: #edc6a4;
 }
@@ -100,10 +96,6 @@
 @media (max-width: 800px) {
   .operations-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .flagship-banking-agent-harness .flagship-body,
-  .flagship-news-automation .flagship-body {
-    grid-template-columns: minmax(0, 1fr);
   }
 }
 @media (max-width: 540px) {

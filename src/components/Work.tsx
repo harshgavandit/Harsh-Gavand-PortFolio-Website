@@ -76,37 +76,32 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
           <ProductEvidence slug={project.slug} />
         </div>
         <div className="engineering-breakdown">
-          <h4>The engineering focus</h4>
-          <ul className="engineering-bullets">
-            {study.engineering.slice(0, 1).map((point) => (
-              <li key={point}>
-                <LeadStatement text={point} />
-              </li>
-            ))}
-          </ul>
-          <Tags items={project.technologies.slice(0, 5)} />
-          {project.demoUrl && (
-            <div className="actions">
+          <div className="project-focus">
+            <h4>Engineering focus</h4>
+            <ul className="engineering-bullets">
+              {study.engineering.slice(0, 1).map((point) => (
+                <li key={point}>
+                  <LeadStatement text={point} />
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="project-stack">
+            <h4>Tech stack</h4>
+            <Tags items={project.technologies.slice(0, 5)} />
+          </div>
+          <div className="actions project-actions">
+            {project.demoUrl && (
               <ActionLink href={project.demoUrl} external primary>
                 Visit live website
               </ActionLink>
-            </div>
-          )}
-          <a
-            className="text-link"
-            href={project.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            GitHub source <ArrowUpRight size={14} aria-hidden="true" />
-          </a>
+            )}
+            <ActionLink href={project.githubUrl} external>
+              GitHub source
+            </ActionLink>
+          </div>
         </div>
       </div>
-      <footer className="flagship-footer">
-        <a href={`/work/${project.slug}/`}>
-          View project details <ArrowRight size={14} aria-hidden="true" />
-        </a>
-      </footer>
     </article>
   );
 }
