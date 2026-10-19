@@ -1,10 +1,10 @@
 import {
   aboutProfile,
   engineeringSprints,
-  experience,
   profile,
   skills,
 } from "../data/portfolio";
+import { experienceForDisplay as experience } from "../data/experiencePresentation";
 
 import { HeroStack } from "./HeroStack";
 

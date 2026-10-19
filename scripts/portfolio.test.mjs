@@ -8,9 +8,9 @@ import {
   communityProjects,
   caseStudies,
   profile,
-  experience,
   skills,
 } from "../src/data/portfolio.ts";
+import { experienceForDisplay as experience } from "../src/data/experiencePresentation.ts";
 import { buildRequest, sourceLinks } from "../server/openai.mjs";
 import { matchesProjectCollection } from "../src/lib/portfolioActions.ts";
 import { curatedArchive } from "../src/data/recruiter.ts";
@@ -399,7 +399,7 @@ test("availability, experience shipments and architectural skills carry concrete
   for (const job of experience) {
     assert.equal(
       job.points.length,
-      job.company === "Globetrek Engineering Corporation" ? 9 : 6,
+      job.company === "Globetrek Engineering Corporation" ? 14 : 6,
     );
     assert.ok(job.shipment.length > 40);
     assert.ok(job.points.every((point) => point.includes(": ")));
