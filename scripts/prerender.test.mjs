@@ -180,8 +180,7 @@ test("AgriConnect renders a public case study, screenshot, complete stack, and c
   for (const technology of project.technologies)
     assert.ok(page.includes(escapeHTML(technology)), technology);
   assert.match(page, /1,642/);
-  assert.match(page, /c-PRESENTS/);
-  assert.match(page, /Earlier interface capture/);
+  assert.match(page, /Engineering work/);
   assert.match(page, /Visit live website/);
   assert.doesNotMatch(page, /Authenticated app/);
   assert.match(
@@ -702,7 +701,7 @@ test("request trace is the default hero tab with accounting-safe scenario contro
   );
 });
 
-test("architecture pipelines and evidence are rendered on focused work pages", async () => {
+test("project pages show engineering work without source directories or preview commentary", async () => {
   for (const slug of [
     "ugc-platform",
     "banking-saas",
@@ -710,6 +709,7 @@ test("architecture pipelines and evidence are rendered on focused work pages", a
     "news-automation",
     "banking-agent-harness",
     "agri-samaj-community-platform",
+    "agri-connect",
   ]) {
     for (const suffix of ["", "/"]) {
       const response = await fetch(origin + "/work/" + slug + suffix);
@@ -717,15 +717,26 @@ test("architecture pipelines and evidence are rendered on focused work pages", a
       const page = await response.text();
       assert.equal((page.match(/<h1(?:\s|>)/g) || []).length, 1);
       assert.ok(page.includes(`href="${siteOrigin(canonical)}/work/${slug}/"`));
-      assert.match(page, /Implementation details/);
-      assert.match(page, /Alternative &amp; tradeoff/);
+      assert.match(page, /Engineering work/);
+      assert.match(page, /Product features/);
+      assert.match(page, /My contribution/);
+      assert.match(page, /Architecture &amp; tech stack/);
+      assert.doesNotMatch(
+        page,
+        /Implementation details\.|Design considerations|Source code\.|Vercel API entry point|AI regression tests|Verified release CI|Architecture &amp; deployment notes|Earlier interface capture|Failure path:|Recovery \/ state|Read-only demo|Preview information|Scenario data|source-list|<a[^>]*href="https:\/\/github\.com\/[^" >]+\/blob\//,
+      );
       assert.match(page, /id="walkthrough"/);
       assert.match(page, /role="status" aria-live="polite" aria-atomic="true"/);
       assert.equal(
         (page.match(/aria-pressed="true"/g) || []).length >= 1,
         true,
       );
-      assert.match(page, /blob\/[a-f0-9]{40}\//);
+      const currentProject = projects.find((project) => project.slug === slug);
+      assert.ok(page.includes(`href="${currentProject.githubUrl}"`));
+      for (const feature of currentProject.features)
+        assert.ok(page.includes(escapeHTML(feature)), feature);
+      for (const technology of currentProject.technologies)
+        assert.ok(page.includes(escapeHTML(technology)), technology);
       const head = await fetch(origin + "/work/" + slug + suffix, {
         method: "HEAD",
       });

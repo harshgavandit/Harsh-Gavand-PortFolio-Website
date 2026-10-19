@@ -114,8 +114,8 @@ for (const study of workStudies) {
       /(property="og:description"\s+content=")[^"]+"/,
       `$1${escapeHTML(study.summary)}"`,
     );
-  if (!workPage(project.slug) || !content.includes('id="verification-title"'))
-    throw new Error("Missing work page evidence: " + location);
+  if (!workPage(project.slug) || !content.includes('id="engineering-title"'))
+    throw new Error("Missing project engineering content: " + location);
   await mkdir(new URL(`../dist${location}`, import.meta.url), {
     recursive: true,
   });

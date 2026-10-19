@@ -7,7 +7,6 @@ const captures: Record<
   {
     src: string;
     alt: string;
-    caption?: string;
     width?: number;
     height?: number;
   }
@@ -15,7 +14,6 @@ const captures: Record<
   "agri-connect": {
     src: "/evidence/agri-connect-marketplace.jpg",
     alt: "AgriConnect homepage with marketplace navigation, a map-based discovery panel, and quick access to seller, logistics, and community tools",
-    caption: "AgriConnect marketplace · Earlier interface capture",
     width: 1280,
     height: 720,
   },
@@ -76,15 +74,6 @@ export function ProductEvidence({ slug }: { slug: string }) {
         <p role="status" className="evidence-outcome">
           {scenario.outcome}
         </p>
-        <details className="artifact-provenance">
-          <summary>Scenario data</summary>
-          <p className="evidence-caption">
-            Saved runs using in-memory accounts.
-          </p>
-          <a className="text-link" href="/evidence/banking-harness.json">
-            View scenario JSON ↗
-          </a>
-        </details>
       </figure>
     );
   if (slug === "news-automation")
@@ -107,9 +96,6 @@ export function ProductEvidence({ slug }: { slug: string }) {
         >
           Read complete sample digest ↗
         </a>
-        <p className="evidence-caption">
-          Sample edition · Rendered by the project’s email formatter.
-        </p>
       </figure>
     );
   const capture = captures[slug];
@@ -122,12 +108,6 @@ export function ProductEvidence({ slug }: { slug: string }) {
         alt={capture.alt}
         loading="lazy"
       />
-      <figcaption>
-        {capture.caption ||
-          (slug === "agri-samaj-community-platform"
-            ? "Agri Samaj live website · Marathi–English community platform"
-            : "Demo workspace")}
-      </figcaption>
     </figure>
   ) : null;
 }

@@ -52,7 +52,10 @@ for (const study of workStudies) {
   assert.equal(response.status, 200, path);
   const html = await response.text();
   assert.ok(html.includes(`href="${origin}${path}"`), path + " canonical");
-  assert.ok(html.includes('id="verification-title"'), path + " evidence");
+  assert.ok(
+    html.includes('id="engineering-title"'),
+    path + " engineering content",
+  );
   assert.ok(html.includes('data-prerendered="true"'), path + " initial HTML");
   assert.ok(!html.includes('<div id="root"></div>'), path + " empty shell");
   workPages.push(html);

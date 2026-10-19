@@ -38,7 +38,7 @@ export function ProjectNotes({ project }: { project: Project }) {
         {evidence && (
           <>
             <a className="text-link" href={`/work/${project.slug}/`}>
-              Architecture &amp; source code ↗
+              Project details ↗
             </a>
           </>
         )}
@@ -85,17 +85,6 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
             ))}
           </ul>
           <Tags items={project.technologies.slice(0, 5)} />
-          <p className="project-boundary">
-            {study.publicPreview
-              ? study.accessMode
-              : community
-                ? "Open source · Marathi & English · Live on Vercel"
-                : project.id === 33
-                  ? "Banking simulation · Python policy engine"
-                  : project.id === 17
-                    ? "Local pipeline · sample formatter output"
-                    : "Personal project · read-only sample available"}
-          </p>
           {project.demoUrl && (
             <div className="actions">
               <ActionLink href={project.demoUrl} external primary>
@@ -115,8 +104,7 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
       </div>
       <footer className="flagship-footer">
         <a href={`/work/${project.slug}/`}>
-          Architecture, tradeoffs & failure handling{" "}
-          <ArrowRight size={14} aria-hidden="true" />
+          View project details <ArrowRight size={14} aria-hidden="true" />
         </a>
       </footer>
     </article>

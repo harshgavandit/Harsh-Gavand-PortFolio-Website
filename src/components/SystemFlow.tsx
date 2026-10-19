@@ -41,17 +41,13 @@ export function SystemFlow({
         aria-atomic="true"
       >
         <p>
-          <span>Contract /</span> {diagram.contracts[active]}
+          <span>Data flow</span> {diagram.contracts[active]}
         </p>
         <p>
-          <span>Technical detail /</span> {diagram.details[active]}
+          <span>Implementation</span> {diagram.details[active]}
         </p>
       </div>
       <figcaption>{diagram.caption}</figcaption>
-      <p className="flow-recovery">
-        <span>Recovery / state</span>
-        {study.recovery}
-      </p>
     </figure>
   );
 }
