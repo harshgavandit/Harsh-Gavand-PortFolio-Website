@@ -56,6 +56,11 @@ export const recruiterPromptGroups = [
           "How does LendFlow handle borrower, lender, and administrator workflows? Walk through account access, shared loan data, and lifecycle states, and link to the case study.",
       },
       {
+        label: "How does AgriConnect work?",
+        prompt:
+          "Walk me through AgriConnect: the marketplace stack, Harsh's contribution, OpenAI integration, hosted PostgreSQL migration, and deployment tradeoffs. Link to the live website, case study, and source code.",
+      },
+      {
         label: "What did he build for Agri Samaj?",
         prompt:
           "What did Harsh build for the Agri Samaj community? Explain the Marathi-English experience, business registration, approvals, and private uploads. Show me the live website, case study, and source code.",

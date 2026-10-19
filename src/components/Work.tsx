@@ -86,13 +86,15 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
           </ul>
           <Tags items={project.technologies.slice(0, 5)} />
           <p className="project-boundary">
-            {community
-              ? "Open source · Marathi & English · Live on Vercel"
-              : project.id === 33
-                ? "Banking simulation · Python policy engine"
-                : project.id === 17
-                  ? "Local pipeline · sample formatter output"
-                  : "Personal project · read-only sample available"}
+            {study.publicPreview
+              ? study.accessMode
+              : community
+                ? "Open source · Marathi & English · Live on Vercel"
+                : project.id === 33
+                  ? "Banking simulation · Python policy engine"
+                  : project.id === 17
+                    ? "Local pipeline · sample formatter output"
+                    : "Personal project · read-only sample available"}
           </p>
           {project.demoUrl && (
             <div className="actions">

@@ -155,6 +155,55 @@ test("selected work leads with evidence and links to focused case studies", () =
   }
 });
 
+test("AgriConnect renders a public case study, screenshot, complete stack, and crawlable links", async () => {
+  const project = projects.find((item) => item.slug === "agri-connect");
+  const card = html.match(
+    /<article[^>]*id="agri-connect"[^>]*>([\s\S]*?)<\/article>/,
+  )?.[1];
+  assert.ok(card);
+  assert.ok(card.includes('src="/evidence/agri-connect-marketplace.jpg"'));
+  assert.ok(card.includes('height="720"'));
+  assert.ok(card.includes('href="/work/agri-connect/"'));
+  assert.ok(card.includes('href="' + project.demoUrl + '"'));
+  assert.doesNotMatch(
+    card,
+    /Community contribution|Personal project · read-only sample/,
+  );
+  const response = await fetch(origin + "/work/agri-connect/");
+  assert.equal(response.status, 200);
+  const page = await response.text();
+  assert.match(page, /<title>AgriConnect/);
+  assert.equal(
+    page.match(/rel="canonical"\s+href="([^"]+)"/)?.[1],
+    siteOrigin(canonical) + "/work/agri-connect/",
+  );
+  for (const technology of project.technologies)
+    assert.ok(page.includes(escapeHTML(technology)), technology);
+  assert.match(page, /1,642/);
+  assert.match(page, /c-PRESENTS/);
+  assert.match(page, /Earlier interface capture/);
+  assert.match(page, /Visit live website/);
+  assert.doesNotMatch(page, /Authenticated app/);
+  assert.match(
+    await (await fetch(origin + "/sitemap.xml")).text(),
+    /\/work\/agri-connect\//,
+  );
+  const image = await fetch(origin + "/evidence/agri-connect-marketplace.jpg");
+  assert.equal(image.status, 200);
+  assert.match(image.headers.get("content-type"), /image\/jpeg/);
+  const bytes = Buffer.from(await image.arrayBuffer());
+  assert.equal(bytes.subarray(0, 3).toString("hex"), "ffd8ff");
+  assert.deepEqual(
+    bytes,
+    await readFile(
+      new URL(
+        "../public/evidence/agri-connect-marketplace.jpg",
+        import.meta.url,
+      ),
+    ),
+  );
+});
+
 test("private internal project exposes the approved summary, features and stack without public access links", () => {
   const projectSection = html.match(
     /<section[^>]*id="projects"[^>]*>([\s\S]*?)<\/section>/,

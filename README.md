@@ -1,6 +1,6 @@
 # Harsh Gavand — Full-Stack & AI Engineer
 
-A React + TypeScript portfolio organized around engineering decisions: five homepage chapters, five featured projects, a compact eight-repository archive, and a searchable 38-project catalog at [/archive](https://harshgavand.dev/archive/). Agri Samaj is featured on the homepage alongside UGC and LendFlow, outside the archive.
+A React + TypeScript portfolio organized around engineering decisions: five homepage chapters, six featured projects, a compact eight-repository archive, and a searchable 39-project catalog at [/archive](https://harshgavand.dev/archive/). AgriConnect is featured with a marketplace screenshot, implementation stack, contribution details, architecture, and live/source links at [/work/agri-connect/](https://harshgavand.dev/work/agri-connect/). Agri Samaj remains a separate community project outside the archive.
 
 [Live portfolio](https://harshgavand.dev/) · [Refactor verification](verification/recruiter-scan-2026-10-15/README.md) · [Recent AI repository sources](verification/github-projects-2026-10-15/sources.json)
 

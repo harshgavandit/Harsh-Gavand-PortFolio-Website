@@ -1,5 +1,10 @@
 const destinations = [
   {
+    match: /\bagri[ -]?connect\b/i,
+    label: "Open AgriConnect",
+    href: "/work/agri-connect/",
+  },
+  {
     match: /\b(agri|samaj)\b/i,
     label: "Open Agri Samaj",
     href: "/work/agri-samaj-community-platform/",

@@ -15,6 +15,7 @@ export async function runtimeDigest() {
     "src/data/portfolio.ts",
     "src/data/projects.json",
     "src/data/recentProjects.json",
+    "src/data/platformProjects.json",
     "src/data/workPresentation.ts",
     "src/data/caseEvidence.ts",
     "scripts/ai-eval-cases.mjs",

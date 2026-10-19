@@ -2,7 +2,23 @@ import { useState } from "react";
 import harnessOutput from "../../public/evidence/banking-harness.json";
 import digestHTML from "../../public/evidence/news-digest.html?raw";
 
-const captures: Record<string, { src: string; alt: string }> = {
+const captures: Record<
+  string,
+  {
+    src: string;
+    alt: string;
+    caption?: string;
+    width?: number;
+    height?: number;
+  }
+> = {
+  "agri-connect": {
+    src: "/evidence/agri-connect-marketplace.jpg",
+    alt: "AgriConnect homepage with marketplace navigation, a map-based discovery panel, and quick access to seller, logistics, and community tools",
+    caption: "AgriConnect marketplace · Earlier interface capture",
+    width: 1280,
+    height: 720,
+  },
   "agri-samaj-community-platform": {
     src: "/evidence/agri-samaj-workspace.png",
     alt: "Agri Samaj live Marathi homepage with community business search, entrepreneur registration, directory, and publications",
@@ -101,15 +117,16 @@ export function ProductEvidence({ slug }: { slug: string }) {
     <figure className="capture-evidence">
       <img
         src={capture.src}
-        width={1280}
-        height={900}
+        width={capture.width ?? 1280}
+        height={capture.height ?? 900}
         alt={capture.alt}
         loading="lazy"
       />
       <figcaption>
-        {slug === "agri-samaj-community-platform"
-          ? "Agri Samaj live website · Marathi–English community platform"
-          : "Demo workspace"}
+        {capture.caption ||
+          (slug === "agri-samaj-community-platform"
+            ? "Agri Samaj live website · Marathi–English community platform"
+            : "Demo workspace")}
       </figcaption>
     </figure>
   ) : null;

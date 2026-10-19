@@ -174,3 +174,17 @@ test("recording failure and cancellation during decode both release audio resour
     assert.equal(state.closed, 1);
   });
 });
+
+test("voice navigation distinguishes AgriConnect from the Agri Samaj platform", () => {
+  for (const name of ["AgriConnect", "Agri-Connect", "Agri Connect"]) {
+    assert.deepEqual(voiceDestination("Open " + name), {
+      label: "Open AgriConnect",
+      href: "/work/agri-connect/",
+    });
+  }
+  assert.equal(
+    voiceDestination("Open Agri Samaj").href,
+    "/work/agri-samaj-community-platform/",
+  );
+  assert.equal(voiceDestination("Tell me about AgriConnect"), undefined);
+});

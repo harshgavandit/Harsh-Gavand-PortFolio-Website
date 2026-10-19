@@ -25,6 +25,7 @@ export function WorkDetail() {
   const evidence = caseEvidence[project.slug];
   const sampleURL = sampleWorkspaceURLs[project.slug];
   const community = communityProjects.some((item) => item.id === project.id);
+  const publicWebsite = community || study.publicPreview === true;
   return (
     <main id="main" className="work-page section-container" tabIndex={-1}>
       <a className="text-link" href={`/#${project.slug}`}>
@@ -35,12 +36,12 @@ export function WorkDetail() {
         <h1>{study.shortName}</h1>
         <p>{study.summary}</p>
         <div className="actions">
-          {community && project.demoUrl && (
+          {publicWebsite && project.demoUrl && (
             <ActionLink href={project.demoUrl} external primary>
               Visit live website
             </ActionLink>
           )}
-          <ActionLink href="#walkthrough" primary={!community}>
+          <ActionLink href="#walkthrough" primary={!publicWebsite}>
             Explore the workflow
           </ActionLink>
           <ActionLink href={project.githubUrl} external>
@@ -84,7 +85,7 @@ export function WorkDetail() {
             <strong>Failure path:</strong> {evidence.failure.trigger}
           </p>
           <p>{evidence.failure.handling}</p>
-          {project.demoUrl && !community && (
+          {project.demoUrl && !publicWebsite && (
             <a
               className="text-link"
               href={project.demoUrl}

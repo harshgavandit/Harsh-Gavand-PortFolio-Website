@@ -19,6 +19,8 @@ const news =
   "https://github.com/harshgavandit/AI_News_To_Email_Generator/blob/0608f9a99dec2308ae9dcdebce840e5ce958445e";
 const harness =
   "https://github.com/harshgavandit/banking-agent-harness/blob/2b8b094bc80bef18f75b1e50c5235c77d5a246c9";
+const agriConnect =
+  "https://github.com/harshgavandit/Agri-Connect/blob/9a0bb1ff88ad02c7473683afc55ef56b8e665d94";
 const agri =
   "https://github.com/harshgavandit/agri-samaj-community-platform/blob/07c4b0e18d911a4668b9f696116e65236e8a29a1";
 
@@ -28,6 +30,76 @@ const agri =
  * Verification links distinguish source inspection from executed synthetic checks.
  */
 export const caseEvidence: Record<string, CaseEvidence> = {
+  "agri-connect": {
+    context:
+      "Farm-product discovery, seller operations, orders, logistics, and community services often live in separate tools. AgriConnect brings these workflows into one agricultural marketplace.",
+    ownership:
+      "Extended the existing marketplace with configurable OpenAI workflows, validated API inputs, regression tests, hosted PostgreSQL migration, preserved administrator access, and Vercel deployment fixes. This release builds on the existing c-PRESENTS/Agri-Connect project; the upstream repository is linked below.",
+    decision: {
+      choice:
+        "Keep a modular Express application behind same-origin API routes, with durable PostgreSQL state and server-side AI integrations.",
+      alternative:
+        "Split every domain into a separate service, adding deployment and coordination overhead before the product requires it.",
+      reason:
+        "A modular monolith keeps catalogue, commerce, organisation, and AI boundaries understandable while sharing validated contracts and one relational database. The same API can run on a persistent Node server or a Vercel function.",
+    },
+    verifiedBehavior: [
+      "Category and visibility rules determine the public catalogue; commerce records retain seller ownership and account associations.",
+      "The hosted database migration preserved 1,642 product records and existing administrator permissions; catalogue counts and record digests were compared during cutover.",
+      "AI chat requires authentication. Chat history, message size, model configuration, and supported voice actions are validated on the server.",
+      "The assistant uses configurable OpenAI requests for chat, translation, product search, and voice-command interpretation, with bounded timeouts and explicit fallback handling.",
+      "Fourteen focused AI regression tests cover validation, authentication, provider failures, and action handling; production builds and API checks also passed for the linked release.",
+    ],
+    verification: [
+      {
+        label: "AI regression tests",
+        href: agriConnect + "/tests/unit/ai-assistant.test.ts",
+      },
+      {
+        label: "Verified release CI",
+        href: "https://github.com/harshgavandit/Agri-Connect/actions/runs/39306011871",
+      },
+      {
+        label: "Architecture & deployment notes",
+        href: agriConnect + "/README.md",
+      },
+    ],
+    limitations: [
+      "The public deployment is a project demonstration. Commercial adoption, transaction volume, and farmer-income improvements have not been measured.",
+      "Payment execution is configured in mock mode; production mock checkout is intentionally disabled. Real gateway and OAuth flows require provider-side setup.",
+      "Periodic background work needs a persistent worker or scheduled jobs. Verification-document uploads need durable object storage before accepting real documents.",
+      "The portfolio screenshot is an earlier interface capture rather than a current catalogue or activity count.",
+    ],
+    failure: {
+      trigger:
+        "An AI provider request fails, a chat request is unauthenticated, or a voice action falls outside supported commands.",
+      handling:
+        "The API returns a controlled error, rejects unauthenticated chat, validates action targets, and labels available fallback behaviour. The interface keeps failed responses out of subsequent conversation history.",
+    },
+    sources: [
+      {
+        label: "OpenAI configuration & request limits",
+        href: agriConnect + "/backend/ai/openai.ts",
+      },
+      {
+        label: "Authenticated AI routes",
+        href: agriConnect + "/backend/modules/ai/routes.ts",
+      },
+      {
+        label: "Marketplace persistence",
+        href: agriConnect + "/backend/repositories/commerce-repository.ts",
+      },
+      {
+        label: "Catalogue visibility rules",
+        href: agriConnect + "/backend/catalog/product-visibility.ts",
+      },
+      { label: "Vercel API entry point", href: agriConnect + "/api/index.ts" },
+      {
+        label: "Original project",
+        href: "https://github.com/c-PRESENTS/Agri-Connect",
+      },
+    ],
+  },
   "agri-samaj-community-platform": {
     context:
       "Give the Agri Samaj community one place to discover local entrepreneurs, register businesses, access publications, and follow community announcements in Marathi or English.",

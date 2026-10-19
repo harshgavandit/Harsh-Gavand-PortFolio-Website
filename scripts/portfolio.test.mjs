@@ -6,12 +6,13 @@ import {
   projects as catalog,
   latestAIProjects,
   communityProjects,
+  platformProjects,
   caseStudies,
   profile,
   skills,
 } from "../src/data/portfolio.ts";
 import { experienceForDisplay as experience } from "../src/data/experiencePresentation.ts";
-import { buildRequest, sourceLinks } from "../server/openai.mjs";
+import { buildRequest, sourceLinks, knowledgeFor } from "../server/openai.mjs";
 import { matchesProjectCollection } from "../src/lib/portfolioActions.ts";
 import { curatedArchive } from "../src/data/recruiter.ts";
 import { codeTokens } from "../src/lib/codeTokens.ts";
@@ -123,6 +124,31 @@ test("preserves all original project identities while correcting editorial copy"
   }
 });
 
+test("AgriConnect is distinct from Agri Samaj and available to recruiter questions", () => {
+  const project = catalog.find((item) => item.slug === "agri-connect");
+  assert.equal(project.id, 40);
+  assert.ok(platformProjects.includes(project));
+  assert.ok(!communityProjects.includes(project));
+  assert.equal(matchesProjectCollection(project, "Latest AI"), false);
+  const knowledge = knowledgeFor([
+    {
+      role: "user",
+      content:
+        "What did Harsh deliver for AgriConnect? Explain its stack and database migration.",
+    },
+  ]);
+  assert.ok(knowledge.projectDetails.some((item) => item.id === project.id));
+  assert.ok(
+    knowledge.caseStudyNotes.some((item) => item.projectId === project.id),
+  );
+  assert.match(knowledge.caseEvidence[project.slug].ownership, /c-PRESENTS/);
+  assert.ok(
+    sourceLinks({ projectIds: [project.id], sections: [] }).some(
+      (item) => item.href === project.demoUrl,
+    ),
+  );
+});
+
 test("code tokens preserve identifiers and quoted strings while highlighting complete keywords", () => {
   const line =
     '  await quota.releaseOrEnqueueRetry(reservation, "try catch await");';
@@ -196,7 +222,10 @@ test("all recently pushed AI repositories are included once, discoverable, and t
   );
   assert.equal(
     catalog.length,
-    projects.length + latestAIProjects.length + communityProjects.length,
+    projects.length +
+      latestAIProjects.length +
+      communityProjects.length +
+      platformProjects.length,
   );
   assert.equal(latestAIProjects.length, 12);
   assert.equal(sources.projects.length, 12);

@@ -116,8 +116,82 @@ export const communityStudy: CaseStudy = {
   },
 };
 
-export const workStudies = [...caseStudies, harnessStudy, communityStudy];
+export const agriConnectStudy: CaseStudy = {
+  projectId: 40,
+  shortName: "AgriConnect — Agricultural Marketplace",
+  problem:
+    "Connect agricultural product discovery with the workflows needed to run a marketplace.",
+  summary:
+    "An agricultural marketplace connecting product discovery, buyer and seller workflows, location-based browsing, and an OpenAI assistant. React and TypeScript interfaces connect to an Express API and a hosted PostgreSQL database.",
+  engineering: [
+    "Full-stack delivery: Connected OpenAI assistance, migrated 1,642 catalogue records with existing ownership and permissions, and adapted the Express API for Vercel hosting.",
+    "Bounded AI workflows: Kept provider credentials on the server, validated chat history and voice actions, enforced chat authentication, and made unavailable-provider fallbacks explicit.",
+    "Persistent marketplace state: Used PostgreSQL and Drizzle models for commerce, sessions, organisation access, moderation, and account-scoped records.",
+  ],
+  contributions: [
+    {
+      label: "AI integration",
+      description:
+        "Configurable OpenAI chat, translation, search, and voice-command interpretation with request validation and regression coverage.",
+    },
+    {
+      label: "Data & access",
+      description:
+        "Hosted PostgreSQL migration preserving catalogue ownership, administrator permissions, and encrypted account records.",
+    },
+    {
+      label: "Delivery",
+      description:
+        "Vercel API bundling and runtime fixes, production builds, automated checks, and public project documentation.",
+    },
+  ],
+  previewNote:
+    "Browse the live marketplace without an account. Seller and administrator tools require the appropriate account. The screenshot is an earlier homepage capture; live catalogue contents have since changed.",
+  accessMode: "Public marketplace · OpenAI · Vercel + Neon",
+  accessDescription:
+    "Public catalogue browsing with account-scoped commerce, seller, and administrator workflows.",
+  publicPreview: true,
+  takeaway:
+    "A deployable marketplace combines discovery, durable commerce records, role-based operations, and bounded AI assistance.",
+  recovery:
+    "AI errors return controlled responses or labelled fallbacks. Database readiness checks detect missing connections or schema before the service is considered ready.",
+  diagram: {
+    title: "From marketplace discovery to a persisted, authorised action",
+    nodes: [
+      "React marketplace",
+      "Express / Zod API",
+      "Session & role checks",
+      "Domain services",
+      "PostgreSQL / OpenAI",
+    ],
+    details: [
+      "React, Wouter, and TanStack Query coordinate category browsing, carts, seller tools, maps, and the assistant.",
+      "Same-origin API requests reach modular Express routes with bounded, validated payloads and shared TypeScript contracts.",
+      "PostgreSQL-backed sessions and organisation permissions restrict account, seller, administrator, and authenticated chat actions.",
+      "Catalogue, commerce, organisation, and AI modules handle their own workflow rules and controlled failure responses.",
+      "Drizzle models persist marketplace state in hosted PostgreSQL; optional OpenAI calls use server-only credentials, timeouts, and validated results.",
+    ],
+    contracts: [
+      "Marketplace interaction → same-origin API request",
+      "Request payload → validated domain input",
+      "Account + permission → permitted action",
+      "Permitted action → domain result or controlled error",
+      "Domain operation → persisted record or bounded AI response",
+    ],
+    caption:
+      "A modular TypeScript application with persistent commerce and separately configured AI integrations.",
+    chapterNodes: [[0, 1], [2, 3], [4]],
+  },
+};
+
+export const workStudies = [
+  ...caseStudies,
+  harnessStudy,
+  communityStudy,
+  agriConnectStudy,
+];
 export const featuredStudies = [
+  agriConnectStudy,
   caseStudies[0],
   caseStudies[1],
   communityStudy,
