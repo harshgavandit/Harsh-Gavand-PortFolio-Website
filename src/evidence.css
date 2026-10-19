@@ -162,6 +162,93 @@
   color: var(--muted);
   margin: 20px 0;
 }
+.private-project-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  color: var(--text);
+  font: 0.75rem/1.5 var(--mono);
+}
+.private-project-details {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  border-block: 1px solid var(--line);
+}
+.private-project-details > div {
+  min-width: 0;
+  padding: 26px 28px;
+}
+.private-project-details > div + div {
+  border-left: 1px solid var(--line);
+}
+.private-project-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  grid-template-areas: "preview details" "stack details";
+  border-block: 1px solid var(--line);
+}
+.private-project-preview {
+  grid-area: preview;
+  min-width: 0;
+  margin: 0;
+}
+.private-project-preview a {
+  display: block;
+}
+.private-project-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.private-project-preview figcaption {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+  padding: 16px 20px;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+.private-project-body .private-project-details {
+  grid-area: details;
+  grid-template-columns: minmax(0, 1fr);
+  border-block: 0;
+  border-left: 1px solid var(--line);
+  align-content: start;
+}
+.private-project-body > .private-project-stack {
+  grid-area: stack;
+  border-top: 1px solid var(--line);
+}
+.private-project-body .private-project-details > div + div {
+  border-left: 0;
+  border-top: 1px solid var(--line);
+}
+.private-project-card h4 {
+  margin-bottom: 14px;
+  font-size: 0.95rem;
+}
+.private-project-details p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+.private-project-details p + h4 {
+  margin-top: 24px;
+}
+.private-project-stack {
+  padding: 24px 28px;
+}
+.private-project-stack .tags + h4 {
+  margin-top: 24px;
+}
+.private-project-stack .project-boundary {
+  margin-bottom: 0;
+}
 .capture-evidence {
   margin: 0;
 }
@@ -559,6 +646,25 @@
   }
 }
 @media (max-width: 700px) {
+  .private-project-body {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "preview" "details" "stack";
+  }
+  .private-project-body .private-project-details {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+  .private-project-details {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .private-project-details > div,
+  .private-project-stack {
+    padding: 20px;
+  }
+  .private-project-details > div + div {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
   .hero {
     padding-top: 28px;
   }

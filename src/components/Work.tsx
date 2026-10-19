@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowUpRight, LockKeyhole } from "lucide-react";
 import {
   communityProjects,
   archiveProjects,
@@ -6,6 +6,7 @@ import {
   type CaseStudy,
   type Project,
 } from "../data/portfolio";
+import { privateProjects, type PrivateProject } from "../data/privateProjects";
 import { curatedArchive } from "../data/recruiter";
 import { ActionLink, LeadStatement, Tags } from "./Primitives";
 import { ProductEvidence } from "./ProductEvidence";
@@ -129,6 +130,9 @@ export function FeaturedWork() {
       aria-label="Selected work"
     >
       <div className="flagship-list">
+        {privateProjects.map((project) => (
+          <PrivateProjectCard key={project.id} project={project} />
+        ))}
         {featuredStudies.map((study) => (
           <CaseStudyCard key={study.projectId} study={study} />
         ))}
@@ -144,6 +148,86 @@ export function FeaturedWork() {
     </section>
   );
 }
+
+function PrivateProjectCard({ project }: { project: PrivateProject }) {
+  return (
+    <article
+      className="private-project-card"
+      id={project.slug}
+      tabIndex={-1}
+      aria-labelledby={`${project.slug}-title`}
+    >
+      <header className="flagship-header">
+        <div>
+          <div className="flagship-kicker">
+            <span className="category-badge">{project.category}</span>
+            <span className="private-project-badge">
+              <LockKeyhole size={13} aria-hidden="true" />
+              Private internal project
+            </span>
+          </div>
+          <h3 id={`${project.slug}-title`}>{project.title}</h3>
+        </div>
+      </header>
+      <p className="flagship-summary">{project.overview}</p>
+      <div className={project.preview ? "private-project-body" : undefined}>
+        {project.preview && (
+          <figure className="private-project-preview">
+            <a
+              href={project.preview.src}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="View full-size Globetrek quotation workspace screenshot"
+            >
+              <img
+                src={project.preview.src}
+                alt={project.preview.alt}
+                width={project.preview.width}
+                height={project.preview.height}
+                loading="lazy"
+              />
+            </a>
+            <figcaption>
+              {project.preview.caption}
+              <span>Click image to enlarge ↗</span>
+            </figcaption>
+          </figure>
+        )}
+        <div className="private-project-details">
+          <div>
+            <h4>Features</h4>
+            <ul className="engineering-bullets">
+              {project.features.map((feature) => (
+                <li key={feature}>{feature}</li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h4>My contribution</h4>
+            <p>{project.role}</p>
+            <h4>Business impact</h4>
+            <p>{project.impact}</p>
+          </div>
+        </div>
+        <div className="private-project-stack">
+          <h4>Tech stack</h4>
+          <Tags items={project.technologies} />
+          <h4>Keywords</h4>
+          <ul className="tags" aria-label="Project keywords">
+            {project.keywords.map((keyword) => (
+              <li key={keyword}>{keyword}</li>
+            ))}
+          </ul>
+          <p className="project-boundary">
+            Private internal project · Source code and application access are
+            not public.
+          </p>
+        </div>
+      </div>
+    </article>
+  );
+}
+
 export function MoreWork() {
   return (
     <details id="all-projects" className="curated-archive">

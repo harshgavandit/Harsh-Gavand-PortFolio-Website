@@ -15,6 +15,7 @@ import {
   communityProjects,
   archiveProjects,
 } from "../src/data/portfolio.ts";
+import { privateProjects } from "../src/data/privateProjects.ts";
 import { featuredStudies } from "../src/data/workPresentation.ts";
 import {
   chapters,
@@ -151,6 +152,62 @@ test("selected work leads with evidence and links to focused case studies", () =
       !archive.includes(`id="${project.slug}"`),
       "Community project stays on the homepage, outside the archive",
     );
+  }
+});
+
+test("private internal project exposes the approved summary, features and stack without public access links", () => {
+  const projectSection = html.match(
+    /<section[^>]*id="projects"[^>]*>([\s\S]*?)<\/section>/,
+  )?.[1];
+  assert.ok(projectSection);
+  for (const project of privateProjects) {
+    const projectPosition = projectSection.indexOf(`id="${project.slug}"`);
+    const archivePosition = projectSection.indexOf('id="all-projects"');
+    assert.ok(
+      projectPosition >= 0,
+      "Private project belongs in the Projects section",
+    );
+    assert.ok(
+      archivePosition > projectPosition,
+      "Private project must appear before the collapsed archive",
+    );
+    const card = html.match(
+      new RegExp(
+        `<article[^>]*id="${project.slug}"[^>]*>([\\s\\S]*?)<\\/article>`,
+      ),
+    )?.[1];
+    assert.ok(card);
+    for (const text of [
+      project.title,
+      project.overview,
+      project.role,
+      project.impact,
+      ...project.features,
+      ...project.technologies,
+      ...project.keywords,
+    ])
+      assert.ok(
+        card.includes(escapeHTML(text)),
+        `Missing approved private-project copy: ${text}`,
+      );
+    assert.match(card, /Private internal project/);
+    assert.match(card, /My contribution/);
+    assert.match(card, /Business impact/);
+    assert.doesNotMatch(card, /<iframe\b/);
+    const links = [...card.matchAll(/<a[^>]*href="([^"]+)"/g)].map(
+      (match) => match[1],
+    );
+    assert.deepEqual(links, project.preview ? [project.preview.src] : []);
+    if (project.preview) {
+      assert.ok(card.includes(`src="${project.preview.src}"`));
+      assert.ok(card.includes(`alt="${escapeHTML(project.preview.alt)}"`));
+      assert.ok(card.includes(`width="${project.preview.width}"`));
+      assert.ok(card.includes(`height="${project.preview.height}"`));
+      assert.ok(card.includes(escapeHTML(project.preview.caption)));
+    }
+    assert.doesNotMatch(card, /\b\d+(?:%|x|\s+(?:users|hours|customers))\b/i);
+    assert.ok(!archive.includes(`id="${project.slug}"`));
+    assert.ok(!archive.includes(escapeHTML(project.title)));
   }
 });
 

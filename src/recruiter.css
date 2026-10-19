@@ -655,7 +655,8 @@ kbd {
   display: grid;
   gap: 28px;
 }
-.flagship-card {
+.flagship-card,
+.private-project-card {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 9px;
