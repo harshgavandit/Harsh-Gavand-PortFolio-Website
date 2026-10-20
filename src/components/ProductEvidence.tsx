@@ -1,6 +1,7 @@
 import digestHTML from "../../public/evidence/news-digest.html?raw";
 import { deploymentShowcase } from "../data/deploymentShowcase";
 import { projects } from "../data/portfolio";
+import { AgriConnectGallery } from "./AgriConnectGallery";
 
 const captures: Record<
   string,
@@ -24,12 +25,6 @@ const captures: Record<
       },
     ]),
   ),
-  "agri-connect": {
-    src: "/evidence/agri-connect-marketplace.jpg",
-    alt: "AgriConnect homepage with marketplace navigation, a map-based discovery panel, and quick access to seller, logistics, and community tools",
-    width: 1280,
-    height: 720,
-  },
   "agri-samaj-community-platform": {
     src: "/evidence/agri-samaj-workspace.png",
     alt: "Agri Samaj live Marathi homepage with community business search, entrepreneur registration, directory, and publications",
@@ -49,6 +44,7 @@ const captures: Record<
 };
 
 export function ProductEvidence({ slug }: { slug: string }) {
+  if (slug === "agri-connect") return <AgriConnectGallery />;
   if (slug === "news-automation")
     return (
       <figure className="digest-evidence">

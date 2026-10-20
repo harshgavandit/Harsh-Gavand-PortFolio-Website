@@ -3,14 +3,15 @@
     "id": 40,
     "slug": "agri-connect",
     "aliases": ["AgriConnect", "Agri-Connect", "agricultural marketplace"],
-    "title": "AgriConnect — Agricultural Marketplace",
-    "category": "Full-Stack Marketplace",
-    "overview": "An agricultural marketplace connecting product discovery, buyer and seller workflows, location-based browsing, and an OpenAI assistant. React and TypeScript interfaces connect to an Express API and a hosted PostgreSQL database.",
+    "title": "AgriConnect — Agricultural Platform",
+    "category": "Full-Stack Platform",
+    "overview": "A full-stack agricultural platform connecting marketplace discovery, buyer and seller workflows, catalogue moderation, and a role-based administrator control centre. React and TypeScript interfaces connect to an Express API, hosted PostgreSQL, and OpenAI assistance.",
     "features": [
       "Category-based product discovery, search, seller profiles, and map-based browsing",
       "Guest and authenticated carts, saved addresses, orders, and seller workflows",
       "OpenAI chat assistance, multilingual translation, product search, and voice-command interpretation",
       "Organisation roles, administrator permissions, product moderation, and audit records",
+      "Admin security interface with TOTP authenticator status, session management, and authentication-event views",
       "Regional commerce, logistics views, community sharing, and student resources"
     ],
     "technologies": [

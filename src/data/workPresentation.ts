@@ -119,11 +119,11 @@ export const communityStudy: CaseStudy = {
 
 export const agriConnectStudy: CaseStudy = {
   projectId: 40,
-  shortName: "AgriConnect — Agricultural Marketplace",
+  shortName: "AgriConnect — Agricultural Platform",
   problem:
     "Connect agricultural product discovery with the workflows needed to run a marketplace.",
   summary:
-    "An agricultural marketplace connecting product discovery, buyer and seller workflows, location-based browsing, and an OpenAI assistant. React and TypeScript interfaces connect to an Express API and a hosted PostgreSQL database.",
+    "A full-stack agricultural platform connecting marketplace discovery, buyer and seller workflows, catalogue moderation, and a role-based administrator control centre. React and TypeScript interfaces connect to an Express API, hosted PostgreSQL, and OpenAI assistance.",
   engineering: [
     "Full-stack delivery: Connected OpenAI assistance, migrated 1,642 catalogue records with existing ownership and permissions, and adapted the Express API for Vercel hosting.",
     "Bounded AI workflows: Kept provider credentials on the server, validated chat history and voice actions, enforced chat authentication, and made unavailable-provider fallbacks explicit.",
@@ -147,7 +147,7 @@ export const agriConnectStudy: CaseStudy = {
     },
   ],
   previewNote:
-    "Browse the live marketplace without an account. Seller and administrator tools require the appropriate account. The screenshot is an earlier homepage capture; live catalogue contents have since changed.",
+    "Browse the live marketplace without an account. The gallery shows the administrator dashboard, TOTP security interface, catalogue operations, and a live assistant response captured on 21 October 2026. Administrator and seller tools require an authorised account; screenshots do not grant access.",
   accessMode: "Public marketplace · OpenAI · Vercel + Neon",
   accessDescription:
     "Public catalogue browsing with account-scoped commerce, seller, and administrator workflows.",

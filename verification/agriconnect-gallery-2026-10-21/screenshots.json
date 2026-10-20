@@ -1,0 +1,18 @@
+[
+  {
+    "file": "public/evidence/agri-connect-admin.jpg",
+    "sha256": "a6052c3a3d10ad4bb8cfd8e3eb9f558c5c6093f303a1d893076665f641f10e08"
+  },
+  {
+    "file": "public/evidence/agri-connect-security.jpg",
+    "sha256": "2a026603013bcaaa6f3f94a8691afcdd1a3ec45ed5a6f3fa0f13eaf6820e4d77"
+  },
+  {
+    "file": "public/evidence/agri-connect-catalogue.jpg",
+    "sha256": "de691efca0b10dbebd915cdb7670d6cb35289c7238f8b0b6546d346f7d9860aa"
+  },
+  {
+    "file": "public/evidence/agri-connect-assistant.jpg",
+    "sha256": "3646d396630e45db56d70479262d3f92fc7dbbd1b608c3a71dac510627eb1133"
+  }
+]
