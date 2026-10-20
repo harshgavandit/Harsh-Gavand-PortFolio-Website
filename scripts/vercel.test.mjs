@@ -11,6 +11,30 @@ import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { encodeVoiceWav } from "../src/lib/voiceAudio.ts";
 
+test("deployment ignores private root reports while retaining the sanitized public review", () => {
+  const paths = [
+    "verification/private-report.json",
+    "tmp/private-output.json",
+    ".env",
+    "public/verification/deployments-2026-10-20.json",
+    "public/evidence/docwise-live.jpg",
+  ];
+  const ignored = execFileSync(
+    "git",
+    [
+      "-c",
+      "core.excludesFile=.vercelignore",
+      "check-ignore",
+      "--no-index",
+      "--stdin",
+    ],
+    { input: paths.join("\n") + "\n", encoding: "utf8" },
+  )
+    .trim()
+    .split("\n");
+  assert.deepEqual(ignored, paths.slice(0, 3));
+});
+
 async function fixture(t, overrides = {}) {
   const events = [];
   const config = {
