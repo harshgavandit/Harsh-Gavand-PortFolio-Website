@@ -2,13 +2,10 @@ import {
   aboutProfile,
   engineeringSprints,
   profile,
-  skills,
 } from "../data/portfolio";
 import { experienceForDisplay as experience } from "../data/experiencePresentation";
 
 import { HeroStack } from "./HeroStack";
-
-import { resumeStackGroups } from "../data/heroStack";
 
 import { LeadStatement, Tags } from "./Primitives";
 
@@ -204,19 +201,6 @@ export function Skills() {
           View full stack <span>Languages, frameworks & infrastructure</span>
         </summary>
         <HeroStack />
-        <div className="additional-stack">
-          <h3>Additional implementation tools & patterns</h3>
-          <Tags
-            items={[...new Set(skills.flatMap((group) => group.items))].filter(
-              (item) =>
-                !new Set(
-                  resumeStackGroups.flatMap((group) =>
-                    group.items.map((item) => item.name.toLowerCase()),
-                  ),
-                ).has(item.toLowerCase()),
-            )}
-          />
-        </div>
       </details>
 
     </section>

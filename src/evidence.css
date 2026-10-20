@@ -725,13 +725,6 @@
 .hero-stack-heading p {
   font-size: 0.85rem;
 }
-.additional-stack {
-  margin-top: 26px;
-}
-.additional-stack h3 {
-  font-size: 1rem;
-  margin-bottom: 16px;
-}
 .contact-layout {
   grid-template-columns: 1.3fr 1fr;
   gap: 56px;
