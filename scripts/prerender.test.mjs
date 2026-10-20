@@ -16,7 +16,9 @@ import {
   archiveProjects,
 } from "../src/data/portfolio.ts";
 import { privateProjects } from "../src/data/privateProjects.ts";
-import { featuredStudies } from "../src/data/workPresentation.ts";
+import { featuredStudies, workStudies } from "../src/data/workPresentation.ts";
+import { deploymentShowcase } from "../src/data/deploymentShowcase.ts";
+import { createHash } from "node:crypto";
 import {
   chapters,
   productionCode,
@@ -152,6 +154,75 @@ test("selected work leads with evidence and links to focused case studies", () =
       "Community project stays on the homepage, outside the archive",
     );
   }
+});
+
+test("verified deployments have unique main cards, real capture assets, complete notes, and passing recorded links", async () => {
+  const report = JSON.parse(
+    await readFile(
+      new URL(
+        "../public/verification/deployments-2026-10-20.json",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  );
+  assert.equal(report.attempts, 30);
+  assert.equal(report.projects.length, 10);
+  assert.equal(
+    new Set(featuredStudies.map((study) => study.projectId)).size,
+    featuredStudies.length,
+  );
+  const curated = html.match(
+    /<details id="all-projects"[\s\S]*?<\/details>/,
+  )?.[0];
+  for (const item of deploymentShowcase) {
+    const project = projects.find((project) => project.id === item.projectId);
+    assert.equal(
+      featuredStudies.filter((study) => study.projectId === item.projectId)
+        .length,
+      1,
+    );
+    const card = html.match(
+      new RegExp(
+        `<article[^>]*id="${project.slug}"[^>]*>([\\s\\S]*?)<\\/article>`,
+      ),
+    )?.[1];
+    assert.ok(card, project.slug);
+    assert.ok(card.includes(`src="/evidence/${item.capture}"`));
+    assert.ok(card.includes(`href="${project.demoUrl}"`));
+    assert.ok(card.includes(`href="${project.githubUrl}"`));
+    for (const text of [project.role, project.impact, ...project.features])
+      assert.ok(card.includes(escapeHTML(text)), text);
+    assert.ok(
+      !curated.includes(`/archive#${project.slug}`),
+      "Featured projects must not be repeated as additional work",
+    );
+    const evidence = report.verifiedPublicProjects.find(
+      (entry) => entry.slug === project.slug,
+    );
+    assert.ok(
+      evidence.links.every((link) => link.passed && link.status === 200),
+    );
+    assert.deepEqual(evidence.workflowChecks, item.checks);
+    const capture = await readFile(
+      new URL(`../public/evidence/${item.capture}`, import.meta.url),
+    );
+    assert.equal(
+      capture.subarray(0, 3).toString("hex"),
+      "ffd8ff",
+      "Must be a captured JPEG, not an empty placeholder",
+    );
+    assert.equal(
+      createHash("sha256").update(capture).digest("hex"),
+      evidence.screenshot.sha256,
+    );
+    assert.ok(capture.byteLength > 10000);
+  }
+  for (const id of [27, 30])
+    assert.ok(
+      !featuredStudies.some((study) => study.projectId === id),
+      "Private-code AI demos stay outside public featured work",
+    );
 });
 
 test("AgriConnect renders a public case study, screenshot, complete stack, and crawlable links", async () => {
@@ -690,15 +761,9 @@ test("skills overview and engineering field notes are removed while Skills navig
 });
 
 test("project pages show engineering work without source directories or preview commentary", async () => {
-  for (const slug of [
-    "ugc-platform",
-    "banking-saas",
-    "github-replica",
-    "news-automation",
-    "banking-agent-harness",
-    "agri-samaj-community-platform",
-    "agri-connect",
-  ]) {
+  for (const slug of workStudies.map(
+    (study) => projects.find((project) => project.id === study.projectId).slug,
+  )) {
     for (const suffix of ["", "/"]) {
       const response = await fetch(origin + "/work/" + slug + suffix);
       assert.equal(response.status, 200, slug + suffix);

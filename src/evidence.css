@@ -334,6 +334,33 @@
   border-radius: 10px;
   background: var(--bg);
 }
+.flagship-notes {
+  padding: 0 var(--card-padding) var(--card-padding);
+}
+.flagship-notes > summary {
+  width: fit-content;
+  color: var(--accent);
+  font-weight: 600;
+  cursor: pointer;
+  padding-block: 8px;
+}
+.flagship-notes .project-notes {
+  margin-top: 20px;
+}
+.flagship-notes .project-notes p,
+.flagship-notes .project-notes li {
+  font-size: 0.88rem;
+}
+.project-notes .project-complete-stack {
+  grid-column: 1 / -1;
+}
+.capture-evidence > a {
+  display: block;
+}
+.capture-evidence > a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+}
 .capture-evidence img {
   width: 100%;
   height: auto;

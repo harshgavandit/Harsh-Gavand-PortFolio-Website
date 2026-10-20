@@ -5,6 +5,7 @@ import {
   profile,
 } from "../src/data/portfolio.ts";
 import { featuredStudies } from "../src/data/workPresentation.ts";
+import { curatedArchive } from "../src/data/recruiter.ts";
 
 export function siteOrigin(value) {
   const url = new URL(value);
@@ -83,8 +84,11 @@ export function assertHomepage(html, origin = profile.site) {
   assert.ok(html.includes('id="all-projects"'));
   assert.equal(
     (html.match(/<tr>/g) || []).length,
-    9,
-    "Expected eight curated repositories and a table header",
+    curatedArchive.filter(
+      (entry) =>
+        !featuredStudies.some((study) => study.projectId === entry.projectId),
+    ).length + 1,
+    "Expected only additional curated repositories and a table header",
   );
   assert.ok(html.includes('href="/archive"'));
   for (const job of experience)

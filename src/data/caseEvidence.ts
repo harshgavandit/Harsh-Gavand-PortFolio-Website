@@ -1,3 +1,5 @@
+import { deployedEvidence } from "./deploymentShowcase.ts";
+
 export interface CaseEvidence {
   context: string;
   ownership: string;
@@ -452,4 +454,5 @@ export const caseEvidence: Record<string, CaseEvidence> = {
       { label: "Banking tests", href: `${harness}/tests/test_banking.py` },
     ],
   },
+  ...deployedEvidence,
 };

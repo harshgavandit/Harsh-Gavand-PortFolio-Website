@@ -55,28 +55,28 @@
     "id": 29,
     "title": "ADK Shopping Assistant",
     "category": "AI Agents · Commerce Demo",
-    "overview": "A four-agent shopping demo that guides a customer from profile collection through catalog selection, checkout details, and an order summary. Shared session state connects the agents, while Python validates inputs and computes cart totals.",
+    "overview": "A conversational shopping demo that guides visitors from product discovery to a validated cart and order summary. Four Google ADK agents handle the conversation while Python controls catalogue prices and totals; Redis restores each browser’s shopping session.",
     "features": [
-      "Dedicated agents handle customer details, catalog selection, checkout, and order summaries.",
-      "Python validates profile fields, catalog choices, quantities, and calculated prices.",
-      "Redis enforces request and model-call admission limits.",
-      "SQLite-backed ADK sessions retain local conversation state.",
-      "FastAPI serves the ADK web interface for a demo catalog and single-product cart."
+      "Four specialist agents guide profile collection, catalogue browsing, checkout, and order summaries.",
+      "Python validates products and quantities and calculates cart totals from a fixed demo catalogue.",
+      "Streamed responses show progress while the assistant completes each turn.",
+      "Redis-backed browser sessions restore the conversation and cart after reload.",
+      "Uses made-up contact details; no payment is collected or real order placed."
     ],
     "technologies": [
       "Python",
       "Google ADK",
-      "LiteLLM",
-      "OpenAI",
       "FastAPI",
+      "OpenAI",
       "Redis",
-      "SQLite"
+      "JavaScript"
     ],
-    "role": "I integrated the multi-agent shopping flow, deterministic catalog validation, Redis admission, and persistent local sessions.",
+    "role": "I integrated four ADK agents with deterministic catalogue and cart tools, a streamed browser interface, Redis session recovery, and guarded API requests.",
     "challenges": "Maintaining consistent state between agent handoffs while ensuring the model cannot invent products, prices, or completed purchases.",
-    "impact": "I coordinated four shopping agents through validated catalog data, Python cart calculations, Redis admission, and SQLite sessions.",
+    "impact": "Connects product discovery, cart calculation, and checkout in one conversation. A live synthetic checkout verified 2 × ₹70,000 = ₹1,40,000 and an accurate demo order summary; no sales or conversion results are claimed.",
     "githubUrl": "https://github.com/harshgavandit/adk-shopping-assistant",
-    "slug": "adk-shopping-assistant"
+    "slug": "adk-shopping-assistant",
+    "demoUrl": "https://adk-shopping-assistant.vercel.app/"
   },
   {
     "id": 30,
@@ -108,81 +108,83 @@
     "id": 31,
     "title": "Symposium RAG · Semantic Cache",
     "category": "AI & RAG · Semantic Caching",
-    "overview": "A PDF question-answering app that adds persistent exact and semantic answer caching to a symposium RAG workflow. Cached answers retain source-page references, with a local SQLite cache and an optional Valkey/BetterDB adapter.",
+    "overview": "A document-grounded symposium assistant with persistent exact and semantic answer caching. Visitors ask about a fictional event guide and receive answers with page references; repeated questions can reuse a source-preserving cached answer.",
     "features": [
-      "FastAPI retrieval service and Streamlit chat interface use OpenAI and a local FAISS index.",
-      "Exact and embedding-similarity cache lookups reuse answers with their original source references.",
-      "SQLite cache includes expiry, entry bounds, and cache hit statistics.",
-      "Optional Valkey/BetterDB integration falls back to SQLite in automatic mode.",
-      "Atomic Upstash quotas gate client and provider requests; FAISS metadata uses verified JSON rather than pickle."
+      "A public browser chat answers questions about a fictional, contact-free symposium PDF.",
+      "OpenAI embeddings and FAISS retrieve guide passages for grounded answers.",
+      "Exact and semantic cache lookups retain the original source references.",
+      "The hosted Upstash Redis cache shares entries across serverless requests.",
+      "Shared request admission and controlled errors bound the public demo."
     ],
     "technologies": [
       "Python",
       "FastAPI",
-      "Streamlit",
       "OpenAI",
       "FAISS",
-      "SQLite",
-      "Valkey",
-      "Upstash Redis"
+      "Upstash Redis",
+      "JavaScript"
     ],
-    "role": "I integrated the PDF retrieval pipeline, persistent semantic cache, source preservation, and shared request limits.",
+    "role": "I integrated PDF retrieval, source-page references, persistent semantic caching, shared request admission, and the deployed browser interface.",
     "challenges": "Choosing similarity thresholds and isolating cached answers by source index while keeping the app usable without a Valkey service.",
-    "impact": "I added exact and semantic answer reuse with source-page retention, SQLite expiry and size limits, and an optional Valkey adapter.",
+    "impact": "Reuses grounded answers across repeated questions. Live checks confirmed a cache hit with source references and a refusal for absent information; production cost savings and hit rates have not been measured.",
     "githubUrl": "https://github.com/harshgavandit/RAG-Semantic-Cache-Symposium-Bot",
-    "slug": "symposium-rag-semantic-cache"
+    "slug": "symposium-rag-semantic-cache",
+    "demoUrl": "https://symposium-rag-bot.vercel.app/"
   },
   {
     "id": 32,
     "title": "Symposium PDF RAG Bot",
     "category": "AI & RAG · Document Q&A",
-    "overview": "A document-grounded question-answering app for a symposium PDF, with a separate ingestion step, a FastAPI retrieval backend, and Streamlit chat. OpenAI generates answers from retrieved excerpts with page references.",
+    "overview": "A focused PDF question-answering assistant for a symposium guide. A responsive browser chat connects to a FastAPI retrieval service, combining OpenAI answers with inspectable page references for schedules, event rules, and registration.",
     "features": [
-      "PDF ingestion creates overlapping chunks and a local FAISS vector index.",
-      "Retrieval supplies the three most relevant chunks to the answer prompt.",
-      "Responses include deduplicated page references displayed in the chat interface.",
-      "Source and embedding metadata checks detect an index that needs rebuilding.",
-      "Atomic Upstash limits client and provider requests, with controlled timeout and quota errors."
+      "Separate PDF ingestion builds a FAISS index of overlapping source passages.",
+      "Retrieval supplies relevant guide excerpts to the answer prompt.",
+      "Answers show deduplicated source-page references in expandable chat details.",
+      "Index metadata checks help detect a source or embedding mismatch.",
+      "Shared Upstash admission limits requests before provider work."
     ],
     "technologies": [
       "Python",
       "FastAPI",
-      "Streamlit",
       "LangChain",
       "OpenAI",
       "FAISS",
-      "Upstash Redis"
+      "Upstash Redis",
+      "JavaScript"
     ],
-    "role": "I integrated PDF ingestion, retrieval, source-page display, provider configuration, and atomic API admission.",
+    "role": "I integrated PDF ingestion, retrieval, answer generation, page-reference display, public API admission, and Vercel delivery.",
     "challenges": "Keeping the vector index aligned with its source document and prompting the model to acknowledge information absent from the supplied excerpts.",
-    "impact": "I integrated PDF ingestion and FAISS retrieval to a FastAPI answer service and Streamlit source-page display.",
+    "impact": "Turns a five-page guide into a searchable conversation backed by 9 indexed passages. The live date-and-venue question returned the correct event details and page references; no user-adoption metrics are available.",
     "githubUrl": "https://github.com/harshgavandit/RAG-Symposium-Bot",
-    "slug": "symposium-pdf-rag-bot"
+    "slug": "symposium-pdf-rag-bot",
+    "demoUrl": "https://rag-symposium-bot.vercel.app/"
   },
   {
     "id": 33,
     "title": "Banking Agent Harness",
     "category": "AI Agents · Deterministic Controls",
-    "overview": "A banking simulation that separates model-selected tools from deterministic transaction policy. Google ADK and OpenAI handle conversation, while a Python harness validates transfer requests, requires a later-turn confirmation, and checks mock execution outcomes.",
+    "overview": "An interactive mock-banking assistant with deterministic Python controls around model-selected tools. Visitors review a staged transfer, confirm it in a separate turn, and inspect tool outcomes while a Redis-backed session retains their isolated demo ledger.",
     "features": [
-      "Five banking tools operate on a mock account and transaction ledger.",
-      "Policy checks validate beneficiaries, amounts, balances, and daily limits.",
-      "Pending transfer state requires explicit confirmation in a subsequent invocation.",
-      "Execution verification distinguishes successful, failed, and pending mock outcomes.",
-      "Session budgets, atomic Upstash quotas, and redacted audit records bound and trace execution."
+      "Five banking tools operate on synthetic beneficiaries, balances, and transfers.",
+      "Python validates beneficiaries, amounts, balances, and daily limits.",
+      "A staged transfer requires explicit confirmation in a later turn.",
+      "Tool outcomes and account balances show whether a mock action actually executed.",
+      "Redis-backed, isolated browser sessions preserve the demo ledger; no real money moves."
     ],
     "technologies": [
       "Python",
       "Google ADK",
-      "LiteLLM",
+      "FastAPI",
       "OpenAI",
-      "Upstash Redis"
+      "Upstash Redis",
+      "JavaScript"
     ],
     "role": "I integrated the ADK agent with deterministic policy, confirmation state, mock transaction execution, usage limits, and audit controls.",
     "challenges": "Preventing model instructions from bypassing confirmation and ensuring changed transfer details invalidate stale pending state.",
-    "impact": "I separated model-selected banking tools from deterministic policy checks, later-turn confirmation, and mock ledger verification.",
+    "impact": "Keeps action approval in deterministic application code. A live ₹250 mock transfer left the balance unchanged until a separate confirmation, then reduced it by exactly ₹250; no real banking integrations or financial outcomes are claimed.",
     "githubUrl": "https://github.com/harshgavandit/banking-agent-harness",
-    "slug": "banking-agent-harness"
+    "slug": "banking-agent-harness",
+    "demoUrl": "https://banking-agent-harness.vercel.app/"
   },
   {
     "id": 34,
@@ -243,7 +245,7 @@
     "id": 36,
     "title": "AI Voice Adventure Assistant",
     "category": "AI Applications · Voice",
-    "overview": "A browser-based voice storytelling assistant that turns recorded or uploaded audio into a contextual spoken reply. FastAPI coordinates OpenAI transcription, story generation, and text-to-speech, returning the transcript, reply text, and MP3 audio.",
+    "overview": "A browser-based voice storytelling assistant that turns a spoken story idea into a written and spoken adventure. FastAPI coordinates transcription, contextual OpenAI generation, and speech synthesis, with a bundled demo recording so visitors can try the complete flow immediately.",
     "features": [
       "Browser recording, audio upload, and a bundled demo recording provide multiple input paths.",
       "Transcription, contextual reply generation, and speech synthesis run as a staged async workflow.",
@@ -256,41 +258,43 @@
       "FastAPI",
       "JavaScript",
       "OpenAI",
-      "Speech-to-Text",
+      "Whisper",
       "Text-to-Speech"
     ],
     "role": "I integrated browser audio capture to an asynchronous transcription, generation, and speech playback flow with recoverable errors.",
     "challenges": "Coordinating three provider stages, committing conversation state only after success, and handling browser recording and autoplay behavior.",
-    "impact": "I integrated browser audio capture to asynchronous transcription, contextual generation, and MP3 speech playback.",
+    "impact": "Completes audio input → transcript → contextual story → playable MP3 in one interface. The deployed demo completed all three provider stages and played the generated reply; physical microphone recording was not tested in this review.",
     "githubUrl": "https://github.com/harshgavandit/ai-voice-assistant",
-    "slug": "ai-voice-adventure-assistant"
+    "slug": "ai-voice-adventure-assistant",
+    "demoUrl": "https://ai-voice-assistant-steel.vercel.app/"
   },
   {
     "id": 37,
     "title": "Hybrid RAG Documentation Assistant",
     "category": "AI & RAG · Developer Tools",
-    "overview": "A local command-line RAG assistant for Markdown documentation. Structure-aware chunks preserve headings and code fences, while BM25 and vector search combine through Reciprocal Rank Fusion before a LangGraph pipeline generates a cited answer.",
+    "overview": "Docwise is a documentation assistant that combines keyword and semantic search to answer technical questions with traceable sources. The hosted Python application fuses BM25 and MiniLM ONNX vector results through reciprocal rank fusion before generating a cited answer.",
     "features": [
-      "Markdown-aware chunking retains document and section metadata, with a character-chunk baseline for comparison.",
-      "Local Sentence Transformers embeddings populate a persistent ChromaDB collection.",
-      "BM25 and vector retrieval merge ranked results through Reciprocal Rank Fusion.",
-      "LangGraph coordinates retrieval, prompt construction, and OpenAI answer generation.",
-      "Citation-label validation and atomic Upstash admission run around the generation workflow."
+      "Two Markdown documents provide 39 heading-aware indexed passages.",
+      "BM25 keyword search and MiniLM ONNX embeddings combine through reciprocal rank fusion.",
+      "Answers include validated source labels and expandable retrieved passages.",
+      "Unsupported questions return an explicit documentation boundary.",
+      "FastAPI validates inputs and Upstash Redis enforces shared public-demo limits."
     ],
     "technologies": [
       "Python",
-      "LangGraph",
-      "ChromaDB",
-      "Sentence Transformers",
+      "FastAPI",
       "BM25",
+      "ONNX Runtime",
       "OpenAI",
-      "Upstash Redis"
+      "Upstash Redis",
+      "JavaScript"
     ],
-    "role": "I integrated structure-aware ingestion, hybrid retrieval, graph orchestration, citation checks, and fail-closed request admission.",
+    "role": "I integrated structure-aware ingestion, hybrid retrieval, citation validation, the Docwise browser interface, and a lightweight ONNX deployment for Vercel.",
     "challenges": "Preserving code context during chunking and combining keyword precision with semantic recall while keeping source labels tied to retrieved chunks.",
-    "impact": "I combined Markdown-aware chunking, local embeddings, BM25 and vector rank fusion, and a cited LangGraph generation pipeline.",
+    "impact": "Makes 39 passages across 2 documents searchable with inspectable citations. Live checks verified a FastMCP answer against its retrieved passage and a refusal for an unrelated question; retrieval accuracy and business impact have not been benchmarked.",
     "githubUrl": "https://github.com/harshgavandit/rag-documentation-assistant",
-    "slug": "hybrid-rag-documentation-assistant"
+    "slug": "hybrid-rag-documentation-assistant",
+    "demoUrl": "https://rag-documentation-assistant.vercel.app/"
   },
   {
     "id": 38,

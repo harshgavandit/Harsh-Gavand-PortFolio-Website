@@ -1,21 +1,22 @@
 import { caseStudies, type CaseStudy } from "./portfolio.ts";
+import { deployedStudies } from "./deploymentShowcase.ts";
 
 export const harnessStudy: CaseStudy = {
   projectId: 33,
   shortName: "Banking Agent Harness",
   problem:
     "Keep model-selected actions inside deterministic transaction rules.",
-  summary:
-    "A banking simulation that validates model-selected transfers in Python, requires a separate confirmation turn, and checks results against an in-memory ledger.",
+  summary: deployedStudies.find((study) => study.projectId === 33)!.summary,
   engineering: [
     "Policy before execution: Validate beneficiaries, balance, and transfer limits in Python before a mock transaction is allowed.",
     "Confirmation state: Require explicit confirmation in a later invocation, and invalidate pending approval when transfer details change.",
-    "Observable outcomes: Separate successful, failed, and pending mock execution; redact audit details and bound agent usage.",
+    "Isolated hosted state: Preserve each browser’s mock ledger in Redis, with bounded model usage and guarded execution.",
   ],
   contributions: [],
   previewNote:
-    "Replay transfer scenarios with sample accounts and an in-memory ledger. No real funds are moved.",
-  accessMode: "Read-only policy replay",
+    "Try a mock transfer with synthetic accounts and an isolated Redis-backed ledger. No real funds are moved.",
+  publicPreview: true,
+  accessMode: "Public interactive banking simulation",
   accessDescription:
     "Explore deterministic mock transfer outcomes without an account or API key",
   takeaway:
@@ -46,7 +47,7 @@ export const harnessStudy: CaseStudy = {
       "Mock transaction → checked ledger result",
     ],
     caption:
-      "A local banking simulation, with deterministic controls around model-selected tools.",
+      "A hosted banking simulation, with deterministic controls around model-selected tools and isolated Redis-backed state.",
     chapterNodes: [[0, 1], [2], [3, 4]],
   },
 };
@@ -189,10 +190,12 @@ export const workStudies = [
   harnessStudy,
   communityStudy,
   agriConnectStudy,
+  ...deployedStudies.filter((study) => study.projectId !== 33),
 ];
 export const featuredStudies = [
   agriConnectStudy,
   caseStudies[0],
+  ...deployedStudies.filter((study) => study.projectId !== 33),
   caseStudies[1],
   communityStudy,
   harnessStudy,

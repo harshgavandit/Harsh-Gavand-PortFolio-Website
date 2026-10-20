@@ -1,6 +1,6 @@
-import { useState } from "react";
-import harnessOutput from "../../public/evidence/banking-harness.json";
 import digestHTML from "../../public/evidence/news-digest.html?raw";
+import { deploymentShowcase } from "../data/deploymentShowcase";
+import { projects } from "../data/portfolio";
 
 const captures: Record<
   string,
@@ -9,8 +9,21 @@ const captures: Record<
     alt: string;
     width?: number;
     height?: number;
+    caption?: string;
   }
 > = {
+  ...Object.fromEntries(
+    deploymentShowcase.map((item) => [
+      projects.find((project) => project.id === item.projectId)!.slug,
+      {
+        src: `/evidence/${item.capture}`,
+        alt: item.alt,
+        width: 1265,
+        height: 712,
+        caption: "Live website capture · 20 October 2026 · Click to enlarge",
+      },
+    ]),
+  ),
   "agri-connect": {
     src: "/evidence/agri-connect-marketplace.jpg",
     alt: "AgriConnect homepage with marketplace navigation, a map-based discovery panel, and quick access to seller, logistics, and community tools",
@@ -36,46 +49,6 @@ const captures: Record<
 };
 
 export function ProductEvidence({ slug }: { slug: string }) {
-  const [scenarioId, setScenarioId] = useState(harnessOutput.scenarios[0].id);
-  const scenario = harnessOutput.scenarios.find(
-    (item) => item.id === scenarioId,
-  )!;
-  if (slug === "banking-agent-harness")
-    return (
-      <figure className="harness-evidence">
-        <figcaption>
-          Deterministic policy replay{" "}
-          <span>Sample accounts · in-memory ledger</span>
-        </figcaption>
-        <div
-          role="group"
-          aria-label="Banking harness scenario"
-          className="evidence-controls"
-        >
-          {harnessOutput.scenarios.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              aria-pressed={item.id === scenarioId}
-              onClick={() => setScenarioId(item.id)}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-        <ol className="harness-steps">
-          {scenario.steps.map((step) => (
-            <li key={step.label}>
-              <strong>{step.label}</strong>
-              <span>{step.value}</span>
-            </li>
-          ))}
-        </ol>
-        <p role="status" className="evidence-outcome">
-          {scenario.outcome}
-        </p>
-      </figure>
-    );
   if (slug === "news-automation")
     return (
       <figure className="digest-evidence">
@@ -101,13 +74,21 @@ export function ProductEvidence({ slug }: { slug: string }) {
   const capture = captures[slug];
   return capture ? (
     <figure className="capture-evidence">
-      <img
-        src={capture.src}
-        width={capture.width ?? 1280}
-        height={capture.height ?? 900}
-        alt={capture.alt}
-        loading="lazy"
-      />
+      <a
+        href={capture.src}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Enlarge ${slug} website screenshot`}
+      >
+        <img
+          src={capture.src}
+          width={capture.width ?? 1280}
+          height={capture.height ?? 900}
+          alt={capture.alt}
+          loading="lazy"
+        />
+      </a>
+      {capture.caption && <figcaption>{capture.caption}</figcaption>}
     </figure>
   ) : null;
 }

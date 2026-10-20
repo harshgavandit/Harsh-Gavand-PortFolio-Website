@@ -179,6 +179,12 @@ No deployment is performed by local development or validation commands.
 
 Earlier verification directories document earlier designs and are retained as historical evidence.
 
+## Verified public project demos — 20 October 2026
+
+The main Projects section now includes Docwise, the voice adventure assistant, ADK Shopping, the semantic-cache symposium assistant, and the PDF symposium assistant alongside the existing featured work. The banking harness card now opens its deployed interactive simulation. All six use the same shared card and case-study components as UGC and AgriConnect, with original website screenshots, source/live links, expandable features, contributions, and clearly scoped outcomes.
+
+The review covered 30 Vercel deployment attempts across 10 projects in the India-time day. Finance and Healthcare retain their repository entries but were not promoted as public AI demos because their AI endpoints require a private code. See [the review](verification/deployment-showcase-2026-10-20.md) and the [sanitized public results](public/verification/deployments-2026-10-20.json) for workflows, source boundaries, and link checks. Corpus counts and synthetic cart/transfer calculations are verification evidence, not adoption, revenue, or performance claims.
+
 ## Web Analytics
 
 Vercel Web Analytics uses `@vercel/analytics/react`, mounted once in the shared `Portfolio` component. React Router's pathname supplies page views for the homepage, archive and other routes; hash-only chapter navigation does not send another page view. Development uses the SDK's debug mode, and production uses its hosted collection script. The component renders no HTML, preserving pre-rendering and hydration.

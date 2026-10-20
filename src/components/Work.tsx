@@ -42,6 +42,10 @@ export function ProjectNotes({ project }: { project: Project }) {
           </>
         )}
       </div>
+      <div className="project-complete-stack">
+        <h4>Complete tech stack</h4>
+        <Tags items={project.technologies} />
+      </div>
     </div>
   );
 }
@@ -94,6 +98,10 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
           </div>
         </div>
       </div>
+      <details className="flagship-notes">
+        <summary>Features, my contribution &amp; outcome</summary>
+        <ProjectNotes project={project} />
+      </details>
     </article>
   );
 }
@@ -205,12 +213,16 @@ function PrivateProjectCard({ project }: { project: PrivateProject }) {
 }
 
 export function MoreWork() {
+  const additional = curatedArchive.filter(
+    (entry) =>
+      !featuredStudies.some((study) => study.projectId === entry.projectId),
+  );
   return (
     <details id="all-projects" className="curated-archive">
       <summary>
         <span>
           <span className="eyebrow">Curated archive</span>
-          <strong>Eight more engineering problems.</strong>
+          <strong>{additional.length} more engineering projects.</strong>
         </span>
         <span>
           Browse repositories <ArrowDown size={17} aria-hidden="true" />
@@ -242,7 +254,7 @@ export function MoreWork() {
             </tr>
           </thead>
           <tbody>
-            {curatedArchive.map((entry) => {
+            {additional.map((entry) => {
               const project = projects.find((p) => p.id === entry.projectId)!;
               return (
                 <tr key={project.id}>

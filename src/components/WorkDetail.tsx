@@ -7,6 +7,7 @@ import { ProductEvidence } from "./ProductEvidence";
 import { SystemFlow } from "./SystemFlow";
 import { Tabs } from "./Tabs";
 import { communityProjects } from "../data/portfolio";
+import { BankingPolicyReplay } from "./BankingPolicyReplay";
 
 export function WorkDetail() {
   const { slug } = useParams();
@@ -78,6 +79,12 @@ export function WorkDetail() {
           )}
         </div>
       </section>
+      {project.slug === "banking-agent-harness" && (
+        <details className="work-section">
+          <summary>Explore recorded transfer policy scenarios</summary>
+          <BankingPolicyReplay />
+        </details>
+      )}
       <section className="work-section" aria-labelledby="engineering-title">
         <h2 id="engineering-title">Engineering work</h2>
         <ul className="engineering-bullets">
@@ -87,6 +94,11 @@ export function WorkDetail() {
             </li>
           ))}
         </ul>
+      </section>
+      <section className="work-section" aria-labelledby="outcome-title">
+        <h2 id="outcome-title">Outcome &amp; scope</h2>
+        <p>{project.impact}</p>
+        <p>{study.previewNote}</p>
       </section>
       <section className="work-section" aria-labelledby="architecture-title">
         <h2 id="architecture-title">Architecture &amp; tech stack</h2>

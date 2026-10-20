@@ -19,6 +19,7 @@ import { codeTokens } from "../src/lib/codeTokens.ts";
 import { renderDemoOrigins, warmDemoRequests } from "../src/lib/demoWarmup.ts";
 import { startTraceReplay } from "../src/lib/traceReplay.ts";
 import { resumeStackGroups } from "../src/data/heroStack.ts";
+import { deploymentShowcase } from "../src/data/deploymentShowcase.ts";
 const projects = JSON.parse(
   readFileSync(new URL("../src/data/projects.json", import.meta.url), "utf8"),
 );
@@ -243,7 +244,11 @@ test("all recently pushed AI repositories are included once, discoverable, and t
     assert.equal(matchesProjectCollection(project, "Latest AI"), true);
     assert.equal(matchesProjectCollection(project, "AI & ML"), true);
     assert.equal(matchesProjectCollection(project, "All"), true);
-    assert.equal(project.demoUrl, undefined);
+    const showcased = deploymentShowcase.some(
+      (item) => item.projectId === project.id,
+    );
+    if (showcased) assert.equal(new URL(project.demoUrl).protocol, "https:");
+    else assert.equal(project.demoUrl, undefined);
   }
   for (const project of projects) {
     assert.deepEqual(

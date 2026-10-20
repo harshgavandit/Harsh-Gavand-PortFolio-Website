@@ -59,6 +59,9 @@ test("each recent AI project is retrievable with its implementation context and 
     );
     assert.deepEqual(sourceLinks({ projectIds: [project.id], sections: [] }), [
       { label: `${project.title} · source`, href: project.githubUrl },
+      ...(project.demoUrl
+        ? [{ label: `${project.title} · demo`, href: project.demoUrl }]
+        : []),
     ]);
   }
 });

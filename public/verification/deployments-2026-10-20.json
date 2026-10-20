@@ -1,0 +1,420 @@
+{
+  "reviewedAt": "2026-10-20T18:02:27.242Z",
+  "deploymentDay": "2026-10-20",
+  "timezone": "Asia/Kolkata",
+  "scope": "All 30 Vercel deployment attempts across 10 projects visible at review start; latest production versions and public visitor workflows reviewed. Portfolio publication produces a subsequent deployment.",
+  "attempts": 30,
+  "projects": [
+    {
+      "name": "symposium-rag-bot",
+      "attempts": 3,
+      "latestState": "READY",
+      "deployedAt": "2026-10-20T17:42:17.981Z",
+      "deploymentUrl": "https://symposium-rag-iqwudkxlo-harshgavandits-projects.vercel.app",
+      "sourceCommit": "01eb34b8feeea2c918b5505d6896e907d3ca6345",
+      "decision": "verified-public-demo"
+    },
+    {
+      "name": "adk-shopping-assistant",
+      "attempts": 2,
+      "latestState": "READY",
+      "deployedAt": "2026-10-20T17:42:08.826Z",
+      "deploymentUrl": "https://adk-shopping-assistant-jvuv13ksb-harshgavandits-projects.vercel.app",
+      "sourceCommit": "92d5fa8776bd3db90994c5b1898081812d160617",
+      "decision": "verified-public-demo"
+    },
+    {
+      "name": "banking-agent-harness",
+      "attempts": 3,
+      "latestState": "READY",
+      "deployedAt": "2026-10-20T17:41:23.849Z",
+      "deploymentUrl": "https://banking-agent-harness-rkemtjiz6-harshgavandits-projects.vercel.app",
+      "sourceCommit": "f00504f0b2bab1211ea183bcaf6bb3bf2f2152a3",
+      "decision": "verified-public-demo"
+    },
+    {
+      "name": "adk-finance-assistant",
+      "attempts": 4,
+      "latestState": "READY",
+      "deployedAt": "2026-10-20T11:48:25.045Z",
+      "deploymentUrl": "https://adk-finance-assistant-lwbp3maxj-harshgavandits-projects.vercel.app",
+      "sourceCommit": "a7e5c477b60a17f9208caf8637ea726fd8878128",
+      "decision": "not-featured-private-ai-access"
+    },
+    {
+      "name": "healthcare-mcp-openai",
+      "attempts": 3,
+      "latestState": "READY",
+      "deployedAt": "2026-10-20T11:31:43.585Z",
+      "deploymentUrl": "https://healthcare-mcp-openai-ohaxb53r5-harshgavandits-projects.vercel.app",
+      "sourceCommit": "12bca598ea688c6edc4e5326a442ac647745bac8",
+      "decision": "not-featured-private-ai-access"
+    },
+    {
+      "name": "rag-symposium-bot",
+      "attempts": 3,
+      "latestState": "READY",
+      "deployedAt": "2026-10-20T11:29:07.338Z",
+      "deploymentUrl": "https://rag-symposium-lwmqh891h-harshgavandits-projects.vercel.app",
+      "sourceCommit": null,
+      "decision": "verified-public-demo"
+    },
+    {
+      "name": "ai-voice-assistant",
+      "attempts": 2,
+      "latestState": "READY",
+      "deployedAt": "2026-10-20T11:26:06.185Z",
+      "deploymentUrl": "https://ai-voice-assistant-n6pxxfg5p-harshgavandits-projects.vercel.app",
+      "sourceCommit": "3a4024db50f69b4b0b922300a8cada5cf4c1c0a5",
+      "decision": "verified-public-demo"
+    },
+    {
+      "name": "rag-documentation-assistant",
+      "attempts": 3,
+      "latestState": "READY",
+      "deployedAt": "2026-10-20T11:25:27.911Z",
+      "deploymentUrl": "https://rag-documentation-assistant-gi3l21df1-harshgavandits-projects.vercel.app",
+      "sourceCommit": "c65af163be195f3f1d9ac3bcb63cd80cbe78e129",
+      "decision": "verified-public-demo"
+    },
+    {
+      "name": "agri-connect",
+      "attempts": 4,
+      "latestState": "READY",
+      "deployedAt": "2026-10-20T11:03:31.900Z",
+      "deploymentUrl": "https://agri-connect-p7gxvog97-harshgavandits-projects.vercel.app",
+      "sourceCommit": "4fb5a93d5640fa3f0854d22f1a4c9219e8c9864e",
+      "decision": "already-showcased"
+    },
+    {
+      "name": "harsh-gavand-port-folio-website",
+      "attempts": 3,
+      "latestState": "READY",
+      "deployedAt": "2026-10-20T10:45:41.483Z",
+      "deploymentUrl": "https://harsh-gavand-port-folio-website-it8vc8tts.vercel.app",
+      "sourceCommit": "70e5ba2418eb1565156aa427ea73d5990bac2b97",
+      "decision": "already-showcased"
+    }
+  ],
+  "verifiedPublicProjects": [
+    {
+      "slug": "ai-voice-adventure-assistant",
+      "links": [
+        {
+          "url": "https://ai-voice-assistant-steel.vercel.app/",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/ai-voice-assistant",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/ai-voice-assistant/blob/3a4024db50f69b4b0b922300a8cada5cf4c1c0a5/README.md",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/ai-voice-assistant/blob/3a4024db50f69b4b0b922300a8cada5cf4c1c0a5/main.py",
+          "status": 200,
+          "passed": true
+        }
+      ],
+      "screenshot": {
+        "url": "/evidence/voice-assistant-live.jpg",
+        "width": 1265,
+        "height": 712,
+        "sha256": "86c90b27b01140237cee1b450835148bdeb50fe391432915f57f929fe9948001"
+      },
+      "workflowChecks": [
+        "The bundled recording was transcribed into the expected story request.",
+        "A contextual Mars adventure was generated and returned as text.",
+        "Generated audio appeared in the browser player and playback started."
+      ],
+      "inspectedSource": {
+        "repository": "https://github.com/harshgavandit/ai-voice-assistant",
+        "commit": "3a4024db50f69b4b0b922300a8cada5cf4c1c0a5",
+        "vercelGitMetadataMatches": true
+      }
+    },
+    {
+      "slug": "banking-agent-harness",
+      "links": [
+        {
+          "url": "https://banking-agent-harness.vercel.app/",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/banking-agent-harness",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/banking-agent-harness/blob/f00504f0b2bab1211ea183bcaf6bb3bf2f2152a3/README.md",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/banking-agent-harness/blob/f00504f0b2bab1211ea183bcaf6bb3bf2f2152a3/README.md",
+          "status": 200,
+          "passed": true
+        }
+      ],
+      "screenshot": {
+        "url": "/evidence/banking-harness-live.jpg",
+        "width": 1265,
+        "height": 712,
+        "sha256": "67e176096bda02798165b4bba8f3e4ab17c09e1bf7a1ec4ceacf82becb38044e"
+      },
+      "workflowChecks": [
+        "A ₹250 mock transfer was staged while the account balance stayed unchanged.",
+        "A separate confirmation executed the transfer and reduced the balance by exactly ₹250.",
+        "The browser showed pending and successful tool outcomes; the health endpoint reported Redis storage."
+      ],
+      "inspectedSource": {
+        "repository": "https://github.com/harshgavandit/banking-agent-harness",
+        "commit": "f00504f0b2bab1211ea183bcaf6bb3bf2f2152a3",
+        "vercelGitMetadataMatches": true
+      }
+    },
+    {
+      "slug": "symposium-pdf-rag-bot",
+      "links": [
+        {
+          "url": "https://rag-symposium-bot.vercel.app/",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/RAG-Symposium-Bot",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/RAG-Symposium-Bot/blob/2b66d313aa224b0055ce69c3b4206af1867179ed/README.md",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/RAG-Symposium-Bot/blob/2b66d313aa224b0055ce69c3b4206af1867179ed/README.md",
+          "status": 200,
+          "passed": true
+        }
+      ],
+      "screenshot": {
+        "url": "/evidence/symposium-rag-live.jpg",
+        "width": 1265,
+        "height": 712,
+        "sha256": "57c0ada0a8b3dc3fc0162623860b19205f7fd862deebd421d1a969958824b5d4"
+      },
+      "workflowChecks": [
+        "The date-and-venue question returned March 15, 2026 and Apex Institute of Technology.",
+        "The answer exposed page references in an expandable source control.",
+        "The deployed service reported 9 indexed passages and a healthy Redis connection."
+      ],
+      "inspectedSource": {
+        "repository": "https://github.com/harshgavandit/RAG-Symposium-Bot",
+        "commit": "2b66d313aa224b0055ce69c3b4206af1867179ed",
+        "vercelGitMetadataMatches": false
+      }
+    },
+    {
+      "slug": "adk-shopping-assistant",
+      "links": [
+        {
+          "url": "https://adk-shopping-assistant.vercel.app/",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/adk-shopping-assistant",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/adk-shopping-assistant/blob/a72dc499447666a25029c2e7d0871182ae47cb20/README.md",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/adk-shopping-assistant/blob/a72dc499447666a25029c2e7d0871182ae47cb20/ADK_Shopping/cloud_server.py",
+          "status": 200,
+          "passed": true
+        }
+      ],
+      "screenshot": {
+        "url": "/evidence/shopping-assistant-live.jpg",
+        "width": 1265,
+        "height": 712,
+        "sha256": "f165c3e49b0e2143fb0194bda105ba6887828dd5c7cc3ebd1b57c1ce7e0f9d94"
+      },
+      "workflowChecks": [
+        "A fresh browser conversation collected the built-in demo profile and returned the smartphone catalogue.",
+        "Two Pixel 9 phones produced the deterministic ₹1,40,000 cart total.",
+        "Checkout returned the supplied synthetic address and correct summary; reload restored the cart."
+      ],
+      "inspectedSource": {
+        "repository": "https://github.com/harshgavandit/adk-shopping-assistant",
+        "commit": "a72dc499447666a25029c2e7d0871182ae47cb20",
+        "vercelGitMetadataMatches": false
+      }
+    },
+    {
+      "slug": "symposium-rag-semantic-cache",
+      "links": [
+        {
+          "url": "https://symposium-rag-bot.vercel.app/",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/RAG-Semantic-Cache-Symposium-Bot",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/RAG-Semantic-Cache-Symposium-Bot/blob/01eb34b8feeea2c918b5505d6896e907d3ca6345/README.md",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/RAG-Semantic-Cache-Symposium-Bot/blob/01eb34b8feeea2c918b5505d6896e907d3ca6345/README.md",
+          "status": 200,
+          "passed": true
+        }
+      ],
+      "screenshot": {
+        "url": "/evidence/symposium-cache-live.jpg",
+        "width": 1265,
+        "height": 712,
+        "sha256": "fc61e416c072b5c21aa951da7945781ebeb9f60b294a0ab033715c1bf9b39ca6"
+      },
+      "workflowChecks": [
+        "The event-date question returned March 15, 2026 with source references.",
+        "A repeated question returned cache_hit=true while retaining sources.",
+        "An unsupported spaceship question returned the document-boundary refusal."
+      ],
+      "inspectedSource": {
+        "repository": "https://github.com/harshgavandit/RAG-Semantic-Cache-Symposium-Bot",
+        "commit": "01eb34b8feeea2c918b5505d6896e907d3ca6345",
+        "vercelGitMetadataMatches": true
+      }
+    },
+    {
+      "slug": "hybrid-rag-documentation-assistant",
+      "links": [
+        {
+          "url": "https://rag-documentation-assistant.vercel.app/",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/rag-documentation-assistant",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/rag-documentation-assistant/blob/c65af163be195f3f1d9ac3bcb63cd80cbe78e129/README.md",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/rag-documentation-assistant/blob/c65af163be195f3f1d9ac3bcb63cd80cbe78e129/web/app.py",
+          "status": 200,
+          "passed": true
+        }
+      ],
+      "screenshot": {
+        "url": "/evidence/docwise-live.jpg",
+        "width": 1265,
+        "height": 712,
+        "sha256": "279952da480006e3351bd669c35a73e4f247b527842586d1e53da242f8767167"
+      },
+      "workflowChecks": [
+        "A FastMCP question returned a cited answer matching its source passage.",
+        "An unrelated cafeteria question returned the documentation refusal.",
+        "The deployed health endpoint reported 2 documents and 39 indexed passages."
+      ],
+      "inspectedSource": {
+        "repository": "https://github.com/harshgavandit/rag-documentation-assistant",
+        "commit": "c65af163be195f3f1d9ac3bcb63cd80cbe78e129",
+        "vercelGitMetadataMatches": true
+      }
+    },
+    {
+      "slug": "agri-connect",
+      "links": [
+        {
+          "url": "https://agri-connect-flame.vercel.app",
+          "status": 200,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "slug": "portfolio",
+      "links": [
+        {
+          "url": "https://harshgavand.dev/",
+          "status": 200,
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "publicApiChecks": [
+    {
+      "name": "Finance access required",
+      "url": "https://adk-finance-assistant.vercel.app/api/chat",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "name": "Healthcare AI access required",
+      "url": "https://healthcare-mcp-openai.vercel.app/api/ask",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "name": "Healthcare synthetic directory",
+      "url": "https://healthcare-mcp-openai.vercel.app/api/patients",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Docwise outside-document question",
+      "url": "https://rag-documentation-assistant.vercel.app/api/query",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Semantic cache initial lookup",
+      "url": "https://symposium-rag-bot.vercel.app/chat",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Semantic cache repeated lookup",
+      "url": "https://symposium-rag-bot.vercel.app/chat",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Semantic cache absent information",
+      "url": "https://symposium-rag-bot.vercel.app/chat",
+      "status": 200,
+      "passed": true
+    }
+  ],
+  "limits": [
+    "Finance chat and Healthcare AI require a private access code and were not featured as public interactive AI demos. Healthcare synthetic directory responded successfully.",
+    "Voice verification used the bundled synthetic recording and generated playback, not physical microphone hardware.",
+    "Banking and shopping operations used synthetic demo data; no real payment, order, or transfer occurred.",
+    "Performance, adoption, revenue, conversion gains, and cost savings were not measured. Corpus sizes and cart totals describe the checked demos, not business impact.",
+    "The simple symposium deployment was uploaded without a Git commit in Vercel metadata. Its source link references the inspected repository; exact uploaded-source identity was not independently established.",
+    "AgriConnect and the existing portfolio were checked for page availability in this review; authenticated commerce and all historical project integrations were not re-executed.",
+    "The shopping deployment retained older Git metadata (92d5fa8); the inspected published hosted source is a72dc49. Exact uploaded-source identity was not independently established."
+  ]
+}
