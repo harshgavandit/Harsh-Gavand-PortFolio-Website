@@ -80,29 +80,31 @@
   },
   {
     "id": 30,
-    "title": "Healthcare MCP & OpenAI",
+    "title": "Healthcare Explorer — MCP & OpenAI",
     "category": "AI Tools · Healthcare Data Demo",
-    "overview": "An educational MCP server and OpenAI client for exploring illustrative healthcare records through structured tools. The client discovers tools dynamically and uses a bounded tool-calling loop over a local SQLite database.",
+    "overview": "An interactive healthcare-data demonstration for exploring generated patient profiles, risk signals, readmission indicators, and database structure. A FastAPI browser application exposes read-only SQLite data through four MCP tools, with a separately access-controlled OpenAI assistant.",
     "features": [
-      "FastMCP exposes four tools over Streamable HTTP.",
-      "Tools provide database schema, bounded SQL queries, patient risk summaries, and readmission insights.",
-      "Read-only SQLite connections and a SQL authorizer restrict database access.",
-      "Row limits and query execution budgets bound generated SQL work.",
-      "Rule-based summaries make the demo's scoring signals inspectable."
+      "Search and inspect 10 generated patient profiles with linked demonstration records.",
+      "Explore rule-based risk signals and historical readmission indicators.",
+      "Inspect five related SQLite tables in the schema view.",
+      "Four MCP tools expose schema discovery, bounded SQL queries, risk summaries, and readmission insights.",
+      "An access-code-protected AI assistant discovers and calls the read-only MCP tools."
     ],
     "technologies": [
       "Python",
+      "FastAPI",
       "MCP",
       "FastMCP",
       "OpenAI",
       "SQLite",
-      "Streamable HTTP"
+      "JavaScript"
     ],
-    "role": "I integrated an OpenAI tool-calling client to MCP data tools, schema discovery, and restricted SQLite querying.",
-    "challenges": "Bounding model-generated SQL and distinguishing illustrative rule-based risk signals from clinically validated predictions.",
-    "impact": "I exposed four structured MCP tools through Streamable HTTP and bounded model-generated SQLite queries with read-only access.",
+    "role": "I integrated the MCP tools and bounded OpenAI tool-calling client with a responsive browser explorer, generated demonstration database, read-only SQL controls, and Vercel delivery.",
+    "challenges": "Exposing useful structured data tools while bounding generated SQL and keeping illustrative risk heuristics distinct from validated clinical predictions.",
+    "impact": "Makes 10 synthetic profiles and five related tables explorable through a browser and four structured tools. Live checks verified search, profile details, and schema browsing; no clinical accuracy, patient outcomes, or real healthcare adoption are claimed.",
     "githubUrl": "https://github.com/harshgavandit/healthcare-mcp-openai",
-    "slug": "healthcare-mcp-openai"
+    "slug": "healthcare-mcp-openai",
+    "demoUrl": "https://healthcare-mcp-openai.vercel.app/"
   },
   {
     "id": 31,
@@ -217,13 +219,14 @@
     "id": 35,
     "title": "Multi-Agent Customer Support",
     "category": "AI Agents · Support Workflows",
-    "overview": "A Streamlit support proof of concept that combines model-assisted information gathering with deterministic billing and refund specialists. LangGraph routes validated ticket state, while a separate approval graph handles eligible mock refund reviews.",
+    "overview": "A hosted Streamlit customer-support demonstration that gathers order details, routes validated tickets to billing or refund specialists, and sends eligible simulated refunds to a separate human-review queue. Customers can resume their conversation to see the decision.",
     "features": [
-      "Multi-turn information gathering compacts customer input into a validated ticket.",
-      "LangGraph routes billing, refund, and general support requests.",
-      "Specialist handlers use read-only SQLite tools and deterministic response templates.",
-      "A separate approver view resolves queued mock refunds and updates the customer session.",
-      "Upstash admission limits provider usage; customer sessions and approvals remain in process memory."
+      "Multi-turn intake compacts conversation details into a validated Pydantic ticket.",
+      "LangGraph routes billing, refund, and general-support workflows.",
+      "Read-only SQLite tools provide seeded invoices, payments, and refund eligibility.",
+      "A separate approver view resolves eligible simulated refunds and updates the customer chat.",
+      "Session resume restores conversation and review outcomes while the server process is running.",
+      "Upstash Redis limits requests and model calls; the public demo uses synthetic orders only."
     ],
     "technologies": [
       "Python",
@@ -235,11 +238,12 @@
       "SQLite",
       "Upstash Redis"
     ],
-    "role": "I integrated conversational intake, validated ticket state, specialist routing, human review, and session-aware approval outcomes.",
+    "role": "I integrated conversational intake, structured ticket validation, deterministic specialist tools, a separate approval graph, session resume, Redis admission, and Streamlit Cloud delivery.",
     "challenges": "Keeping the customer interaction responsive while a separate review workflow resolves a refund, with explicit boundaries around process-local session state.",
-    "impact": "I separated conversational ticket intake from deterministic support specialists and a separate approval graph for mock refund reviews.",
+    "impact": "Connects intake, specialist routing, and human review in one demonstrable workflow. Hosted checks verified a seeded billing lookup and a simulated refund review; no real refunds, response-time reductions, or support-volume metrics are claimed.",
     "githubUrl": "https://github.com/harshgavandit/multi-agent-customer-support",
-    "slug": "multi-agent-customer-support"
+    "slug": "multi-agent-customer-support",
+    "demoUrl": "https://harsh-multi-agent-customer-support.streamlit.app/"
   },
   {
     "id": 36,
@@ -295,31 +299,5 @@
     "githubUrl": "https://github.com/harshgavandit/rag-documentation-assistant",
     "slug": "hybrid-rag-documentation-assistant",
     "demoUrl": "https://rag-documentation-assistant.vercel.app/"
-  },
-  {
-    "id": 38,
-    "title": "AI Support Ticket Classifier",
-    "category": "AI Applications · Support Triage",
-    "overview": "A FastAPI and LangGraph ticket-classification demo that converts free-text support requests into validated categories and team assignments. The pipeline includes pattern-based PII redaction, a model-based injection check, structured output validation, and a human-review fallback.",
-    "features": [
-      "Browser interface submits tickets and displays structured classification results.",
-      "LangGraph sequences redaction, injection checking, classification, validation, and fallback handling.",
-      "Pydantic constrains output across seven issue categories and five teams.",
-      "Failed or unsafe classifications return a review-oriented fallback.",
-      "Atomic Upstash admission runs before provider work and returns retry information when requests are limited."
-    ],
-    "technologies": [
-      "Python",
-      "FastAPI",
-      "LangGraph",
-      "Pydantic",
-      "OpenAI",
-      "Upstash Redis"
-    ],
-    "role": "I integrated model configuration, schema-constrained classification, redaction and injection checks, API admission, and the browser demo.",
-    "challenges": "Keeping untrusted ticket text separate from system instructions and returning predictable structured results when model output or provider access fails.",
-    "impact": "I integrated ticket redaction, injection checks, schema validation, review fallback, and atomic provider admission in a LangGraph API.",
-    "githubUrl": "https://github.com/harshgavandit/support-ticket-classifier",
-    "slug": "ai-support-ticket-classifier"
   }
 ]

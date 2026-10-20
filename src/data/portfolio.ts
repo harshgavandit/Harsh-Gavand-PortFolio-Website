@@ -29,6 +29,7 @@ export interface CaseStudy {
   previewNote: string;
   accessMode: string;
   accessDescription: string;
+  accessNotice?: string;
   hostingNote?: string;
   publicPreview?: boolean;
   takeaway: string;

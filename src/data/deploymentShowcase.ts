@@ -1,9 +1,69 @@
 import { projects, type CaseStudy } from "./portfolio.ts";
 import type { CaseEvidence } from "./caseEvidence.ts";
 
-// Public demos checked against deployed workflows on 20 October 2026 (IST).
-// This inventory deliberately excludes demos whose primary AI flow needs a private code.
+// Deployed demos with dated workflow checks; restricted features are labelled explicitly.
 export const deploymentShowcase = [
+  {
+    projectId: 30,
+    capture: "healthcare-explorer-live.jpg",
+    verifiedOn: "21 October 2026",
+    reviewPath: "/verification/deployments-2026-10-21.json",
+    alt: "Deployed Healthcare Explorer showing the generated patient directory, selected James Walker demonstration profile, and illustrative risk signals",
+    revision: "12bca598ea688c6edc4e5326a442ac647745bac8",
+    sourcePath: "app.py",
+    scope:
+      "Generated-data demonstration · Read-only tools · Risk heuristics are not clinical predictions",
+    accessNotice: "Public explorer. AI chat requires a private access code.",
+    checks: [
+      "Directory search filtered the generated records to James Walker and the selected profile loaded its demonstration signals.",
+      "Schema browsing exposed five related SQLite tables; the public directory contained 10 generated profiles.",
+      "The deployed MCP endpoint exposed four tools; unauthenticated AI requests returned HTTP 401 without invoking the protected assistant.",
+    ],
+    engineering: [
+      "Structured data access: Expose schema, bounded read-only SQL, and demonstration summaries through four discoverable MCP tools.",
+      "Browser exploration: Connect patient search, profile details, and schema views to a separately generated synthetic SQLite database.",
+      "Controlled AI access: Bound model tool loops and generated SQL, require an AI access code, and separate illustrative heuristics from clinical claims.",
+    ],
+    nodes: [
+      "Explorer or authorised question",
+      "FastAPI validation",
+      "MCP tool discovery",
+      "Read-only SQLite tools",
+      "Structured result or tool-grounded answer",
+    ],
+  },
+  {
+    projectId: 35,
+    capture: "customer-support-live.jpg",
+    captureWidth: 1280,
+    captureHeight: 720,
+    verifiedOn: "21 October 2026",
+    reviewPath: "/verification/deployments-2026-10-21.json",
+    alt: "Hosted Streamlit customer-support conversation showing a seeded invoice lookup and a simulated refund decision with structured ticket and tool-trace controls",
+    revision: "68a83dedc2c1f4037553e269ff883167a4933dc6",
+    sourcePath: "streamlit_app.py",
+    scope:
+      "Streamlit teaching demo · Synthetic orders · Sessions reset on sleep or restart",
+    accessNotice:
+      "Simulated refunds only. The demonstration review queue is public.",
+    checks: [
+      "A live billing question for ORD-1003 returned the seeded INR 5,600 Smartwatch invoice and pending payment status.",
+      "A synthetic ORD-1006 refund request created a separate manual-review item for the test session.",
+      "Approving that simulated request cleared its queue entry and delivered the decision to the resumed customer conversation.",
+    ],
+    engineering: [
+      "Validated routing: Compact multi-turn intake into a Pydantic ticket and route it through LangGraph to deterministic specialists.",
+      "Separate human review: Store eligible mock refund requests and resolve them through a separate approval graph invocation.",
+      "Bounded hosted workflow: Apply atomic Redis admission around model calls and support process-local session resume with explicit restart limits.",
+    ],
+    nodes: [
+      "Customer conversation",
+      "Structured intake & validation",
+      "Billing or refund specialist",
+      "Separate mock review",
+      "Decision in resumed chat",
+    ],
+  },
   {
     projectId: 37,
     capture: "docwise-live.jpg",
@@ -177,6 +237,7 @@ export const deployedStudies: CaseStudy[] = deploymentShowcase.map((item) => {
     accessMode: "Public interactive demo",
     accessDescription: item.scope,
     publicPreview: true,
+    accessNotice: item.accessNotice,
     takeaway: project.impact,
     recovery: project.challenges,
     diagram: {
@@ -216,8 +277,9 @@ export const deployedEvidence: Record<string, CaseEvidence> =
           verification: [
             { label: "Deployed website", href: project.demoUrl! },
             {
-              label: "Deployment review — 20 October 2026",
-              href: "/verification/deployments-2026-10-20.json",
+              label: `Deployment review — ${item.verifiedOn ?? "20 October 2026"}`,
+              href:
+                item.reviewPath ?? "/verification/deployments-2026-10-20.json",
             },
           ],
           limitations: [item.scope, project.impact],

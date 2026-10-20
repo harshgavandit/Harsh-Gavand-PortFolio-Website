@@ -96,6 +96,9 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
               GitHub source
             </ActionLink>
           </div>
+          {study.accessNotice && (
+            <p className="project-boundary">{study.accessNotice}</p>
+          )}
         </div>
       </div>
       <details className="flagship-notes">
@@ -217,6 +220,7 @@ export function MoreWork() {
     (entry) =>
       !featuredStudies.some((study) => study.projectId === entry.projectId),
   );
+  if (additional.length === 0) return null;
   return (
     <details id="all-projects" className="curated-archive">
       <summary>

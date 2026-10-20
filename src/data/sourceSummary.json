@@ -1,8 +1,8 @@
 {
   "version": 1,
-  "indexedAt": "2026-10-16T20:05:43.726Z",
-  "digest": "22045f536806c47b86523504f5ea45d9c66ee7c67a0a605e4978b82feb3a579d",
-  "fileCount": 28,
+  "indexedAt": "2026-10-20T18:40:25.869Z",
+  "digest": "a205bf74f21be3017a8bf044fbfe1ac0eea7ffe139b407ee2525523040ca73f3",
+  "fileCount": 23,
   "repositories": [
     {
       "repo": "Harsh-Gavand-PortFolio-Website",
@@ -35,14 +35,6 @@
       "commit": "2b8b094bc80bef18f75b1e50c5235c77d5a246c9",
       "url": "https://github.com/harshgavandit/banking-agent-harness",
       "files": 4
-    },
-    {
-      "repo": "support-ticket-classifier",
-      "slug": "ai-support-ticket-classifier",
-      "title": "AI Support Ticket Classifier",
-      "commit": "64563514137a13d99c43b806868172c4719e14c8",
-      "url": "https://github.com/harshgavandit/support-ticket-classifier",
-      "files": 5
     },
     {
       "repo": "rag-documentation-assistant",

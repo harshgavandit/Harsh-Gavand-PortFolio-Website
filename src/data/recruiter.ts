@@ -121,11 +121,6 @@ export const curatedArchive = [
     feature: "BM25 + vector retrieval with Reciprocal Rank Fusion",
   },
   {
-    projectId: 38,
-    year: "2026",
-    feature: "Validated classification with redaction and review fallback",
-  },
-  {
     projectId: 31,
     year: "2026",
     feature: "Semantic answer reuse with source-page retention",
@@ -193,7 +188,7 @@ export const heroArchitecture = [
       "Authentication, validated inputs, and request admission before external work.",
     tag: "API BOUNDARY",
     stack: "Express · FastAPI",
-    projectId: 38,
+    projectId: 29,
   },
   {
     title: "AI & workflow layer",

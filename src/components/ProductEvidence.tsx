@@ -18,9 +18,9 @@ const captures: Record<
       {
         src: `/evidence/${item.capture}`,
         alt: item.alt,
-        width: 1265,
-        height: 712,
-        caption: "Live website capture · 20 October 2026 · Click to enlarge",
+        width: item.captureWidth ?? 1265,
+        height: item.captureHeight ?? 712,
+        caption: `Live website capture · ${item.verifiedOn ?? "20 October 2026"} · Click to enlarge`,
       },
     ]),
   ),

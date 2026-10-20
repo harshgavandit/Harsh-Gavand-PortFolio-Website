@@ -194,10 +194,18 @@ test("verified deployments have unique main cards, real capture assets, complete
     for (const text of [project.role, project.impact, ...project.features])
       assert.ok(card.includes(escapeHTML(text)), text);
     assert.ok(
-      !curated.includes(`/archive#${project.slug}`),
+      !curated?.includes(`/archive#${project.slug}`),
       "Featured projects must not be repeated as additional work",
     );
-    const evidence = report.verifiedPublicProjects.find(
+    const itemReport = item.reviewPath
+      ? JSON.parse(
+          await readFile(
+            new URL(`../public${item.reviewPath}`, import.meta.url),
+            "utf8",
+          ),
+        )
+      : report;
+    const evidence = itemReport.verifiedPublicProjects.find(
       (entry) => entry.slug === project.slug,
     );
     assert.ok(
@@ -218,11 +226,52 @@ test("verified deployments have unique main cards, real capture assets, complete
     );
     assert.ok(capture.byteLength > 10000);
   }
-  for (const id of [27, 30])
+  for (const id of [27])
     assert.ok(
       !featuredStudies.some((study) => study.projectId === id),
       "Private-code AI demos stay outside public featured work",
     );
+});
+
+test("new hosted support and healthcare cards replace the retired archive entries with explicit demo scope", async () => {
+  const report = JSON.parse(
+    await readFile(
+      new URL(
+        "../public/verification/deployments-2026-10-21.json",
+        import.meta.url,
+      ),
+      "utf8",
+    ),
+  );
+  assert.equal(report.publicApiChecks.length, 7);
+  assert.ok(report.publicApiChecks.every((check) => check.passed === true));
+  assert.ok(
+    !html.includes('id="all-projects"'),
+    "The empty additional-work section must not render",
+  );
+  for (const document of [
+    html,
+    archive,
+    await readFile(new URL("../dist/ai/index.html", import.meta.url), "utf8"),
+  ]) {
+    assert.doesNotMatch(
+      document,
+      /AI Support Ticket Classifier|github\.com\/harshgavandit\/support-ticket-classifier/,
+    );
+  }
+  const healthcare = html.match(
+    /<article[^>]*id="healthcare-mcp-openai"[^>]*>([\s\S]*?)<\/article>/,
+  )?.[1];
+  const support = html.match(
+    /<article[^>]*id="multi-agent-customer-support"[^>]*>([\s\S]*?)<\/article>/,
+  )?.[1];
+  assert.match(healthcare, /AI chat requires a private access code/);
+  assert.match(support, /demonstration review queue is public/);
+  assert.match(support, /harsh-multi-agent-customer-support\.streamlit\.app/);
+  assert.match(
+    await readFile(new URL("../dist/ai/index.html", import.meta.url), "utf8"),
+    /Portfolio triage source/,
+  );
 });
 
 test("AgriConnect renders a public case study, screenshot, complete stack, and crawlable links", async () => {
@@ -280,7 +329,7 @@ test("private internal project exposes the approved summary, features and stack 
   assert.ok(projectSection);
   for (const project of privateProjects) {
     const projectPosition = projectSection.indexOf(`id="${project.slug}"`);
-    const archivePosition = projectSection.indexOf('id="all-projects"');
+    const archivePosition = projectSection.indexOf('class="additional-work"');
     assert.ok(
       projectPosition >= 0,
       "Private project belongs in the Projects section",
@@ -613,7 +662,6 @@ test("every section and internal anchor is present and document IDs are unique",
     "experience",
     "skills",
     "about",
-    "all-projects",
     "workflow",
     "contact",
   ])

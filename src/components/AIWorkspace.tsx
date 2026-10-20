@@ -416,15 +416,15 @@ function TicketWorkbench() {
           ))}
         </div>
         <p className="ai-tool-note">
-          Node.js API · Adapted from my FastAPI and LangGraph classifier.
+          Node.js API · PII redaction · Structured topic and priority routing.
         </p>
         <a
           className="text-link"
-          href="https://github.com/harshgavandit/support-ticket-classifier"
+          href="https://github.com/harshgavandit/Harsh-Gavand-PortFolio-Website/blob/c0414c9cc4c7e98466efcb42b8a28f7cac4c351c/server/ai-tools.mjs"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Original classifier source ↗
+          Portfolio triage source ↗
         </a>
       </div>
       <div className="ai-tool-surface">

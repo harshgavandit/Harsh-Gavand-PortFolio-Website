@@ -1,6 +1,6 @@
 # Harsh Gavand — Full-Stack & AI Engineer
 
-A React + TypeScript portfolio organized around engineering decisions: five homepage chapters, six featured projects, a compact eight-repository archive, and a searchable 39-project catalog at [/archive](https://harshgavand.dev/archive/). AgriConnect is featured with a marketplace screenshot, implementation stack, contribution details, architecture, and live/source links at [/work/agri-connect/](https://harshgavand.dev/work/agri-connect/). Agri Samaj remains a separate community project outside the archive.
+A React + TypeScript portfolio organized around engineering decisions: five homepage chapters, 13 featured public project cards, dedicated private internal-work evidence, and a searchable 38-repository catalog at [/archive](https://harshgavand.dev/archive/). Agri Samaj remains a separate community project outside the archive.
 
 [Live portfolio](https://harshgavand.dev/) · [Refactor verification](verification/recruiter-scan-2026-10-15/README.md) · [Recent AI repository sources](verification/github-projects-2026-10-15/sources.json)
 
@@ -8,7 +8,7 @@ A React + TypeScript portfolio organized around engineering decisions: five home
 
 The homepage puts a compact role summary, professional experience, six primary technologies, and an authentic public-sample capture ahead of selected work. Skills provides the AI workspace link and the complete technology list under **View full stack**. The contact draft composer is optional. Assistant access is available from the corner launcher, navigation, and Ctrl/Command+K.
 
-Seven static case studies live at `/work/agri-connect/`, `/work/ugc-platform/`, `/work/banking-saas/`, `/work/agri-samaj-community-platform/`, `/work/banking-agent-harness/`, `/work/news-automation/`, and `/work/github-replica/`. They show the product, personal contribution, features, engineering work, architecture, and tech stack, with live and GitHub links. File-by-file source directories, release-check panels, preview commentary, and limitation lists are kept out of the project-page presentation. `/archive` preserves its 39 repositories and legacy fragment mappings. The six homepage selections feature AgriConnect, UGC, LendFlow, Agri Samaj, the Banking Agent Harness, and News Automation. Agri Samaj links to the [live website](https://agri-samaj-community-platform.vercel.app) and its [MIT-licensed source](https://github.com/harshgavandit/agri-samaj-community-platform): a Marathi–English platform for business discovery, entrepreneur registration, publications, and community services.
+Fourteen static case studies show product features, contributions, engineering work, architecture, complete technology stacks, and live/GitHub links. The selected projects include AgriConnect, UGC, deployed AI and RAG demos, Healthcare Explorer, and the Streamlit customer-support simulation. The catalog preserves active project identities and legacy fragments.
 
 Preview captures come from the actual applications' labelled public sample workspaces, with synthetic data. The news sample is output from the original formatter; harness scenarios execute deterministic functions against a mock ledger. See [evidence reproduction](docs/evidence/README.md) for exact boundaries. No email delivery, external model generation, or real financial operation is represented as verified by those artifacts.
 
@@ -18,9 +18,9 @@ The linked UGC public route uses `/demo`. Render-hosted LendFlow and DevGraph al
 
 The homepage has one shared chapter definition in `src/data/recruiter.ts`: Introduction, Selected Work, Experience & Impact, Architecture & Skills, and Contact. Navigation, section headings, and project/skills cards use plain labels without decorative numbering.
 
-The hero leads with a public UGC workspace capture and links to selected work. Six homepage cards provide a product screenshot, concise engineering focus, and project-detail link. Agri Samaj uses a capture of its real public homepage. Focused case studies show product features, contributions, engineering work, five keyboard-operable architecture stages, and the complete stack. Native disclosures keep the complete stack and contact composer available without dominating the initial scan.
+The hero introduces the developer and links to selected work. Shared project cards provide real application captures, engineering focus, live/source links, and expandable features, contributions, outcomes, and the complete stack. Case studies include keyboard-operable architecture stages. Access requirements and simulation boundaries are shown where relevant.
 
-The eight-row curated archive uses a native disclosure. The complete catalog lives on a separate pre-rendered route with search and All / Latest AI / AI & ML / APIs & Tools / Web & SaaS filters. Every project retains its identity and repository link; original copy was rewritten and inaccurate stack claims were corrected against source code. No invented performance metrics, production scale, payment guarantees, or database guarantees are added.
+The additional-work disclosure appears only when there are non-featured curated projects. It is hidden when empty. The complete catalog has search and All / Latest AI / AI & ML / APIs & Tools / Web & SaaS filters. No invented performance, scale, financial, or clinical outcomes are added.
 
 Experience, education, the supplied portrait, recognition, skills, engineering principles, contact draft preparation, and the existing assistant remain available. The assistant opens from the corner launcher, header or mobile navigation, or Ctrl/Command+K. It offers six starter questions and nine additional questions grouped by project walkthroughs, AI/backend decisions, and engineering approach. After an answer, the complete question bank remains available through “Ask another question.” The chat response contract remains unchanged; quota cancellation and settlement recovery are described below.
 
@@ -46,7 +46,7 @@ Use Node.js **24.x LTS**, pinned in `package.json` and `.nvmrc`. This supports t
 
 `/ai/` is a pre-rendered public workspace, linked from Skills and the existing text/voice assistant. It provides a code-grounded technical guide, a structured role comparison, and a live support-ticket triage sandbox. Core portfolio content and the community project's application remain unchanged.
 
-The guide retrieves bounded excerpts using BM25-style lexical scoring over **28 selected public files from six repositories**. Each excerpt has an immutable commit, content hash, exact line range, and canonical GitHub link. The model may cite only identifiers from that request's retrieved set. The browser receives selected excerpts, not the complete corpus. This is lexical code retrieval, not an embedding/vector database; retrieval and model grounding have separate limitations. Repository code is treated as untrusted reference data and is never executed.
+The guide retrieves bounded excerpts using BM25-style lexical scoring over **23 selected public files from five repositories**. Each excerpt has an immutable commit, content hash, exact line range, and canonical GitHub link. The model may cite only identifiers from that request's retrieved set. The browser receives selected excerpts, not the complete corpus. This is lexical code retrieval, not an embedding/vector database; retrieval and model grounding have separate limitations. Repository code is treated as untrusted reference data and is never executed.
 
 `npm run ai:index` refreshes the explicit allowlist in `scripts/source-allowlist.mjs`. It verifies repositories are public, resolves commits, rejects oversized/suspicious files, and writes `server/knowledge/source-index.json` plus public metadata in `src/data/sourceSummary.json`. Builds and visitor requests work offline from that snapshot and require no GitHub credentials. `GITHUB_TOKEN` is optional for the refresh command's API allowance and is never bundled. Private workspace files, company systems, document uploads, and Agri Samaj's application are excluded. The interface shows the indexed commits/date; upstream changes are not automatically represented.
 
@@ -127,8 +127,8 @@ The tests cover original project identities and assets, source metadata, assista
 
 ## Content and presentation
 
-- `src/data/projects.json`, `src/data/recentProjects.json`, and `src/data/communityProjects.json`: 39 project records, including 12 recent AI repositories and the homepage-only Agri Samaj community platform.
-- `src/data/portfolio.ts` and `src/data/workPresentation.ts`: shared profile, experience, skills, archive selection, and six case studies.
+- `src/data/projects.json`, `src/data/recentProjects.json`, `src/data/communityProjects.json`, and `src/data/platformProjects.json`: 39 active project records, including 11 recent AI repositories; Agri Samaj stays outside the 38-item archive.
+- `src/data/portfolio.ts`, `src/data/workPresentation.ts`, and `src/data/deploymentShowcase.ts`: shared profile, experience, selections, and 14 case studies.
 - `src/data/recruiter.ts`: chapter numbers, curated archive, architecture widget, code excerpt, prompts, and principles.
 - `src/recruiter.css`: graphite, ivory, and citrus tokens; high-contrast text; responsive layouts; focus states; 180ms transitions and reduced-motion support.
 - `src/components/RequestTrace.tsx` and `src/lib/requestTrace.ts`: a completed happy path, pre-dispatch rollback, and uncertain upstream timeout scenarios. Token values and timings are illustrative; the accounting decisions match the live lifecycle without making network requests or changing balances.
@@ -202,3 +202,9 @@ Enable Speed Insights in the Vercel project's Speed Insights panel, then deploy 
 The linter uses ESLint 10 flat configuration in `eslint.config.js`, with compatible TypeScript, React, hooks, and Fast Refresh checks. The lockfile excludes the retired ESLint 8 dependency chain.
 
 Vercel uses the repository's `vercel.json` install/build commands. `node scripts/run-npm.mjs` invokes npm with supported environment settings: legacy `cache-dir` is translated to npm's `cache` setting when no explicit cache is configured, and pnpm-only `store-dir` is omitted. This changes only the npm subprocess; it does not modify your system or deployment environment variables. Warnings are not suppressed. For the same behavior locally, use `node scripts/run-npm.mjs ci --include=dev` and `node scripts/run-npm.mjs run build`.
+
+## Hosted project additions — 21 October 2026
+
+Healthcare Explorer and Multi-Agent Customer Support now use the main shared project cards with real deployed screenshots, source/live links, complete stacks, and scoped contributions/outcomes. Healthcare browsing is public; AI chat requires a private access code. Streamlit uses seeded orders and simulated approvals, with a public review queue and process-local session state.
+
+The standalone AI Support Ticket Classifier was removed from the catalog, curated references, and indexed source listing at the owner's request. Its GitHub repository was not modified. The portfolio's separate Node.js triage sandbox remains available and links to its own implementation. See [the review](verification/deployment-showcase-2026-10-21.md) and [sanitized checks](public/verification/deployments-2026-10-21.json). Earlier dated reports describe their original review scope.

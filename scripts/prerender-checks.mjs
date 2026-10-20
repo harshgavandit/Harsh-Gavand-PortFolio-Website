@@ -81,13 +81,14 @@ export function assertHomepage(html, origin = profile.site) {
     (html.match(/class="flagship-card(?:\s[^\"]*)?"/g) || []).length,
     featuredStudies.length,
   );
-  assert.ok(html.includes('id="all-projects"'));
+  const additional = curatedArchive.filter(
+    (entry) =>
+      !featuredStudies.some((study) => study.projectId === entry.projectId),
+  );
+  assert.equal(html.includes('id="all-projects"'), additional.length > 0);
   assert.equal(
     (html.match(/<tr>/g) || []).length,
-    curatedArchive.filter(
-      (entry) =>
-        !featuredStudies.some((study) => study.projectId === entry.projectId),
-    ).length + 1,
+    additional.length ? additional.length + 1 : 0,
     "Expected only additional curated repositories and a table header",
   );
   assert.ok(html.includes('href="/archive"'));

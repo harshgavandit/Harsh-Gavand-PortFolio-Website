@@ -48,18 +48,6 @@ export const sourceAllowlist = [
     ],
   },
   {
-    repo: "support-ticket-classifier",
-    slug: "ai-support-ticket-classifier",
-    title: "AI Support Ticket Classifier",
-    files: [
-      "schema.py",
-      "graph.py",
-      "production_modules/pii_redaction.py",
-      "production_modules/validate_response.py",
-      "tests/test_classifier.py",
-    ],
-  },
-  {
     repo: "rag-documentation-assistant",
     slug: "hybrid-rag-documentation-assistant",
     title: "Hybrid RAG Documentation Assistant",

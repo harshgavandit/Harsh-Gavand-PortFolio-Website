@@ -11,7 +11,12 @@ import { sourceAllowlist } from "./source-allowlist.mjs";
 import { aiEvalCases, gradeCase } from "./ai-eval-cases.mjs";
 
 test("source snapshot preserves public provenance, content hashes, and bounded excerpts", () => {
-  assert.equal(sourceSnapshot.repositories.length, 6);
+  assert.equal(sourceSnapshot.repositories.length, sourceAllowlist.length);
+  assert.ok(
+    !sourceSnapshot.repositories.some(
+      (item) => item.slug === "ai-support-ticket-classifier",
+    ),
+  );
   for (const file of sourceSnapshot.files) {
     assert.ok(
       sourceAllowlist.some(

@@ -58,7 +58,7 @@ const aliases = [
   [/\bugc\b|content studio/i, "ugc-platform"],
   [/\blendflow\b|lending|banking saas/i, "banking-saas"],
   [/banking agent|\bharness\b|transfer polic/i, "banking-agent-harness"],
-  [/ticket|classifier|triage/i, "ai-support-ticket-classifier"],
+  [/ticket|classifier|triage/i, "portfolio"],
   [
     /\brag\b|bm25|reciprocal|vector search/i,
     "hybrid-rag-documentation-assistant",

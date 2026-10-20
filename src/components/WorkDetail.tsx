@@ -48,6 +48,9 @@ export function WorkDetail() {
             GitHub
           </ActionLink>
         </div>
+        {study.accessNotice && (
+          <p className="project-boundary">{study.accessNotice}</p>
+        )}
       </header>
       <div className="work-context">
         <div>

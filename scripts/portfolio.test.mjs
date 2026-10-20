@@ -83,9 +83,9 @@ test("demo warmup deduplicates HTTPS Render origins and isolates request failure
     assert.equal(options.signal, controller.signal);
   }
 });
-test("curated archive references eight distinct catalog projects and flagship stacks match reviewed source", () => {
-  assert.equal(curatedArchive.length, 8);
-  assert.equal(new Set(curatedArchive.map((item) => item.projectId)).size, 8);
+test("curated archive retains seven distinct catalog projects and flagship stacks match reviewed source", () => {
+  assert.equal(curatedArchive.length, 7);
+  assert.equal(new Set(curatedArchive.map((item) => item.projectId)).size, 7);
   for (const item of curatedArchive)
     assert.ok(catalog.some((project) => project.id === item.projectId));
   const stack = (id) =>
@@ -228,13 +228,15 @@ test("all recently pushed AI repositories are included once, discoverable, and t
       communityProjects.length +
       platformProjects.length,
   );
-  assert.equal(latestAIProjects.length, 12);
+  assert.equal(latestAIProjects.length, 11);
   assert.equal(sources.projects.length, 12);
   assert.deepEqual(
     catalog.filter((project) => matchesProjectCollection(project, "Latest AI")),
     latestAIProjects,
   );
-  for (const source of sources.projects) {
+  for (const source of sources.projects.filter(
+    (item) => item.projectId !== 38,
+  )) {
     const project = catalog.find((item) => item.id === source.projectId);
     assert.equal(project.githubUrl, source.url);
     assert.ok(Date.parse(source.pushedAt) >= Date.parse(sources.windowStart));
@@ -260,6 +262,26 @@ test("all recently pushed AI repositories are included once, discoverable, and t
   assert.ok(
     caseStudies.every((study) =>
       catalog.some((project) => project.id === study.projectId),
+    ),
+  );
+});
+
+test("retired standalone classifier is excluded from catalog and indexed source discovery", () => {
+  assert.ok(
+    !catalog.some(
+      (project) =>
+        project.id === 38 || project.slug === "ai-support-ticket-classifier",
+    ),
+  );
+  const summary = JSON.parse(
+    readFileSync(
+      new URL("../src/data/sourceSummary.json", import.meta.url),
+      "utf8",
+    ),
+  );
+  assert.ok(
+    !summary.repositories.some(
+      (item) => item.repo === "support-ticket-classifier",
     ),
   );
 });

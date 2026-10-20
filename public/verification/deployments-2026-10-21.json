@@ -1,0 +1,146 @@
+{
+  "reviewedOn": "2026-10-21",
+  "verifiedAt": "2026-10-20T18:48:51.641Z",
+  "timezone": "Asia/Kolkata",
+  "verifiedPublicProjects": [
+    {
+      "slug": "healthcare-mcp-openai",
+      "links": [
+        {
+          "url": "https://healthcare-mcp-openai.vercel.app/",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/healthcare-mcp-openai",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/healthcare-mcp-openai/blob/12bca598ea688c6edc4e5326a442ac647745bac8/README.md",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/healthcare-mcp-openai/blob/12bca598ea688c6edc4e5326a442ac647745bac8/app.py",
+          "status": 200,
+          "passed": true
+        }
+      ],
+      "workflowChecks": [
+        "Directory search filtered the generated records to James Walker and the selected profile loaded its demonstration signals.",
+        "Schema browsing exposed five related SQLite tables; the public directory contained 10 generated profiles.",
+        "The deployed MCP endpoint exposed four tools; unauthenticated AI requests returned HTTP 401 without invoking the protected assistant."
+      ],
+      "inspectedSource": {
+        "repository": "https://github.com/harshgavandit/healthcare-mcp-openai",
+        "commit": "12bca598ea688c6edc4e5326a442ac647745bac8"
+      },
+      "screenshot": {
+        "url": "/evidence/healthcare-explorer-live.jpg",
+        "width": 1265,
+        "height": 712,
+        "sha256": "10b76fea3556dc73d6bc946ed1e7e7c3e4213a3dd6567e771c2b5db756797d88"
+      }
+    },
+    {
+      "slug": "multi-agent-customer-support",
+      "links": [
+        {
+          "url": "https://harsh-multi-agent-customer-support.streamlit.app/",
+          "status": 200,
+          "passed": true,
+          "method": "anonymous HTTP session with routing cookies"
+        },
+        {
+          "url": "https://github.com/harshgavandit/multi-agent-customer-support",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/multi-agent-customer-support/blob/68a83dedc2c1f4037553e269ff883167a4933dc6/README.md",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/multi-agent-customer-support/blob/68a83dedc2c1f4037553e269ff883167a4933dc6/streamlit_app.py",
+          "status": 200,
+          "passed": true
+        }
+      ],
+      "workflowChecks": [
+        "A live billing question for ORD-1003 returned the seeded INR 5,600 Smartwatch invoice and pending payment status.",
+        "A synthetic ORD-1006 refund request created a separate manual-review item for the test session.",
+        "Approving that simulated request cleared its queue entry and delivered the decision to the resumed customer conversation."
+      ],
+      "inspectedSource": {
+        "repository": "https://github.com/harshgavandit/multi-agent-customer-support",
+        "commit": "68a83dedc2c1f4037553e269ff883167a4933dc6"
+      },
+      "screenshot": {
+        "url": "/evidence/customer-support-live.jpg",
+        "width": 1280,
+        "height": 720,
+        "sha256": "dee5aeb639ba9f570cba277614ffa61be96c382deab9bed4bd5165cbfe247cea"
+      }
+    }
+  ],
+  "publicApiChecks": [
+    {
+      "name": "Generated-data health",
+      "url": "https://healthcare-mcp-openai.vercel.app/api/health",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Ten synthetic profiles",
+      "url": "https://healthcare-mcp-openai.vercel.app/api/patients",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Synthetic profile details",
+      "url": "https://healthcare-mcp-openai.vercel.app/api/patients/4",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Five public schema tables",
+      "url": "https://healthcare-mcp-openai.vercel.app/api/schema",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "AI access gate",
+      "url": "https://healthcare-mcp-openai.vercel.app/api/ask",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "name": "MCP initialization",
+      "url": "https://healthcare-mcp-openai.vercel.app/mcp",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "name": "Four discoverable MCP tools",
+      "url": "https://healthcare-mcp-openai.vercel.app/mcp",
+      "status": 200,
+      "passed": true
+    }
+  ],
+  "removedProjects": [
+    {
+      "projectId": 38,
+      "slug": "ai-support-ticket-classifier",
+      "reason": "User confirmed the standalone project is not deployed and requested GitHub-only presence. Repository was not modified."
+    }
+  ],
+  "limits": [
+    "Healthcare directory, profiles, schema, and MCP tool discovery were verified. AI requests require a private access code; protected model responses were not tested.",
+    "Healthcare records are generated demonstration data. Risk signals are illustrative heuristics, with no clinical validation or real patient outcomes claimed.",
+    "The customer-support workflow used seeded synthetic orders and simulated approval only; no payment provider was called. The Approver Queue is public, and sessions reset on server restart or cloud sleep.",
+    "Streamlit workflow and session resume were verified through the public browser. The inspected source is its published main branch; an independent runtime Git SHA was not exposed.",
+    "No adoption, cost, performance, accuracy, or business-outcome metrics were inferred. Previous dated deployment reports remain historical evidence."
+  ]
+}
