@@ -25,7 +25,6 @@ import {
 import { nextTabIndex, isAssistantShortcut } from "../src/lib/interaction.ts";
 
 import { semanticFragment } from "../src/lib/projectNavigation.ts";
-import { traceStage } from "../src/lib/requestTrace.ts";
 import { resumeStackGroups, resumeStackCount } from "../src/data/heroStack.ts";
 
 let server;
@@ -259,8 +258,12 @@ test("private internal project exposes the approved summary, features and stack 
   }
 });
 
-test("tabs have connected ARIA relationships and predictable keyboard movement", () => {
-  for (const page of [html, archive]) {
+test("remaining pages have connected ARIA relationships and predictable keyboard movement", async () => {
+  const ai = await readFile(
+    new URL("../dist/ai/index.html", import.meta.url),
+    "utf8",
+  );
+  for (const page of [html, archive, ai]) {
     const ids = new Set(
       [...page.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]),
     );
@@ -270,9 +273,11 @@ test("tabs have connected ARIA relationships and predictable keyboard movement",
       for (const id of match[1].split(" "))
         assert.ok(ids.has(id), "Missing ARIA target: " + id);
   }
-  assert.equal((html.match(/role="tablist"/g) || []).length, 1);
-  assert.equal((html.match(/aria-selected="true"/g) || []).length, 1);
-  assert.equal((html.match(/role="tabpanel"/g) || []).length, 2);
+  assert.equal((html.match(/role="tablist"/g) || []).length, 0);
+  assert.equal((html.match(/role="tabpanel"/g) || []).length, 0);
+  assert.equal((ai.match(/role="tablist"/g) || []).length, 1);
+  assert.equal((ai.match(/aria-selected="true"/g) || []).length, 1);
+  assert.equal((ai.match(/role="tabpanel"/g) || []).length, 3);
   assert.equal(nextTabIndex("ArrowLeft", 0, 3), 2);
   assert.equal(nextTabIndex("ArrowRight", 2, 3), 0);
   assert.equal(nextTabIndex("Home", 2, 3), 0);
@@ -613,16 +618,10 @@ test("project fragments stay semantic and remote-only availability is consistent
   assert.doesNotMatch(html, /relocat/i);
 });
 
-test("phase two exposes brand, language, replay, shipment and skills proof controls in initial HTML", () => {
+test("home exposes branding, experience shipments, recognition and contact controls", () => {
   assert.match(html, /class="brand-logo"[^>]*src="\/brand\/hg-icon.webp"/);
   assert.match(html, /href="\/favicon.png"/);
-  assert.match(html, /aria-label="Implementation language"/);
-  assert.match(html, /Node.js \/ TypeScript/);
-  assert.match(html, /Python \/ FastAPI/);
-  assert.match(html, /class="trace-replay"[\s\S]*?Replay Trace/);
   assert.equal((html.match(/class="shipment-banner"/g) || []).length, 2);
-  assert.equal((html.match(/class="skill-patterns"/g) || []).length, 4);
-  assert.equal((html.match(/class="skill-proofs"/g) || []).length, 4);
   assert.match(html, /PromptWars AI Engineering Competition/);
   assert.match(html, /Supervity Autopilot Hackathon/);
   assert.match(html, /aria-label="Copy email harshgavand2@gmail.com"/);
@@ -662,7 +661,7 @@ test("header branding, hero experience wording, and complete categorized logo st
       }
     }
 });
-test("the header, hero lists and code preview contain meaningful accessible content", () => {
+test("the header and hero lists contain meaningful accessible content", () => {
   const header = html.match(
     /<header class="site-header">([\s\S]*?)<\/header>/,
   )[1];
@@ -671,34 +670,23 @@ test("the header, hero lists and code preview contain meaningful accessible cont
   assert.match(header, /href="#contact">Contact<\/a>/);
   assert.match(html, /href="#projects"[^>]*>Explore selected work/);
   assert.match(html, /href="\/resume.pdf"[^>]*>View Resume/);
-  assert.match(html, /quota\.releaseOrEnqueueRetry\(/);
 });
 
-test("request trace is the default hero tab with accounting-safe scenario controls", () => {
-  assert.match(html, /Request Lifecycle Trace/);
-  assert.match(html, /id="hero-proof-tab-0"[^>]*aria-selected="true"/);
-  assert.match(
+test("skills overview and engineering field notes are removed while Skills navigation remains usable", () => {
+  assert.doesNotMatch(
     html,
-    /id="hero-proof-panel-0"(?![^>]*hidden=)[^>]*>[\s\S]*?class="request-trace"/,
+    /Tools, systems &amp; implementation\.|class="skills-grid"|class="skill-patterns"|class="skill-proofs"|Engineering field notes|id="engineering-lab"|Request Lifecycle Trace|hero-proof-tab|aria-label="Implementation language"/,
   );
-  assert.doesNotMatch(html, /Interfaces → APIs → workflows → data/);
-  assert.match(html, /Happy Path \(618ms\)/);
-  assert.match(html, /Pre-Dispatch Abort \(29ms\)/);
-  assert.match(html, /Upstream Timeout &amp; Recovery \(1,240ms\)/);
-  assert.doesNotMatch(html, /Waiting for trace|No API call|Gemini scenario/);
-  assert.equal(
-    traceStage("success", 3).message,
-    "Settled 112 actual tokens · refunded 28",
-  );
-  assert.equal(traceStage("timeout", 2).failed, true);
-  assert.equal(
-    traceStage("timeout", 3).message,
-    "Unknown usage · reservation retained for reconciliation",
-  );
-  assert.equal(
-    traceStage("rollback", 3).message,
-    "Released full 140-token reservation atomically",
-  );
+  const skills = html.match(
+    /<section id="skills"[^>]*>([\s\S]*?)<\/section>/,
+  )?.[0];
+  assert.ok(skills);
+  assert.match(skills, /data-chapter="skills"/);
+  assert.match(skills, /aria-label="Skills"/);
+  assert.match(skills, /href="\/ai\/"/);
+  assert.match(skills, /<details class="full-stack-disclosure" id="workflow"/);
+  assert.match(skills, /View full stack/);
+  assert.match(html, /href="#skills">Skills<\/a>/);
 });
 
 test("project pages show engineering work without source directories or preview commentary", async () => {

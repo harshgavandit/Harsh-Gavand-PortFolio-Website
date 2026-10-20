@@ -8,11 +8,9 @@ import { experienceForDisplay as experience } from "../data/experiencePresentati
 
 import { HeroStack } from "./HeroStack";
 
-import { EngineeringShowcase } from "./EngineeringShowcase";
-
 import { resumeStackGroups } from "../data/heroStack";
 
-import { ChapterHeading, LeadStatement, Tags } from "./Primitives";
+import { LeadStatement, Tags } from "./Primitives";
 
 export function Experience() {
   return (
@@ -185,42 +183,9 @@ export function Skills() {
 
       tabIndex={-1}
 
-      aria-labelledby="skills-title"
+      data-chapter="skills"
+      aria-label="Skills"
     >
-      <ChapterHeading
-        id="skills"
-
-        title="Tools, systems & implementation."
-
-        description="The technologies and patterns I use across applications, APIs, data, and AI workflows."
-      />
-
-      <div className="skills-grid">
-        {skills.map((group) => (
-          <article key={group.title}>
-            <span className="eyebrow">{group.title}</span>
-
-            <h3>{group.description}</h3>
-
-            <p className="skill-patterns">
-              <strong>Applied patterns:</strong> {group.patterns}
-            </p>
-
-            <div
-              className="skill-proofs"
-
-              aria-label={`${group.title} projects`}
-            >
-              {group.proofs.map((proof) => (
-                <a key={proof.href} href={proof.href}>
-                  {proof.label} ↗
-                </a>
-              ))}
-            </div>
-          </article>
-        ))}
-      </div>
-
       <aside className="ai-workspace-teaser">
         <div>
           <span className="eyebrow">Try the implementation</span>
@@ -254,13 +219,6 @@ export function Skills() {
         </div>
       </details>
 
-      <details className="engineering-lab" id="engineering-lab">
-        <summary>
-          Engineering field notes{" "}
-          <span>Quota lifecycle, failure scenarios & source code</span>
-        </summary>
-        <EngineeringShowcase />
-      </details>
     </section>
   );
 }
