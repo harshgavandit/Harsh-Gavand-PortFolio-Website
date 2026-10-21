@@ -42,9 +42,11 @@ test("retrieval includes the relevant project and complete public project index"
   const digestStudy = knowledge.caseStudyNotes.find(
     (study) => study.projectId === 17,
   );
-  assert.ok(digestStudy.diagram.nodes.includes("SQLAlchemy repository"));
+  assert.ok(digestStudy.diagram.nodes.includes("Parallel OpenAI summaries"));
   assert.ok(
-    digestStudy.contributions.some((item) => item.label === "Pipeline / AI"),
+    digestStudy.contributions.some((item) =>
+      item.description.includes("FastAPI") && item.description.includes("OpenAI"),
+    ),
   );
   assert.ok(!JSON.stringify(knowledge).includes("OPENAI_API_KEY"));
 });

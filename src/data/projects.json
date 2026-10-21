@@ -323,29 +323,40 @@
   },
   {
     "id": 17,
-    "title": "AI News Automation — Ingestion-to-Email Pipeline",
-    "category": "AI Automation & Delivery Pipelines",
-    "overview": "A daily source-to-email pipeline turns AI articles and video transcripts into source-linked digests. Per-stage results distinguish collection, processing, generation, and delivery failures across a repeatable run.",
+    "title": "AI Brief — AI News to Email Generator",
+    "category": "AI Curation & Email Automation",
+    "overview": "An AI news reader and personalized newsletter builder collecting OpenAI, Anthropic, and YouTube feeds. OpenAI agents summarize source excerpts, rank stories for a reader’s interests, and produce a source-linked digest for preview, HTML download, or Gmail delivery.",
     "features": [
-      "Article and video collection with duplicate checks",
-      "Local Ollama / llama3 summarization",
-      "SQLAlchemy repository and digest persistence",
-      "Plaintext and HTML email formatting with SMTP delivery"
+      "Live RSS stories from OpenAI, Anthropic, and YouTube",
+      "Search and source filters with 24-hour, 7-day, and 30-day windows",
+      "Interest-based curation of three-story or five-story digests",
+      "Source-linked summaries with an explanation of each story’s relevance",
+      "Digest preview, copy, HTML download, and owner-authenticated Gmail delivery"
     ],
     "technologies": [
       "Python",
-      "SQLAlchemy",
-      "Docker",
-      "Ollama",
+      "FastAPI",
+      "OpenAI API",
+      "JavaScript",
       "Pydantic",
-      "SMTP"
+      "RSS / Feedparser",
+      "HTTPX",
+      "BeautifulSoup",
+      "SMTP",
+      "Vercel"
     ],
-    "role": "Normalized collected sources into repository records, checked source identity before insertion, isolated local-model generation failures, and produced plaintext/HTML digests with original-source links.",
-    "challenges": "Separating source collection, model failure results, database commits, and SMTP validation so incomplete generation and delivery failures remain distinguishable.",
-    "impact": "Skipped stored source identities and reported processing counts, digest failures, and SMTP results independently, keeping daily ingestion and delivery outcomes inspectable.",
+    "role": "Built the FastAPI web workflow and reading interface, joined RSS collection to parallel OpenAI summarization and relevance ranking, and added HTML export plus authenticated Gmail delivery.",
+    "challenges": "Preserve source identities and URLs across concurrent feed collection, summarization, and ranking, with cached results and signed previews before email delivery.",
+    "impact": "Deployed a news-to-newsletter workflow with source filtering, personalized digest generation, readable previews, HTML downloads, and owner-controlled email sending.",
     "githubUrl": "https://github.com/harshgavandit/AI_News_To_Email_Generator",
     "slug": "news-automation",
-    "aliases": ["AI News-to-Email Digest", "AI News To Email Generator"]
+    "aliases": [
+      "AI News-to-Email Digest",
+      "AI News To Email Generator",
+      "AI News Automation — Ingestion-to-Email Pipeline",
+      "AI Brief"
+    ],
+    "demoUrl": "https://ai-news-to-email-generator.vercel.app"
   },
   {
     "id": 18,
@@ -389,20 +400,34 @@
   },
   {
     "id": 20,
-    "title": "Stock Prediction Portal Python ML",
-    "category": "Financial Machine Learning",
-    "overview": "A machine learning portal for stock analysis, historical data processing, and prediction-focused financial insights. The project combines Python ML workflows with a web interface for accessible market analysis.",
+    "title": "Stock Prediction Portal — Python & LSTM",
+    "category": "Machine Learning & Market Analysis",
+    "overview": "A full-stack stock analysis portal combining historical prices, 100-day and 200-day moving averages, and estimates from a trained LSTM model. A React dashboard presents model comparisons and error metrics, with authenticated profiles and personal watchlists.",
     "features": [
-      "Historical stock analysis",
-      "Prediction model workflow",
-      "Financial visualization outputs"
+      "Ticker-based price history and 100-day / 200-day moving-average charts",
+      "Historical LSTM estimates with MSE, RMSE, and R-squared evaluation",
+      "Experimental next-session closing-price estimate",
+      "JWT sign-in, account profiles, and watchlists of up to 10 symbols",
+      "Cached market-data requests and prediction responses"
     ],
-    "technologies": ["Python", "Django", "TensorFlow", "Keras", "Pandas"],
-    "role": "I implemented data processing, prediction workflow integration, API/backend logic, and visual result presentation.",
-    "challenges": "Connected ML model outputs to a web-facing experience while keeping the results understandable for users.",
-    "impact": "I integrated historical data preparation and model inference to a Django portal with prediction result views.",
+    "technologies": [
+      "Python",
+      "Django REST Framework",
+      "React",
+      "NumPy",
+      "TensorFlow / Keras",
+      "Pandas",
+      "Matplotlib",
+      "JWT",
+      "Vercel"
+    ],
+    "role": "Built the React analysis portal and Django REST API, connected ticker validation and cached market data to trained LSTM inference, and added authenticated profiles and watchlists.",
+    "challenges": "Keep price scaling limited to the earlier history segment, batch model inference, and isolate chart rendering while packaging trained weights for serverless execution.",
+    "impact": "Deployed a stock-analysis workflow combining historical charts, trained-model estimates, evaluation metrics, and per-account watchlists.",
     "githubUrl": "https://github.com/harshgavandit/Stock-Prediction_Portal_Python_ML",
-    "slug": "stock-prediction-portal-python-ml"
+    "slug": "stock-prediction-portal-python-ml",
+    "demoUrl": "https://stock-prediction-portal-kohl.vercel.app",
+    "aliases": ["Stock Prediction Portal Python ML", "Stock Prediction Portal"]
   },
   {
     "id": 21,

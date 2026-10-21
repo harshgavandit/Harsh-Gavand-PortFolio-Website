@@ -19,7 +19,10 @@ import { codeTokens } from "../src/lib/codeTokens.ts";
 import { renderDemoOrigins, warmDemoRequests } from "../src/lib/demoWarmup.ts";
 import { startTraceReplay } from "../src/lib/traceReplay.ts";
 import { resumeStackGroups } from "../src/data/heroStack.ts";
-import { deploymentShowcase } from "../src/data/deploymentShowcase.ts";
+import {
+  deploymentShowcase,
+  deployedStudies,
+} from "../src/data/deploymentShowcase.ts";
 const projects = JSON.parse(
   readFileSync(new URL("../src/data/projects.json", import.meta.url), "utf8"),
 );
@@ -96,8 +99,9 @@ test("curated archive retains seven distinct catalog projects and flagship stack
   assert.ok(stack(3).includes("Sequelize"));
   for (const value of ["Next.js", "Plaid", "Appwrite"])
     assert.ok(!stack(3).includes(value));
-  assert.ok(stack(17).includes("Ollama"));
-  assert.equal(caseStudies.length, 4);
+  for (const value of ["FastAPI", "OpenAI API", "RSS / Feedparser"])
+    assert.ok(stack(17).includes(value));
+  assert.equal(caseStudies.length, 3);
   for (const study of caseStudies) assert.equal(study.engineering.length, 3);
 });
 test("preserves all original project identities while correcting editorial copy", () => {
@@ -189,8 +193,8 @@ test("every selected system-flow step includes implementation detail and truthfu
     assert.ok(study.accessDescription.length > 20);
   }
   assert.equal(
-    caseStudies.find((study) => study.projectId === 17).accessMode,
-    "Local Pipeline App",
+    deployedStudies.find((study) => study.projectId === 17).accessMode,
+    "Public interactive demo",
   );
 });
 test("all project identifiers are unique and repository/demo links are valid HTTPS URLs", () => {

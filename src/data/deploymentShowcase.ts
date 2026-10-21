@@ -4,6 +4,67 @@ import type { CaseEvidence } from "./caseEvidence.ts";
 // Deployed demos with dated workflow checks; restricted features are labelled explicitly.
 export const deploymentShowcase = [
   {
+    projectId: 20,
+    capture: "stock-prediction-live.jpg",
+    captureWidth: 1920,
+    captureHeight: 919,
+    verifiedOn: "21 October 2026",
+    reviewPath: "/verification/project-additions-2026-10-21.json",
+    alt: "Live Stock Prediction Portal introducing LSTM stock analysis, historical prices, moving averages, and account access",
+    revision: "94654e55aa1707de6e0c0a3bf56f68ce884da00f",
+    sourcePath: "backend-drf/api/views.py",
+    scope: "Historical stock analysis · LSTM estimates · Personal watchlists",
+    accessNotice: "Sign in to analyze stocks and save a watchlist.",
+    checks: [
+      "The live landing page loaded the LSTM overview and 100-day / 200-day moving-average features.",
+      "Opening Explore Now redirected to sign-in before the stock dashboard.",
+      "The public readiness endpoint reported a connected database and loaded model weights.",
+    ],
+    engineering: [
+      "Serverless ML inference: Run the trained Keras LSTM weights through batched NumPy inference, keeping the deployed prediction service independent of the TensorFlow runtime.",
+      "Time-series evaluation: Fit price scaling on the earlier 70% of history, construct 100-session sequences, and return model comparisons with MSE, RMSE, and R-squared.",
+      "Full-stack analysis workflow: Validate tickers in Django REST Framework, cache market and prediction responses, and connect JWT-authenticated React profiles and watchlists.",
+    ],
+    nodes: [
+      "React ticker selection",
+      "Django validation & market data",
+      "100-session price sequences",
+      "NumPy LSTM inference",
+      "Charts, metrics & watchlist",
+    ],
+  },
+  {
+    projectId: 17,
+    capture: "ai-news-email-live.jpg",
+    captureWidth: 1920,
+    captureHeight: 919,
+    verifiedOn: "21 October 2026",
+    reviewPath: "/verification/project-additions-2026-10-21.json",
+    alt: "Live AI Brief reading room showing OpenAI source filtering, date controls, search, and source-linked news cards",
+    revision: "a7407d0090a95b743db91f181ec46ec84141dfa0",
+    sourcePath: "app/web_digest.py",
+    scope:
+      "Live RSS reader · Personalized OpenAI digests · HTML and Gmail delivery",
+    accessNotice: "Email delivery uses the owner access key.",
+    checks: [
+      "The live reading room loaded source-linked RSS stories.",
+      "Selecting the OpenAI source filtered the reader to OpenAI stories.",
+      "The digest composer exposed reader interests, source selection, time windows, and three-story / five-story options.",
+    ],
+    engineering: [
+      "Source-aware ingestion: Fetch publisher RSS feeds concurrently, normalize dates and excerpts, deduplicate by URL, and retain cached stories when upstream feeds fail.",
+      "Parallel AI curation: Summarize selected excerpts with OpenAI, rank them against reader interests, and preserve source IDs and links through the composed digest.",
+      "Controlled email delivery: Cache repeated digests, escape exported HTML, sign previews with HMAC, and validate owner access before sending to the configured Gmail inbox.",
+    ],
+    nodes: [
+      "RSS feeds & reader filters",
+      "Normalized source records",
+      "Parallel OpenAI summaries",
+      "Interest-based ranking",
+      "Digest preview, HTML & Gmail",
+    ],
+  },
+  {
     projectId: 30,
     capture: "healthcare-explorer-live.jpg",
     verifiedOn: "21 October 2026",

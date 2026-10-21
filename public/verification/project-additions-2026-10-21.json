@@ -1,0 +1,124 @@
+{
+  "reviewedOn": "2026-10-21",
+  "verifiedAt": "2026-10-21T10:09:29.949543+00:00",
+  "timezone": "Asia/Kolkata",
+  "verifiedPublicProjects": [
+    {
+      "slug": "stock-prediction-portal-python-ml",
+      "links": [
+        {
+          "url": "https://stock-prediction-portal-kohl.vercel.app",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/Stock-Prediction_Portal_Python_ML",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/Stock-Prediction_Portal_Python_ML/blob/94654e55aa1707de6e0c0a3bf56f68ce884da00f/README.md",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/Stock-Prediction_Portal_Python_ML/blob/94654e55aa1707de6e0c0a3bf56f68ce884da00f/backend-drf/api/views.py",
+          "status": 200,
+          "passed": true
+        }
+      ],
+      "workflowChecks": [
+        "The live landing page loaded the LSTM overview and 100-day / 200-day moving-average features.",
+        "Opening Explore Now redirected to sign-in before the stock dashboard.",
+        "The public readiness endpoint reported a connected database and loaded model weights."
+      ],
+      "inspectedSource": {
+        "repository": "https://github.com/harshgavandit/Stock-Prediction_Portal_Python_ML",
+        "commit": "94654e55aa1707de6e0c0a3bf56f68ce884da00f"
+      },
+      "screenshot": {
+        "url": "/evidence/stock-prediction-live.jpg",
+        "width": 1920,
+        "height": 919,
+        "sha256": "e87765f8f4b5162235ccd5a20ed4bc6f48383bdd0a05c458ef6f9378fd74a813"
+      }
+    },
+    {
+      "slug": "news-automation",
+      "links": [
+        {
+          "url": "https://ai-news-to-email-generator.vercel.app",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/AI_News_To_Email_Generator",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/AI_News_To_Email_Generator/blob/a7407d0090a95b743db91f181ec46ec84141dfa0/README.md",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/AI_News_To_Email_Generator/blob/a7407d0090a95b743db91f181ec46ec84141dfa0/app/web_digest.py",
+          "status": 200,
+          "passed": true
+        }
+      ],
+      "workflowChecks": [
+        "The live reading room loaded source-linked RSS stories.",
+        "Selecting the OpenAI source filtered the reader to OpenAI stories.",
+        "The digest composer exposed reader interests, source selection, time windows, and three-story / five-story options."
+      ],
+      "inspectedSource": {
+        "repository": "https://github.com/harshgavandit/AI_News_To_Email_Generator",
+        "commit": "a7407d0090a95b743db91f181ec46ec84141dfa0"
+      },
+      "screenshot": {
+        "url": "/evidence/ai-news-email-live.jpg",
+        "width": 1920,
+        "height": 919,
+        "sha256": "11b8f39fa92669f2cd75f0dbe59276a2bf8abdb02c9093020eeb1c4edc7dbe2f"
+      }
+    }
+  ],
+  "publicApiChecks": [
+    {
+      "url": "https://stock-prediction-portal-kohl.vercel.app/",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "url": "https://stock-prediction-portal-kohl.vercel.app/api/v1/health/",
+      "status": 200,
+      "passed": true,
+      "body": {
+        "status": "ok",
+        "database": "connected",
+        "model": "ready"
+      }
+    },
+    {
+      "url": "https://ai-news-to-email-generator.vercel.app/",
+      "status": 200,
+      "passed": true
+    },
+    {
+      "url": "https://ai-news-to-email-generator.vercel.app/api/health",
+      "status": 200,
+      "passed": true,
+      "body": {
+        "status": "ok",
+        "ai_configured": true,
+        "email_configured": true
+      }
+    }
+  ],
+  "notes": [
+    "Stock analysis and watchlists require sign-in; the preview captures the public landing page. No stock inference request was submitted.",
+    "The news reader and digest composer were inspected; no generated digest or email send is represented as a successful live run by this report.",
+    "Technical descriptions were checked against the pinned public source revisions."
+  ]
+}

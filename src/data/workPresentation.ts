@@ -199,7 +199,6 @@ export const featuredStudies = [
   caseStudies[1],
   communityStudy,
   harnessStudy,
-  caseStudies[3],
 ];
 export const sampleWorkspaceURLs: Record<string, string> = {
   "ugc-platform": "https://ugc-project-harsh.vercel.app/demo",
