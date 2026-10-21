@@ -432,7 +432,7 @@
 }
 .project-gallery-tabs {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 6px;
   padding: 0 12px 12px;
 }
@@ -488,6 +488,9 @@
   }
   .project-gallery-tabs button {
     min-height: 62px;
+  }
+  .project-gallery-tabs button:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
   }
   .project-gallery-capture figcaption {
     min-height: 132px;

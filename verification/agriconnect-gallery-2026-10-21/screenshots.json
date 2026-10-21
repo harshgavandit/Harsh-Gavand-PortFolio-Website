@@ -14,5 +14,10 @@
   {
     "file": "public/evidence/agri-connect-assistant.jpg",
     "sha256": "3646d396630e45db56d70479262d3f92fc7dbbd1b608c3a71dac510627eb1133"
+  },
+  {
+    "file": "public/evidence/agri-connect-marketplace.png",
+    "sha256": "8d169efed9b33b764c90477fe14fb1ffaa7c2e215699f9ebd64ac5edda384c3f",
+    "source": "User-supplied attachment, 21 October 2026; unaltered PNG"
   }
 ]

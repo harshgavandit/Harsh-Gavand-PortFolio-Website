@@ -2,11 +2,13 @@
 
 Verified on 21 October 2026 (Asia/Kolkata).
 
-The featured AgriConnect card and its existing case study now share a four-view screenshot gallery. The administrator overview is the initial view. The other views show TOTP security status, catalogue moderation, and a live AI response explaining the Photo-sell listing workflow.
+The featured AgriConnect card and its existing case study share a five-view screenshot gallery. The administrator overview remains the initial view. The other views show TOTP security status, catalogue moderation, a live AI response explaining the Photo-sell listing workflow, and the marketplace home with its map and seller tools.
 
 ## Capture provenance
 
 All four JPEGs are real captures from the deployed AgriConnect application in the user's authenticated Chrome session. No generated interface images, staged dashboard values, or edited DOM were used.
+
+The fifth image, `agri-connect-marketplace.png`, is the latest screenshot supplied by the user on 21 October 2026. It is copied byte-for-byte from the attachment, preserving its original image and browser context. The earlier duplicate attachment was not added.
 
 | File in `public/evidence/` | Deployed screen | Dimensions |
 | --- | --- | --- |
@@ -14,6 +16,7 @@ All four JPEGs are real captures from the deployed AgriConnect application in th
 | `agri-connect-security.jpg` | `/admin/control-centre/security` | 1900 × 855 |
 | `agri-connect-catalogue.jpg` | `/admin/control-centre/products` | 1901 × 910 |
 | `agri-connect-assistant.jpg` | Public marketplace assistant | 380 × 465 |
+| `agri-connect-marketplace.png` | User-supplied marketplace home and map | 1917 × 1097 |
 
 Source origin: https://agri-connect-flame.vercel.app
 
@@ -33,3 +36,9 @@ The security screen displays illustrative charts and posture scores; the gallery
 - The portfolio's required real-provider release evaluation passed 48/48 responses and 8/8 retrieval checks. `evaluation.json` records the current runtime fingerprint; the older audit report was preserved.
 
 Screenshot SHA-256 hashes are recorded in `screenshots.json`. GitHub delivery and the resulting deployment are verified separately after commit.
+
+### Marketplace image addition
+
+The supplied PNG loads as the fifth gallery panel on the homepage and case study, with its original dimensions, a full-size link, and descriptive alt text. The initial admin view and the recent removal of capture/date boilerplate are preserved. The five desktop tabs share a row; the last mobile tab spans both columns.
+
+Fresh lint, TypeScript, production build, 32 prerender checks, and the unchanged AI release fingerprint passed. Browser checks confirmed the new image loads at 1917 × 1097, ArrowRight wraps from the fifth tab to the first, End selects the fifth tab, one panel remains visible, and the 390px layout has no horizontal overflow. Temporary viewport sizing was reset.

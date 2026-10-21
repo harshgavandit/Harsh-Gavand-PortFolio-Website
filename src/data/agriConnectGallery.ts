@@ -39,4 +39,14 @@ export const agriConnectGallery = [
     description:
       "A live response guides a seller through Photo-sell and product-listing steps. The assistant explains the workflow without publishing a listing on the user's behalf.",
   },
+  {
+    id: "marketplace",
+    label: "Marketplace & map",
+    src: "/evidence/agri-connect-marketplace.png",
+    alt: "AgriConnect marketplace home with produce discovery, a regional map, and quick access to seller and platform tools",
+    width: 1917,
+    height: 1097,
+    description:
+      "The marketplace home brings produce discovery, map views, and quick access to seller, logistics, and platform tools into one workspace.",
+  },
 ] as const;

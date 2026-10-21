@@ -307,8 +307,8 @@ test("AgriConnect renders a public case study, screenshot, complete stack, and c
     await (await fetch(origin + "/sitemap.xml")).text(),
     /\/work\/agri-connect\//,
   );
-  assert.equal(agriConnectGallery.length, 4);
-  assert.equal(new Set(agriConnectGallery.map((item) => item.src)).size, 4);
+  assert.equal(agriConnectGallery.length, 5);
+  assert.equal(new Set(agriConnectGallery.map((item) => item.src)).size, 5);
   for (const capture of agriConnectGallery) {
     for (const surface of [card, page]) {
       assert.ok(surface.includes(`src="${capture.src}"`));
@@ -319,9 +319,16 @@ test("AgriConnect renders a public case study, screenshot, complete stack, and c
     }
     const image = await fetch(origin + capture.src);
     assert.equal(image.status, 200, capture.src);
-    assert.match(image.headers.get("content-type"), /image\/jpeg/);
+    const isPNG = capture.src.endsWith(".png");
+    assert.match(
+      image.headers.get("content-type"),
+      isPNG ? /image\/png/ : /image\/jpeg/,
+    );
     const bytes = Buffer.from(await image.arrayBuffer());
-    assert.equal(bytes.subarray(0, 3).toString("hex"), "ffd8ff");
+    assert.equal(
+      bytes.subarray(0, isPNG ? 8 : 3).toString("hex"),
+      isPNG ? "89504e470d0a1a0a" : "ffd8ff",
+    );
     assert.deepEqual(
       bytes,
       await readFile(new URL("../public" + capture.src, import.meta.url)),
@@ -331,20 +338,27 @@ test("AgriConnect renders a public case study, screenshot, complete stack, and c
   assert.match(card, /2FA &amp; security/);
   assert.match(card, /Catalogue operations/);
   assert.match(card, /AI assistance/);
+  assert.match(card, /Marketplace &amp; map/);
   assert.match(card, /illustrative, not independent security results/);
   assert.doesNotMatch(
     card,
     /Live app captures|Admin areas require authorised access/,
   );
-  assert.equal([...card.matchAll(/role="tab"/g)].length, 4);
-  assert.equal([...card.matchAll(/role="tabpanel"/g)].length, 4);
+  assert.equal(
+    [...card.matchAll(/role="tab"/g)].length,
+    agriConnectGallery.length,
+  );
+  assert.equal(
+    [...card.matchAll(/role="tabpanel"/g)].length,
+    agriConnectGallery.length,
+  );
   assert.equal([...card.matchAll(/aria-selected="true"/g)].length, 1);
   const tabs = [
     ...card.matchAll(
       /id="([^"]+)"[^>]*role="tab"[^>]*aria-selected="(true|false)"[^>]*aria-controls="([^"]+)"[^>]*tabindex="(0|-1)"/g,
     ),
   ];
-  assert.equal(tabs.length, 4);
+  assert.equal(tabs.length, agriConnectGallery.length);
   for (const [, id, selected, panel, tabIndex] of tabs) {
     assert.ok(
       card.includes(`id="${panel}" role="tabpanel" aria-labelledby="${id}"`),
@@ -429,8 +443,8 @@ test("remaining pages have connected ARIA relationships and predictable keyboard
     (html.match(/role="tabpanel"/g) || []).length,
     agriConnectGallery.length,
   );
-  assert.equal(nextTabIndex("ArrowLeft", 0, agriConnectGallery.length), 3);
-  assert.equal(nextTabIndex("ArrowRight", 3, agriConnectGallery.length), 0);
+  assert.equal(nextTabIndex("ArrowLeft", 0, agriConnectGallery.length), 4);
+  assert.equal(nextTabIndex("ArrowRight", 4, agriConnectGallery.length), 0);
   assert.equal((ai.match(/role="tablist"/g) || []).length, 1);
   assert.equal((ai.match(/aria-selected="true"/g) || []).length, 1);
   assert.equal((ai.match(/role="tabpanel"/g) || []).length, 3);
