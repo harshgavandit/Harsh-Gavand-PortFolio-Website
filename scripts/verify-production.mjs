@@ -7,6 +7,7 @@ import {
   assertProfessionalCopy,
   siteOrigin,
 } from "./prerender-checks.mjs";
+import { chapters } from "../src/data/recruiter.ts";
 import { profile } from "../src/data/portfolio.ts";
 import { workStudies, featuredStudies } from "../src/data/workPresentation.ts";
 import {
@@ -153,7 +154,7 @@ const report = {
   origin,
   homeBytes: Buffer.byteLength(home),
   archiveBytes: Buffer.byteLength(archive),
-  chapters: 5,
+  chapters: chapters.length,
   flagshipCards: featuredStudies.length,
   curatedRows: 8,
   archiveProjects: archiveProjects.length,

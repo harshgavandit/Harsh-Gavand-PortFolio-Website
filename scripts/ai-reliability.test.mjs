@@ -63,7 +63,7 @@ test("duration and production-operation claims stay partial even when the techno
     assert.equal(result.requirements[0].assessment, "partial");
   }
 });
-test("an employment stack tag alone cannot establish a delivered Kubernetes workflow", () => {
+test("pruned employment tags cannot establish a delivered Kubernetes workflow", () => {
   const task = buildTask(
     "recruiter",
     { text: "Kubernetes development experience is required." },
@@ -80,7 +80,8 @@ test("an employment stack tag alone cannot establish a delivered Kubernetes work
       },
     ],
   });
-  assert.equal(result.requirements[0].assessment, "partial");
+  assert.equal(result.requirements[0].assessment, "not_shown");
+  assert.deepEqual(result.requirements[0].evidence, []);
 });
 test("the contradictory refund claim from the audit fails the grader and runtime output guard", async () => {
   const answer =

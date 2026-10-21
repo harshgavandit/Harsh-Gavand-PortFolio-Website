@@ -7,7 +7,7 @@ import { profile } from "./data/portfolio";
 import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
 import { FeaturedWork } from "./components/Work";
-import { Experience, Skills } from "./components/Profile";
+import { About, Experience, Skills } from "./components/Profile";
 import { MotionPreferencesProvider } from "./components/MotionPreferences";
 import { Contact, Footer } from "./components/Contact";
 import { AssistantEntry } from "./components/AssistantEntry";
@@ -129,7 +129,15 @@ export default function Portfolio({
         "",
         pathname + window.location.search + fragment,
       );
-    document.getElementById(fragment.slice(1))?.scrollIntoView();
+    const target = document.getElementById(fragment.slice(1));
+    // Reveal native disclosures before scrolling to a previously shared link.
+    for (
+      let parent = target?.parentElement;
+      parent;
+      parent = parent.parentElement
+    )
+      if (parent instanceof HTMLDetailsElement) parent.open = true;
+    target?.scrollIntoView();
   }, [pathname, hash]);
   return (
     <MotionPreferencesProvider>
@@ -155,9 +163,10 @@ export default function Portfolio({
             element={
               <main id="main" tabIndex={-1}>
                 <Hero />
-                <FeaturedWork />
                 <Experience />
+                <FeaturedWork />
                 <Skills />
+                <About />
                 <Contact />
               </main>
             }

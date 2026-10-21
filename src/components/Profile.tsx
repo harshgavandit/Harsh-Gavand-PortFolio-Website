@@ -1,56 +1,38 @@
-import {
-  aboutProfile,
-  engineeringSprints,
-  profile,
-} from "../data/portfolio";
+import { aboutProfile, profile } from "../data/portfolio";
 import { experienceForDisplay as experience } from "../data/experiencePresentation";
-
+import { recognitionItems } from "../data/recognition";
 import { HeroStack } from "./HeroStack";
-
 import { LeadStatement, Tags } from "./Primitives";
 
 export function Experience() {
   return (
     <section
       id="experience"
-
       data-chapter="experience"
-
       className="section section-container"
-
       tabIndex={-1}
-
-      aria-label="Professional experience"
+      aria-label="Experience & Impact"
     >
+      <h2 className="section-title">Experience &amp; Impact</h2>
       <div className="experience-list">
         {experience.map((job, index) => (
           <article
             className="experience-card"
-
             id={`experience-${index}`}
-
             key={job.company}
           >
             <div className="experience-meta">
               <span className="eyebrow">{job.company}</span>
-
-              <p>
-                {job.period}
-                {index === 0 && " · Full-time"}
-              </p>
-
-              <p>Based in {profile.location}</p>
+              <p>{job.period}</p>
+              <p>{job.context}</p>
+              <p>{profile.location}</p>
             </div>
-
             <div>
               <h3>{job.role}</h3>
-
               <p className="shipment-banner">
                 <span>Delivered</span>
-
                 {job.shipment}
               </p>
-
               <ul className="engineering-bullets">
                 {job.points.map((point) => (
                   <li key={point}>
@@ -58,106 +40,67 @@ export function Experience() {
                   </li>
                 ))}
               </ul>
-
               <details className="role-context">
-                <summary>Technologies</summary>
+                <summary>Core technologies</summary>
                 <Tags items={job.tech} />
               </details>
             </div>
           </article>
         ))}
       </div>
+    </section>
+  );
+}
 
-      <div className="profile-brief" id="about">
+export function About() {
+  return (
+    <section
+      id="about"
+      data-chapter="about"
+      className="section section-container"
+      tabIndex={-1}
+      aria-label="About & Recognition"
+    >
+      <div className="profile-brief">
         <div className="about-summary">
           <img
             className="profile-photo"
-
             src="/portrait/harsh-profile.webp"
-
             width={270}
-
             height={600}
-
             loading="lazy"
-
             alt="Harsh Gavand"
           />
-
           <span className="eyebrow">About me</span>
-
-          <h3>Curious about the whole system.</h3>
-
+          <h2 className="section-title">Curious about the whole system.</h2>
           <p>{aboutProfile.summary}</p>
         </div>
-
         <div className="education-card">
           <span className="eyebrow">Education</span>
-
-          <h4>{aboutProfile.education.degree}</h4>
-
+          <h3>{aboutProfile.education.degree}</h3>
           <p>{aboutProfile.education.details}</p>
-
           <span className="eyebrow">Based in</span>
-
-          <p>
-            {profile.location} · {profile.workPreference}
-          </p>
+          <p>{profile.locationLabel}</p>
         </div>
       </div>
-
-      <div className="recognition" id="hackathon-recognition">
-        <span className="eyebrow">Hackathons & recognition</span>
-
+      <div
+        className="recognition"
+        id="hackathon-recognition"
+        aria-labelledby="recognition-title"
+      >
+        <h3 id="recognition-title">Hackathons &amp; recognition</h3>
         <div className="recognition-grid">
-          {aboutProfile.recognition.map((item, index) => (
-            <div key={item}>
-              <strong>{["Top 5", "Top 10", "Top 100"][index]}</strong>
-
-              <p>{item.split(" — ")[1]}</p>
-
-              {index < 2 && (
+          {recognitionItems.map((item) => (
+            <article key={item.title}>
+              <strong>{item.badge}</strong>
+              <h4>{item.title}</h4>
+              <p className="recognition-context">{item.context}</p>
+              {item.summary && <p>{item.summary}</p>}
+              {item.href && (
                 <a
                   className="text-link"
-
-                  href={
-                    index === 0
-                      ? "https://github.com/harshgavandit/SuperVity-AutoPilot-AI-Hackathon"
-                      : "https://github.com/harshgavandit/OpenAI_Project-"
-                  }
-
+                  href={item.href}
                   target="_blank"
-
-                  rel="noopener noreferrer"
-                >
-                  View project ↗
-                </a>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="engineering-sprints" aria-labelledby="sprints-title">
-        <h3 id="sprints-title">Hackathons &amp; Engineering Sprints</h3>
-
-        <div className="sprints-grid">
-          {engineeringSprints.map((sprint) => (
-            <article key={sprint.title}>
-              <span className="eyebrow">{sprint.kind}</span>
-
-              <h4>{sprint.title}</h4>
-
-              <p>{sprint.summary}</p>
-
-              {sprint.href && (
-                <a
-                  className="text-link"
-
-                  href={sprint.href}
-
-                  target="_blank"
-
                   rel="noopener noreferrer"
                 >
                   Explore the build ↗
@@ -175,21 +118,17 @@ export function Skills() {
   return (
     <section
       id="skills"
-
       className="section section-container"
-
       tabIndex={-1}
-
       data-chapter="skills"
       aria-label="Skills"
     >
       <aside className="ai-workspace-teaser">
         <div>
-          <span className="eyebrow">Try the implementation</span>
-          <h3>A working AI workspace.</h3>
+          <h2 className="section-title">Architecture &amp; Skills</h2>
           <p>
-            Ask the code, compare a role, or run a live ticket-classification
-            workflow.
+            Explore the code, compare a role, or inspect structured ticket
+            routing.
           </p>
         </div>
         <a className="button button-secondary" href="/ai/">
@@ -198,11 +137,11 @@ export function Skills() {
       </aside>
       <details className="full-stack-disclosure" id="workflow">
         <summary>
-          View full stack <span>Languages, frameworks & infrastructure</span>
+          View full stack{" "}
+          <span>Core languages, frameworks &amp; infrastructure</span>
         </summary>
         <HeroStack />
       </details>
-
     </section>
   );
 }

@@ -5,7 +5,7 @@ import {
   profile,
 } from "../src/data/portfolio.ts";
 import { featuredStudies } from "../src/data/workPresentation.ts";
-import { curatedArchive } from "../src/data/recruiter.ts";
+import { chapters, curatedArchive } from "../src/data/recruiter.ts";
 
 export function siteOrigin(value) {
   const url = new URL(value);
@@ -82,16 +82,13 @@ export function assertHomepage(html, origin = profile.site) {
     html.includes(`${origin}/social-preview.png`),
     "Incorrect social preview origin",
   );
-  const chapterIds = [...html.matchAll(/data-chapter="([a-z]+)"/g)].map(
+  const chapterIds = [...html.matchAll(/data-chapter="([a-z-]+)"/g)].map(
     (match) => match[1],
   );
-  assert.deepEqual(chapterIds, [
-    "hero",
-    "projects",
-    "experience",
-    "skills",
-    "contact",
-  ]);
+  assert.deepEqual(
+    chapterIds,
+    chapters.map((chapter) => chapter.id),
+  );
   assert.ok(
     !html.includes("data-chapter-number="),
     "Decorative chapter numbers must stay removed",

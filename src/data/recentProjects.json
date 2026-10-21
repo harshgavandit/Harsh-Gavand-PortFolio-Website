@@ -165,13 +165,13 @@
     "id": 33,
     "title": "Banking Agent Harness",
     "category": "AI Agents · Deterministic Controls",
-    "overview": "A banking agent harness that keeps model-selected actions inside deterministic Python policies. Transfer requests are staged for confirmation in a later turn, and Redis-backed sessions preserve isolated ledger state and execution outcomes.",
+    "overview": "A banking agent harness that keeps model-selected actions inside deterministic Python policies. The deployed FastAPI service stores each browser’s isolated ledger and pending confirmations in Upstash Redis across requests; local policy tests use in-memory account fixtures.",
     "features": [
       "Five banking tools manage account lookup, beneficiary validation, transfer requests, and ledger results.",
       "Python validates beneficiaries, amounts, balances, and daily limits.",
       "A staged transfer requires explicit confirmation in a later turn.",
       "Tool outcomes and account balances expose whether a ledger operation executed.",
-      "Redis-backed browser sessions retain isolated ledger state across requests."
+      "Upstash Redis persists browser-scoped ledger and confirmation state; local tests isolate account fixtures in memory."
     ],
     "technologies": [
       "Python",

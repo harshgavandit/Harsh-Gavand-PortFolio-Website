@@ -192,13 +192,19 @@ export const workStudies = [
   agriConnectStudy,
   ...deployedStudies.filter((study) => study.projectId !== 33),
 ];
-export const featuredStudies = [
-  agriConnectStudy,
-  caseStudies[0],
-  ...deployedStudies.filter((study) => study.projectId !== 33),
-  caseStudies[1],
+export const primaryFeaturedStudies = [
   communityStudy,
+  caseStudies[0],
+  agriConnectStudy,
   harnessStudy,
+  caseStudies[1],
+];
+export const secondaryFeaturedStudies = deployedStudies.filter(
+  (study) => study.projectId !== 33,
+);
+export const featuredStudies = [
+  ...primaryFeaturedStudies,
+  ...secondaryFeaturedStudies,
 ];
 export const sampleWorkspaceURLs: Record<string, string> = {
   "ugc-platform": "https://ugc-project-harsh.vercel.app/demo",

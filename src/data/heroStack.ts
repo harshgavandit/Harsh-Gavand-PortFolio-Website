@@ -20,8 +20,8 @@ const pattern = (name: string, motif: StackMotif): StackItem => ({
   motif,
 });
 
-// Transcribed from the supplied résumé; spelling is normalized for display.
-// TypeScript and Keras also remain from the established portfolio/project stack.
+// Core tools evidenced by employment records and linked projects.
+// WebRTC remains because the linked video-conferencing application uses it.
 export const resumeStackGroups = [
   {
     id: "frontend",
@@ -31,8 +31,6 @@ export const resumeStackGroups = [
       brand("Next.js", "nextdotjs"),
       brand("TypeScript", "typescript"),
       brand("JavaScript ES6+", "javascript"),
-      brand("HTML5", "html5"),
-      brand("CSS3", "css"),
       brand("Tailwind CSS", "tailwindcss"),
     ],
   },
@@ -47,7 +45,6 @@ export const resumeStackGroups = [
       brand("Django REST Framework", "django"),
       brand("Flask", "flask"),
       brand("FastAPI", "fastapi"),
-      brand("Mongoose", "mongoose"),
       pattern("REST APIs", "api"),
       brand("JWT Auth", "jsonwebtokens"),
       brand("Clerk", "clerk"),
@@ -57,14 +54,12 @@ export const resumeStackGroups = [
   },
   {
     id: "data",
-    title: "Databases & streaming",
+    title: "Databases & persistence",
     items: [
       brand("MongoDB", "mongodb"),
       brand("PostgreSQL", "postgresql"),
       brand("MySQL", "mysql"),
-      brand("DynamoDB", "dynamodb"),
       brand("Redis", "redis"),
-      brand("Kafka", "apachekafka"),
       brand("SQLAlchemy", "sqlalchemy"),
       pattern("SQL", "data"),
       pattern("Vector Databases", "data"),
@@ -72,26 +67,15 @@ export const resumeStackGroups = [
   },
   {
     id: "ai",
-    title: "AI, ML & data science",
+    title: "Applied AI & machine learning",
     items: [
-      brand("Pandas", "pandas"),
-      brand("NumPy", "numpy"),
-      brand("scikit-learn", "scikitlearn"),
       brand("TensorFlow", "tensorflow"),
-      brand("Keras", "keras"),
-      pattern("Matplotlib", "analysis"),
-      pattern("yfinance", "analysis"),
       brand("LangChain", "langchain"),
       brand("LangGraph", "langgraph"),
-      pattern("LLM APIs", "ai"),
       pattern("OpenAI APIs", "ai"),
+      pattern("Google ADK", "ai"),
       pattern("RAG", "ai"),
       pattern("Embeddings", "data"),
-      pattern("LSTM Forecasting", "analysis"),
-      pattern("MinMax Scaling", "analysis"),
-      pattern("Anomaly Detection", "analysis"),
-      pattern("Moving Average Analysis", "analysis"),
-      pattern("Computer Vision", "vision"),
     ],
   },
   {
@@ -100,9 +84,7 @@ export const resumeStackGroups = [
     items: [
       brand("Docker", "docker"),
       brand("Docker Compose", "docker"),
-      brand("Gunicorn", "gunicorn"),
       brand("AWS", "aws"),
-      brand("GCP", "googlecloud"),
       brand("Cloudinary", "cloudinary"),
       brand("Linux", "linux"),
       pattern("CI/CD", "workflow"),
@@ -111,18 +93,12 @@ export const resumeStackGroups = [
   },
   {
     id: "tools",
-    title: "Tools & engineering foundations",
+    title: "Engineering workflow",
     items: [
       brand("Git", "git"),
       brand("GitHub", "github"),
       brand("Postman", "postman"),
-      brand("Cursor", "cursor"),
-      pattern("Codex", "terminal"),
-      brand("Claude Code", "claude"),
-      pattern("Antigravity", "orbit"),
-      pattern("DSA & OOP", "code"),
       pattern("Async Tasks", "workflow"),
-      pattern("Scripting & Automation", "terminal"),
       pattern("Data Pipelines", "workflow"),
     ],
   },

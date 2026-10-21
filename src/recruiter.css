@@ -1130,17 +1130,6 @@ td:last-child a {
 .contact-email svg {
   flex-shrink: 0;
 }
-.copy-email {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: transparent;
-  border: 0;
-  padding: 8px 0;
-  min-height: 44px;
-  font-size: 0.72rem;
-  color: var(--muted);
-}
 .contact-socials {
   display: flex;
   gap: 20px;
@@ -1250,7 +1239,9 @@ textarea:focus {
 }
 .footer-name {
   display: block;
-  font: 700 1.35rem/1.2 "Space Grotesk Variable", sans-serif;
+  font:
+    700 1.35rem/1.2 "Space Grotesk Variable",
+    sans-serif;
   letter-spacing: -0.035em;
   white-space: nowrap;
 }
@@ -1813,44 +1804,6 @@ textarea:focus {
   .menu-toggle {
     display: grid;
     place-items: center;
-  }
-  .mobile-menu {
-    display: grid;
-    gap: 20px;
-    padding: 16px 20px 24px;
-    max-height: calc(100dvh - 112px);
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    border-top: 1px solid rgba(221, 237, 205, 0.12);
-  }
-  .mobile-menu nav {
-    display: grid;
-  }
-  .mobile-menu nav a {
-    padding: 12px 14px;
-    min-height: 48px;
-    display: flex;
-    border-radius: 10px;
-    font-size: 0.9375rem;
-    color: var(--text);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    border: 1px solid transparent;
-  }
-  .mobile-menu nav a:hover {
-    color: var(--accent);
-    border-color: rgba(208, 245, 157, 0.25);
-    background: rgba(208, 245, 157, 0.08);
-  }
-  .mobile-menu > button {
-    min-height: 44px;
-    justify-self: start;
-    padding: 10px 15px;
-    border-radius: 12px;
-  }
-  .mobile-menu .header-socials {
-    border-left: 0;
-    padding-left: 0;
   }
   .hero-layout {
     grid-template-columns: 1fr 1fr;

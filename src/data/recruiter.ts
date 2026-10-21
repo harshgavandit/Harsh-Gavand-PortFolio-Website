@@ -1,8 +1,9 @@
 export const chapters = [
   { id: "hero", label: "Introduction", navLabel: "Intro" },
-  { id: "projects", label: "Selected Work", navLabel: "Work" },
   { id: "experience", label: "Experience & Impact", navLabel: "Experience" },
+  { id: "projects", label: "Selected Work", navLabel: "Work" },
   { id: "skills", label: "Architecture & Skills", navLabel: "Skills" },
+  { id: "about", label: "About & Recognition", navLabel: "About" },
   { id: "contact", label: "Contact", navLabel: "Contact" },
 ] as const;
 
@@ -111,39 +112,44 @@ export const recruiterPromptGroups = [
 
 export const curatedArchive = [
   {
-    projectId: 33,
+    projectId: 1,
     year: "2026",
-    feature: "Deterministic transfer policy and later-turn confirmation",
+    feature: "Repository ownership, issue relationships, and local feed search",
   },
   {
-    projectId: 37,
+    projectId: 27,
     year: "2026",
-    feature: "BM25 + vector retrieval with Reciprocal Rank Fusion",
+    feature: "Two-agent financial research with timestamped source links",
   },
   {
-    projectId: 31,
+    projectId: 28,
     year: "2026",
-    feature: "Semantic answer reuse with source-page retention",
+    feature: "Route summaries and geographically bounded Maps tools",
   },
   {
-    projectId: 30,
+    projectId: 34,
     year: "2026",
-    feature: "MCP discovery and bounded read-only SQL tools",
+    feature: "Structured AWS Cloud Control and CloudWatch operations",
   },
   {
-    projectId: 35,
+    projectId: 10,
     year: "2026",
-    feature: "Separate conversational intake and approval graphs",
+    feature: "Research collection, retrieval, and summarization handoffs",
   },
   {
-    projectId: 36,
+    projectId: 8,
     year: "2026",
-    feature: "Async transcription → generation → speech playback",
+    feature: "Structured API diagnostics and failure analysis",
   },
   {
-    projectId: 29,
+    projectId: 12,
     year: "2026",
-    feature: "Validated cart state across four ADK agents",
+    feature: "Messaging endpoints and webhook integration workflows",
+  },
+  {
+    projectId: 23,
+    year: "2026",
+    feature: "Serializer contracts, authentication, and database permissions",
   },
 ];
 

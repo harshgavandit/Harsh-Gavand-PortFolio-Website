@@ -4,7 +4,11 @@ import { privateProjects, type PrivateProject } from "../data/privateProjects";
 import { curatedArchive } from "../data/recruiter";
 import { ActionLink, LeadStatement, Tags } from "./Primitives";
 import { ProductEvidence } from "./ProductEvidence";
-import { featuredStudies } from "../data/workPresentation";
+import {
+  featuredStudies,
+  primaryFeaturedStudies,
+  secondaryFeaturedStudies,
+} from "../data/workPresentation";
 import { caseEvidence } from "../data/caseEvidence";
 export function ProjectNotes({ project }: { project: Project }) {
   const evidence = caseEvidence[project.slug];
@@ -110,13 +114,27 @@ export function FeaturedWork() {
       aria-label="Selected work"
     >
       <div className="flagship-list">
+        {primaryFeaturedStudies.map((study) => (
+          <CaseStudyCard key={study.projectId} study={study} />
+        ))}
         {privateProjects.map((project) => (
           <PrivateProjectCard key={project.id} project={project} />
         ))}
-        {featuredStudies.map((study) => (
-          <CaseStudyCard key={study.projectId} study={study} />
-        ))}
       </div>
+      <details id="more-deployed-work" className="secondary-work">
+        <summary>
+          More deployed applications{" "}
+          <span>
+            {secondaryFeaturedStudies.length} AI, retrieval &amp; workflow
+            projects
+          </span>
+        </summary>
+        <div className="flagship-list">
+          {secondaryFeaturedStudies.map((study) => (
+            <CaseStudyCard key={study.projectId} study={study} />
+          ))}
+        </div>
+      </details>
       <MoreWork />
     </section>
   );

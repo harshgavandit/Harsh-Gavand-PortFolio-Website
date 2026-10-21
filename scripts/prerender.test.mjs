@@ -57,7 +57,7 @@ after(async () => {
   await new Promise((resolve) => server.close(resolve));
 });
 
-test("home has five chapters with unnumbered navigation and a hidden mobile menu", () => {
+test("home has six chapters with unnumbered navigation and a hidden mobile menu", () => {
   const expected = chapters.map((chapter) => chapter.id);
   const main = html.split('<main id="main"')[1].split("</main>")[0];
   assert.deepEqual(
@@ -247,8 +247,8 @@ test("hosted support and healthcare cards expose engineering work and working pr
   assert.equal(report.publicApiChecks.length, 7);
   assert.ok(report.publicApiChecks.every((check) => check.passed === true));
   assert.ok(
-    !html.includes('id="all-projects"'),
-    "The empty additional-work section must not render",
+    html.includes('id="all-projects"'),
+    "The eight distinct curated repositories must remain discoverable",
   );
   for (const document of [
     html,
@@ -386,8 +386,8 @@ test("private internal project exposes the approved summary, features and stack 
       "Private project belongs in the Projects section",
     );
     assert.ok(
-      firstPublicPosition > projectPosition,
-      "Private project must appear before the public project cards",
+      projectPosition > firstPublicPosition,
+      "Private internal work remains after the primary public case studies",
     );
     const card = html.match(
       new RegExp(
@@ -916,21 +916,50 @@ test("the header and hero lists contain meaningful accessible content", () => {
   assert.match(html, /href="\/resume.pdf"[^>]*>View Resume/);
 });
 
-test("skills overview and engineering field notes are removed while Skills navigation remains usable", () => {
+test("removed field notes stay absent while Skills remains condensed", () => {
   assert.doesNotMatch(
     html,
-    /Tools, systems &amp; implementation\.|class="skills-grid"|class="skill-patterns"|class="skill-proofs"|Engineering field notes|id="engineering-lab"|Request Lifecycle Trace|hero-proof-tab|aria-label="Implementation language"/,
+    /id="engineering-lab"|Request Lifecycle Trace|Atomic reserve &amp; settle/,
   );
-  const skills = html.match(
-    /<section id="skills"[^>]*>([\s\S]*?)<\/section>/,
-  )?.[0];
-  assert.ok(skills);
-  assert.match(skills, /data-chapter="skills"/);
-  assert.match(skills, /aria-label="Skills"/);
-  assert.match(skills, /href="\/ai\/"/);
-  assert.match(skills, /<details class="full-stack-disclosure" id="workflow"/);
-  assert.match(skills, /View full stack/);
+  assert.doesNotMatch(html, /footer-nav|aria-label="Footer navigation"/);
+  assert.match(html, /<details class="full-stack-disclosure" id="workflow"/);
   assert.match(html, /href="#skills">Skills<\/a>/);
+  assert.match(html, /href="\/ai\/"/);
+  assert.doesNotMatch(
+    html,
+    /Tools, systems &amp; implementation\.|class="skills-grid"|class="additional-stack"/,
+  );
+});
+
+test("primary card ordering, expandable projects, unified recognition, and direct contact survive prerender", () => {
+  const main = html.split('<main id="main"')[1].split("</main>")[0];
+  const ids = [...main.matchAll(/<section id="([^"]+)"/g)].map(
+    (match) => match[1],
+  );
+  assert.deepEqual(
+    ids,
+    chapters.map((chapter) => chapter.id),
+  );
+  const projectSection = main.split('id="projects"')[1].split("</section>")[0];
+  assert.ok(
+    projectSection.indexOf('id="agri-samaj-community-platform"') <
+      projectSection.indexOf('id="ugc-platform"'),
+  );
+  assert.match(
+    projectSection,
+    /<details id="more-deployed-work" class="secondary-work">/,
+  );
+  assert.equal((main.match(/Supervity Autopilot Hackathon/g) || []).length, 1);
+  assert.doesNotMatch(main, /Hackathons &amp; Engineering Sprints/);
+  assert.match(main, /Top 5/);
+  assert.match(main, /500\+ participants · 24-hour build/);
+  assert.match(
+    html,
+    /© <!-- -->2026<!-- --> Harsh Gavand\. All rights reserved\./,
+  );
+  const contact = main.split('id="contact"')[1];
+  assert.doesNotMatch(contact, /<form|Prepare email draft/);
+  assert.match(contact, /mailto:harshgavand2@gmail.com/);
 });
 
 test("project pages show engineering work without source directories or preview commentary", async () => {

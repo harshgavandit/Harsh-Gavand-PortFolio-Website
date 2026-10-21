@@ -86,9 +86,9 @@ test("demo warmup deduplicates HTTPS Render origins and isolates request failure
     assert.equal(options.signal, controller.signal);
   }
 });
-test("curated archive retains seven distinct catalog projects and flagship stacks match reviewed source", () => {
-  assert.equal(curatedArchive.length, 7);
-  assert.equal(new Set(curatedArchive.map((item) => item.projectId)).size, 7);
+test("curated archive retains eight distinct catalog projects and flagship stacks match reviewed source", () => {
+  assert.equal(curatedArchive.length, 8);
+  assert.equal(new Set(curatedArchive.map((item) => item.projectId)).size, 8);
   for (const item of curatedArchive)
     assert.ok(catalog.some((project) => project.id === item.projectId));
   const stack = (id) =>
@@ -370,15 +370,9 @@ test("the hero stack covers resume technologies and only references valid local 
   for (const required of [
     "React",
     "Next.js",
-    "JavaScript ES6+",
-    "HTML5",
-    "CSS3",
-    "Tailwind CSS",
+    "TypeScript",
     "Node.js",
     "Express",
-    "Mongoose",
-    "JWT Auth",
-    "Socket.io",
     "WebRTC",
     "Python",
     "Django",
@@ -387,50 +381,25 @@ test("the hero stack covers resume technologies and only references valid local 
     "MongoDB",
     "PostgreSQL",
     "MySQL",
-    "DynamoDB",
     "Redis",
-    "Kafka",
-    "Pandas",
-    "NumPy",
-    "scikit-learn",
     "TensorFlow",
-    "LSTM Forecasting",
-    "Anomaly Detection",
-    "Moving Average Analysis",
     "RAG",
-    "LLM APIs",
     "Vector Databases",
     "Embeddings",
     "LangChain",
     "LangGraph",
-    "Computer Vision",
-    "Django REST Framework",
     "SQLAlchemy",
-    "Matplotlib",
-    "yfinance",
     "Clerk",
     "Cloudinary",
     "OpenAI APIs",
-    "MinMax Scaling",
+    "Google ADK",
     "Docker",
-    "Docker Compose",
-    "Gunicorn",
     "CI/CD",
     "Git",
     "GitHub",
     "Postman",
-    "Cursor",
-    "Codex",
-    "Claude Code",
-    "Antigravity",
     "AWS",
-    "GCP",
-    "Linux",
     "SQL",
-    "DSA & OOP",
-    "Async Tasks",
-    "Data Pipelines",
-    "Scripting & Automation",
   ])
     assert.ok(names.includes(required), required);
   const sprite = readFileSync(
@@ -521,7 +490,7 @@ test("availability, experience shipments and architectural skills carry concrete
   for (const job of experience) {
     assert.equal(
       job.points.length,
-      job.company === "Globetrek Engineering Corporation" ? 14 : 6,
+      job.company === "Globetrek Engineering Corporation" ? 5 : 4,
     );
     assert.ok(job.shipment.length > 40);
     assert.ok(job.points.every((point) => point.includes(": ")));

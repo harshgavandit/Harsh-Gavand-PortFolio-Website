@@ -96,7 +96,7 @@ export function Navigation() {
       }
     };
     const resize = () => {
-      if (window.innerWidth >= 1000) setOpen(false);
+      if (window.innerWidth >= 1280) setOpen(false);
     };
     window.addEventListener("keydown", key);
     window.addEventListener("resize", resize);

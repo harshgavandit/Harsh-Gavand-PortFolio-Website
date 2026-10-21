@@ -12,16 +12,16 @@ export function Hero() {
       <div className="hero-layout">
         <div className="hero-copy">
           <h1 id="hero-title" data-chapter="hero">
-            I Help Founders
+            Building Reliable Full-Stack Applications,
             <br />
-            <span>Build Reliable And Scalable Products.</span>
+            <span>Backend APIs &amp; Production AI Workflows.</span>
           </h1>
           <p className="hero-tenure">
             <span>
               Full-Stack Software Developer with <strong>2+ years</strong> of
-              hands-on experience designing, developing, and deploying end-to-end
-              web applications, scalable backend services, and AI-powered
-              solutions.
+              hands-on experience designing, developing, and deploying
+              end-to-end web applications, scalable backend services, and
+              AI-powered solutions.
             </span>
           </p>
           <div className="actions">
@@ -34,7 +34,7 @@ export function Hero() {
           </div>
           <p className="hero-location">
             <span className="status-dot" aria-hidden="true" />
-            Mumbai, India · Remote only
+            {profile.locationLabel}
           </p>
         </div>
         <figure className="hero-portrait">

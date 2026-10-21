@@ -1,12 +1,12 @@
 # Harsh Gavand — Full-Stack & AI Engineer
 
-A React + TypeScript portfolio organized around engineering decisions: five homepage chapters, 16 featured public project cards, dedicated private internal-work evidence, and a searchable 40-repository catalog at [/archive](https://harshgavand.dev/archive/). Agri Samaj remains a separate community project outside the archive.
+A React + TypeScript portfolio organized around engineering decisions: six homepage sections, five primary public project cards, eleven more deployed projects in a native disclosure, dedicated private internal-work evidence, and a searchable 40-repository catalog at [/archive](https://harshgavand.dev/archive/). Agri Samaj remains a separate community project outside the archive.
 
 [Live portfolio](https://harshgavand.dev/) · [Refactor verification](verification/recruiter-scan-2026-10-15/README.md) · [Recent AI repository sources](verification/github-projects-2026-10-15/sources.json)
 
 ## Recruiter review path
 
-The homepage connects Harsh's professional profile to application screenshots, technical contributions, and selected engineering work. Project cards and case studies explain features, architecture, challenges solved, technology choices, and supported outcomes. Skills provides the AI workspace link and the complete technology list under **View full stack**. The contact draft composer is optional. Assistant access is available from the corner launcher, navigation, and Ctrl/Command+K.
+The homepage connects Harsh's professional profile to application screenshots, technical contributions, and selected engineering work. Project cards and case studies explain features, architecture, challenges solved, technology choices, and supported outcomes. Skills provides the AI workspace link and the condensed technology list under **View full stack**. Contact offers direct email, Copy Email, résumé, GitHub, and LinkedIn actions. Assistant access is available from the corner launcher, navigation, and Ctrl/Command+K.
 
 Seventeen static case studies show product features, contributions, engineering work, architecture, complete technology stacks, and live/GitHub links. The selected projects include AgriConnect, UGC, deployed AI and RAG applications, Healthcare Explorer, and the Streamlit customer-support workflow. The catalog preserves active project identities and legacy fragments. Stock Prediction Portal and AI Brief use the same homepage cards, expandable project notes, architecture stages, complete stacks, and focused case studies as the other deployed applications. Their live/source links and screenshot provenance are recorded in `public/verification/project-additions-2026-10-21.json`.
 
@@ -24,21 +24,21 @@ The linked UGC public route uses `/demo`. Render-hosted LendFlow and DevGraph al
 
 ## Experience and structure
 
-The homepage has one shared chapter definition in `src/data/recruiter.ts`: Introduction, Selected Work, Experience & Impact, Architecture & Skills, and Contact. Navigation, section headings, and project/skills cards use plain labels without decorative numbering.
+The homepage has one shared chapter definition in `src/data/recruiter.ts`: Intro, Experience & Impact, Selected Work, Architecture & Skills, About & Recognition, and Contact. Header, mobile, and no-JavaScript navigation follow this order. The redundant footer navigation and Engineering Field Notes presentation are removed at the owner's request. Navigation, section headings, and project/skills cards use plain labels without decorative numbering.
 
 The hero introduces the developer and links to selected work. Shared project cards provide real application captures, engineering focus, live/source links, and expandable features, contributions, outcomes, and the complete stack. Case studies include keyboard-operable architecture stages. Project descriptions focus on architecture, implementation ownership, technical challenges, and supported outcomes.
 
-The additional-work disclosure appears only when there are non-featured curated projects. It is hidden when empty. The complete catalog has search and All / Latest AI / AI & ML / APIs & Tools / Web & SaaS filters. No invented performance, scale, financial, or clinical outcomes are added.
+Agri Samaj and UGC lead the five primary public cards. Eleven additional deployed cards retain complete screenshots, notes, links, and native no-JavaScript access in an expandable group. Eight curated archive rows are distinct from all sixteen public cards; DevGraph replaces the duplicate Banking Agent Harness row. Previously shared project fragments reveal their enclosing disclosures after hydration. The complete catalog has search and All / Latest AI / AI & ML / APIs & Tools / Web & SaaS filters. No invented performance, scale, financial, or clinical outcomes are added.
 
-Experience, education, the supplied portrait, recognition, skills, engineering principles, contact draft preparation, and the existing assistant remain available. The assistant opens from the corner launcher, header or mobile navigation, or Ctrl/Command+K. It offers six starter questions and nine additional questions grouped by project walkthroughs, AI/backend decisions, and engineering approach. After an answer, the complete question bank remains available through “Ask another question.” The chat response contract remains unchanged; quota cancellation and settlement recovery are described below.
+Experience uses one shared record per employer: five Globetrek bullets with fourteen core tools and four HRP bullets with ten core tools. Missing GIS measurement details and the employment arrangement during university remain developer-only TODO comments. Education, the supplied portrait, and recognition have their own section; each hackathon appears once. The assistant opens from the corner launcher, header or mobile navigation, or Ctrl/Command+K. It offers six starter questions and nine additional questions grouped by project walkthroughs, AI/backend decisions, and engineering approach. After an answer, the complete question bank remains available through “Ask another question.” The chat response contract remains unchanged; quota cancellation and settlement recovery are described below.
 
 The attached résumé is exported to `public/resume.pdf`, linked from the desktop header, mobile menu, hero, contact section, and assistant sources. The original Word document remains outside the repository. The two-page PDF preserves its text, formatting, and hyperlinks and was visually checked before publication. Contact also provides a Copy Email control with visible and live-region feedback.
 
 Availability is remote-only, shared between the hero, profile and contact badge. The primary recruiter address is `harshgavand2@gmail.com`; the earlier address remains an alternate. The supplied neon HG artwork is used in the header and favicon through small web derivatives.
 
-The introduction identifies the role as Full-Stack AI Engineer and describes 2+ years of full-stack, backend and AI engineering. A disclosed stack panel groups the résumé's technologies and capabilities into six readable categories with visible labels and decorative logo marks. The data includes the résumé's project libraries as well as its Technical Skills section, with TypeScript retained from the established portfolio. Brand marks use one self-hosted SVG sprite; source metadata and license notices are in `public/stack`, and no runtime icon CDN or icon font is required.
+The introduction positions the work around reliable full-stack applications, backend APIs, and production AI workflows. A disclosed stack panel groups 43 evidenced tools and patterns into six categories with visible labels and decorative logo marks. Peripheral coursework and AI IDE names are omitted. WebRTC remains backed by the linked conferencing project, and TensorFlow by the deployed next-word model. Brand marks use one self-hosted SVG sprite; source metadata and license notices are in `public/stack`, and no runtime icon CDN or icon font is required.
 
-Experience includes shipment banners, role highlights, and a sprint grid. The Skills navigation leads to the AI workspace link and the full technology list. PromptWars participation text is supplied by the owner; no competition ranking or public repository link is invented.
+Experience includes shipment banners and role highlights. The Skills navigation leads to the AI workspace link and condensed technology list. PromptWars participation text is supplied by the owner; no competition ranking or public repository link is invented.
 
 Quota lifecycle handling remains implemented in `server/quota-lifecycle.mjs`. An optional Python context-manager illustration is available in `examples/quota_lifecycle.py`; it is not a second deployed backend. Run its standard-library tests with `python -m unittest discover -s examples -p "test_*.py" -v`; a FastAPI host must propagate post-dispatch disconnect cancellation to the injected provider task.
 
@@ -129,7 +129,7 @@ npm run build
 npm run test:prerender
 ```
 
-The build automatically runs a browser-free React pre-render step for the homepage, archive, case studies, and 404 page. Client code hydrates the same component tree and build year. No API call, credential, running server, or headless browser is needed during the build. HTML is readable before JavaScript runs, including the five featured projects and all 38 archive entries with their complete notes.
+The build automatically runs a browser-free React pre-render step for the homepage, archive, case studies, and 404 page. Client code hydrates the same component tree and build year. No API call, credential, running server, or headless browser is needed during the build. HTML is readable before JavaScript runs, including all sixteen public cards, forty archive entries with complete notes, and native disclosures.
 
 The tests cover original project identities and assets, source metadata, assistant validation and failure contracts, quota admission, pre-dispatch rollback, durable retries, dead letters, crawler user agents, archive routing, every referenced HTML/CSS asset, JavaScript chunk syntax, unique IDs and anchors, chapter numbering, tab relationships and keyboard movement, copy/link cleanup, image attributes, and disclosure nesting. Local HTTP tests require loopback networking. Browser layout and device interaction review is a separate manual check; this refactor was verified at the code and HTTP levels at the user's request.
 
@@ -163,17 +163,17 @@ Import this repository into Vercel, deploy branch `main`, and attach `harshgavan
 
 Set the following under **Project Settings → Environment Variables → Production**, then redeploy:
 
-| Variable | Value |
-| --- | --- |
-| `SITE_URL` | `https://harshgavand.dev` (also the built-in default) |
-| `ALLOWED_ORIGINS` | `https://harshgavand.dev` (also the production default); comma-separate only real aliases |
-| `OPENAI_API_KEY` | Existing OpenAI project key; keep secret |
-| `OPENAI_MODEL` | `gpt-6-luna` |
-| `UPSTASH_REDIS_REST_URL` | Existing HTTPS Upstash REST endpoint |
-| `UPSTASH_REDIS_REST_TOKEN` | Existing writable REST token with EVAL access; keep secret |
-| `AI_DAILY_REQUEST_LIMIT` | `200` |
-| `AI_MONTHLY_BUDGET_USD` | `1.00` |
-| `CRON_SECRET` | Random secret of at least 32 characters |
+| Variable                   | Value                                                                                     |
+| -------------------------- | ----------------------------------------------------------------------------------------- |
+| `SITE_URL`                 | `https://harshgavand.dev` (also the built-in default)                                     |
+| `ALLOWED_ORIGINS`          | `https://harshgavand.dev` (also the production default); comma-separate only real aliases |
+| `OPENAI_API_KEY`           | Existing OpenAI project key; keep secret                                                  |
+| `OPENAI_MODEL`             | `gpt-6-luna`                                                                              |
+| `UPSTASH_REDIS_REST_URL`   | Existing HTTPS Upstash REST endpoint                                                      |
+| `UPSTASH_REDIS_REST_TOKEN` | Existing writable REST token with EVAL access; keep secret                                |
+| `AI_DAILY_REQUEST_LIMIT`   | `200`                                                                                     |
+| `AI_MONTHLY_BUDGET_USD`    | `1.00`                                                                                    |
+| `CRON_SECRET`              | Random secret of at least 32 characters                                                   |
 
 Use the existing quota database: the namespace remains `portfolio-ai:v1`, so moving hosts does not reset spending or lose queued settlements. Never put secrets in `VITE_*` variables. Vercel supplies its runtime environment; no manual `PORT`, `TRUST_PROXY`, `VERCEL` or start command is required. Node 24 is already pinned. `.env.example` contains placeholders only.
 
