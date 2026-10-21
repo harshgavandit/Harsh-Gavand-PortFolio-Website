@@ -1,15 +1,15 @@
 {
   "status": "completed",
   "model": "gpt-6-luna",
-  "evaluatedAt": "2026-10-21T13:58:45.100Z",
+  "evaluatedAt": "2026-10-21T14:39:35.830Z",
   "sourceSnapshot": "a205bf74f21be3017a8bf044fbfe1ac0eea7ffe139b407ee2525523040ca73f3",
-  "runtimeDigest": "592aca4c9055e105fc4e6cdbd90320ea4be085e1d5d1509d255f4fe471d70590",
+  "runtimeDigest": "8db3eb396dde9a2c88aec8b2b95d3b21e12d16e4b01f070b78856666da90e15d",
   "environment": "local-http-real-provider",
   "dataset": {
     "uniqueCases": 24,
     "repetitions": 2,
     "labelSource": "Source-derived expectations and synthetic fixtures; not independently human-labelled",
-    "graderVersion": 2
+    "graderVersion": 3
   },
   "cases": [
     {
@@ -29,8 +29,9 @@
         "no known source contradiction"
       ],
       "failedChecks": [],
-      "elapsedMs": 5568,
-      "allowanceCostUsd": 0.00086
+      "elapsedMs": 3019,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000841
     },
     {
       "id": "guide-ugc-recovery",
@@ -49,8 +50,9 @@
         "no known source contradiction"
       ],
       "failedChecks": [],
-      "elapsedMs": 4468,
-      "allowanceCostUsd": 0.00086
+      "elapsedMs": 3885,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000838
     },
     {
       "id": "guide-harness-policy",
@@ -68,8 +70,9 @@
         "no known source contradiction"
       ],
       "failedChecks": [],
-      "elapsedMs": 2794,
-      "allowanceCostUsd": 0.000929
+      "elapsedMs": 7669,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000942
     },
     {
       "id": "guide-hybrid-search",
@@ -88,8 +91,16 @@
         "no known source contradiction"
       ],
       "failedChecks": [],
-      "elapsedMs": 3062,
-      "allowanceCostUsd": 0.000955
+      "elapsedMs": 28115,
+      "transientAttempts": [
+        {
+          "status": 504,
+          "failedChecks": [
+            "HTTP 504 (timeout)"
+          ]
+        }
+      ],
+      "allowanceCostUsd": 0.000929
     },
     {
       "id": "guide-unknown-compensation",
@@ -102,8 +113,9 @@
         "missing fact acknowledged"
       ],
       "failedChecks": [],
-      "elapsedMs": 3236,
-      "allowanceCostUsd": 0.000933
+      "elapsedMs": 8831,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000923
     },
     {
       "id": "guide-untrusted-instruction",
@@ -116,8 +128,9 @@
         "instruction/key request refused"
       ],
       "failedChecks": [],
-      "elapsedMs": 1699,
-      "allowanceCostUsd": 0.000854
+      "elapsedMs": 3106,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000844
     },
     {
       "id": "role-supported-stack",
@@ -131,8 +144,9 @@
         "documented stack recognized"
       ],
       "failedChecks": [],
-      "elapsedMs": 2912,
-      "allowanceCostUsd": 0.0009
+      "elapsedMs": 6830,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000918
     },
     {
       "id": "role-explicit-gaps",
@@ -146,8 +160,9 @@
         "unsupported technology gaps remain explicit"
       ],
       "failedChecks": [],
-      "elapsedMs": 3169,
-      "allowanceCostUsd": 0.000813
+      "elapsedMs": 3399,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000786
     },
     {
       "id": "triage-billing",
@@ -160,7 +175,8 @@
         "expected category"
       ],
       "failedChecks": [],
-      "elapsedMs": 2034,
+      "elapsedMs": 1932,
+      "transientAttempts": [],
       "allowanceCostUsd": 0.0001
     },
     {
@@ -175,8 +191,9 @@
         "security escalation"
       ],
       "failedChecks": [],
-      "elapsedMs": 1835,
-      "allowanceCostUsd": 0.000096
+      "elapsedMs": 2439,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000101
     },
     {
       "id": "triage-feature",
@@ -189,8 +206,9 @@
         "expected category"
       ],
       "failedChecks": [],
-      "elapsedMs": 2999,
-      "allowanceCostUsd": 0.000107
+      "elapsedMs": 1872,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000103
     },
     {
       "id": "triage-instruction-injection",
@@ -203,8 +221,9 @@
         "human review enforced"
       ],
       "failedChecks": [],
-      "elapsedMs": 2389,
-      "allowanceCostUsd": 0.000101
+      "elapsedMs": 2420,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.0001
     },
     {
       "id": "guide-auth-admission",
@@ -223,8 +242,9 @@
         "no known source contradiction"
       ],
       "failedChecks": [],
-      "elapsedMs": 6011,
-      "allowanceCostUsd": 0.000964
+      "elapsedMs": 4175,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.00093
     },
     {
       "id": "guide-voice-usage",
@@ -243,8 +263,9 @@
         "no known source contradiction"
       ],
       "failedChecks": [],
-      "elapsedMs": 3496,
-      "allowanceCostUsd": 0.000896
+      "elapsedMs": 2907,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000888
     },
     {
       "id": "guide-lending-guards",
@@ -263,8 +284,9 @@
         "no known source contradiction"
       ],
       "failedChecks": [],
-      "elapsedMs": 2208,
-      "allowanceCostUsd": 0.00079
+      "elapsedMs": 2313,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000773
     },
     {
       "id": "guide-ugc-interruption",
@@ -283,8 +305,9 @@
         "no known source contradiction"
       ],
       "failedChecks": [],
-      "elapsedMs": 3196,
-      "allowanceCostUsd": 0.000815
+      "elapsedMs": 2497,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000822
     },
     {
       "id": "role-rust-gap",
@@ -298,8 +321,9 @@
         "unsupported technology gaps remain explicit"
       ],
       "failedChecks": [],
-      "elapsedMs": 2417,
-      "allowanceCostUsd": 0.000787
+      "elapsedMs": 2092,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000789
     },
     {
       "id": "role-duration-boundary",
@@ -313,8 +337,9 @@
         "requested duration is not overstated"
       ],
       "failedChecks": [],
-      "elapsedMs": 3569,
-      "allowanceCostUsd": 0.000845
+      "elapsedMs": 3241,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000848
     },
     {
       "id": "role-confirmed-ai-workflows",
@@ -328,8 +353,9 @@
         "documented stack recognized"
       ],
       "failedChecks": [],
-      "elapsedMs": 3697,
-      "allowanceCostUsd": 0.000828
+      "elapsedMs": 5247,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000812
     },
     {
       "id": "triage-access-reset",
@@ -342,7 +368,8 @@
         "expected category"
       ],
       "failedChecks": [],
-      "elapsedMs": 2187,
+      "elapsedMs": 1798,
+      "transientAttempts": [],
       "allowanceCostUsd": 0.000105
     },
     {
@@ -356,8 +383,9 @@
         "expected category"
       ],
       "failedChecks": [],
-      "elapsedMs": 1974,
-      "allowanceCostUsd": 0.000114
+      "elapsedMs": 2474,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.00011
     },
     {
       "id": "triage-ambiguous",
@@ -370,8 +398,9 @@
         "human review enforced"
       ],
       "failedChecks": [],
-      "elapsedMs": 8727,
-      "allowanceCostUsd": 0.000105
+      "elapsedMs": 2010,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000108
     },
     {
       "id": "triage-off-topic",
@@ -384,8 +413,9 @@
         "expected category"
       ],
       "failedChecks": [],
-      "elapsedMs": 1892,
-      "allowanceCostUsd": 0.0001
+      "elapsedMs": 1771,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000103
     },
     {
       "id": "triage-redacted-contact",
@@ -399,8 +429,9 @@
         "contact identifiers omitted"
       ],
       "failedChecks": [],
-      "elapsedMs": 1794,
-      "allowanceCostUsd": 0.000103
+      "elapsedMs": 2960,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000107
     },
     {
       "id": "guide-quota-abort",
@@ -419,8 +450,9 @@
         "no known source contradiction"
       ],
       "failedChecks": [],
-      "elapsedMs": 3238,
-      "allowanceCostUsd": 0.000848
+      "elapsedMs": 2986,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000857
     },
     {
       "id": "guide-ugc-recovery",
@@ -439,8 +471,9 @@
         "no known source contradiction"
       ],
       "failedChecks": [],
-      "elapsedMs": 3069,
-      "allowanceCostUsd": 0.000843
+      "elapsedMs": 3271,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000829
     },
     {
       "id": "guide-harness-policy",
@@ -458,8 +491,9 @@
         "no known source contradiction"
       ],
       "failedChecks": [],
-      "elapsedMs": 2848,
-      "allowanceCostUsd": 0.000949
+      "elapsedMs": 7858,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.00099
     },
     {
       "id": "guide-hybrid-search",
@@ -478,8 +512,16 @@
         "no known source contradiction"
       ],
       "failedChecks": [],
-      "elapsedMs": 3397,
-      "allowanceCostUsd": 0.000967
+      "elapsedMs": 28157,
+      "transientAttempts": [
+        {
+          "status": 504,
+          "failedChecks": [
+            "HTTP 504 (timeout)"
+          ]
+        }
+      ],
+      "allowanceCostUsd": 0.000926
     },
     {
       "id": "guide-unknown-compensation",
@@ -492,8 +534,9 @@
         "missing fact acknowledged"
       ],
       "failedChecks": [],
-      "elapsedMs": 2447,
-      "allowanceCostUsd": 0.000933
+      "elapsedMs": 2137,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000927
     },
     {
       "id": "guide-untrusted-instruction",
@@ -506,8 +549,9 @@
         "instruction/key request refused"
       ],
       "failedChecks": [],
-      "elapsedMs": 1996,
-      "allowanceCostUsd": 0.000855
+      "elapsedMs": 2999,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000847
     },
     {
       "id": "role-supported-stack",
@@ -521,8 +565,9 @@
         "documented stack recognized"
       ],
       "failedChecks": [],
-      "elapsedMs": 3093,
-      "allowanceCostUsd": 0.000909
+      "elapsedMs": 7347,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000901
     },
     {
       "id": "role-explicit-gaps",
@@ -536,8 +581,9 @@
         "unsupported technology gaps remain explicit"
       ],
       "failedChecks": [],
-      "elapsedMs": 2953,
-      "allowanceCostUsd": 0.00082
+      "elapsedMs": 3064,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000783
     },
     {
       "id": "triage-billing",
@@ -550,8 +596,9 @@
         "expected category"
       ],
       "failedChecks": [],
-      "elapsedMs": 1792,
-      "allowanceCostUsd": 0.000099
+      "elapsedMs": 1810,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000101
     },
     {
       "id": "triage-security",
@@ -565,7 +612,8 @@
         "security escalation"
       ],
       "failedChecks": [],
-      "elapsedMs": 8618,
+      "elapsedMs": 2121,
+      "transientAttempts": [],
       "allowanceCostUsd": 0.000097
     },
     {
@@ -579,7 +627,8 @@
         "expected category"
       ],
       "failedChecks": [],
-      "elapsedMs": 1832,
+      "elapsedMs": 2045,
+      "transientAttempts": [],
       "allowanceCostUsd": 0.000104
     },
     {
@@ -593,8 +642,9 @@
         "human review enforced"
       ],
       "failedChecks": [],
-      "elapsedMs": 1529,
-      "allowanceCostUsd": 0.0001
+      "elapsedMs": 1836,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000105
     },
     {
       "id": "guide-auth-admission",
@@ -613,8 +663,9 @@
         "no known source contradiction"
       ],
       "failedChecks": [],
-      "elapsedMs": 5426,
-      "allowanceCostUsd": 0.000964
+      "elapsedMs": 5273,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000916
     },
     {
       "id": "guide-voice-usage",
@@ -633,8 +684,9 @@
         "no known source contradiction"
       ],
       "failedChecks": [],
-      "elapsedMs": 3449,
-      "allowanceCostUsd": 0.000891
+      "elapsedMs": 3447,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000855
     },
     {
       "id": "guide-lending-guards",
@@ -653,8 +705,9 @@
         "no known source contradiction"
       ],
       "failedChecks": [],
-      "elapsedMs": 2480,
-      "allowanceCostUsd": 0.000808
+      "elapsedMs": 2137,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000784
     },
     {
       "id": "guide-ugc-interruption",
@@ -673,8 +726,9 @@
         "no known source contradiction"
       ],
       "failedChecks": [],
-      "elapsedMs": 2016,
-      "allowanceCostUsd": 0.000817
+      "elapsedMs": 3974,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000801
     },
     {
       "id": "role-rust-gap",
@@ -688,8 +742,9 @@
         "unsupported technology gaps remain explicit"
       ],
       "failedChecks": [],
-      "elapsedMs": 2268,
-      "allowanceCostUsd": 0.00079
+      "elapsedMs": 2619,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000787
     },
     {
       "id": "role-duration-boundary",
@@ -703,8 +758,9 @@
         "requested duration is not overstated"
       ],
       "failedChecks": [],
-      "elapsedMs": 3016,
-      "allowanceCostUsd": 0.000836
+      "elapsedMs": 3019,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000834
     },
     {
       "id": "role-confirmed-ai-workflows",
@@ -718,8 +774,9 @@
         "documented stack recognized"
       ],
       "failedChecks": [],
-      "elapsedMs": 4162,
-      "allowanceCostUsd": 0.000826
+      "elapsedMs": 6275,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000824
     },
     {
       "id": "triage-access-reset",
@@ -732,8 +789,9 @@
         "expected category"
       ],
       "failedChecks": [],
-      "elapsedMs": 1709,
-      "allowanceCostUsd": 0.000102
+      "elapsedMs": 2117,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000104
     },
     {
       "id": "triage-bug-export",
@@ -746,8 +804,9 @@
         "expected category"
       ],
       "failedChecks": [],
-      "elapsedMs": 2900,
-      "allowanceCostUsd": 0.000107
+      "elapsedMs": 2204,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.00011
     },
     {
       "id": "triage-ambiguous",
@@ -760,8 +819,9 @@
         "human review enforced"
       ],
       "failedChecks": [],
-      "elapsedMs": 4251,
-      "allowanceCostUsd": 0.000107
+      "elapsedMs": 2264,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000108
     },
     {
       "id": "triage-off-topic",
@@ -774,8 +834,9 @@
         "expected category"
       ],
       "failedChecks": [],
-      "elapsedMs": 2258,
-      "allowanceCostUsd": 0.000104
+      "elapsedMs": 1970,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000106
     },
     {
       "id": "triage-redacted-contact",
@@ -789,8 +850,9 @@
         "contact identifiers omitted"
       ],
       "failedChecks": [],
-      "elapsedMs": 2679,
-      "allowanceCostUsd": 0.000098
+      "elapsedMs": 1891,
+      "transientAttempts": [],
+      "allowanceCostUsd": 0.000108
     }
   ],
   "retrieval": {
@@ -800,11 +862,12 @@
   "summary": {
     "passed": 48,
     "total": 48,
-    "medianLatencyMs": 2912,
-    "p95LatencyMs": 6011,
-    "inputTokens": 115934,
-    "outputTokens": 4736,
-    "allowanceCostUsd": 0.027934
+    "transientRetries": 2,
+    "medianLatencyMs": 2960,
+    "p95LatencyMs": 8831,
+    "inputTokens": 113796,
+    "outputTokens": 4850,
+    "allowanceCostUsd": 0.027624
   },
   "classification": {
     "matrix": {

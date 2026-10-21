@@ -138,7 +138,7 @@ test("selected work leads with evidence and links to focused case studies", () =
     );
   }
   assert.match(html, /id="banking-agent-harness"/);
-  assert.match(html, /id="github-replica"/);
+  assert.doesNotMatch(html, /class="additional-work"|Also built/);
   for (const project of communityProjects) {
     const card = html.match(
       new RegExp(
@@ -234,7 +234,7 @@ test("verified deployments have unique main cards, real capture assets, complete
     );
 });
 
-test("new hosted support and healthcare cards replace the retired archive entries with explicit demo scope", async () => {
+test("hosted support and healthcare cards expose engineering work and working project links", async () => {
   const report = JSON.parse(
     await readFile(
       new URL(
@@ -266,8 +266,9 @@ test("new hosted support and healthcare cards replace the retired archive entrie
   const support = html.match(
     /<article[^>]*id="multi-agent-customer-support"[^>]*>([\s\S]*?)<\/article>/,
   )?.[1];
-  assert.match(healthcare, /AI chat requires a private access code/);
-  assert.match(support, /demonstration review queue is public/);
+  assert.match(healthcare, /read-only SQLite data through four MCP tools/);
+  assert.match(support, /human-review queue/);
+  assert.doesNotMatch(healthcare + support, /class="project-boundary"/);
   assert.match(support, /harsh-multi-agent-customer-support\.streamlit\.app/);
   assert.match(
     await readFile(new URL("../dist/ai/index.html", import.meta.url), "utf8"),
@@ -339,10 +340,10 @@ test("AgriConnect renders a public case study, screenshot, complete stack, and c
   assert.match(card, /Catalogue operations/);
   assert.match(card, /AI assistance/);
   assert.match(card, /Marketplace &amp; map/);
-  assert.match(card, /illustrative, not independent security results/);
+  assert.match(card, /TOTP authenticator status, session controls/);
   assert.doesNotMatch(
     card,
-    /Live app captures|Admin areas require authorised access/,
+    /Live app captures|Admin areas require authorised access|not independent security results|not adoption metrics/,
   );
   assert.equal(
     [...card.matchAll(/role="tab"/g)].length,
@@ -374,14 +375,19 @@ test("private internal project exposes the approved summary, features and stack 
   assert.ok(projectSection);
   for (const project of privateProjects) {
     const projectPosition = projectSection.indexOf(`id="${project.slug}"`);
-    const archivePosition = projectSection.indexOf('class="additional-work"');
+    const firstPublicProject = projects.find(
+      (item) => item.id === featuredStudies[0].projectId,
+    );
+    const firstPublicPosition = projectSection.indexOf(
+      `id="${firstPublicProject.slug}"`,
+    );
     assert.ok(
       projectPosition >= 0,
       "Private project belongs in the Projects section",
     );
     assert.ok(
-      archivePosition > projectPosition,
-      "Private project must appear before the collapsed archive",
+      firstPublicPosition > projectPosition,
+      "Private project must appear before the public project cards",
     );
     const card = html.match(
       new RegExp(
@@ -494,6 +500,63 @@ test("preview images reserve dimensions and load lazily; generated pages contain
     for (const match of page.matchAll(/href="(https:[^"]+)"/g))
       assert.ok(!/\.git(?:[?#]|$)/.test(match[1]), match[1]);
   }
+});
+
+test("public portfolio copy focuses on engineering and outcomes without demo labels or review disclaimers", async () => {
+  const pages = [
+    ["home", html],
+    ["archive", archive],
+    ...(await Promise.all(
+      workStudies.map(async (study) => {
+        const project = projects.find((item) => item.id === study.projectId);
+        return [
+          project.slug,
+          await readFile(
+            new URL(`../dist/work/${project.slug}/index.html`, import.meta.url),
+            "utf8",
+          ),
+        ];
+      }),
+    )),
+  ];
+  for (const [name, page] of pages) {
+    const text = page
+      .replace(/<script\b[\s\S]*?<\/script>/gi, " ")
+      .replace(/<style\b[\s\S]*?<\/style>/gi, " ")
+      .replace(/<[^>]*>/g, " ");
+    assert.doesNotMatch(
+      text,
+      /\b(?:demo|demos|demonstration|educational)\b/i,
+      name,
+    );
+    assert.doesNotMatch(
+      text,
+      /Email delivery uses the owner access key|Suggestions can be imperfect|not measured accuracy|no [^.]* (?:metrics|results) are claimed|not been (?:measured|benchmarked)|not tested in this review|screenshots do not grant access/i,
+      name,
+    );
+  }
+  for (const study of featuredStudies) {
+    const project = projects.find((item) => item.id === study.projectId);
+    const card = html.match(
+      new RegExp(
+        `<article[^>]*id="${project.slug}"[^>]*>([\\s\\S]*?)<\\/article>`,
+      ),
+    )?.[1];
+    assert.ok(card, project.slug);
+    assert.doesNotMatch(card, /class="project-boundary"/);
+    assert.ok(
+      card.includes(escapeHTML(project.role)),
+      project.slug + " contribution",
+    );
+    assert.ok(
+      card.includes(escapeHTML(project.impact)),
+      project.slug + " outcome",
+    );
+  }
+  assert.doesNotMatch(
+    html,
+    /class="additional-work"|Also built|All 40 repositories/,
+  );
 });
 
 test("production code excerpt matches the actual request handler", async () => {

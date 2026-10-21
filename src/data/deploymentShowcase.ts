@@ -1,7 +1,7 @@
 import { projects, type CaseStudy } from "./portfolio.ts";
 import type { CaseEvidence } from "./caseEvidence.ts";
 
-// Deployed demos with dated workflow checks; restricted features are labelled explicitly.
+// Application workflows, source revisions, and dated deployment checks.
 export const deploymentShowcase = [
   {
     projectId: 41,
@@ -13,8 +13,8 @@ export const deploymentShowcase = [
     alt: "Live RAG Document Q&A showing a fourteen-day return answer, its supporting page-two excerpt, and an explicit not-found response for an unsupported revenue question",
     revision: "3af6ca4c97df1eef7ee6ac374319acbb054bb0ca",
     sourcePath: "rag_core.py",
-    scope: "PDF questions · Page-level sources · Session-isolated document indexes",
-    accessNotice: "Public Streamlit demo with usage limits. Uploaded text is sent to OpenAI; use documents you are permitted to share.",
+    scope:
+      "PDF questions · Page-level sources · Session-isolated document indexes",
     checks: [
       "The live sample guide indexed three passages and answered the return-window question with the correct fourteen-day policy.",
       "Expanding the answer source showed the supporting passage from page 2.",
@@ -26,7 +26,7 @@ export const deploymentShowcase = [
       "Bounded API workflow: Validate PDF size, page count, text length, questions, and generated citations; apply session and process-level usage caps before paid requests.",
     ],
     nodes: [
-      "PDF or fictional sample",
+      "PDF document",
       "Page extraction & overlapping chunks",
       "OpenAI embeddings & MMR retrieval",
       "GPT-4o-mini structured answer",
@@ -43,8 +43,8 @@ export const deploymentShowcase = [
     alt: "Live Next Word Lab showing the phrase the best way to and three ranked LSTM predictions: cheer, find, and live, with model probabilities",
     revision: "f42a793e3d4da5e4db2b689ade4aba0164d13e0b",
     sourcePath: "predictor.py",
-    scope: "Trained LSTM · Three ranked predictions · No external inference API",
-    accessNotice: "Educational language model. Suggestions can be imperfect; displayed probabilities are model outputs, not measured accuracy.",
+    scope:
+      "Trained LSTM · Three ranked predictions · No external inference API",
     checks: [
       "The deployed app loaded the original TensorFlow/Keras LSTM and accepted the phrase the best way to.",
       "Inference returned cheer, find, and live as three ranked suggestions with visible model probabilities.",
@@ -53,7 +53,7 @@ export const deploymentShowcase = [
     engineering: [
       "End-to-end model inference: Tokenize a partial sentence, pad or truncate to the saved model's input shape, execute the LSTM on CPU, and decode three ranked predictions back to vocabulary words.",
       "Reusable model resources: Cache the original model and tokenizer across Streamlit reruns, load weights without training state, and bound CPU thread counts.",
-      "Clear prediction boundaries: Reject empty, oversized, or entirely unknown phrases and label softmax probabilities without presenting them as benchmark accuracy.",
+      "Validated inference: Reject empty, oversized, or unknown phrases and present three ranked words with their probability distribution.",
     ],
     nodes: [
       "Partial sentence",
@@ -74,7 +74,6 @@ export const deploymentShowcase = [
     revision: "94654e55aa1707de6e0c0a3bf56f68ce884da00f",
     sourcePath: "backend-drf/api/views.py",
     scope: "Historical stock analysis · LSTM estimates · Personal watchlists",
-    accessNotice: "Sign in to analyze stocks and save a watchlist.",
     checks: [
       "The live landing page loaded the LSTM overview and 100-day / 200-day moving-average features.",
       "Opening Explore Now redirected to sign-in before the stock dashboard.",
@@ -105,7 +104,6 @@ export const deploymentShowcase = [
     sourcePath: "app/web_digest.py",
     scope:
       "Live RSS reader · Personalized OpenAI digests · HTML and Gmail delivery",
-    accessNotice: "Email delivery uses the owner access key.",
     checks: [
       "The live reading room loaded source-linked RSS stories.",
       "Selecting the OpenAI source filtered the reader to OpenAI stories.",
@@ -129,21 +127,19 @@ export const deploymentShowcase = [
     capture: "healthcare-explorer-live.jpg",
     verifiedOn: "21 October 2026",
     reviewPath: "/verification/deployments-2026-10-21.json",
-    alt: "Deployed Healthcare Explorer showing the generated patient directory, selected James Walker demonstration profile, and illustrative risk signals",
+    alt: "Healthcare Explorer with a generated patient directory, selected profile, linked records, and rule-based risk summaries",
     revision: "12bca598ea688c6edc4e5326a442ac647745bac8",
     sourcePath: "app.py",
-    scope:
-      "Generated-data demonstration · Read-only tools · Risk heuristics are not clinical predictions",
-    accessNotice: "Public explorer. AI chat requires a private access code.",
+    scope: "Patient search · Linked records · Read-only MCP tools",
     checks: [
       "Directory search filtered the generated records to James Walker and the selected profile loaded its demonstration signals.",
       "Schema browsing exposed five related SQLite tables; the public directory contained 10 generated profiles.",
       "The deployed MCP endpoint exposed four tools; unauthenticated AI requests returned HTTP 401 without invoking the protected assistant.",
     ],
     engineering: [
-      "Structured data access: Expose schema, bounded read-only SQL, and demonstration summaries through four discoverable MCP tools.",
-      "Browser exploration: Connect patient search, profile details, and schema views to a separately generated synthetic SQLite database.",
-      "Controlled AI access: Bound model tool loops and generated SQL, require an AI access code, and separate illustrative heuristics from clinical claims.",
+      "Structured data access: Expose schema discovery, bounded read-only SQL, risk summaries, and readmission queries through four MCP tools.",
+      "Browser exploration: Connect patient search, linked profile records, and schema views to a generated SQLite dataset.",
+      "Protected tool execution: Authenticate assistant requests, bound model tool loops, and validate generated SQL before read-only database access.",
     ],
     nodes: [
       "Explorer or authorised question",
@@ -163,10 +159,7 @@ export const deploymentShowcase = [
     alt: "Hosted Streamlit customer-support conversation showing a seeded invoice lookup and a simulated refund decision with structured ticket and tool-trace controls",
     revision: "68a83dedc2c1f4037553e269ff883167a4933dc6",
     sourcePath: "streamlit_app.py",
-    scope:
-      "Streamlit teaching demo · Synthetic orders · Sessions reset on sleep or restart",
-    accessNotice:
-      "Simulated refunds only. The demonstration review queue is public.",
+    scope: "Structured intake · Specialist routing · Human review",
     checks: [
       "A live billing question for ORD-1003 returned the seeded INR 5,600 Smartwatch invoice and pending payment status.",
       "A synthetic ORD-1006 refund request created a separate manual-review item for the test session.",
@@ -174,14 +167,14 @@ export const deploymentShowcase = [
     ],
     engineering: [
       "Validated routing: Compact multi-turn intake into a Pydantic ticket and route it through LangGraph to deterministic specialists.",
-      "Separate human review: Store eligible mock refund requests and resolve them through a separate approval graph invocation.",
-      "Bounded hosted workflow: Apply atomic Redis admission around model calls and support process-local session resume with explicit restart limits.",
+      "Separate human review: Store eligible refund-review requests and resolve them through an independent approval graph.",
+      "Conversation continuity: Apply atomic Redis admission around model calls and reconnect in-process sessions to review outcomes.",
     ],
     nodes: [
       "Customer conversation",
       "Structured intake & validation",
       "Billing or refund specialist",
-      "Separate mock review",
+      "Independent approval graph",
       "Decision in resumed chat",
     ],
   },
@@ -191,7 +184,7 @@ export const deploymentShowcase = [
     alt: "Deployed Docwise assistant showing a FastMCP answer, its source citation, and five retrieved documentation passages",
     revision: "c65af163be195f3f1d9ac3bcb63cd80cbe78e129",
     sourcePath: "web/app.py",
-    scope: "Public documentation demo · 2 documents · Shared daily allowance",
+    scope: "Hybrid retrieval · Source-linked answers · Inspectable passages",
     checks: [
       "A FastMCP question returned a cited answer matching its source passage.",
       "An unrelated cafeteria question returned the documentation refusal.",
@@ -216,8 +209,7 @@ export const deploymentShowcase = [
     alt: "Deployed voice adventure assistant showing the transcribed Maya and Mars prompt, a generated story, and audio playback controls",
     revision: "3a4024db50f69b4b0b922300a8cada5cf4c1c0a5",
     sourcePath: "main.py",
-    scope:
-      "Public voice demo · Bundled recording available · AI-generated speech",
+    scope: "Audio input · Contextual generation · Speech playback",
     checks: [
       "The bundled recording was transcribed into the expected story request.",
       "A contextual Mars adventure was generated and returned as text.",
@@ -239,11 +231,10 @@ export const deploymentShowcase = [
   {
     projectId: 29,
     capture: "shopping-assistant-live.jpg",
-    alt: "Deployed ADK Shopping interface showing a completed synthetic order summary for two Pixel 9 phones and the calculated demo cart total",
+    alt: "ADK Shopping interface showing an order summary for two Pixel 9 phones with quantities and the calculated cart total",
     revision: "a72dc499447666a25029c2e7d0871182ae47cb20",
     sourcePath: "ADK_Shopping/cloud_server.py",
-    scope:
-      "Public shopping simulation · Use made-up details · No real orders or payments",
+    scope: "Product discovery · Validated cart · Structured checkout summary",
     checks: [
       "A fresh browser conversation collected the built-in demo profile and returned the smartphone catalogue.",
       "Two Pixel 9 phones produced the deterministic ₹1,40,000 cart total.",
@@ -252,14 +243,14 @@ export const deploymentShowcase = [
     engineering: [
       "Agents with deterministic tools: Coordinate four shopping specialists while Python validates catalogue choices, quantities, and totals.",
       "Durable conversations: Restore an opaque browser session and cart from Redis across requests and reloads.",
-      "Streamed workflow: Return progressive chat events, validate inputs and origins, and keep checkout explicitly simulated.",
+      "Streamed workflow: Return progressive chat events, validate inputs and origins, and assemble structured checkout summaries.",
     ],
     nodes: [
-      "Demo shopper profile",
+      "Shopper profile",
       "Catalogue agent",
       "Validated Python cart",
       "Checkout agent",
-      "Demo order summary",
+      "Order summary",
     ],
   },
   {
@@ -268,8 +259,7 @@ export const deploymentShowcase = [
     alt: "Deployed semantic-cache symposium assistant answering the Innovate 2026 date question with a cached-answer indicator and document sources",
     revision: "01eb34b8feeea2c918b5505d6896e907d3ca6345",
     sourcePath: "README.md",
-    scope:
-      "Public fictional-event demo · Persistent semantic cache · Source-page references",
+    scope: "PDF retrieval · Persistent semantic cache · Source-page references",
     checks: [
       "The event-date question returned March 15, 2026 with source references.",
       "A repeated question returned cache_hit=true while retaining sources.",
@@ -294,7 +284,7 @@ export const deploymentShowcase = [
     alt: "Deployed Symposium Guide answering the event date and venue with expandable references to pages 1, 2, and 5",
     revision: "2b66d313aa224b0055ce69c3b4206af1867179ed",
     sourcePath: "README.md",
-    scope: "Public PDF Q&A demo · 5-page event guide · Page references",
+    scope: "Document retrieval · Event-guide Q&A · Page references",
     checks: [
       "The date-and-venue question returned March 15, 2026 and Apex Institute of Technology.",
       "The answer exposed page references in an expandable source control.",
@@ -319,22 +309,22 @@ export const deploymentShowcase = [
     alt: "Deployed mock banking assistant showing synthetic account balances, saved beneficiaries, and a successful separately confirmed transfer",
     revision: "f00504f0b2bab1211ea183bcaf6bb3bf2f2152a3",
     sourcePath: "README.md",
-    scope: "Public banking simulation · Isolated Redis ledger · No real money",
+    scope: "Transfer policies · Separate confirmation · Isolated Redis ledger",
     checks: [
       "A ₹250 mock transfer was staged while the account balance stayed unchanged.",
       "A separate confirmation executed the transfer and reduced the balance by exactly ₹250.",
       "The browser showed pending and successful tool outcomes; the health endpoint reported Redis storage.",
     ],
     engineering: [
-      "Policy before execution: Validate beneficiaries, balance, and transfer limits in Python before a mock transaction is allowed.",
+      "Policy before execution: Validate beneficiaries, balance, and transfer limits in Python before a ledger operation is allowed.",
       "Confirmation state: Require explicit confirmation in a later invocation and invalidate pending approval when transfer details change.",
-      "Isolated hosted state: Preserve each browser’s mock ledger in Redis, with bounded model usage and guarded execution.",
+      "Isolated hosted state: Preserve each browser’s ledger in Redis, with bounded model usage and guarded execution.",
     ],
     nodes: [
       "Agent tool intent",
       "Deterministic policy",
       "Later-turn confirmation",
-      "Mock execution",
+      "Ledger execution",
       "Redis ledger & checked result",
     ],
   },
@@ -355,10 +345,9 @@ export const deployedStudies: CaseStudy[] = deploymentShowcase.map((item) => {
     contributions: [{ label: "Implementation", description: project.role }],
     engineering: item.engineering,
     previewNote: item.scope,
-    accessMode: "Public interactive demo",
+    accessMode: "Live application",
     accessDescription: item.scope,
     publicPreview: true,
-    accessNotice: item.accessNotice,
     takeaway: project.impact,
     recovery: project.challenges,
     diagram: {
@@ -375,6 +364,29 @@ export const deployedStudies: CaseStudy[] = deploymentShowcase.map((item) => {
     },
   };
 });
+
+// Retain implementation boundaries for source-grounded assistant answers.
+// Project presentation uses the feature summaries above, not these records.
+const implementationBoundaries: Record<number, string[]> = {
+  29: [
+    "Checkout creates an order summary; the project does not place merchant orders or collect payments.",
+  ],
+  30: [
+    "The explorer uses generated patient records and rule-based risk summaries, not clinical predictions.",
+  ],
+  33: [
+    "The banking tools execute mock transfers against an isolated Redis ledger, without a bank or payment-network connection.",
+  ],
+  35: [
+    "Refund decisions run against seeded orders; the review graph does not execute payment-provider refunds.",
+  ],
+  41: [
+    "Answers depend on uploaded document content; source validation does not establish a general accuracy benchmark.",
+  ],
+  42: [
+    "The trained LSTM returns vocabulary probabilities; these are not a measured prediction-accuracy score.",
+  ],
+};
 
 export const deployedEvidence: Record<string, CaseEvidence> =
   Object.fromEntries(
@@ -403,10 +415,13 @@ export const deployedEvidence: Record<string, CaseEvidence> =
                 item.reviewPath ?? "/verification/deployments-2026-10-20.json",
             },
           ],
-          limitations: [item.scope, project.impact],
+          limitations: [
+            ...(implementationBoundaries[project.id] || []),
+            item.scope,
+          ],
           failure: {
             trigger:
-              "An invalid request, unavailable provider, or exhausted demo allowance.",
+              "An invalid request, unavailable provider, or exhausted request allowance.",
             handling:
               "The application validates input and returns a controlled error or explicit workflow boundary.",
           },

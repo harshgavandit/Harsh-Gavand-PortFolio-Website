@@ -656,12 +656,12 @@
     "category": "Applied AI & Document Retrieval",
     "overview": "A deployed Python application that turns selectable PDF text into source-grounded answers. OpenAI embeddings and diversity-aware retrieval find relevant passages, GPT-4o-mini answers from that context, and expandable page excerpts let visitors inspect the evidence.",
     "features": [
-      "PDF upload and a fictional sample guide for an immediate walkthrough",
+      "PDF upload with selectable-text extraction and page references",
       "Overlapping document chunks with preserved page numbers",
       "OpenAI embeddings with cosine similarity and maximal marginal relevance retrieval",
       "GPT-4o-mini answers with validated source IDs and expandable page excerpts",
-      "Explicit not-found responses when the document does not support an answer",
-      "Session-isolated document indexes, clear-document controls, and bounded demo usage"
+      "Context-aware responses when the document does not contain an answer",
+      "Session-isolated document indexes, clear-document controls, and request admission limits"
     ],
     "technologies": [
       "Python",
@@ -674,7 +674,7 @@
     ],
     "role": "Built PDF extraction, overlapping chunking, OpenAI embeddings, MMR retrieval, and structured answer validation; connected them to a session-isolated Streamlit interface and deployed the app with server-side secrets.",
     "challenges": "Retrieve useful passages without repeating near-duplicates, preserve page references through generation, and keep each visitor's document separate while bounding public API usage.",
-    "impact": "Provides a live PDF-to-answer workflow with inspectable supporting passages. The deployed sample correctly answered its return-policy question and declined an unsupported revenue question; no general accuracy score is claimed.",
+    "impact": "Turns PDF content into a searchable conversation with supporting page excerpts, helping readers locate answers and inspect the original source without scanning the full document.",
     "githubUrl": "https://github.com/harshgavandit/GENAI-RAG-IMPLEMENTATION",
     "slug": "rag-book-assistant",
     "aliases": [
@@ -688,14 +688,14 @@
     "id": 42,
     "title": "Next Word Prediction — LSTM Language Model",
     "category": "Machine Learning & Natural Language Processing",
-    "overview": "An interactive language-model demo that runs a trained TensorFlow/Keras LSTM on the server. A Streamlit interface tokenizes partial sentences, prepares the saved model's input sequence, and displays three ranked next-word suggestions with their model probabilities.",
+    "overview": "A next-word prediction application powered by a trained TensorFlow/Keras LSTM. The Streamlit interface tokenizes partial sentences, prepares the saved model's input sequence, and displays three ranked next-word suggestions with their model probabilities.",
     "features": [
       "Partial-sentence input with three ranked next-word suggestions",
       "CPU inference using the original trained Keras H5 model",
       "Saved tokenizer with padding and truncation aligned to the model input shape",
-      "Model probabilities displayed separately from measured prediction accuracy",
+      "Ranked vocabulary predictions with a visible probability distribution",
       "Cached model resources across Streamlit interface reruns",
-      "Validation for empty, oversized, and entirely unknown input; no external inference API required"
+      "Input validation for empty, oversized, and unknown phrases"
     ],
     "technologies": [
       "Python",
@@ -709,7 +709,7 @@
     ],
     "role": "Connected the trained LSTM, tokenizer, and sequence metadata to a Streamlit application; implemented input validation, CPU inference, cached resource loading, ranked vocabulary decoding, and cloud deployment.",
     "challenges": "Align inference with the saved model's actual context length, reuse model resources across interface reruns, and make vocabulary limits and prediction probabilities clear to visitors.",
-    "impact": "Makes the trained sequence model available in a live browser demo without a paid inference API. Visitors can inspect three ranked predictions; model probabilities are not an accuracy benchmark.",
+    "impact": "Delivers the trained sequence model through a browser interface, with three ranked word suggestions and cached CPU inference that reuses model resources across requests.",
     "githubUrl": "https://github.com/harshgavandit/GENAI-NEXT-WORD_PREDICTION-PROJECT",
     "slug": "lstm-next-word-prediction",
     "aliases": [

@@ -48,9 +48,6 @@ export function WorkDetail() {
             GitHub
           </ActionLink>
         </div>
-        {study.accessNotice && (
-          <p className="project-boundary">{study.accessNotice}</p>
-        )}
       </header>
       <div className="work-context">
         <div>
@@ -77,7 +74,7 @@ export function WorkDetail() {
           </ul>
           {sampleURL && !publicWebsite && (
             <ActionLink href={sampleURL} external>
-              Open demo
+              Explore workspace
             </ActionLink>
           )}
         </div>
@@ -99,9 +96,8 @@ export function WorkDetail() {
         </ul>
       </section>
       <section className="work-section" aria-labelledby="outcome-title">
-        <h2 id="outcome-title">Outcome &amp; scope</h2>
+        <h2 id="outcome-title">Outcome</h2>
         <p>{project.impact}</p>
-        <p>{study.previewNote}</p>
       </section>
       <section className="work-section" aria-labelledby="architecture-title">
         <h2 id="architecture-title">Architecture &amp; tech stack</h2>

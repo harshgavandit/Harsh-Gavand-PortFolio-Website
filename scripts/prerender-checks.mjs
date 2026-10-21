@@ -91,7 +91,10 @@ export function assertHomepage(html, origin = profile.site) {
     additional.length ? additional.length + 1 : 0,
     "Expected only additional curated repositories and a table header",
   );
-  assert.ok(html.includes('href="/archive"'));
+  assert.ok(
+    !html.includes('class="additional-work"'),
+    "The removed Also built strip must stay absent",
+  );
   for (const job of experience)
     assert.ok(
       html.includes(escapeHTML(job.company)),

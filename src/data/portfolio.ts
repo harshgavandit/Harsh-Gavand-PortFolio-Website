@@ -29,7 +29,6 @@ export interface CaseStudy {
   previewNote: string;
   accessMode: string;
   accessDescription: string;
-  accessNotice?: string;
   hostingNote?: string;
   publicPreview?: boolean;
   takeaway: string;
@@ -526,7 +525,7 @@ export const skills = [
       "ARIA tabs and dialogs, independent feed state, role-oriented dashboards, and responsive product workflows.",
     proofs: [
       { label: "LendFlow dashboards", href: "#banking-saas" },
-      { label: "Repository discovery", href: "#github-replica" },
+      { label: "Repository discovery", href: "/work/github-replica/" },
     ],
     items: [
       "React",

@@ -634,16 +634,6 @@
 .artifact-provenance .text-link {
   margin-top: 12px;
 }
-.additional-work {
-  display: flex;
-  gap: 16px 28px;
-  flex-wrap: wrap;
-  padding-block: 24px;
-  font-size: 0.85rem;
-}
-.additional-work > span {
-  color: var(--muted);
-}
 .experience-card {
   grid-template-columns: 1fr 2fr;
   padding-block: 28px;

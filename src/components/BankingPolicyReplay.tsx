@@ -11,7 +11,7 @@ export function BankingPolicyReplay() {
     <figure className="harness-evidence">
       <figcaption>
         Recorded policy scenarios{" "}
-        <span>Synthetic accounts · Local ledger replay</span>
+        <span>Confirmation, validation &amp; ledger state</span>
       </figcaption>
       <div
         role="group"

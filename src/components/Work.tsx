@@ -1,10 +1,5 @@
 import { ArrowDown, ArrowRight, ArrowUpRight, LockKeyhole } from "lucide-react";
-import {
-  archiveProjects,
-  projects,
-  type CaseStudy,
-  type Project,
-} from "../data/portfolio";
+import { projects, type CaseStudy, type Project } from "../data/portfolio";
 import { privateProjects, type PrivateProject } from "../data/privateProjects";
 import { curatedArchive } from "../data/recruiter";
 import { ActionLink, LeadStatement, Tags } from "./Primitives";
@@ -96,9 +91,6 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
               GitHub source
             </ActionLink>
           </div>
-          {study.accessNotice && (
-            <p className="project-boundary">{study.accessNotice}</p>
-          )}
         </div>
       </div>
       <details className="flagship-notes">
@@ -124,13 +116,6 @@ export function FeaturedWork() {
         {featuredStudies.map((study) => (
           <CaseStudyCard key={study.projectId} study={study} />
         ))}
-      </div>
-      <div id="github-replica" className="additional-work">
-        <span>Also built</span>
-        <a href="/work/github-replica/">
-          DevGraph · repository discovery and issue relationships ↗
-        </a>
-        <a href="/archive">All {archiveProjects.length} repositories ↗</a>
       </div>
       <MoreWork />
     </section>

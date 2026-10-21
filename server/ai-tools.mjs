@@ -226,7 +226,12 @@ export function normalizeTask(task, value) {
     /ignore (?:all |previous |the )?instructions|system prompt|reveal (?:your |the )?(?:secret|key|prompt)/i.test(
       task.redacted.text,
     );
-  const needsReview = !valid || security || injection || value.needsReview;
+  const requestedReview =
+    /\b(?:need|want|request|speak|talk|connect|escalate)\b[^.!?]{0,80}\b(?:human|specialist|real person|support (?:agent|representative))\b/i.test(
+      task.redacted.text,
+    );
+  const needsReview =
+    !valid || security || injection || requestedReview || value.needsReview;
   return {
     category: valid ? value.category : "other",
     priority: security ? "urgent" : valid ? value.priority : "normal",
@@ -237,9 +242,11 @@ export function normalizeTask(task, value) {
       ? "Account security requires human review. No account action has been executed."
       : injection
         ? "The ticket contains instructions outside classification and requires review."
-        : valid
-          ? redactInput(value.rationale).text
-          : "The model response did not satisfy the classification contract. Use human review.",
+        : requestedReview
+          ? "The ticket requests a support specialist and requires human review."
+          : valid
+            ? redactInput(value.rationale).text
+            : "The model response did not satisfy the classification contract. Use human review.",
     needsReview,
     status: needsReview ? "needs_review" : "classified",
     actionsExecuted: 0,

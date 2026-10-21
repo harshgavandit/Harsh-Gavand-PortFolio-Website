@@ -8,46 +8,46 @@ export const harnessStudy: CaseStudy = {
     "Keep model-selected actions inside deterministic transaction rules.",
   summary: deployedStudies.find((study) => study.projectId === 33)!.summary,
   engineering: [
-    "Policy before execution: Validate beneficiaries, balance, and transfer limits in Python before a mock transaction is allowed.",
+    "Policy before execution: Validate beneficiaries, balance, and transfer limits in Python before a ledger operation is allowed.",
     "Confirmation state: Require explicit confirmation in a later invocation, and invalidate pending approval when transfer details change.",
-    "Isolated hosted state: Preserve each browser’s mock ledger in Redis, with bounded model usage and guarded execution.",
+    "Isolated hosted state: Preserve each browser’s ledger in Redis, with bounded model usage and guarded execution.",
   ],
   contributions: [],
   previewNote:
-    "Try a mock transfer with synthetic accounts and an isolated Redis-backed ledger. No real funds are moved.",
+    "Deterministic transfer policies, explicit confirmation, and an isolated Redis-backed ledger.",
   publicPreview: true,
-  accessMode: "Public interactive banking simulation",
+  accessMode: "Live banking agent application",
   accessDescription:
-    "Explore deterministic mock transfer outcomes without an account or API key",
+    "Explore transfer policy, confirmation, and isolated ledger outcomes",
   takeaway:
     "Model intent is untrusted input; policy and confirmation remain application decisions.",
   recovery:
-    "Changed transfer details invalidate pending confirmation; execution results are checked against the mock ledger.",
+    "Changed transfer details invalidate pending confirmation; execution results are checked against the isolated ledger.",
   diagram: {
     title: "From agent intent to a confirmed transaction",
     nodes: [
       "Agent tool intent",
       "Deterministic policy",
       "Later-turn confirmation",
-      "Mock execution",
+      "Ledger execution",
       "Result validation",
     ],
     details: [
       "Tool arguments describe a requested action, not permission",
       "Validate beneficiary, amount, balance, and daily limits",
       "Pending details must match a later explicit confirmation",
-      "Only permitted, confirmed requests reach the mock ledger",
-      "Inspect mock execution status and redact the audit record",
+      "Only permitted, confirmed requests reach the isolated ledger",
+      "Inspect execution status and redact the audit record",
     ],
     contracts: [
       "Model-selected tool → structured intent",
       "Transfer intent → allow or reject",
       "Pending intent + later confirmation → permission",
-      "Permitted request → mock transaction",
-      "Mock transaction → checked ledger result",
+      "Permitted request → ledger operation",
+      "Ledger operation → checked result",
     ],
     caption:
-      "A hosted banking simulation, with deterministic controls around model-selected tools and isolated Redis-backed state.",
+      "Deterministic policy and explicit confirmation control model-selected tools, backed by an isolated Redis ledger.",
     chapterNodes: [[0, 1], [2], [3, 4]],
   },
 };
@@ -147,7 +147,7 @@ export const agriConnectStudy: CaseStudy = {
     },
   ],
   previewNote:
-    "Browse the live marketplace without an account. The gallery shows the administrator dashboard, TOTP security interface, catalogue operations, and a live assistant response captured on 21 October 2026. Administrator and seller tools require an authorised account; screenshots do not grant access.",
+    "Marketplace discovery, catalogue administration, TOTP security, and contextual AI assistance in one platform.",
   accessMode: "Public marketplace · OpenAI · Vercel + Neon",
   accessDescription:
     "Public catalogue browsing with account-scoped commerce, seller, and administrator workflows.",

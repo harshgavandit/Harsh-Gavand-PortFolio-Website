@@ -7,7 +7,7 @@ export const agriConnectGallery = [
     width: 1901,
     height: 910,
     description:
-      "An operations workspace with platform totals, order-status breakdowns, review queues, and permission-controlled administration. Displayed totals are application records, not adoption metrics.",
+      "An operations workspace with platform totals, order-status breakdowns, review queues, and permission-controlled administration.",
   },
   {
     id: "security",
@@ -17,7 +17,7 @@ export const agriConnectGallery = [
     width: 1900,
     height: 855,
     description:
-      "Enabled TOTP authenticator status, session controls, and authentication-event navigation. The interface's charts and posture scores are illustrative, not independent security results.",
+      "TOTP authenticator status, session controls, and authentication-event navigation in a dedicated security workspace.",
   },
   {
     id: "catalogue",
@@ -37,7 +37,7 @@ export const agriConnectGallery = [
     width: 380,
     height: 465,
     description:
-      "A live response guides a seller through Photo-sell and product-listing steps. The assistant explains the workflow without publishing a listing on the user's behalf.",
+      "Contextual AI assistance guides sellers through Photo-sell and product-listing steps inside the marketplace.",
   },
   {
     id: "marketplace",

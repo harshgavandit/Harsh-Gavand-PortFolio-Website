@@ -34,7 +34,7 @@
     ],
     "role": "Extended the existing marketplace with configurable OpenAI workflows, validated API inputs, regression tests, hosted PostgreSQL migration, preserved administrator access, and Vercel deployment fixes.",
     "challenges": "Move a data-rich local marketplace to serverless hosting while preserving catalogue ownership, account permissions, and encrypted records; integrate bounded AI requests without bypassing authentication or exposing provider credentials.",
-    "impact": "Combines agricultural discovery, commerce, and platform operations in one deployed application. The hosted database migration preserved 1,642 product records and existing administrator permissions. Commercial adoption and farmer-income outcomes have not been measured.",
+    "impact": "Combines agricultural discovery, commerce, and platform operations in one deployed application. Migrated 1,642 product records to hosted PostgreSQL while preserving seller ownership and existing administrator permissions.",
     "githubUrl": "https://github.com/harshgavandit/Agri-Connect",
     "demoUrl": "https://agri-connect-flame.vercel.app"
   }

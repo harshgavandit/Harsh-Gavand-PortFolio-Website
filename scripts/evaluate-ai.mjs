@@ -5,6 +5,8 @@ import { runtimeDigest } from "./ai-runtime-digest.mjs";
 import { loadConfig } from "../server/config.mjs";
 import { createServer } from "../server/app.mjs";
 import { retrieveCode, sourceSnapshot } from "../server/grounding.mjs";
+import { RedisQuota } from "../server/quota.mjs";
+import { randomUUID } from "node:crypto";
 
 if (!process.argv.includes("--live"))
   throw new Error(
@@ -26,9 +28,18 @@ const evaluatedRevision = await runtimeDigest();
 let server;
 let origin = remote;
 if (!origin) {
-  // Controlled local evaluation permits this fixed dataset; production admission is unchanged.
+  const config = loadConfig();
+  // Keep the explicitly paid fixed dataset separate from visitors' allowance.
+  // Every run still uses atomic reservations, settlement, and a bounded budget.
   server = createServer({
-    ...loadConfig(),
+    ...config,
+    quota: new RedisQuota({
+      url: config.quotaUrl,
+      token: config.quotaToken,
+      namespace: `portfolio-ai:eval:${randomUUID()}`,
+      dailyLimit: aiEvalCases.length * repeats + 5,
+      monthlyBudgetMicros: Math.min(config.monthlyBudgetMicros, 100000),
+    }),
     clientLimit: aiEvalCases.length * repeats + 5,
     globalLimit: aiEvalCases.length * repeats + 5,
     // Repetitions measure fresh provider output, never a previous sample answer.
@@ -52,32 +63,50 @@ try {
           : { text: item.text };
       const started = performance.now();
       let response, data, grading;
-      try {
-        response = await fetch(origin + path, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-          signal: AbortSignal.timeout(35000),
-        });
-        data = await response.json();
-        grading = response.ok
-          ? gradeCase(item, data)
-          : {
-              passed: false,
-              checks: [
-                {
-                  name: `HTTP ${response.status} (${data.code || "unavailable"})`,
-                  passed: false,
-                },
-              ],
-            };
-      } catch {
-        grading = {
-          passed: false,
-          checks: [
-            { name: "request completed within time budget", passed: false },
-          ],
-        };
+      const transientAttempts = [];
+      for (let attempt = 1; attempt <= 2; attempt++) {
+        response = undefined;
+        data = undefined;
+        try {
+          response = await fetch(origin + path, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(body),
+            signal: AbortSignal.timeout(35000),
+          });
+          data = await response.json();
+          grading = response.ok
+            ? gradeCase(item, data)
+            : {
+                passed: false,
+                checks: [
+                  {
+                    name: `HTTP ${response.status} (${data.code || "unavailable"})`,
+                    passed: false,
+                  },
+                ],
+              };
+        } catch {
+          grading = {
+            passed: false,
+            checks: [
+              { name: "request completed within time budget", passed: false },
+            ],
+          };
+        }
+        const transient =
+          !response || [502, 503, 504].includes(response.status);
+        if (attempt === 1 && transient) {
+          transientAttempts.push({
+            status: response?.status ?? null,
+            failedChecks: grading.checks
+              .filter((check) => !check.passed)
+              .map((check) => check.name),
+          });
+          console.log(`RETRY ${item.id}: transient request failure`);
+          continue;
+        }
+        break;
       }
       const result = {
         id: item.id,
@@ -91,6 +120,7 @@ try {
           .filter((check) => !check.passed)
           .map((check) => check.name),
         elapsedMs: Math.round(performance.now() - started),
+        transientAttempts,
         allowanceCostUsd: data?.execution?.allowanceCostUsd || 0,
         output: data,
       };
@@ -124,13 +154,17 @@ const report = {
     repetitions: repeats,
     labelSource:
       "Source-derived expectations and synthetic fixtures; not independently human-labelled",
-    graderVersion: 2,
+    graderVersion: 3,
   },
   cases: results.map(({ output: _output, ...result }) => result),
   retrieval: { passed: retrievalPassed, total: retrievalCases.length },
   summary: {
     passed: results.filter((result) => result.passed).length,
     total: results.length,
+    transientRetries: results.reduce(
+      (sum, result) => sum + result.transientAttempts.length,
+      0,
+    ),
     medianLatencyMs: latencies[Math.floor(latencies.length / 2)],
     p95LatencyMs:
       latencies[

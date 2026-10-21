@@ -160,6 +160,37 @@ test("admission retrieval includes the atomic enforcement, not only constructor 
     ),
   );
 });
+
+test("banking guide grading requires validation rules and separate confirmation without requiring demo labels", () => {
+  const item = aiEvalCases.find((row) => row.id === "guide-harness-policy");
+  const result = {
+    execution: { elapsedMs: 1, model: "gpt-6-luna" },
+    evidence: retrieveCode(item.text),
+  };
+  assert.equal(
+    gradeCase(item, {
+      ...result,
+      answer:
+        "Python validates beneficiaries, amounts, balances, and daily limits. A staged transfer needs explicit confirmation in a later turn before the isolated ledger changes.",
+    }).passed,
+    true,
+  );
+  assert.equal(
+    gradeCase(item, {
+      ...result,
+      answer: "This is a mock simulation with a later confirmation step.",
+    }).passed,
+    false,
+  );
+  assert.equal(
+    gradeCase(item, {
+      ...result,
+      answer:
+        "Python checks the beneficiary, amount, and account balance before a ledger operation.",
+    }).passed,
+    false,
+  );
+});
 test("unknown-fact grading accepts an explicit absence but rejects an invented salary", () => {
   const item = aiEvalCases.find((item) => item.unknown);
   const execution = { elapsedMs: 1, model: "gpt-6-luna" };

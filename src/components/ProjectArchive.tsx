@@ -80,7 +80,7 @@ export function ProjectArchive() {
                 <div className="actions">
                   {project.demoUrl && (
                     <ActionLink href={project.demoUrl} primary external>
-                      Live demo
+                      Visit live website
                     </ActionLink>
                   )}
                   <ActionLink href={project.githubUrl} external>

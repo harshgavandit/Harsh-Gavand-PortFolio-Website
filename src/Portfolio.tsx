@@ -104,7 +104,7 @@ export default function Portfolio({
       (ai
         ? "Explore a source-grounded technical guide, evidence-based role comparison, and live AI support-ticket triage by Harsh Gavand."
         : page?.study.summary) ||
-      "Harsh Gavand — Full-Stack & AI Engineer in Mumbai. Explore MERN, Python, SaaS, and AI projects with implementation details, live demos, and source code.";
+      "Harsh Gavand — Full-Stack & AI Engineer in Mumbai. Explore full-stack products, Python services, AI systems, engineering contributions, and source code.";
     for (const selector of [
       'meta[name="description"]',
       'meta[property="og:description"]',

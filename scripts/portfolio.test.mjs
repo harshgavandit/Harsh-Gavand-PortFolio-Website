@@ -194,7 +194,7 @@ test("every selected system-flow step includes implementation detail and truthfu
   }
   assert.equal(
     deployedStudies.find((study) => study.projectId === 17).accessMode,
-    "Public interactive demo",
+    "Live application",
   );
 });
 test("all project identifiers are unique and repository/demo links are valid HTTPS URLs", () => {

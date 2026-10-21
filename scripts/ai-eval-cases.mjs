@@ -28,7 +28,7 @@ export const aiEvalCases = [
     text: "How does the banking agent harness validate transfer limits and require later-turn confirmation?",
     source: "banking-agent-harness",
     anchor: /confirm|limit|policy/i,
-    facts: [/later|separate|subsequent/i, /mock|in.memory|simulat/i],
+    facts: [/later|separate|subsequent/i, /beneficiar|daily|balance|amount/i],
   },
   {
     id: "guide-hybrid-search",

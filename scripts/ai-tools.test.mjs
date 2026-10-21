@@ -99,6 +99,38 @@ test("recruiter unsupported rows cannot masquerade as supported experience", () 
   assert.equal(result.requirements[0].assessment, "not_shown");
 });
 
+test("explicit requests for a human are routed to review even when the model classifies the ticket", () => {
+  const modelResult = {
+    category: "bug",
+    priority: "normal",
+    summary: "A customer requests help investigating an issue.",
+    rationale: "A product issue needs investigation.",
+    needsReview: false,
+  };
+  for (const text of [
+    "Something broke and I cannot tell what it is. I need a specialist to help investigate.",
+    "Please let me speak to a real person about this problem.",
+    "I want a human to review my account issue.",
+    "Please escalate this to a support representative.",
+  ]) {
+    const task = buildTask("triage", { text }, "gpt-6-luna");
+    const result = normalizeTask(task, modelResult);
+    assert.equal(result.needsReview, true, text);
+    assert.equal(result.status, "needs_review", text);
+    assert.equal(result.actionsExecuted, 0);
+  }
+  const ordinary = normalizeTask(
+    buildTask(
+      "triage",
+      { text: "The export button shows an error." },
+      "gpt-6-luna",
+    ),
+    modelResult,
+  );
+  assert.equal(ordinary.needsReview, false);
+  assert.equal(ordinary.status, "classified");
+});
+
 async function httpFixture(t, overrides = {}) {
   const events = [];
   const quota = {

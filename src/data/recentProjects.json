@@ -2,14 +2,14 @@
   {
     "id": 27,
     "title": "ADK Finance Assistant",
-    "category": "AI Agents · Finance Education",
-    "overview": "A two-agent finance education assistant that combines sample budget analysis with delegated investment research. Google ADK coordinates OpenAI models through LiteLLM, while public search results retain source links and retrieval timestamps.",
+    "category": "AI Agents · Financial Research",
+    "overview": "A two-agent finance assistant combining budget analysis with delegated investment research. Google ADK coordinates OpenAI models through LiteLLM, while public search results retain source links and retrieval timestamps.",
     "features": [
       "Root finance agent delegates public research to an investment planning agent.",
-      "Clearly labeled sample monthly budget supports educational savings conversations.",
+      "Structured sample-budget analysis supports savings and allocation conversations.",
       "Search responses preserve public source URLs and UTC retrieval timestamps.",
       "Atomic SQLite admission limits requests and model calls across local processes.",
-      "Local ADK web and command-line entry points support interactive sessions."
+      "ADK web and command-line entry points support interactive sessions."
     ],
     "technologies": [
       "Python",
@@ -20,7 +20,7 @@
       "DDGS"
     ],
     "role": "I integrated OpenAI-backed ADK agents, public search tools, local admission controls, and configuration diagnostics.",
-    "challenges": "Keeping educational budget data separate from personal accounts and preventing search snippets from being presented as verified current prices or rates.",
+    "challenges": "Separating budget inputs from sourced research and retaining timestamps and links for time-sensitive financial information.",
     "impact": "I integrated two ADK agents to OpenAI, timestamped public-source research, and shared SQLite request admission.",
     "githubUrl": "https://github.com/harshgavandit/adk-finance-assistant",
     "slug": "adk-finance-assistant"
@@ -31,11 +31,11 @@
     "category": "AI Agents · Maps & MCP",
     "overview": "A Google ADK project comparing direct Google Maps function tools with a hosted Maps MCP integration. OpenAI handles the conversation, while the direct tool path supports route summaries and a places search near one route midpoint.",
     "features": [
-      "Separate agents demonstrate direct REST function tools and hosted MCP tool discovery.",
+      "Separate agents support direct REST function tools and hosted MCP tool discovery.",
       "Directions tool returns distance, duration, and a Google Maps route link.",
-      "Places tool searches within 5 km of one driving-route midpoint and returns up to five results.",
-      "CLI and ADK web interfaces share configuration and safe error handling.",
-      "Offline checks exercise tool fixtures; live Maps access requires separately configured Google Maps credentials."
+      "Places tool searches within 5 km of a driving-route midpoint and returns up to five results.",
+      "CLI and ADK web interfaces share configuration and error handling.",
+      "Bounded API requests and structured tool responses connect location data to agent reasoning."
     ],
     "technologies": [
       "Python",
@@ -46,7 +46,7 @@
       "MCP"
     ],
     "role": "I integrated OpenAI reasoning to direct Maps tools and an MCP agent, with configuration checks and bounded API requests.",
-    "challenges": "Separating model access from Maps permissions and explaining that midpoint search covers one area rather than the entire route.",
+    "challenges": "Coordinating model-selected tools with Maps API permissions, route summaries, and geographically bounded places search.",
     "impact": "I implemented two ADK integration paths for location tools: direct Maps REST functions and hosted MCP tool discovery.",
     "githubUrl": "https://github.com/harshgavandit/google-maps-mcp-openai-agent",
     "slug": "google-maps-mcp-openai-agent"
@@ -54,14 +54,14 @@
   {
     "id": 29,
     "title": "ADK Shopping Assistant",
-    "category": "AI Agents · Commerce Demo",
-    "overview": "A conversational shopping demo that guides visitors from product discovery to a validated cart and order summary. Four Google ADK agents handle the conversation while Python controls catalogue prices and totals; Redis restores each browser’s shopping session.",
+    "category": "AI Agents · Conversational Commerce",
+    "overview": "A conversational shopping application connecting product discovery, validated carts, and order summaries. Four Google ADK agents coordinate the conversation while Python controls catalogue prices and totals; Redis restores each browser's shopping session.",
     "features": [
       "Four specialist agents guide profile collection, catalogue browsing, checkout, and order summaries.",
-      "Python validates products and quantities and calculates cart totals from a fixed demo catalogue.",
+      "Python validates products and quantities and calculates cart totals from the catalogue.",
       "Streamed responses show progress while the assistant completes each turn.",
       "Redis-backed browser sessions restore the conversation and cart after reload.",
-      "Uses made-up contact details; no payment is collected or real order placed."
+      "Structured checkout summaries retain the selected products, quantities, and calculated totals."
     ],
     "technologies": [
       "Python",
@@ -73,7 +73,7 @@
     ],
     "role": "I integrated four ADK agents with deterministic catalogue and cart tools, a streamed browser interface, Redis session recovery, and guarded API requests.",
     "challenges": "Maintaining consistent state between agent handoffs while ensuring the model cannot invent products, prices, or completed purchases.",
-    "impact": "Connects product discovery, cart calculation, and checkout in one conversation. A live synthetic checkout verified 2 × ₹70,000 = ₹1,40,000 and an accurate demo order summary; no sales or conversion results are claimed.",
+    "impact": "Connects product discovery, cart calculation, and order-summary preparation in one conversation. Deterministic Python tools keep products, quantities, and totals consistent across agent handoffs, while Redis preserves the cart after reload.",
     "githubUrl": "https://github.com/harshgavandit/adk-shopping-assistant",
     "slug": "adk-shopping-assistant",
     "demoUrl": "https://adk-shopping-assistant.vercel.app/"
@@ -81,14 +81,14 @@
   {
     "id": 30,
     "title": "Healthcare Explorer — MCP & OpenAI",
-    "category": "AI Tools · Healthcare Data Demo",
-    "overview": "An interactive healthcare-data demonstration for exploring generated patient profiles, risk signals, readmission indicators, and database structure. A FastAPI browser application exposes read-only SQLite data through four MCP tools, with a separately access-controlled OpenAI assistant.",
+    "category": "AI Tools · Healthcare Data",
+    "overview": "A healthcare-data explorer connecting patient search, linked records, risk summaries, and database structure. FastAPI exposes read-only SQLite data through four MCP tools, with an OpenAI assistant that discovers and calls those tools.",
     "features": [
-      "Search and inspect 10 generated patient profiles with linked demonstration records.",
-      "Explore rule-based risk signals and historical readmission indicators.",
+      "Search and inspect 10 generated patient profiles with linked records.",
+      "Explore rule-based risk summaries and historical readmission indicators.",
       "Inspect five related SQLite tables in the schema view.",
       "Four MCP tools expose schema discovery, bounded SQL queries, risk summaries, and readmission insights.",
-      "An access-code-protected AI assistant discovers and calls the read-only MCP tools."
+      "Authenticated AI requests discover and call the read-only MCP tools."
     ],
     "technologies": [
       "Python",
@@ -99,9 +99,9 @@
       "SQLite",
       "JavaScript"
     ],
-    "role": "I integrated the MCP tools and bounded OpenAI tool-calling client with a responsive browser explorer, generated demonstration database, read-only SQL controls, and Vercel delivery.",
-    "challenges": "Exposing useful structured data tools while bounding generated SQL and keeping illustrative risk heuristics distinct from validated clinical predictions.",
-    "impact": "Makes 10 synthetic profiles and five related tables explorable through a browser and four structured tools. Live checks verified search, profile details, and schema browsing; no clinical accuracy, patient outcomes, or real healthcare adoption are claimed.",
+    "role": "Integrated MCP tools and the bounded OpenAI tool-calling client with a responsive browser explorer, generated SQLite dataset, read-only SQL controls, and Vercel deployment.",
+    "challenges": "Connecting natural-language questions to structured data while bounding generated SQL, model tool loops, and database access.",
+    "impact": "Makes linked profile records and five related tables accessible through browser search and four structured tools. Read-only SQL controls support schema exploration and source-grounded answers over the generated dataset.",
     "githubUrl": "https://github.com/harshgavandit/healthcare-mcp-openai",
     "slug": "healthcare-mcp-openai",
     "demoUrl": "https://healthcare-mcp-openai.vercel.app/"
@@ -110,13 +110,13 @@
     "id": 31,
     "title": "Symposium RAG · Semantic Cache",
     "category": "AI & RAG · Semantic Caching",
-    "overview": "A document-grounded symposium assistant with persistent exact and semantic answer caching. Visitors ask about a fictional event guide and receive answers with page references; repeated questions can reuse a source-preserving cached answer.",
+    "overview": "A document-grounded symposium assistant with persistent exact and semantic answer caching. Event-guide questions return page references, while repeated or semantically similar questions can reuse an answer with its original sources.",
     "features": [
-      "A public browser chat answers questions about a fictional, contact-free symposium PDF.",
+      "Browser chat answers questions about a symposium PDF with page references.",
       "OpenAI embeddings and FAISS retrieve guide passages for grounded answers.",
       "Exact and semantic cache lookups retain the original source references.",
-      "The hosted Upstash Redis cache shares entries across serverless requests.",
-      "Shared request admission and controlled errors bound the public demo."
+      "Upstash Redis shares cached answers across serverless requests.",
+      "Request admission, source-index isolation, and controlled errors protect the retrieval workflow."
     ],
     "technologies": [
       "Python",
@@ -128,7 +128,7 @@
     ],
     "role": "I integrated PDF retrieval, source-page references, persistent semantic caching, shared request admission, and the deployed browser interface.",
     "challenges": "Choosing similarity thresholds and isolating cached answers by source index while keeping the app usable without a Valkey service.",
-    "impact": "Reuses grounded answers across repeated questions. Live checks confirmed a cache hit with source references and a refusal for absent information; production cost savings and hit rates have not been measured.",
+    "impact": "Reuses source-grounded answers across repeated questions, avoiding another generation call on a cache hit while retaining the original page references. Persistent Redis storage shares the cache across serverless requests.",
     "githubUrl": "https://github.com/harshgavandit/RAG-Semantic-Cache-Symposium-Bot",
     "slug": "symposium-rag-semantic-cache",
     "demoUrl": "https://symposium-rag-bot.vercel.app/"
@@ -156,7 +156,7 @@
     ],
     "role": "I integrated PDF ingestion, retrieval, answer generation, page-reference display, public API admission, and Vercel delivery.",
     "challenges": "Keeping the vector index aligned with its source document and prompting the model to acknowledge information absent from the supplied excerpts.",
-    "impact": "Turns a five-page guide into a searchable conversation backed by 9 indexed passages. The live date-and-venue question returned the correct event details and page references; no user-adoption metrics are available.",
+    "impact": "Turns a five-page guide into a searchable conversation backed by nine indexed passages. Answers connect event schedules, venue details, and registration information to their source pages.",
     "githubUrl": "https://github.com/harshgavandit/RAG-Symposium-Bot",
     "slug": "symposium-pdf-rag-bot",
     "demoUrl": "https://rag-symposium-bot.vercel.app/"
@@ -165,13 +165,13 @@
     "id": 33,
     "title": "Banking Agent Harness",
     "category": "AI Agents · Deterministic Controls",
-    "overview": "An interactive mock-banking assistant with deterministic Python controls around model-selected tools. Visitors review a staged transfer, confirm it in a separate turn, and inspect tool outcomes while a Redis-backed session retains their isolated demo ledger.",
+    "overview": "A banking agent harness that keeps model-selected actions inside deterministic Python policies. Transfer requests are staged for confirmation in a later turn, and Redis-backed sessions preserve isolated ledger state and execution outcomes.",
     "features": [
-      "Five banking tools operate on synthetic beneficiaries, balances, and transfers.",
+      "Five banking tools manage account lookup, beneficiary validation, transfer requests, and ledger results.",
       "Python validates beneficiaries, amounts, balances, and daily limits.",
       "A staged transfer requires explicit confirmation in a later turn.",
-      "Tool outcomes and account balances show whether a mock action actually executed.",
-      "Redis-backed, isolated browser sessions preserve the demo ledger; no real money moves."
+      "Tool outcomes and account balances expose whether a ledger operation executed.",
+      "Redis-backed browser sessions retain isolated ledger state across requests."
     ],
     "technologies": [
       "Python",
@@ -181,9 +181,9 @@
       "Upstash Redis",
       "JavaScript"
     ],
-    "role": "I integrated the ADK agent with deterministic policy, confirmation state, mock transaction execution, usage limits, and audit controls.",
+    "role": "Integrated the ADK agent with deterministic transfer policies, confirmation state, isolated ledger execution, request admission, and redacted audit controls.",
     "challenges": "Preventing model instructions from bypassing confirmation and ensuring changed transfer details invalidate stale pending state.",
-    "impact": "Keeps action approval in deterministic application code. A live ₹250 mock transfer left the balance unchanged until a separate confirmation, then reduced it by exactly ₹250; no real banking integrations or financial outcomes are claimed.",
+    "impact": "Keeps approval in application code: ledger state changes only after a separate confirmation, and changed transfer details invalidate stale approvals. Redis isolates each session's balances and execution history.",
     "githubUrl": "https://github.com/harshgavandit/banking-agent-harness",
     "slug": "banking-agent-harness",
     "demoUrl": "https://banking-agent-harness.vercel.app/"
@@ -191,8 +191,8 @@
   {
     "id": 34,
     "title": "Agentic AWS Resource Management",
-    "category": "AI Agents · Cloud Operations Demo",
-    "overview": "A learning project adapted from sanjayssnit's agentic AWS resource management repository. A Streamlit chat interface connects FastAPI and Claude tool calls to AWS Cloud Control operations and CloudWatch log queries.",
+    "category": "AI Agents · Cloud Operations",
+    "overview": "An AWS operations assistant adapted from sanjayssnit's agentic resource-management repository. A Streamlit chat interface connects FastAPI and Claude tool calls to AWS Cloud Control operations and CloudWatch log queries.",
     "features": [
       "Claude selects structured AWS tools through the Anthropic SDK.",
       "Implemented Cloud Control handlers support resource creation requests, reading, and listing.",
@@ -209,9 +209,9 @@
       "AWS Cloud Control",
       "CloudWatch"
     ],
-    "role": "I adapted and organized an existing AWS agent demo, retaining its original history and documenting setup, supported handlers, and verification limits.",
-    "challenges": "Distinguishing advertised tool operations from implemented handlers and asynchronous creation requests from completed AWS resources. Update and delete handlers are not implemented.",
-    "impact": "I adapted the AWS agent demo and documented its implemented Cloud Control create, read, and list handlers and bounded log queries.",
+    "role": "Adapted and organized the existing AWS agent codebase, retained upstream history, and documented configuration, Cloud Control handlers, and bounded CloudWatch queries.",
+    "challenges": "Coordinating structured tool calls with implemented Cloud Control create, read, and list operations, including asynchronous creation-request tokens.",
+    "impact": "Connects conversational requests to structured Cloud Control create, read, and list handlers and bounded Lambda error-log queries through a shared FastAPI tool loop.",
     "githubUrl": "https://github.com/harshgavandit/agentic-aws-resource-management",
     "slug": "agentic-aws-resource-management"
   },
@@ -219,14 +219,14 @@
     "id": 35,
     "title": "Multi-Agent Customer Support",
     "category": "AI Agents · Support Workflows",
-    "overview": "A hosted Streamlit customer-support demonstration that gathers order details, routes validated tickets to billing or refund specialists, and sends eligible simulated refunds to a separate human-review queue. Customers can resume their conversation to see the decision.",
+    "overview": "A multi-agent customer-support application that gathers order details, validates tickets, and routes requests to billing or refund specialists. A separate human-review queue resolves eligible refund requests and returns the decision to the customer conversation.",
     "features": [
       "Multi-turn intake compacts conversation details into a validated Pydantic ticket.",
       "LangGraph routes billing, refund, and general-support workflows.",
-      "Read-only SQLite tools provide seeded invoices, payments, and refund eligibility.",
-      "A separate approver view resolves eligible simulated refunds and updates the customer chat.",
-      "Session resume restores conversation and review outcomes while the server process is running.",
-      "Upstash Redis limits requests and model calls; the public demo uses synthetic orders only."
+      "Read-only SQLite tools retrieve invoices, payments, and refund eligibility from seeded order records.",
+      "A separate approver view resolves refund-review requests and updates the customer chat.",
+      "Session resume reconnects the customer conversation to its review outcome.",
+      "Upstash Redis enforces admission around requests and model calls."
     ],
     "technologies": [
       "Python",
@@ -239,8 +239,8 @@
       "Upstash Redis"
     ],
     "role": "I integrated conversational intake, structured ticket validation, deterministic specialist tools, a separate approval graph, session resume, Redis admission, and Streamlit Cloud delivery.",
-    "challenges": "Keeping the customer interaction responsive while a separate review workflow resolves a refund, with explicit boundaries around process-local session state.",
-    "impact": "Connects intake, specialist routing, and human review in one demonstrable workflow. Hosted checks verified a seeded billing lookup and a simulated refund review; no real refunds, response-time reductions, or support-volume metrics are claimed.",
+    "challenges": "Keeping customer intake responsive while an independent review graph resolves a request and delivers the outcome to the correct conversation.",
+    "impact": "Brings structured intake, specialist routing, invoice lookup, and human review into one workflow. Customers can resume their conversation to see the review decision without restarting intake.",
     "githubUrl": "https://github.com/harshgavandit/multi-agent-customer-support",
     "slug": "multi-agent-customer-support",
     "demoUrl": "https://harsh-multi-agent-customer-support.streamlit.app/"
@@ -249,13 +249,13 @@
     "id": 36,
     "title": "AI Voice Adventure Assistant",
     "category": "AI Applications · Voice",
-    "overview": "A browser-based voice storytelling assistant that turns a spoken story idea into a written and spoken adventure. FastAPI coordinates transcription, contextual OpenAI generation, and speech synthesis, with a bundled demo recording so visitors can try the complete flow immediately.",
+    "overview": "A browser-based voice storytelling assistant that turns a spoken idea into a written and spoken adventure. FastAPI coordinates speech transcription, contextual OpenAI generation, and speech synthesis in one asynchronous workflow.",
     "features": [
-      "Browser recording, audio upload, and a bundled demo recording provide multiple input paths.",
+      "Browser recording, audio upload, and a built-in recording provide multiple input paths.",
       "Transcription, contextual reply generation, and speech synthesis run as a staged async workflow.",
       "Bounded in-memory conversation history supports follow-up turns and session reset.",
-      "Recording duration, file formats, and upload sizes are constrained.",
-      "Manual playback remains available when the browser blocks audio autoplay."
+      "Recording duration, file formats, and upload sizes are validated.",
+      "Manual playback supports browsers that restrict audio autoplay."
     ],
     "technologies": [
       "Python",
@@ -267,7 +267,7 @@
     ],
     "role": "I integrated browser audio capture to an asynchronous transcription, generation, and speech playback flow with recoverable errors.",
     "challenges": "Coordinating three provider stages, committing conversation state only after success, and handling browser recording and autoplay behavior.",
-    "impact": "Completes audio input → transcript → contextual story → playable MP3 in one interface. The deployed demo completed all three provider stages and played the generated reply; physical microphone recording was not tested in this review.",
+    "impact": "Connects audio input, transcription, contextual story generation, and playable MP3 output in one interface. Follow-up turns reuse conversation context, with recoverable processing and playback states.",
     "githubUrl": "https://github.com/harshgavandit/ai-voice-assistant",
     "slug": "ai-voice-adventure-assistant",
     "demoUrl": "https://ai-voice-assistant-steel.vercel.app/"
@@ -281,8 +281,8 @@
       "Two Markdown documents provide 39 heading-aware indexed passages.",
       "BM25 keyword search and MiniLM ONNX embeddings combine through reciprocal rank fusion.",
       "Answers include validated source labels and expandable retrieved passages.",
-      "Unsupported questions return an explicit documentation boundary.",
-      "FastAPI validates inputs and Upstash Redis enforces shared public-demo limits."
+      "Questions outside the indexed documentation receive an explicit not-found response.",
+      "FastAPI input validation and shared Redis admission control provider requests."
     ],
     "technologies": [
       "Python",
@@ -295,7 +295,7 @@
     ],
     "role": "I integrated structure-aware ingestion, hybrid retrieval, citation validation, the Docwise browser interface, and a lightweight ONNX deployment for Vercel.",
     "challenges": "Preserving code context during chunking and combining keyword precision with semantic recall while keeping source labels tied to retrieved chunks.",
-    "impact": "Makes 39 passages across 2 documents searchable with inspectable citations. Live checks verified a FastMCP answer against its retrieved passage and a refusal for an unrelated question; retrieval accuracy and business impact have not been benchmarked.",
+    "impact": "Makes 39 passages across two documents searchable through combined keyword and semantic retrieval. Validated citations and inspectable source passages connect answers to the underlying documentation.",
     "githubUrl": "https://github.com/harshgavandit/rag-documentation-assistant",
     "slug": "hybrid-rag-documentation-assistant",
     "demoUrl": "https://rag-documentation-assistant.vercel.app/"
