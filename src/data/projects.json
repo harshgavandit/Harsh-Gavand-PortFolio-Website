@@ -10,14 +10,22 @@
       "Repository create, update, visibility, and delete handlers",
       "Client-side repository name filtering and account login"
     ],
-    "technologies": ["React", "Node.js", "Express", "MongoDB", "REST API"],
+    "technologies": [
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "REST API"
+    ],
     "role": "Designed repository relationships and owner/issue population queries, added creation-time name and owner validation, and separated personal repositories from discovery and local search state.",
     "challenges": "Resolving owner and issue references while keeping repository mutations and independent client feeds inspectable without refetching on each search keystroke.",
     "impact": "Resolved repository owners and issues through document relationships while reusing loaded feed results for local search, avoiding a network request per keystroke.",
     "githubUrl": "https://github.com/harshgavandit/GitHub_Replica",
     "demoUrl": "https://github-replica.onrender.com",
     "slug": "github-replica",
-    "aliases": ["GitHub Replica"]
+    "aliases": [
+      "GitHub Replica"
+    ]
   },
   {
     "id": 2,
@@ -29,7 +37,13 @@
       "Socket-based signaling",
       "Mute, camera, and session controls"
     ],
-    "technologies": ["React", "Node.js", "Socket.io", "WebRTC", "Express"],
+    "technologies": [
+      "React",
+      "Node.js",
+      "Socket.io",
+      "WebRTC",
+      "Express"
+    ],
     "role": "I built the meeting UI, signaling logic, room lifecycle, client-state handling, and deployment configuration.",
     "challenges": "Handled real-time connection state, peer negotiation, and graceful updates when users join or leave sessions.",
     "impact": "I integrated WebRTC peer negotiation to Socket.io room signaling and built meeting controls around participant and media state.",
@@ -63,7 +77,9 @@
     "githubUrl": "https://github.com/harshgavandit/Banking_App_SaaS",
     "demoUrl": "https://banking-app-saas.onrender.com/",
     "slug": "banking-saas",
-    "aliases": ["Banking App SaaS"]
+    "aliases": [
+      "Banking App SaaS"
+    ]
   },
   {
     "id": 4,
@@ -75,7 +91,13 @@
       "RESTful backend workflows",
       "Responsive SaaS dashboard"
     ],
-    "technologies": ["PostgreSQL", "Express", "React", "Node.js", "REST API"],
+    "technologies": [
+      "PostgreSQL",
+      "Express",
+      "React",
+      "Node.js",
+      "REST API"
+    ],
     "role": "I implemented database-connected backend routes, frontend screens, API integration, and production deployment flow.",
     "challenges": "Structured relational data and API boundaries so the product could remain understandable as features expanded.",
     "impact": "I integrated a React SaaS interface to Express endpoints and PostgreSQL records, keeping the data model separate from presentation.",
@@ -93,7 +115,13 @@
       "Conversion-focused storefront UI",
       "Reusable commerce components"
     ],
-    "technologies": ["React", "Node.js", "Express", "MongoDB", "Tailwind CSS"],
+    "technologies": [
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "Tailwind CSS"
+    ],
     "role": "I built the storefront UI, reusable components, backend integration points, and deployment configuration.",
     "challenges": "Solved layout consistency and product presentation challenges across responsive breakpoints and commerce states.",
     "impact": "I built reusable storefront components and connected product discovery screens to the application backend.",
@@ -111,7 +139,13 @@
       "Market product pages",
       "Responsive financial UI"
     ],
-    "technologies": ["React", "Node.js", "Express", "MongoDB", "CSS"],
+    "technologies": [
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "CSS"
+    ],
     "role": "I implemented the frontend experience, reusable UI sections, routing, and deployment-ready project structure.",
     "challenges": "Translated a complex financial product into a clean clone while keeping the information hierarchy easy to scan.",
     "impact": "I implemented the trading-style interface, reusable financial product sections, routing, and deployment configuration.",
@@ -129,7 +163,13 @@
       "Tool-augmented reasoning",
       "Modular AI system design"
     ],
-    "technologies": ["Python", "FastAPI", "LangChain", "OpenAI API", "Docker"],
+    "technologies": [
+      "Python",
+      "FastAPI",
+      "LangChain",
+      "OpenAI API",
+      "Docker"
+    ],
     "role": "I designed agent workflows, integrated LLM calls, organized backend modules, and prepared the project for iterative extension.",
     "challenges": "Managed unpredictable AI outputs with clearer workflow boundaries, validation points, and maintainable orchestration logic.",
     "impact": "I organized LLM calls and tool execution into modular agent workflows with explicit handoffs between processing steps.",
@@ -146,7 +186,13 @@
       "Debugging recommendations",
       "Structured diagnostic workflow"
     ],
-    "technologies": ["Python", "FastAPI", "OpenAI API", "REST API", "Logging"],
+    "technologies": [
+      "Python",
+      "FastAPI",
+      "OpenAI API",
+      "REST API",
+      "Logging"
+    ],
     "role": "I built the diagnostic workflow, prompt structure, backend endpoints, and response formatting for developer usability.",
     "challenges": "Converted noisy API failures into actionable summaries while keeping the output concise and technically useful.",
     "impact": "I integrated API failure inputs to an LLM analysis flow and returned structured debugging guidance through backend endpoints.",
@@ -163,7 +209,13 @@
       "Data preprocessing",
       "Evaluation and performance tracking"
     ],
-    "technologies": ["Python", "TensorFlow", "Keras", "NumPy", "Pandas"],
+    "technologies": [
+      "Python",
+      "TensorFlow",
+      "Keras",
+      "NumPy",
+      "Pandas"
+    ],
     "role": "I prepared data, implemented training logic, evaluated model behavior, and documented the experimental workflow.",
     "challenges": "Improved model reliability by organizing preprocessing, training, and evaluation into repeatable steps.",
     "impact": "I implemented preprocessing, model training, and evaluation steps with TensorFlow, Keras, and repeatable data preparation.",
@@ -203,7 +255,13 @@
       "AI-assisted summaries",
       "Media-focused backend pipeline"
     ],
-    "technologies": ["Python", "Flask", "OpenAI API", "FFmpeg", "REST API"],
+    "technologies": [
+      "Python",
+      "Flask",
+      "OpenAI API",
+      "FFmpeg",
+      "REST API"
+    ],
     "role": "I built backend workflows for video handling, AI integration, endpoint design, and response preparation.",
     "challenges": "Handled longer-running media tasks by separating processing steps and keeping the user-facing flow understandable.",
     "impact": "I integrated video ingestion and FFmpeg processing to a Flask API and AI summarization workflow.",
@@ -243,7 +301,13 @@
       "Protected routes",
       "Password hashing and user sessions"
     ],
-    "technologies": ["React", "Node.js", "Express", "MongoDB", "JWT"],
+    "technologies": [
+      "React",
+      "Node.js",
+      "Express",
+      "MongoDB",
+      "JWT"
+    ],
     "role": "I built the authentication backend, frontend auth flows, route protection, and validation-aware user experience.",
     "challenges": "Handled session persistence and protected state consistently across frontend and backend boundaries.",
     "impact": "I built JWT-based registration and login flows with password hashing and protected application routes.",
@@ -278,12 +342,16 @@
     "githubUrl": "https://github.com/harshgavandit/ugc-project",
     "demoUrl": "https://ugc-project-harsh.vercel.app/",
     "slug": "ugc-platform",
-    "aliases": ["UGC Content Platform"]
+    "aliases": [
+      "UGC Content Platform"
+    ]
   },
   {
     "id": 15,
     "title": "MemoryGraph AI — Personal Archive & Search",
-    "aliases": ["OpenAI Project"],
+    "aliases": [
+      "OpenAI Project"
+    ],
     "category": "LLM Application",
     "overview": "An OpenAI-powered application focused on practical LLM integration and user-facing AI workflows.",
     "features": [
@@ -314,7 +382,13 @@
       "AI-assisted media processing",
       "Video utility endpoints"
     ],
-    "technologies": ["Python", "Flask", "OpenAI API", "FFmpeg", "HTML/CSS"],
+    "technologies": [
+      "Python",
+      "Flask",
+      "OpenAI API",
+      "FFmpeg",
+      "HTML/CSS"
+    ],
     "role": "I built the Flask app structure, AI integration points, media handling flow, and user-facing request lifecycle.",
     "challenges": "Handled media processing complexity while keeping the application lightweight and easy to operate.",
     "impact": "I implemented a Flask media-processing workflow with AI integration, file handling, and result endpoints.",
@@ -391,7 +465,13 @@
       "Prompt and response workflow",
       "AI assistant experience"
     ],
-    "technologies": ["React", "Node.js", "OpenAI API", "JavaScript", "CSS"],
+    "technologies": [
+      "React",
+      "Node.js",
+      "OpenAI API",
+      "JavaScript",
+      "CSS"
+    ],
     "role": "I implemented the chat UI, request lifecycle, API integration, and response display experience.",
     "challenges": "Kept AI conversations readable and responsive while managing loading, error, and empty states.",
     "impact": "I built a chat interface around server-side model requests, including loading, error, and conversation rendering states.",
@@ -427,7 +507,10 @@
     "githubUrl": "https://github.com/harshgavandit/Stock-Prediction_Portal_Python_ML",
     "slug": "stock-prediction-portal-python-ml",
     "demoUrl": "https://stock-prediction-portal-kohl.vercel.app",
-    "aliases": ["Stock Prediction Portal Python ML", "Stock Prediction Portal"]
+    "aliases": [
+      "Stock Prediction Portal Python ML",
+      "Stock Prediction Portal"
+    ]
   },
   {
     "id": 21,
@@ -462,7 +545,13 @@
       "Database-backed views",
       "Responsive utility interface"
     ],
-    "technologies": ["PHP", "MySQL", "HTML", "CSS", "JavaScript"],
+    "technologies": [
+      "PHP",
+      "MySQL",
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
     "role": "I implemented server-rendered pages, database operations, user flows, and interface refinements.",
     "challenges": "Organized transportation data into usable screens while keeping the application lightweight and accessible.",
     "impact": "I integrated PHP pages to MySQL records and built the transport data and navigation views.",
@@ -525,7 +614,13 @@
       "Template-based output",
       "User data management"
     ],
-    "technologies": ["Python", "Django", "SQLite", "HTML", "Bootstrap"],
+    "technologies": [
+      "Python",
+      "Django",
+      "SQLite",
+      "HTML",
+      "Bootstrap"
+    ],
     "role": "I built Django views, form handling, data models, resume templates, and responsive page layouts.",
     "challenges": "Turned multi-section resume data into a structured output flow while keeping the experience simple for users.",
     "impact": "I implemented Django forms, data models, and responsive templates that turn structured inputs into a professional resume.",
@@ -542,11 +637,86 @@
       "Admin CRUD workflows",
       "Searchable operational data"
     ],
-    "technologies": ["Python", "Django", "SQLite", "Bootstrap", "HTML/CSS"],
+    "technologies": [
+      "Python",
+      "Django",
+      "SQLite",
+      "Bootstrap",
+      "HTML/CSS"
+    ],
     "role": "I implemented data models, management views, CRUD flows, validation, and user-facing administration screens.",
     "challenges": "Structured office data into reliable workflows that reduce manual tracking and improve administrative clarity.",
     "impact": "I built employee records, validation, and administrative CRUD views on a Django and SQLite application.",
     "githubUrl": "https://github.com/harshgavandit/Office-Employee-Management-System",
     "slug": "office-employee-management-system"
+  },
+  {
+    "id": 41,
+    "title": "RAG Book Assistant — Document Q&A",
+    "category": "Applied AI & Document Retrieval",
+    "overview": "A deployed Python application that turns selectable PDF text into source-grounded answers. OpenAI embeddings and diversity-aware retrieval find relevant passages, GPT-4o-mini answers from that context, and expandable page excerpts let visitors inspect the evidence.",
+    "features": [
+      "PDF upload and a fictional sample guide for an immediate walkthrough",
+      "Overlapping document chunks with preserved page numbers",
+      "OpenAI embeddings with cosine similarity and maximal marginal relevance retrieval",
+      "GPT-4o-mini answers with validated source IDs and expandable page excerpts",
+      "Explicit not-found responses when the document does not support an answer",
+      "Session-isolated document indexes, clear-document controls, and bounded demo usage"
+    ],
+    "technologies": [
+      "Python",
+      "Streamlit",
+      "OpenAI API",
+      "NumPy",
+      "pypdf",
+      "RAG",
+      "MMR Retrieval"
+    ],
+    "role": "Built PDF extraction, overlapping chunking, OpenAI embeddings, MMR retrieval, and structured answer validation; connected them to a session-isolated Streamlit interface and deployed the app with server-side secrets.",
+    "challenges": "Retrieve useful passages without repeating near-duplicates, preserve page references through generation, and keep each visitor's document separate while bounding public API usage.",
+    "impact": "Provides a live PDF-to-answer workflow with inspectable supporting passages. The deployed sample correctly answered its return-policy question and declined an unsupported revenue question; no general accuracy score is claimed.",
+    "githubUrl": "https://github.com/harshgavandit/GENAI-RAG-IMPLEMENTATION",
+    "slug": "rag-book-assistant",
+    "aliases": [
+      "GENAI-RAG-IMPLEMENTATION",
+      "GENAI RAG Implementation",
+      "RAG Book Assistant"
+    ],
+    "demoUrl": "https://harsh-rag-document-assistant.streamlit.app/"
+  },
+  {
+    "id": 42,
+    "title": "Next Word Prediction — LSTM Language Model",
+    "category": "Machine Learning & Natural Language Processing",
+    "overview": "An interactive language-model demo that runs a trained TensorFlow/Keras LSTM on the server. A Streamlit interface tokenizes partial sentences, prepares the saved model's input sequence, and displays three ranked next-word suggestions with their model probabilities.",
+    "features": [
+      "Partial-sentence input with three ranked next-word suggestions",
+      "CPU inference using the original trained Keras H5 model",
+      "Saved tokenizer with padding and truncation aligned to the model input shape",
+      "Model probabilities displayed separately from measured prediction accuracy",
+      "Cached model resources across Streamlit interface reruns",
+      "Validation for empty, oversized, and entirely unknown input; no external inference API required"
+    ],
+    "technologies": [
+      "Python",
+      "TensorFlow",
+      "Keras",
+      "Streamlit",
+      "NumPy",
+      "LSTM",
+      "NLP",
+      "Jupyter"
+    ],
+    "role": "Connected the trained LSTM, tokenizer, and sequence metadata to a Streamlit application; implemented input validation, CPU inference, cached resource loading, ranked vocabulary decoding, and cloud deployment.",
+    "challenges": "Align inference with the saved model's actual context length, reuse model resources across interface reruns, and make vocabulary limits and prediction probabilities clear to visitors.",
+    "impact": "Makes the trained sequence model available in a live browser demo without a paid inference API. Visitors can inspect three ranked predictions; model probabilities are not an accuracy benchmark.",
+    "githubUrl": "https://github.com/harshgavandit/GENAI-NEXT-WORD_PREDICTION-PROJECT",
+    "slug": "lstm-next-word-prediction",
+    "aliases": [
+      "GENAI-NEXT-WORD_PREDICTION-PROJECT",
+      "GENAI Next Word Prediction",
+      "Next Word Prediction"
+    ],
+    "demoUrl": "https://harsh-lstm-next-word.streamlit.app/"
   }
 ]

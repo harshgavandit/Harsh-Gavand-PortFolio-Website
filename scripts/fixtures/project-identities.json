@@ -102,5 +102,13 @@
   {
     "id": 26,
     "githubUrl": "https://github.com/harshgavandit/Office-Employee-Management-System"
+  },
+  {
+    "id": 41,
+    "githubUrl": "https://github.com/harshgavandit/GENAI-RAG-IMPLEMENTATION"
+  },
+  {
+    "id": 42,
+    "githubUrl": "https://github.com/harshgavandit/GENAI-NEXT-WORD_PREDICTION-PROJECT"
   }
 ]

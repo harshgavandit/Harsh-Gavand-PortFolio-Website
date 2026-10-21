@@ -1,6 +1,6 @@
 # Harsh Gavand — Full-Stack & AI Engineer
 
-A React + TypeScript portfolio organized around engineering decisions: five homepage chapters, 14 featured public project cards, dedicated private internal-work evidence, and a searchable 38-repository catalog at [/archive](https://harshgavand.dev/archive/). Agri Samaj remains a separate community project outside the archive.
+A React + TypeScript portfolio organized around engineering decisions: five homepage chapters, 16 featured public project cards, dedicated private internal-work evidence, and a searchable 40-repository catalog at [/archive](https://harshgavand.dev/archive/). Agri Samaj remains a separate community project outside the archive.
 
 [Live portfolio](https://harshgavand.dev/) · [Refactor verification](verification/recruiter-scan-2026-10-15/README.md) · [Recent AI repository sources](verification/github-projects-2026-10-15/sources.json)
 
@@ -8,9 +8,11 @@ A React + TypeScript portfolio organized around engineering decisions: five home
 
 The homepage puts a compact role summary, professional experience, six primary technologies, and an authentic public-sample capture ahead of selected work. Skills provides the AI workspace link and the complete technology list under **View full stack**. The contact draft composer is optional. Assistant access is available from the corner launcher, navigation, and Ctrl/Command+K.
 
-Fifteen static case studies show product features, contributions, engineering work, architecture, complete technology stacks, and live/GitHub links. The selected projects include AgriConnect, UGC, deployed AI and RAG demos, Healthcare Explorer, and the Streamlit customer-support simulation. The catalog preserves active project identities and legacy fragments. Stock Prediction Portal and AI Brief use the same homepage cards, expandable project notes, architecture stages, complete stacks, and focused case studies as the other deployed applications. Their live/source links and screenshot provenance are recorded in `public/verification/project-additions-2026-10-21.json`.
+Seventeen static case studies show product features, contributions, engineering work, architecture, complete technology stacks, and live/GitHub links. The selected projects include AgriConnect, UGC, deployed AI and RAG demos, Healthcare Explorer, and the Streamlit customer-support simulation. The catalog preserves active project identities and legacy fragments. Stock Prediction Portal and AI Brief use the same homepage cards, expandable project notes, architecture stages, complete stacks, and focused case studies as the other deployed applications. Their live/source links and screenshot provenance are recorded in `public/verification/project-additions-2026-10-21.json`.
 
 AgriConnect's featured card and case study include a keyboard-accessible gallery of admin dashboard, TOTP security status, catalogue moderation, AI assistance, and marketplace/map screenshots. The first view highlights platform operations; each screenshot opens at full size. Capture provenance and validation are recorded in [the gallery verification notes](verification/agriconnect-gallery-2026-10-21/README.md).
+
+RAG Book Assistant and Next Word Prediction use the same featured-card renderer, real deployed screenshots, expandable project notes, technology tags, live links, GitHub links, and case studies. Their Streamlit deployments and screenshot provenance are recorded in `public/verification/streamlit-projects-2026-10-21.json`. The RAG app uses OpenAI document retrieval with page sources; the next-word app runs its trained LSTM directly on the server.
 
 The original UGC, LendFlow, and DevGraph previews come from the applications' labelled public sample workspaces, with synthetic data. The AI Brief card now shows its live RSS reader and links to the deployed personalized digest generator. The earlier formatter sample remains available as a historical artifact; harness scenarios execute deterministic functions against a mock ledger. See [evidence reproduction](docs/evidence/README.md) for those artifacts' boundaries. Those sample artifacts do not verify email delivery, external model generation, or real financial operations. The newer deployed-application captures have separate verification notes, including the live AgriConnect assistant response documented above.
 
@@ -130,7 +132,7 @@ The tests cover original project identities and assets, source metadata, assista
 ## Content and presentation
 
 - `src/data/projects.json`, `src/data/recentProjects.json`, `src/data/communityProjects.json`, and `src/data/platformProjects.json`: 39 active project records, including 11 recent AI repositories; Agri Samaj stays outside the 38-item archive.
-- `src/data/portfolio.ts`, `src/data/workPresentation.ts`, and `src/data/deploymentShowcase.ts`: shared profile, experience, selections, and 14 case studies.
+- `src/data/portfolio.ts`, `src/data/workPresentation.ts`, and `src/data/deploymentShowcase.ts`: shared profile, experience, featured projects, and case studies.
 - `src/data/recruiter.ts`: chapter numbers, curated archive, architecture widget, code excerpt, prompts, and principles.
 - `src/recruiter.css`: graphite, ivory, and citrus tokens; high-contrast text; responsive layouts; focus states; 180ms transitions and reduced-motion support.
 - `src/components/RequestTrace.tsx` and `src/lib/requestTrace.ts`: a completed happy path, pre-dispatch rollback, and uncertain upstream timeout scenarios. Token values and timings are illustrative; the accounting decisions match the live lifecycle without making network requests or changing balances.

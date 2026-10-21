@@ -1,0 +1,90 @@
+{
+  "reviewedOn": "2026-10-21",
+  "verifiedAt": "2026-10-21T13:55:02.329817+00:00",
+  "timezone": "Asia/Kolkata",
+  "verifiedPublicProjects": [
+    {
+      "slug": "rag-book-assistant",
+      "links": [
+        {
+          "url": "https://harsh-rag-document-assistant.streamlit.app/",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/GENAI-RAG-IMPLEMENTATION",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/GENAI-RAG-IMPLEMENTATION/blob/3af6ca4c97df1eef7ee6ac374319acbb054bb0ca/README.md",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/GENAI-RAG-IMPLEMENTATION/blob/3af6ca4c97df1eef7ee6ac374319acbb054bb0ca/rag_core.py",
+          "status": 200,
+          "passed": true
+        }
+      ],
+      "workflowChecks": [
+        "The live sample guide indexed three passages and answered the return-window question with the correct fourteen-day policy.",
+        "Expanding the answer source showed the supporting passage from page 2.",
+        "An annual-revenue question returned an explicit not-found response without a source citation."
+      ],
+      "inspectedSource": {
+        "repository": "https://github.com/harshgavandit/GENAI-RAG-IMPLEMENTATION",
+        "commit": "3af6ca4c97df1eef7ee6ac374319acbb054bb0ca"
+      },
+      "screenshot": {
+        "url": "/evidence/rag-book-assistant-live.jpg",
+        "width": 1536,
+        "height": 735,
+        "sha256": "4635a25994c056cfd33688184c447047759385eccd7100a939dca387e6c31dfb",
+        "origin": "Captured directly from the live Streamlit app in the connected Chrome browser; application content and probabilities are unmodified."
+      }
+    },
+    {
+      "slug": "lstm-next-word-prediction",
+      "links": [
+        {
+          "url": "https://harsh-lstm-next-word.streamlit.app/",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/GENAI-NEXT-WORD_PREDICTION-PROJECT",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/GENAI-NEXT-WORD_PREDICTION-PROJECT/blob/f42a793e3d4da5e4db2b689ade4aba0164d13e0b/README.md",
+          "status": 200,
+          "passed": true
+        },
+        {
+          "url": "https://github.com/harshgavandit/GENAI-NEXT-WORD_PREDICTION-PROJECT/blob/f42a793e3d4da5e4db2b689ade4aba0164d13e0b/predictor.py",
+          "status": 200,
+          "passed": true
+        }
+      ],
+      "workflowChecks": [
+        "The deployed app loaded the original TensorFlow/Keras LSTM and accepted the phrase the best way to.",
+        "Inference returned cheer, find, and live as three ranked suggestions with visible model probabilities.",
+        "The public interface exposed the model explanation, input form, and prediction results without requiring an API key."
+      ],
+      "inspectedSource": {
+        "repository": "https://github.com/harshgavandit/GENAI-NEXT-WORD_PREDICTION-PROJECT",
+        "commit": "f42a793e3d4da5e4db2b689ade4aba0164d13e0b"
+      },
+      "screenshot": {
+        "url": "/evidence/lstm-next-word-live.jpg",
+        "width": 1536,
+        "height": 735,
+        "sha256": "d4b3d0940f12e4b244a5dc37d9cab82167d7ee0027ba37cd75080684d3a6d0e8",
+        "origin": "Captured directly from the live Streamlit app in the connected Chrome browser; application content and probabilities are unmodified."
+      }
+    }
+  ],
+  "verificationScope": "Real Chrome workflow checks on the public deployments plus HTTP link checks. The RAG workflow used an explicitly fictional sample guide; no private PDF was sent. PDF extraction, session isolation, invalid-input handling, and real-model inference also passed local automated checks. No benchmark accuracy or business metrics are asserted."
+}
