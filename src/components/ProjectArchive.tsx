@@ -67,7 +67,7 @@ export function ProjectArchive() {
         </div>
       </div>
       <p className="archive-count" role="status">
-        {visible.length} projects
+        {visible.length} {visible.length === 1 ? "project" : "projects"}
       </p>
       <ol className="project-directory-list">
         {visible.map((project) => (
