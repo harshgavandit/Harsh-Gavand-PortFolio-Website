@@ -332,7 +332,10 @@ test("AgriConnect renders a public case study, screenshot, complete stack, and c
   assert.match(card, /Catalogue operations/);
   assert.match(card, /AI assistance/);
   assert.match(card, /illustrative, not independent security results/);
-  assert.match(card, /Admin areas require authorised access/);
+  assert.doesNotMatch(
+    card,
+    /Live app captures|Admin areas require authorised access/,
+  );
   assert.equal([...card.matchAll(/role="tab"/g)].length, 4);
   assert.equal([...card.matchAll(/role="tabpanel"/g)].length, 4);
   assert.equal([...card.matchAll(/aria-selected="true"/g)].length, 1);

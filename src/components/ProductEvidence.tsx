@@ -9,7 +9,6 @@ const captures: Record<
     alt: string;
     width?: number;
     height?: number;
-    caption?: string;
   }
 > = {
   ...Object.fromEntries(
@@ -20,7 +19,6 @@ const captures: Record<
         alt: item.alt,
         width: item.captureWidth ?? 1265,
         height: item.captureHeight ?? 712,
-        caption: `Live website capture · ${item.verifiedOn ?? "20 October 2026"} · Click to enlarge`,
       },
     ]),
   ),
@@ -61,7 +59,6 @@ export function ProductEvidence({ slug }: { slug: string }) {
           loading="lazy"
         />
       </a>
-      {capture.caption && <figcaption>{capture.caption}</figcaption>}
     </figure>
   ) : null;
 }

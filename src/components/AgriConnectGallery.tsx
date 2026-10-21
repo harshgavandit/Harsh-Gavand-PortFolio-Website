@@ -94,10 +94,6 @@ export function AgriConnectGallery() {
           </button>
         ))}
       </div>
-      <p className="project-gallery-note">
-        Live app captures · 21 October 2026 · Admin areas require authorised
-        access.
-      </p>
     </div>
   );
 }
