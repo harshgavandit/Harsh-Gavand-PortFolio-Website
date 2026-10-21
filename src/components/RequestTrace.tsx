@@ -144,8 +144,9 @@ export function RequestTrace() {
             : (announcement ?? scenario.status)}
       </p>
       <p className="trace-disclosure">
-        Quota lifecycle simulation: settle completed usage, release pre-dispatch
-        reservations, and retain estimates for uncertain upstream usage.
+        Quota lifecycle walkthrough: settle completed usage, release
+        pre-dispatch reservations, and retain estimates for uncertain upstream
+        usage.
       </p>
     </div>
   );

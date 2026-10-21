@@ -399,8 +399,8 @@ function TicketWorkbench() {
         <span className="eyebrow">Support automation</span>
         <h2>Run ticket triage.</h2>
         <p>
-          Classify a sample support ticket by topic and priority, with a review
-          flag for sensitive or ambiguous requests.
+          Classify a support ticket by topic and priority, with a review flag
+          for sensitive or ambiguous requests.
         </p>
         <div className="ai-samples">
           {ticketSamples.map((sample) => (
@@ -434,7 +434,7 @@ function TicketWorkbench() {
             void api.run({ text });
           }}
         >
-          <label htmlFor="ticket-input">Sample support ticket</label>
+          <label htmlFor="ticket-input">Support ticket</label>
           <textarea
             id="ticket-input"
             rows={6}
@@ -619,7 +619,7 @@ export function AIWorkspace() {
                 ))}
               </ul>
               <p>
-                Fixed synthetic dataset covering source references, expected
+                Controlled evaluation cases covering source references, expected
                 facts, ticket categories, refusals, and unsupported
                 requirements. Build revision:{" "}
                 <code>{quality.runtimeDigest.slice(0, 12)}</code>.

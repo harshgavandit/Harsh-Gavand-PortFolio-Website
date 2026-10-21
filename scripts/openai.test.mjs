@@ -32,7 +32,7 @@ test("Agri Samaj is discoverable with its community description and live/source 
   assert.equal(matchesProjectCollection(project, "Latest AI"), false);
   assert.deepEqual(sourceLinks({ projectIds: [project.id], sections: [] }), [
     { label: `${project.title} · source`, href: project.githubUrl },
-    { label: `${project.title} · demo`, href: project.demoUrl },
+    { label: `${project.title} · live website`, href: project.demoUrl },
   ]);
 });
 test("retrieval includes the relevant project and complete public project index", () => {
@@ -44,8 +44,10 @@ test("retrieval includes the relevant project and complete public project index"
   );
   assert.ok(digestStudy.diagram.nodes.includes("Parallel OpenAI summaries"));
   assert.ok(
-    digestStudy.contributions.some((item) =>
-      item.description.includes("FastAPI") && item.description.includes("OpenAI"),
+    digestStudy.contributions.some(
+      (item) =>
+        item.description.includes("FastAPI") &&
+        item.description.includes("OpenAI"),
     ),
   );
   assert.ok(!JSON.stringify(knowledge).includes("OPENAI_API_KEY"));
@@ -62,7 +64,7 @@ test("each recent AI project is retrievable with its implementation context and 
     assert.deepEqual(sourceLinks({ projectIds: [project.id], sections: [] }), [
       { label: `${project.title} · source`, href: project.githubUrl },
       ...(project.demoUrl
-        ? [{ label: `${project.title} · demo`, href: project.demoUrl }]
+        ? [{ label: `${project.title} · live website`, href: project.demoUrl }]
         : []),
     ]);
   }

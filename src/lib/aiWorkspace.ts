@@ -89,9 +89,9 @@ export const codeSampleGroups = [
           "How does Harsh design backend APIs and databases? Use UGC Content Studio to explain request validation, authentication, data modeling, and ownership checks, with code references.",
       },
       {
-        label: "How do you test your projects, and what are their limitations?",
+        label: "How do you validate critical workflows and failure handling?",
         prompt:
-          "How is the Banking Agent Harness tested? Use its tests and implementation to explain the transfer scenarios covered, what is simulated, and the limits of the available evidence.",
+          "How is the Banking Agent Harness tested? Explain beneficiary checks, transfer validation, later-turn confirmation, session isolation, and failure handling using its implementation and tests.",
       },
     ],
   },
@@ -138,7 +138,7 @@ export const codeSampleGroups = [
         label:
           "How does the banking agent harness require later-turn confirmation?",
         prompt:
-          "How does the banking agent harness validate transfer policy and require later-turn confirmation before mock execution? Show the relevant code and explain what happens when transfer details change.",
+          "How does the banking agent harness validate transfer policy and require later-turn confirmation before ledger execution? Show the relevant code and explain what happens when transfer details change.",
       },
       {
         label: "How does the portfolio keep AI usage within its budget?",

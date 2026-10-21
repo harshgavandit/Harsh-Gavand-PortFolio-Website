@@ -28,15 +28,15 @@ const captures: Record<
   },
   "ugc-platform": {
     src: "/evidence/ugc-workspace.png",
-    alt: "UGC Content Studio sample workspace showing reference inputs, saved output, and generation status",
+    alt: "UGC Content Studio generation workspace showing reference inputs, saved output, and generation status",
   },
   "banking-saas": {
     src: "/evidence/lendflow-workspace.png",
-    alt: "LendFlow sample lending workspace showing borrower records and loan review",
+    alt: "LendFlow lending workspace showing borrower records and loan review",
   },
   "github-replica": {
     src: "/evidence/devgraph-workspace.png",
-    alt: "DevGraph sample explorer showing repository discovery and issue records",
+    alt: "DevGraph repository explorer showing repository discovery and issue records",
   },
 };
 

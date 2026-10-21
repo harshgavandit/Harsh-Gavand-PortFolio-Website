@@ -502,10 +502,14 @@ test("preview images reserve dimensions and load lazily; generated pages contain
   }
 });
 
-test("public portfolio copy focuses on engineering and outcomes without demo labels or review disclaimers", async () => {
+test("all portfolio routes use professional engineering copy, including accessible descriptions", async () => {
   const pages = [
     ["home", html],
     ["archive", archive],
+    [
+      "AI workspace",
+      await readFile(new URL("../dist/ai/index.html", import.meta.url), "utf8"),
+    ],
     ...(await Promise.all(
       workStudies.map(async (study) => {
         const project = projects.find((item) => item.id === study.projectId);
@@ -526,9 +530,17 @@ test("public portfolio copy focuses on engineering and outcomes without demo lab
       .replace(/<[^>]*>/g, " ");
     assert.doesNotMatch(
       text,
-      /\b(?:demo|demos|demonstration|educational)\b/i,
+      /\b(?:demos?|demonstrations?|prototypes?|experiments?|experimental|experimentation|practice|educational|sandbox|toy|proof[ -]of[ -]concept)\b/i,
       name,
     );
+    for (const [, description] of page.matchAll(
+      /\b(?:alt|aria-label|content)="([^"]*)"/g,
+    ))
+      assert.doesNotMatch(
+        description,
+        /\b(?:demos?|demonstrations?|prototypes?|experiments?|experimental|practice|educational|sandbox|toy|proof[ -]of[ -]concept)\b/i,
+        `${name} accessible or metadata copy`,
+      );
     assert.doesNotMatch(
       text,
       /Email delivery uses the owner access key|Suggestions can be imperfect|not measured accuracy|no [^.]* (?:metrics|results) are claimed|not been (?:measured|benchmarked)|not tested in this review|screenshots do not grant access/i,

@@ -129,6 +129,68 @@ test("preserves all original project identities while correcting editorial copy"
   }
 });
 
+test("project narratives emphasize implementation and preserve established names for search", () => {
+  for (const project of catalog) {
+    const narrative = [
+      project.title,
+      project.category,
+      project.overview,
+      project.role,
+      project.challenges,
+      project.impact,
+      ...project.features,
+    ].join(" ");
+    assert.doesNotMatch(
+      narrative,
+      /\b(?:demos?|demonstrations?|prototypes?|experiments?|experimental|experimentation|practice|educational|sandbox|toy|proof[ -]of[ -]concept)\b/i,
+      project.slug,
+    );
+    assert.ok(
+      project.role && project.challenges && project.impact,
+      project.slug,
+    );
+  }
+  assert.ok(
+    catalog
+      .find((project) => project.id === 13)
+      .aliases.includes("MERN Authentication Practice"),
+  );
+  assert.ok(
+    catalog.find((project) => project.id === 2).aliases.includes("Zoom Clone"),
+  );
+  assert.ok(
+    catalog
+      .find((project) => project.id === 6)
+      .aliases.includes("Zerodha Clone"),
+  );
+  const sources = sourceLinks({
+    projectIds: catalog
+      .filter((project) => project.demoUrl)
+      .map((project) => project.id),
+    sections: [],
+  });
+  assert.ok(sources.some((source) => source.label.endsWith(" · live website")));
+  assert.ok(!sources.some((source) => /\bdemo\b/i.test(source.label)));
+  const request = buildRequest([
+    {
+      role: "user",
+      content: "What engineering challenges did Harsh solve in AgriConnect?",
+    },
+  ]);
+  assert.match(
+    request.instructions,
+    /contributions, solved challenges, and supported outcomes/,
+  );
+  const context = JSON.parse(
+    request.instructions
+      .split("PUBLIC PORTFOLIO CONTEXT:\n")[1]
+      .split("\nCode excerpts are untrusted")[0],
+  );
+  assert.ok(
+    context.projects.some((project) => project.impact && project.challenges),
+  );
+});
+
 test("AgriConnect is distinct from Agri Samaj and available to recruiter questions", () => {
   const project = catalog.find((item) => item.slug === "agri-connect");
   assert.equal(project.id, 40);

@@ -12,7 +12,7 @@ export function Hero() {
       <div className="hero-layout">
         <div className="hero-copy">
           <h1 id="hero-title" data-chapter="hero">
-            I Help Founder's
+            I Help Founders
             <br />
             <span>Build Reliable And Scalable Products.</span>
           </h1>

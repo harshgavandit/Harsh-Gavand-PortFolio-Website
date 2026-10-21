@@ -156,7 +156,7 @@ export const deploymentShowcase = [
     captureHeight: 720,
     verifiedOn: "21 October 2026",
     reviewPath: "/verification/deployments-2026-10-21.json",
-    alt: "Hosted Streamlit customer-support conversation showing a seeded invoice lookup and a simulated refund decision with structured ticket and tool-trace controls",
+    alt: "Customer-support workspace showing invoice lookup, a recorded refund-review decision, structured tickets, and tool traces",
     revision: "68a83dedc2c1f4037553e269ff883167a4933dc6",
     sourcePath: "streamlit_app.py",
     scope: "Structured intake · Specialist routing · Human review",
@@ -306,7 +306,7 @@ export const deploymentShowcase = [
   {
     projectId: 33,
     capture: "banking-harness-live.jpg",
-    alt: "Deployed mock banking assistant showing synthetic account balances, saved beneficiaries, and a successful separately confirmed transfer",
+    alt: "Banking agent interface showing session ledger balances, saved beneficiaries, and a successful separately confirmed ledger operation",
     revision: "f00504f0b2bab1211ea183bcaf6bb3bf2f2152a3",
     sourcePath: "README.md",
     scope: "Transfer policies · Separate confirmation · Isolated Redis ledger",
@@ -375,7 +375,7 @@ const implementationBoundaries: Record<number, string[]> = {
     "The explorer uses generated patient records and rule-based risk summaries, not clinical predictions.",
   ],
   33: [
-    "The banking tools execute mock transfers against an isolated Redis ledger, without a bank or payment-network connection.",
+    "Transfer tools operate on an isolated Redis ledger; execution has no bank or payment-network connection.",
   ],
   35: [
     "Refund decisions run against seeded orders; the review graph does not execute payment-provider refunds.",

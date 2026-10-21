@@ -27,11 +27,11 @@ export function ProjectArchive() {
       <span className="eyebrow">
         Project catalog / {projects.length} repositories
       </span>
-      <h1>The complete build log.</h1>
+      <h1>Engineering project catalog.</h1>
       <p className="archive-intro">
-        Applications, APIs, AI experiments, and the implementation details
-        behind them. Start with the selected work for complete product
-        walkthroughs.
+        Full-stack applications, backend APIs, and applied AI systems. Explore
+        the architecture, technical contributions, and outcomes behind each
+        project.
       </p>
       <div className="archive-controls">
         <label htmlFor="archive-search">

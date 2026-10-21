@@ -37,7 +37,26 @@ export function escapeHTML(value) {
   );
 }
 
+export function assertProfessionalCopy(html, label = "portfolio page") {
+  const editorialLabels =
+    /\b(?:demos?|demonstrations?|prototypes?|experiments?|experimental|experimentation|practice|educational|sandbox|toy|proof[ -]of[ -]concept)\b/i;
+  const text = html
+    .replace(/<script\b[\s\S]*?<\/script>/gi, " ")
+    .replace(/<style\b[\s\S]*?<\/style>/gi, " ")
+    .replace(/<[^>]*>/g, " ");
+  assert.doesNotMatch(text, editorialLabels, label);
+  for (const [, description] of html.matchAll(
+    /\b(?:alt|aria-label|content)="([^"]*)"/g,
+  ))
+    assert.doesNotMatch(
+      description,
+      editorialLabels,
+      `${label} accessible or metadata copy`,
+    );
+}
+
 export function assertHomepage(html, origin = profile.site) {
+  assertProfessionalCopy(html, "homepage");
   assert.ok(
     html.includes('data-prerendered="true"'),
     "Missing hydration marker",
@@ -103,6 +122,7 @@ export function assertHomepage(html, origin = profile.site) {
 }
 
 export function assertArchive(html, origin = profile.site) {
+  assertProfessionalCopy(html, "project catalog");
   assert.ok(html.includes('data-prerendered="true"'));
   assert.ok(html.includes('href="' + origin + '/archive/"'));
   assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, 1);

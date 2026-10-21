@@ -4,6 +4,7 @@ import { createHash } from "node:crypto";
 import {
   assertHomepage,
   assertArchive,
+  assertProfessionalCopy,
   siteOrigin,
 } from "./prerender-checks.mjs";
 import { profile } from "../src/data/portfolio.ts";
@@ -51,6 +52,7 @@ for (const study of workStudies) {
   const response = await request(path);
   assert.equal(response.status, 200, path);
   const html = await response.text();
+  assertProfessionalCopy(html, path);
   assert.ok(html.includes(`href="${origin}${path}"`), path + " canonical");
   assert.ok(
     html.includes('id="engineering-title"'),
@@ -60,6 +62,9 @@ for (const study of workStudies) {
   assert.ok(!html.includes('<div id="root"></div>'), path + " empty shell");
   workPages.push(html);
 }
+const aiPage = await request("/ai/");
+assert.equal(aiPage.status, 200);
+assertProfessionalCopy(await aiPage.text(), "AI workspace");
 const resources = new Set();
 for (const html of [home, archive, ...workPages]) {
   for (const match of html.matchAll(
@@ -153,6 +158,7 @@ const report = {
   curatedRows: 8,
   archiveProjects: archiveProjects.length,
   caseStudyPages: workPages.length,
+  professionalCopyVerified: true,
   assets,
   googlebotHTMLMatches: true,
   unknownPageStatus: 404,

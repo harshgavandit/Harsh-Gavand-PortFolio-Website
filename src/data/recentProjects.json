@@ -6,7 +6,7 @@
     "overview": "A two-agent finance assistant combining budget analysis with delegated investment research. Google ADK coordinates OpenAI models through LiteLLM, while public search results retain source links and retrieval timestamps.",
     "features": [
       "Root finance agent delegates public research to an investment planning agent.",
-      "Structured sample-budget analysis supports savings and allocation conversations.",
+      "Structured budget analysis supports savings and allocation conversations.",
       "Search responses preserve public source URLs and UTC retrieval timestamps.",
       "Atomic SQLite admission limits requests and model calls across local processes.",
       "ADK web and command-line entry points support interactive sessions."

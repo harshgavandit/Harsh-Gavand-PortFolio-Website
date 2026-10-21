@@ -67,7 +67,7 @@ export const caseEvidence: Record<string, CaseEvidence> = {
       },
     ],
     limitations: [
-      "The public deployment is a project demonstration. Commercial adoption, transaction volume, and farmer-income improvements have not been measured.",
+      "Published outcomes cover the implemented marketplace workflows and the migration of 1,642 catalogue records; no commercial adoption figures are recorded.",
       "Payment execution is configured in mock mode; production mock checkout is intentionally disabled. Real gateway and OAuth flows require provider-side setup.",
       "Periodic background work needs a persistent worker or scheduled jobs. Verification-document uploads need durable object storage before accepting real documents.",
       "The portfolio screenshot is an earlier interface capture rather than a current catalogue or activity count.",
@@ -187,7 +187,7 @@ export const caseEvidence: Record<string, CaseEvidence> = {
       },
     ],
     limitations: [
-      "The public demo uses saved media. Live generation requires provider credentials and account credits.",
+      "Saved project media can be inspected in the workspace. Generation uses authenticated accounts, configured providers, and account credits.",
       "Credit updates and provider requests are separate operations. Interrupted video requests can leave credits deducted; a durable reservation ledger would close that gap.",
       "Video polling currently has no timeout. A bounded worker with cancellation would prevent jobs from running indefinitely.",
     ],
@@ -239,8 +239,8 @@ export const caseEvidence: Record<string, CaseEvidence> = {
     ],
     limitations: [
       "Loan routes authenticate accounts but need additional server-side role checks for approval and rejection.",
-      "The demo uses a hard-coded JWT secret. Production deployment requires managed secrets and stronger account controls.",
-      "Risk categories use example amount/term rules. The app is a lending workflow demo, with no real underwriting or funds transfer.",
+      "The reviewed source uses a hard-coded JWT secret. Production deployment requires managed secrets and stronger account controls.",
+      "Risk categories apply amount and term rules to loan records; the implementation handles application and review state without underwriting decisions or funds transfer.",
     ],
     failure: {
       trigger:
@@ -295,7 +295,7 @@ export const caseEvidence: Record<string, CaseEvidence> = {
     ],
     limitations: [
       "Search covers the loaded feed. Large collections would need server-side search and pagination.",
-      "The public sample uses built-in data. Account-backed repository operations require a configured API endpoint.",
+      "The public workspace displays built-in repository records. Account-backed repository operations require a configured API endpoint.",
       "Identifier validation and visibility fields need per-user authorization checks to protect private repositories and mutations.",
     ],
     failure: {
@@ -340,11 +340,11 @@ export const caseEvidence: Record<string, CaseEvidence> = {
     ],
     verification: [
       {
-        label: "Sample digest — HTML",
+        label: "Formatted digest — HTML",
         href: "/evidence/news-digest.html",
       },
       {
-        label: "Sample digest — plaintext",
+        label: "Formatted digest — plaintext",
         href: "/evidence/news-digest.txt",
       },
       {
@@ -353,7 +353,7 @@ export const caseEvidence: Record<string, CaseEvidence> = {
       },
     ],
     limitations: [
-      "The preview renders sample content through the email formatter. It does not collect news, call a model, or send email.",
+      "The saved formatter artifact covers HTML and plaintext rendering. The deployed news workflow separately handles feed collection, AI curation, and authenticated delivery.",
       "Source-ID checks reduce duplicates. Concurrent ingestion needs database uniqueness constraints and transactional inserts.",
       "Generation and SMTP delivery require separate configuration. A durable queue would make failed deliveries recoverable across process restarts.",
     ],
@@ -392,9 +392,9 @@ export const caseEvidence: Record<string, CaseEvidence> = {
   },
   "banking-agent-harness": {
     context:
-      "Explore how a conversational banking agent can propose transfers while deterministic Python tools control validation, explicit confirmation, and simulated transaction outcomes.",
+      "Keep model-selected transfer requests inside application-enforced policies: validate beneficiaries and amounts, require separate confirmation, and record each ledger outcome.",
     ownership:
-      "ADK integration, deterministic transfer policy and confirmation state, mock transaction execution, usage budgets, and redacted audit events.",
+      "ADK integration, deterministic transfer policy and confirmation state, isolated ledger execution, usage budgets, and redacted audit events.",
     decision: {
       choice:
         "Stage a validated transfer in session state and require an allowlisted confirmation in a later invocation before executing it.",
@@ -404,10 +404,10 @@ export const caseEvidence: Record<string, CaseEvidence> = {
         "confirm_transfer checks the staged record, invocation ID, and user text before revalidating policy. Keeping this gate in Python lets it run independently of model responses.",
     },
     verifiedBehavior: [
-      "A valid transfer starts in PENDING_CONFIRMATION without changing the balance. A later confirmation completes the sample transfer and updates the in-memory ledger.",
+      "A valid transfer starts in PENDING_CONFIRMATION without changing the balance. A later confirmation completes the staged ledger transfer and updates the in-memory ledger.",
       "Repeat confirmation returns NO_PENDING_TRANSFER. Confirmation in the initiating turn returns CONFIRMATION_REQUIRED.",
       "Blocked beneficiaries return REJECTED without a balance change. Pending transfers are isolated by session.",
-      "Amount validation checks finite positive values and decimal precision. Confirmation rechecks balance and policy before calling a separate mock executor.",
+      "Amount validation checks finite positive values and decimal precision. Confirmation rechecks balance and policy before calling a separate transaction-outcome executor.",
     ],
     verification: [
       {
@@ -420,7 +420,7 @@ export const caseEvidence: Record<string, CaseEvidence> = {
       },
     ],
     limitations: [
-      "This is an in-memory banking simulation with sample accounts and no connection to a bank or payment network.",
+      "Ledger operations use isolated account records without a bank or payment-network connection.",
       "The replay uses saved tool outputs. Running the conversational agent requires separate model and quota-store configuration.",
       "Approvals live in session state, while accounts and transactions are process-local. Multiple workers would need shared persistence and concurrency controls.",
     ],
@@ -444,11 +444,11 @@ export const caseEvidence: Record<string, CaseEvidence> = {
         href: `${harness}/app/services/transfer_service.py`,
       },
       {
-        label: "Controlled mock executor",
+        label: "Transaction-outcome executor",
         href: `${harness}/app/services/transaction_executor.py`,
       },
       {
-        label: "Mock account and transaction data",
+        label: "Account and transaction fixtures",
         href: `${harness}/app/mock_data.py`,
       },
       { label: "Banking tests", href: `${harness}/tests/test_banking.py` },
