@@ -1,13 +1,14 @@
 import { useParams } from "react-router-dom";
 import { workPage } from "../lib/projectNavigation";
 import { caseEvidence } from "../data/caseEvidence";
-import { sampleWorkspaceURLs } from "../data/workPresentation";
+import { featuredStudies, sampleWorkspaceURLs } from "../data/workPresentation";
 import { ActionLink, LeadStatement, Tags } from "./Primitives";
 import { ProductEvidence } from "./ProductEvidence";
 import { SystemFlow } from "./SystemFlow";
 import { Tabs } from "./Tabs";
 import { communityProjects } from "../data/portfolio";
 import { BankingPolicyReplay } from "./BankingPolicyReplay";
+import { projectRecovery } from "../data/projectArchitecture";
 
 export function WorkDetail() {
   const { slug } = useParams();
@@ -27,10 +28,16 @@ export function WorkDetail() {
   const sampleURL = sampleWorkspaceURLs[project.slug];
   const community = communityProjects.some((item) => item.id === project.id);
   const publicWebsite = community || study.publicPreview === true;
+  const featured = featuredStudies.some(
+    (item) => item.projectId === project.id,
+  );
   return (
     <main id="main" className="work-page section-container" tabIndex={-1}>
-      <a className="text-link" href={`/#${project.slug}`}>
-        ← Selected work
+      <a
+        className="text-link"
+        href={`${featured ? "/" : "/archive/"}#${project.slug}`}
+      >
+        {featured ? "← Selected work" : "← Project archive"}
       </a>
       <header className="work-intro">
         <h1>{study.shortName}</h1>
@@ -101,6 +108,17 @@ export function WorkDetail() {
       </section>
       <section className="work-section" aria-labelledby="architecture-title">
         <h2 id="architecture-title">Architecture &amp; tech stack</h2>
+        <div className="work-decision">
+          <div>
+            <h3>Design decision</h3>
+            <p>{evidence.decision.choice}</p>
+            <p>{evidence.decision.reason}</p>
+          </div>
+          <div>
+            <h3>Failure handling &amp; recovery</h3>
+            <p>{projectRecovery[project.id] ?? study.recovery}</p>
+          </div>
+        </div>
         <Tabs
           id={`work-${project.slug}`}
           label={`${study.shortName} engineering details`}

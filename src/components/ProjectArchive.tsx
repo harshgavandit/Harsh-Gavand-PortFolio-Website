@@ -5,6 +5,10 @@ import { ProjectNotes } from "./Work";
 import { workPath } from "../lib/projectNavigation";
 import { matchesProjectCollection } from "../lib/portfolioActions";
 
+// The existing Render deployment returned HTTP 503 on 22 October 2026.
+// Keep its repository available without sending visitors to the offline host.
+const offlineDeployments = new Set(["zoom-clone"]);
+
 export function ProjectArchive() {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("All projects");
@@ -78,7 +82,7 @@ export function ProjectArchive() {
                   <h2>{project.title}</h2>
                 </div>
                 <div className="actions">
-                  {project.demoUrl && (
+                  {project.demoUrl && !offlineDeployments.has(project.slug) && (
                     <ActionLink href={project.demoUrl} primary external>
                       Visit live website
                     </ActionLink>

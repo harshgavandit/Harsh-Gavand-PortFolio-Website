@@ -1172,3 +1172,55 @@
     font-size: 0.84rem;
   }
 }
+
+/* Long availability labels wrap without shrinking the status indicator. */
+.hero-location > span:last-child,
+.contact-location > span:last-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.hero-location .status-dot,
+.availability-badge .status-dot {
+  flex: 0 0 6px;
+}
+.contact-direct .section-heading h2 {
+  max-width: 32ch;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+}
+.capture-evidence > figcaption {
+  padding: 12px 16px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+.work-decision p + p {
+  margin-top: 12px;
+}
+.flow-description {
+  margin-top: 20px;
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+.flow-description summary {
+  color: var(--accent);
+  cursor: pointer;
+}
+.flow-description dl {
+  display: grid;
+  gap: 16px;
+  margin: 20px 0 0;
+}
+.flow-description dt {
+  font-weight: 700;
+}
+.flow-description dd {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}
+.education-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+}

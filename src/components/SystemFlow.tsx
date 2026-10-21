@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ArrowDown } from "lucide-react";
 import type { CaseStudy } from "../data/portfolio";
+import { projectArchitecture } from "../data/projectArchitecture";
 
 export function SystemFlow({
   study,
@@ -12,6 +13,7 @@ export function SystemFlow({
   const [active, setActive] = useState(0);
   const diagram = study.diagram!;
   const detailId = `${slug}-contract`;
+  const descriptions = projectArchitecture[study.projectId] ?? diagram.details;
   return (
     <figure className="case-flow">
       <ol aria-label={`${study.shortName} architecture stages`}>
@@ -44,10 +46,22 @@ export function SystemFlow({
           <span>Data flow</span> {diagram.contracts[active]}
         </p>
         <p>
-          <span>Implementation</span> {diagram.details[active]}
+          <span>Implementation</span> {descriptions[active]}
         </p>
       </div>
       <figcaption>{diagram.caption}</figcaption>
+      <details className="flow-description">
+        <summary>Read the complete data flow</summary>
+        <dl>
+          {diagram.nodes.map((node, index) => (
+            <div key={node}>
+              <dt>{node}</dt>
+              <dd>{descriptions[index]}</dd>
+              <dd>{diagram.contracts[index]}</dd>
+            </div>
+          ))}
+        </dl>
+      </details>
     </figure>
   );
 }

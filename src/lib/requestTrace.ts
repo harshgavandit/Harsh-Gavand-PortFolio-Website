@@ -1,8 +1,10 @@
 export type TraceMode = "success" | "rollback" | "timeout";
+
+// This describes source control flow, not production timings or usage metrics.
 export const traceStages = [
-  "Auth & Admission",
-  "Credit Lock",
-  "Model Stream",
+  "Request Admission",
+  "Allowance Reservation",
+  "Provider Request",
   "Settlement",
 ];
 export const traceScenarios: {
@@ -12,64 +14,55 @@ export const traceScenarios: {
 }[] = [
   {
     mode: "success",
-    label: "Happy Path (618ms)",
+    label: "Completed Request",
     status:
-      "Trace complete: 112 tokens billed, 28 unused tokens released (618ms total).",
+      "Known provider usage is settled once and unused cost allowance is released. The admitted daily request remains counted.",
   },
   {
     mode: "rollback",
-    label: "Pre-Dispatch Abort (29ms)",
+    label: "Pre-Dispatch Cancellation",
     status:
-      "Aborted pre-dispatch: 0 tokens billed, 140 reserved tokens restored immediately.",
+      "The provider was not called. The full reserved cost allowance is released; the admitted daily request remains counted.",
   },
   {
     mode: "timeout",
-    label: "Upstream Timeout & Recovery (1,240ms)",
+    label: "Unknown Provider Usage",
     status:
-      "Upstream error caught: usage is unknown; the reservation remains held. Known-usage settlement failures enter the idempotent retry worker.",
+      "After dispatch, unknown provider usage retains its reservation. Only settlement failures with known usage enter the idempotent retry queue.",
   },
 ];
 export function traceStage(mode: TraceMode, index: number) {
-  const success = [
-    { message: "Rate-limit & session quota verified", timing: "11ms" },
-    { message: "Reserved 140 estimated tokens in store", timing: "18ms" },
-    { message: "Generation completed (signal attached)", timing: "580ms" },
-    { message: "Settled 112 actual tokens · refunded 28", timing: "9ms" },
+  const completed = [
+    { message: "Request validation and rate limits checked" },
+    { message: "Daily request counted and estimated cost reserved atomically" },
+    { message: "Provider request completed with cancellation signal attached" },
+    { message: "Known usage settled once; unused cost allowance released" },
   ];
   if (mode === "rollback" && index === 2)
     return {
-      title: "Abort Signal",
-      message: "Client disconnected before provider dispatch",
-      timing: "0ms",
+      title: "Cancellation Before Dispatch",
+      message: "Cancellation detected before the provider call",
       failed: true,
     };
   if (mode === "rollback" && index === 3)
     return {
-      title: "Instant Rollback",
-      message: "Released full 140-token reservation atomically",
-      timing: "0ms",
-      failed: false,
-    };
-  if (mode === "timeout" && index < 2)
-    return {
-      ...success[index],
-      title: traceStages[index],
-      timing: index === 0 ? "12ms" : "19ms",
+      title: "Reservation Release",
+      message:
+        "Full reserved cost released through idempotent zero-cost settlement",
       failed: false,
     };
   if (mode === "timeout" && index === 2)
     return {
-      title: "Provider Dispatch",
-      message: "Upstream timeout after stream initiation",
-      timing: "1,200ms",
+      title: "Provider Request",
+      message: "Request failed after dispatch without confirmed provider usage",
       failed: true,
     };
   if (mode === "timeout" && index === 3)
     return {
-      message: "Unknown usage · reservation retained for reconciliation",
-      title: "Reconciliation Guard",
-      timing: "9ms",
+      title: "Conservative Accounting",
+      message:
+        "Usage remains unknown; the estimated cost reservation stays held",
       failed: false,
     };
-  return { ...success[index], title: traceStages[index], failed: false };
+  return { ...completed[index], title: traceStages[index], failed: false };
 }

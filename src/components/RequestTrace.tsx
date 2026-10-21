@@ -126,7 +126,6 @@ export function RequestTrace() {
                 )}
               </div>
               <p>{detail.message}</p>
-              <span className="trace-time">{detail.timing}</span>
             </li>
           );
         })}
@@ -144,9 +143,8 @@ export function RequestTrace() {
             : (announcement ?? scenario.status)}
       </p>
       <p className="trace-disclosure">
-        Quota lifecycle walkthrough: settle completed usage, release
-        pre-dispatch reservations, and retain estimates for uncertain upstream
-        usage.
+        Request flow from the quota lifecycle source. Reservations track cost
+        allowance; admitted daily requests remain counted after cancellation.
       </p>
     </div>
   );

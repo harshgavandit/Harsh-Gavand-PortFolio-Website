@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ArrowUp, ArrowUpRight, Check, Copy } from "lucide-react";
 import { profile } from "../data/portfolio";
+import { availability } from "../data/availability";
 import { ActionLink, ChapterHeading } from "./Primitives";
 
 export function Contact() {
@@ -21,11 +22,8 @@ export function Contact() {
       aria-labelledby="contact-title"
     >
       <div className="section-container contact-direct">
-        <ChapterHeading id="contact" title="Let’s talk about the role." />
-        <p className="body-copy">
-          I’m open to remote full-time and contract opportunities in full-stack,
-          backend, and applied AI engineering.
-        </p>
+        <ChapterHeading id="contact" title={availability.contactHeadline} />
+        <p className="body-copy">{availability.collaboration}</p>
         <a className="contact-email" href={`mailto:${profile.email}`}>
           {profile.email}
           <ArrowUpRight size={22} aria-hidden="true" />
@@ -58,7 +56,7 @@ export function Contact() {
         </div>
         <p className="contact-location availability-badge">
           <span className="status-dot" aria-hidden="true" />
-          {profile.locationLabel}
+          <span>{availability.contactLocation}</span>
         </p>
         <p role="status" className="contact-notice">
           {notice}

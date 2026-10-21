@@ -9,6 +9,7 @@ const captures: Record<
     alt: string;
     width?: number;
     height?: number;
+    caption?: string;
   }
 > = {
   ...Object.fromEntries(
@@ -23,8 +24,12 @@ const captures: Record<
     ]),
   ),
   "agri-samaj-community-platform": {
-    src: "/evidence/agri-samaj-workspace.png",
-    alt: "Agri Samaj live Marathi homepage with community business search, entrepreneur registration, directory, and publications",
+    src: "/evidence/agri-samaj-homepage-2026-10-22.png",
+    alt: "Agri Samaj English homepage showing business search, community resources, and the Add your business registration link",
+    width: 1917,
+    height: 1102,
+    caption:
+      "Community homepage with business discovery, resources, and entrepreneur registration.",
   },
   "ugc-platform": {
     src: "/evidence/ugc-workspace.png",
@@ -43,13 +48,14 @@ const captures: Record<
 export function ProductEvidence({ slug }: { slug: string }) {
   if (slug === "agri-connect") return <AgriConnectGallery />;
   const capture = captures[slug];
+  const project = projects.find((item) => item.slug === slug);
   return capture ? (
     <figure className="capture-evidence">
       <a
         href={capture.src}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={`Enlarge ${slug} website screenshot`}
+        aria-label={`Enlarge ${project?.title ?? slug} website screenshot`}
       >
         <img
           src={capture.src}
@@ -59,6 +65,7 @@ export function ProductEvidence({ slug }: { slug: string }) {
           loading="lazy"
         />
       </a>
+      {capture.caption && <figcaption>{capture.caption}</figcaption>}
     </figure>
   ) : null;
 }

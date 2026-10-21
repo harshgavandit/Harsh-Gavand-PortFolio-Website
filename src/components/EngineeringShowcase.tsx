@@ -43,7 +43,7 @@ function CodeImplementation() {
           aria-controls="quota-code-preview"
           onClick={() => setPython(false)}
         >
-          Node.js / TypeScript
+          Node.js / JavaScript
         </button>
         <button
           type="button"
@@ -51,7 +51,7 @@ function CodeImplementation() {
           aria-controls="quota-code-preview"
           onClick={() => setPython(true)}
         >
-          Python / FastAPI
+          Python / Async pattern
         </button>
       </div>
       <div className="code-file">
@@ -82,7 +82,7 @@ function CodeImplementation() {
       <p>
         {python
           ? "Equivalent async context-manager pattern with injected provider and disconnect checks. The live portfolio API runs Node.js."
-          : "Production pattern for atomic credit reservation, abort rollback, and idempotent settlement."}
+          : "Executed Node.js lifecycle: reserve cost allowance, release before dispatch on cancellation, and settle known usage once."}
       </p>
       <a
         className="text-link"

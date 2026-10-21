@@ -1,6 +1,7 @@
 import { aboutProfile, profile } from "../data/portfolio";
 import { experienceForDisplay as experience } from "../data/experiencePresentation";
 import { recognitionItems } from "../data/recognition";
+import { availability } from "../data/availability";
 import { HeroStack } from "./HeroStack";
 import { LeadStatement, Tags } from "./Primitives";
 
@@ -80,7 +81,7 @@ export function About() {
           <h3>{aboutProfile.education.degree}</h3>
           <p>{aboutProfile.education.details}</p>
           <span className="eyebrow">Based in</span>
-          <p>{profile.locationLabel}</p>
+          <p>{availability.about}</p>
         </div>
       </div>
       <div

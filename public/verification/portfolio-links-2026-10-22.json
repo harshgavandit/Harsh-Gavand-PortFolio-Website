@@ -1,0 +1,467 @@
+{
+  "checkedOn": "2026-10-22",
+  "scope": "HTTP link reachability only; not an application-functionality or browser verification",
+  "confirmed": 71,
+  "total": 76,
+  "notes": [
+    "LinkedIn returned an automated-request restriction (HTTP 999), not a confirmed missing profile.",
+    "Three Streamlit links timed out from this environment and were preserved rather than classified as broken.",
+    "Healthcare Explorer returned 200 for GET despite a 404 response to HEAD."
+  ],
+  "links": [
+    {
+      "url": "https://github.com/harshgavandit",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/Banking_App_SaaS/tree/ef597f8cd79a30d79db2ebf51c7b7816b5a2ac0a",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/Banking_App_SaaS/tree/ef597f8cd79a30d79db2ebf51c7b7816b5a2ac0a",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/ugc-project/tree/3394b05ffc6a6d9c80b284f6927b2d97aebc72f3",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/ugc-project/tree/3394b05ffc6a6d9c80b284f6927b2d97aebc72f3",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/Harsh-Gavand-PortFolio-Website/tree/5b3f730134255c123f821e57c966eb506d92365d",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/Harsh-Gavand-PortFolio-Website/tree/5b3f730134255c123f821e57c966eb506d92365d",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/Harsh-Gavand-PortFolio-Website/blob/c0414c9cc4c7e98466efcb42b8a28f7cac4c351c/server/ai-tools.mjs",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/Harsh-Gavand-PortFolio-Website/blob/c0414c9cc4c7e98466efcb42b8a28f7cac4c351c/server/ai-tools.mjs",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://agri-connect-flame.vercel.app",
+      "status": 200,
+      "finalUrl": "https://agri-connect-flame.vercel.app/",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/banking-agent-harness/tree/2b8b094bc80bef18f75b1e50c5235c77d5a246c9",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/banking-agent-harness/tree/2b8b094bc80bef18f75b1e50c5235c77d5a246c9",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://www.linkedin.com/in/harsh-gavand",
+      "status": 999,
+      "finalUrl": "https://www.linkedin.com/in/harsh-gavand",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/rag-documentation-assistant/tree/3d021d9d178d85a17e61bb22c92d18f65abcd284",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/rag-documentation-assistant/tree/3d021d9d178d85a17e61bb22c92d18f65abcd284",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/Agri-Connect",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/Agri-Connect",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/adk-finance-assistant",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/adk-finance-assistant",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/google-maps-mcp-openai-agent",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/google-maps-mcp-openai-agent",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://symposium-rag-bot.vercel.app/",
+      "status": 200,
+      "finalUrl": "https://symposium-rag-bot.vercel.app/",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/adk-shopping-assistant",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/adk-shopping-assistant",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://rag-symposium-bot.vercel.app/",
+      "status": 200,
+      "finalUrl": "https://rag-symposium-bot.vercel.app/",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/healthcare-mcp-openai",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/healthcare-mcp-openai",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/RAG-Semantic-Cache-Symposium-Bot",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/RAG-Semantic-Cache-Symposium-Bot",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/RAG-Symposium-Bot",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/RAG-Symposium-Bot",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/banking-agent-harness",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/banking-agent-harness",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/agentic-aws-resource-management",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/agentic-aws-resource-management",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/multi-agent-customer-support",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/multi-agent-customer-support",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://healthcare-mcp-openai.vercel.app/",
+      "status": 200,
+      "finalUrl": "https://healthcare-mcp-openai.vercel.app/",
+      "method": "GET"
+    },
+    {
+      "url": "https://github.com/harshgavandit/ai-voice-assistant",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/ai-voice-assistant",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://rag-documentation-assistant.vercel.app/",
+      "status": 200,
+      "finalUrl": "https://rag-documentation-assistant.vercel.app/",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/rag-documentation-assistant",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/rag-documentation-assistant",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github-replica.onrender.com",
+      "status": 200,
+      "finalUrl": "https://github-replica.onrender.com/",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/GitHub_Replica",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/GitHub_Replica",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://zoom-clone-xkdj.onrender.com/",
+      "status": 503,
+      "finalUrl": "https://zoom-clone-xkdj.onrender.com/",
+      "method": "HEAD and GET",
+      "handling": "Archive retains GitHub source and omits the offline live-site button."
+    },
+    {
+      "url": "https://ai-voice-assistant-steel.vercel.app/",
+      "status": 200,
+      "finalUrl": "https://ai-voice-assistant-steel.vercel.app/",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://banking-app-saas.onrender.com/",
+      "status": 200,
+      "finalUrl": "https://banking-app-saas.onrender.com/",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/Zoom_Clone",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/Zoom_Clone",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/Banking_App_SaaS",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/Banking_App_SaaS",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://pern-stack-saas-project.onrender.com/",
+      "status": 200,
+      "finalUrl": "https://pern-stack-saas-project.onrender.com/",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://saas-e-commerce-website-1.onrender.com",
+      "status": 200,
+      "finalUrl": "https://saas-e-commerce-website-1.onrender.com/",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://zerodha-clone-qdgb.onrender.com/",
+      "status": 200,
+      "finalUrl": "https://zerodha-clone-qdgb.onrender.com/",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/PERN_STACK_SaaS_Project",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/PERN_STACK_SaaS_Project",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/SaaS_E-commerce_Website-",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/SaaS_E-commerce_Website-",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/Agentic-AI_SYSTEM",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/Agentic-AI_SYSTEM",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/Zerodha_Clone",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/Zerodha_Clone",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/API_ISSUES_DEBUGGING_AGENT",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/API_ISSUES_DEBUGGING_AGENT",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/Multi-Agent-Research-System",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/Multi-Agent-Research-System",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/Deep-Learning-Project",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/Deep-Learning-Project",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/MERN_AUTHENTICATION_Practice",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/MERN_AUTHENTICATION_Practice",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/AI_VIDEO_ASSISTANT",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/AI_VIDEO_ASSISTANT",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/whatsapp-automation-api",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/whatsapp-automation-api",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://adk-shopping-assistant.vercel.app/",
+      "status": 200,
+      "finalUrl": "https://adk-shopping-assistant.vercel.app/",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://ugc-project-harsh.vercel.app/",
+      "status": 200,
+      "finalUrl": "https://ugc-project-harsh.vercel.app/",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://ai-news-to-email-generator.vercel.app",
+      "status": 200,
+      "finalUrl": "https://ai-news-to-email-generator.vercel.app/",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/ugc-project",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/ugc-project",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://banking-agent-harness.vercel.app/",
+      "status": 200,
+      "finalUrl": "https://banking-agent-harness.vercel.app/",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/VidSNAP_AI_Flask",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/VidSNAP_AI_Flask",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/OpenAI_Project-",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/OpenAI_Project-",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://stock-prediction-portal-kohl.vercel.app",
+      "status": 200,
+      "finalUrl": "https://stock-prediction-portal-kohl.vercel.app/",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/AI_News_To_Email_Generator",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/AI_News_To_Email_Generator",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/AI_image_Enhancer-",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/AI_image_Enhancer-",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/ASP.NET-CORE_Project",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/ASP.NET-CORE_Project",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/SigmaGPT",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/SigmaGPT",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/Stock-Prediction_Portal_Python_ML",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/Stock-Prediction_Portal_Python_ML",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/RailTrackerUTS_PHP",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/RailTrackerUTS_PHP",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/DRF_Advanced_Project",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/DRF_Advanced_Project",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/WebHook_API_Integration",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/WebHook_API_Integration",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/DjangoResumeBuilder",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/DjangoResumeBuilder",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/Office-Employee-Management-System",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/Office-Employee-Management-System",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/GENAI-RAG-IMPLEMENTATION",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/GENAI-RAG-IMPLEMENTATION",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/GENAI-NEXT-WORD_PREDICTION-PROJECT",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/GENAI-NEXT-WORD_PREDICTION-PROJECT",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://agri-samaj-community-platform.vercel.app",
+      "status": 200,
+      "finalUrl": "https://agri-samaj-community-platform.vercel.app/",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/AI_News_To_Email_Generator/blob/0608f9a99dec2308ae9dcdebce840e5ce958445e/app/services/email.py",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/AI_News_To_Email_Generator/blob/0608f9a99dec2308ae9dcdebce840e5ce958445e/app/services/email.py",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/AI_News_To_Email_Generator/blob/0608f9a99dec2308ae9dcdebce840e5ce958445e/app/daily_runner.py",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/AI_News_To_Email_Generator/blob/0608f9a99dec2308ae9dcdebce840e5ce958445e/app/daily_runner.py",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://banking-app-saas.onrender.com/?demo=1",
+      "status": 200,
+      "finalUrl": "https://banking-app-saas.onrender.com/?demo=1",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/agri-samaj-community-platform",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/agri-samaj-community-platform",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github.com/harshgavandit/SuperVity-AutoPilot-AI-Hackathon",
+      "status": 200,
+      "finalUrl": "https://github.com/harshgavandit/SuperVity-AutoPilot-AI-Hackathon",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://harsh-multi-agent-customer-support.streamlit.app/",
+      "status": "unconfirmed",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://github-replica.onrender.com/?demo=1",
+      "status": 200,
+      "finalUrl": "https://github-replica.onrender.com/?demo=1",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://ugc-project-harsh.vercel.app/demo",
+      "status": 200,
+      "finalUrl": "https://ugc-project-harsh.vercel.app/demo",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://harsh-rag-document-assistant.streamlit.app/",
+      "status": "unconfirmed",
+      "method": "HEAD"
+    },
+    {
+      "url": "https://harsh-lstm-next-word.streamlit.app/",
+      "status": "unconfirmed",
+      "method": "HEAD"
+    }
+  ]
+}

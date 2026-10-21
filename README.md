@@ -34,7 +34,7 @@ Experience uses one shared record per employer: five Globetrek bullets with four
 
 The attached résumé is exported to `public/resume.pdf`, linked from the desktop header, mobile menu, hero, contact section, and assistant sources. The original Word document remains outside the repository. The two-page PDF preserves its text, formatting, and hyperlinks and was visually checked before publication. Contact also provides a Copy Email control with visible and live-region feedback.
 
-Availability is remote-only, shared between the hero, profile and contact badge. The primary recruiter address is `harshgavand2@gmail.com`; the earlier address remains an alternate. The supplied neon HG artwork is used in the header and favicon through small web derivatives.
+Availability is remote-only worldwide. The hero lists Mumbai (UTC+5:30) and EU/UK/APAC/US overlap; About emphasizes async-first international collaboration; Contact includes full-time, contract, and EOR roles with flexible working hours. These presentation labels are maintained in `src/data/availability.ts`. The primary recruiter address is `harshgavand2@gmail.com`; the earlier address remains an alternate. The supplied neon HG artwork is used in the header and favicon through small web derivatives.
 
 The introduction positions the work around reliable full-stack applications, backend APIs, and production AI workflows. A disclosed stack panel groups 43 evidenced tools and patterns into six categories with visible labels and decorative logo marks. Peripheral coursework and AI IDE names are omitted. WebRTC remains backed by the linked conferencing project, and TensorFlow by the deployed next-word model. Brand marks use one self-hosted SVG sprite; source metadata and license notices are in `public/stack`, and no runtime icon CDN or icon font is required.
 
@@ -139,7 +139,7 @@ The tests cover original project identities and assets, source metadata, assista
 - `src/data/portfolio.ts`, `src/data/workPresentation.ts`, and `src/data/deploymentShowcase.ts`: shared profile, experience, featured projects, and case studies.
 - `src/data/recruiter.ts`: chapter numbers, curated archive, architecture widget, code excerpt, prompts, and principles.
 - `src/recruiter.css`: graphite, ivory, and citrus tokens; high-contrast text; responsive layouts; focus states; 180ms transitions and reduced-motion support.
-- `src/components/RequestTrace.tsx` and `src/lib/requestTrace.ts`: a completed happy path, pre-dispatch rollback, and uncertain upstream timeout scenarios. Token values and timings are illustrative; the accounting decisions match the live lifecycle without making network requests or changing balances.
+- `src/components/RequestTrace.tsx` and `src/lib/requestTrace.ts`: a completed happy path, pre-dispatch rollback, and uncertain upstream timeout scenarios. The source component describes cost reservations, pre-dispatch cancellation, and unknown-usage retention without fabricated timing or token-billing figures. It remains unmounted after the owner removed the Field Notes section.
 - `server/quota-lifecycle.mjs`: shared executed lifecycle for release-before-dispatch and settlement recovery.
 - `server/vercel.mjs` and `api/index.mjs`: directly awaited Vercel API handler and authenticated recovery endpoint.
 - `server/admission.mjs`: atomic shared request counters and expiring concurrency leases for serverless instances.
@@ -216,3 +216,13 @@ Vercel uses the repository's `vercel.json` install/build commands. `node scripts
 Healthcare Explorer and Multi-Agent Customer Support now use the main shared project cards with real deployed screenshots, source/live links, complete stacks, and scoped contributions/outcomes. Healthcare browsing is public; AI chat requires a private access code. Streamlit uses seeded orders and simulated approvals, with a public review queue and process-local session state.
 
 The standalone AI Support Ticket Classifier was removed from the catalog, curated references, and indexed source listing at the owner's request. Its GitHub repository was not modified. The portfolio's separate Node.js triage workflow remains available and links to its own implementation. See [the review](verification/deployment-showcase-2026-10-21.md) and [sanitized checks](public/verification/deployments-2026-10-21.json). Earlier dated reports describe their original review scope.
+
+### Precision polish, 22 October 2026
+
+The Agri Samaj card and case study use the owner-supplied English homepage image at its original 1917 × 1102 dimensions. The PNG is copied without alteration; its digest and origin are recorded in `public/verification/agri-samaj-screenshot-2026-10-22.json`.
+
+Case studies expose the existing implementation decision and reliability behavior alongside stage-specific architecture descriptions. The complete data flow remains readable in a native disclosure without JavaScript. DevGraph returns to its archive entry, and legacy Field Notes fragments resolve to Skills. The dark design, existing project order, assistant shortcuts, ARIA controls, and removed-section choices are preserved.
+
+Validation for this pass is build/prerender, TypeScript, ESLint, and focused link/content inspection. The full test suite and browser verification were not run, as requested. Application/provider behavior and the versioned AI evidence records are unchanged.
+
+The link reachability record for this pass is `public/verification/portfolio-links-2026-10-22.json`. The Zoom archive entry keeps its GitHub source but omits the live-site button because the existing Render service returned HTTP 503. LinkedIn blocked automated requests and three Streamlit links timed out; those destinations were not treated as missing.

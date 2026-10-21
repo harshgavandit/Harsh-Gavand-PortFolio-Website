@@ -1,5 +1,6 @@
 import { ActionLink } from "./Primitives";
 import { profile } from "../data/portfolio";
+import { availability } from "../data/availability";
 
 export function Hero() {
   return (
@@ -34,7 +35,7 @@ export function Hero() {
           </div>
           <p className="hero-location">
             <span className="status-dot" aria-hidden="true" />
-            {profile.locationLabel}
+            <span>{availability.hero}</span>
           </p>
         </div>
         <figure className="hero-portrait">

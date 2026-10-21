@@ -1,0 +1,95 @@
+// Stage-specific presentation copy from the implementation notes already linked
+// by each case study. Keep each description aligned with its diagram node.
+export const projectArchitecture: Record<number, string[]> = {
+  41: [
+    "Validate the uploaded PDF before reading its text; keep its document index within the visitor's Streamlit session.",
+    "Extract text with page metadata and split it into overlapping passages so answers can retain their source location.",
+    "Embed the passages and question, then select relevant, diverse context through cosine similarity and MMR.",
+    "Send retrieved context to GPT-4o-mini and request a structured answer with source identifiers.",
+    "Check returned source identifiers against the retrieved set and display the supporting page excerpts.",
+  ],
+  42: [
+    "Accept a partial sentence and reject empty, oversized, or unsupported input before inference.",
+    "Load the saved tokenizer so input words use the same vocabulary as the trained model.",
+    "Pad or truncate the token sequence to the input shape expected by the saved LSTM.",
+    "Run the cached TensorFlow/Keras model on CPU without calling an external inference API.",
+    "Decode the highest-ranked vocabulary outputs and display their model probabilities.",
+  ],
+  20: [
+    "Collect the selected stock ticker through the React analysis interface.",
+    "Validate the ticker in Django REST Framework and retrieve historical market data with cached responses.",
+    "Prepare price sequences using scaling fitted to the earlier training portion of the available history.",
+    "Execute the trained LSTM weights through batched NumPy inference in the deployed service.",
+    "Present historical comparisons and evaluation metrics, with account-based watchlist management.",
+  ],
+  17: [
+    "Fetch publisher RSS feeds concurrently and apply reader-selected source and time filters.",
+    "Normalize dates and excerpts, deduplicate story URLs, and retain cached records when feeds are unavailable.",
+    "Summarize selected excerpts with OpenAI while retaining their source identifiers.",
+    "Rank summaries against the reader's stated interests to compose the digest.",
+    "Render a source-linked preview, escape exported HTML, and validate owner access before configured Gmail delivery.",
+  ],
+  30: [
+    "Choose a profile in the browser explorer or submit an authenticated assistant question.",
+    "Validate the request in FastAPI and authenticate access to protected assistant operations.",
+    "Discover the MCP tools for schema inspection, read-only queries, and structured record summaries.",
+    "Bound SQL execution to read-only operations over the linked SQLite dataset.",
+    "Return structured records or an answer grounded in the permitted tool results.",
+  ],
+  35: [
+    "Collect the customer's request and retain the conversation needed for ticket intake.",
+    "Compact intake into a validated Pydantic ticket before routing through LangGraph.",
+    "Route billing and refund questions to deterministic specialist workflows over the supplied order records.",
+    "Create eligible review requests and resolve them through a separate approval graph.",
+    "Reconnect the in-process conversation to the recorded review outcome and resume the response.",
+  ],
+  37: [
+    "Accept a documentation question against the packaged, read-only source index.",
+    "Retrieve lexical matches with BM25 and semantic matches with MiniLM ONNX vectors.",
+    "Combine the two rankings through reciprocal rank fusion before selecting prompt context.",
+    "Generate an OpenAI answer from the selected documentation passages.",
+    "Validate citation labels against retrieved passages and expose those passages beside the answer.",
+  ],
+  36: [
+    "Accept recorded or uploaded audio within the application's input limits.",
+    "Transcribe the supplied audio through Whisper before generating a response.",
+    "Generate a story using the transcript and bounded process-local conversation history.",
+    "Convert the completed story into speech as part of the asynchronous provider workflow.",
+    "Return the transcript, written story, and generated audio with manual playback controls.",
+  ],
+  29: [
+    "Collect the shopper profile and associate the conversation with an opaque browser session.",
+    "Route product discovery to the catalogue specialist while retaining the source product records.",
+    "Validate selected products and quantities in Python and calculate cart totals deterministically.",
+    "Coordinate checkout details through the checkout specialist using the validated cart.",
+    "Return a structured order summary and persist the session and cart in Redis across requests.",
+  ],
+  31: [
+    "Accept a guide question behind the application's input and request limits.",
+    "Check exact and embedding-similarity cache entries in shared Redis before generating a new answer.",
+    "Retrieve relevant FAISS passages when no reusable cached answer is available.",
+    "Generate an OpenAI answer using the selected guide context and source metadata.",
+    "Return the answer with page references and cache status, retaining sources when cached answers are reused.",
+  ],
+  32: [
+    "Accept an event-guide question through the JavaScript interface and validated FastAPI endpoint.",
+    "Embed the question for retrieval against the separately ingested guide.",
+    "Select relevant guide passages from FAISS while retaining page metadata.",
+    "Generate an OpenAI response using the retrieved document context.",
+    "Display the answer with deduplicated page references that visitors can expand.",
+  ],
+};
+
+export const projectRecovery: Record<number, string> = {
+  41: "PDF and question limits are checked before paid requests. Returned source identifiers are validated against retrieved passages, and visitors can clear the session's document index.",
+  42: "Empty, oversized, and unsupported phrases are rejected before inference. The saved tokenizer and model input shape remain aligned across reruns.",
+  20: "Django validates stock tickers and caches market and prediction responses. Account-backed profiles and watchlists remain separate from the public landing page.",
+  17: "Cached source stories remain available when an RSS feed fails. Exported HTML is escaped, and owner access is checked before email delivery.",
+  30: "Protected assistant requests require authentication. Tool loops and SQL queries are bounded, with database access restricted to read-only operations.",
+  35: "A validated ticket determines specialist routing. Eligible refund requests use a separate human-review graph, and the conversation resumes with the recorded decision.",
+  37: "Questions outside the indexed documentation return a document-boundary response. Citation labels must refer to passages retrieved for that request.",
+  36: "Recording and upload limits constrain input, while processing and playback states keep the interaction visible. Conversation history is committed only after the complete provider workflow succeeds.",
+  29: "Python validates product selections, quantities, and totals before the checkout summary. Redis preserves the opaque browser session and cart across requests.",
+  31: "Shared quotas gate client and provider requests. Cache hits retain the answer's page sources rather than returning an unreferenced text response.",
+  32: "FastAPI validates input and shared Upstash admission bounds requests before generation. Retrieved page metadata is preserved through the final answer.",
+};

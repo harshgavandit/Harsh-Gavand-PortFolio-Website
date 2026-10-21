@@ -149,7 +149,9 @@ test("selected work leads with evidence and links to focused case studies", () =
     assert.ok(card.includes(escapeHTML(project.overview)));
     assert.ok(card.includes(`href="${project.demoUrl}"`));
     assert.ok(card.includes(`href="${project.githubUrl}"`));
-    assert.ok(card.includes('src="/evidence/agri-samaj-workspace.png"'));
+    assert.ok(
+      card.includes('src="/evidence/agri-samaj-homepage-2026-10-22.png"'),
+    );
     assert.ok(
       !archive.includes(`id="${project.slug}"`),
       "Community project stays on the homepage, outside the archive",
@@ -858,7 +860,7 @@ test("project fragments stay semantic and remote-only availability is consistent
       archiveProjects.some((item) => item.id === project.id),
     );
   }
-  assert.match(html, /Remote only/);
+  assert.match(html, /Remote Only/);
   assert.doesNotMatch(html, /relocat/i);
 });
 
@@ -1007,7 +1009,7 @@ test("sample artifacts and preview captures are delivered with the correct conte
     "/evidence/ugc-workspace.png",
     "/evidence/lendflow-workspace.png",
     "/evidence/devgraph-workspace.png",
-    "/evidence/agri-samaj-workspace.png",
+    "/evidence/agri-samaj-homepage-2026-10-22.png",
     "/evidence/news-digest.html",
     "/evidence/banking-harness.json",
   ]) {

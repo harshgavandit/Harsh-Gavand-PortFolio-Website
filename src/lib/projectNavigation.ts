@@ -2,6 +2,8 @@ import { projects } from "../data/portfolio.ts";
 import { workStudies } from "../data/workPresentation.ts";
 // Preserve existing shared links while exposing semantic URLs and DOM IDs.
 export function semanticFragment(fragment: string) {
+  // Shared links to the removed field-notes section still reach relevant work.
+  if (fragment === "#engineering-lab") return "#skills";
   const match = fragment.match(/^#(?:archive-)?project-(\d+)$/);
   if (!match) return fragment;
   const project = projects.find((item) => item.id === Number(match[1]));
