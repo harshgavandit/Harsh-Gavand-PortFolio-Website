@@ -114,3 +114,23 @@ test("public summary and deployment source index represent the same immutable sn
   assert.equal(summary.digest, sourceSnapshot.digest);
   assert.equal(summary.fileCount, sourceSnapshot.files.length);
 });
+
+test("UGC evidence includes the current provider, storage fallback and unavailable-video boundary", () => {
+  const ugc = sourceSnapshot.files.filter(
+    (file) => file.slug === "ugc-platform",
+  );
+  const file = (path) => ugc.find((entry) => entry.path === path)?.text || "";
+  assert.match(
+    file("server/src/lib/openaiImage.ts"),
+    /api\.openai\.com\/v1\/images\/edits/,
+  );
+  assert.match(file("server/src/lib/imageStorage.ts"), /return dataUrl/);
+  assert.match(
+    file("server/src/modules/projects/project.controller.ts"),
+    /video_unavailable/,
+  );
+  assert.match(
+    file("server/tests/generation-controller.test.mjs"),
+    /unavailable OpenAI video requests never charge credits/,
+  );
+});

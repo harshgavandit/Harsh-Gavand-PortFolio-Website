@@ -12,7 +12,7 @@ export interface CaseEvidence {
 }
 
 const ugc =
-  "https://github.com/harshgavandit/ugc-project/blob/ca5bdf57dbe84b5db6d62cbcbaea9733801b8270";
+  "https://github.com/harshgavandit/ugc-project/blob/5a19e9ba672b33763a58a9cf53674b28d0547044";
 const lending =
   "https://github.com/harshgavandit/Banking_App_SaaS/blob/47760d995abc5633f589bb57b7978f5c7444b359";
 const repositories =
@@ -159,20 +159,21 @@ export const caseEvidence: Record<string, CaseEvidence> = {
   },
   "ugc-platform": {
     context:
-      "Turn product and model reference uploads into an image, then an optional short video, while tracking the account's credits and project processing state.",
+      "Combine product and person reference uploads into a promotional image while tracking account credits, project processing state, and saved results.",
     ownership:
       "Full-stack generation endpoints, account-scoped project records, media integrations, and the creation/result interface.",
     decision: {
       choice:
         "Persist project status and media URLs around the provider workflow, with compensating credit increments in caught failure paths.",
       alternative:
-        "A durable worker would claim a persisted job, store the provider operation, and resume bounded polling outside the original HTTP request. It adds worker scheduling, leases, and reconciliation; the current request-bound implementation avoids that infrastructure but cannot recover every interruption.",
+        "A durable worker would claim a persisted job and reconcile the provider operation outside the original HTTP request. It adds scheduling, leases, and reconciliation; the current request-bound implementation cannot recover every interruption.",
       reason:
         "Persisted status and error fields let the interface recover the latest job state after a reload. Credit compensation handles caught provider errors, while interrupted or concurrent requests need separate safeguards.",
     },
     verifiedBehavior: [
-      "Image generation accepts reference uploads, deducts five credits, calls the image provider, and stores the generated Cloudinary URL.",
-      "Video generation polls the provider operation, uploads the result, and updates the project's processing state.",
+      "Image generation accepts two reference uploads, deducts five credits, and sends both references to OpenAI image edits with a bounded request timeout.",
+      "Media storage attempts Cloudinary first, then preserves reference and generated image data URLs in PostgreSQL if storage fails.",
+      "New video-generation requests return 503 before any credit debit; previously saved videos remain separate project data.",
       "Caught image-generation failures store an error and attempt to restore deducted credits.",
       "Project queries combine the project ID with the authenticated Clerk user ID to scope account access.",
     ],
@@ -185,11 +186,15 @@ export const caseEvidence: Record<string, CaseEvidence> = {
         label: "Project & credit schema",
         href: `${ugc}/server/prisma/schema.prisma`,
       },
+      {
+        label: "Generation and storage failure tests",
+        href: `${ugc}/server/tests/generation-controller.test.mjs`,
+      },
     ],
     limitations: [
       "Saved project media can be inspected in the workspace. Generation uses authenticated accounts, configured providers, and account credits.",
-      "Credit updates and provider requests are separate operations. Interrupted video requests can leave credits deducted; a durable reservation ledger would close that gap.",
-      "Video polling currently has no timeout. A bounded worker with cancellation would prevent jobs from running indefinitely.",
+      "Credit updates and provider requests are separate operations. Process interruption or failed compensation can leave credits deducted; a durable reservation ledger would close that gap.",
+      "Database data-URL fallback preserves output but increases stored record and API response sizes. New video generation is unavailable.",
     ],
     failure: {
       trigger:
@@ -205,6 +210,14 @@ export const caseEvidence: Record<string, CaseEvidence> = {
       {
         label: "Prisma user/project schema",
         href: `${ugc}/server/prisma/schema.prisma`,
+      },
+      {
+        label: "Two-reference OpenAI request",
+        href: `${ugc}/server/src/lib/openaiImage.ts`,
+      },
+      {
+        label: "Cloudinary storage fallback",
+        href: `${ugc}/server/src/lib/imageStorage.ts`,
       },
     ],
   },

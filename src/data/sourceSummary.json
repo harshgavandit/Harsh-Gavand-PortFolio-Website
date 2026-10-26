@@ -1,14 +1,14 @@
 {
   "version": 1,
-  "indexedAt": "2026-10-20T18:40:25.869Z",
-  "digest": "a205bf74f21be3017a8bf044fbfe1ac0eea7ffe139b407ee2525523040ca73f3",
-  "fileCount": 23,
+  "indexedAt": "2026-10-26T11:58:17.997Z",
+  "digest": "3bc6e3c0f7d9a6748bf3cf0b9899d9339f0e85c47c9b5ec6eec57b28a811a89b",
+  "fileCount": 26,
   "repositories": [
     {
       "repo": "Harsh-Gavand-PortFolio-Website",
       "slug": "portfolio",
       "title": "Portfolio AI backend",
-      "commit": "5b3f730134255c123f821e57c966eb506d92365d",
+      "commit": "8aa26f422a21a231fc6d88f12661d91d41dc6ec3",
       "url": "https://github.com/harshgavandit/Harsh-Gavand-PortFolio-Website",
       "files": 9
     },
@@ -16,15 +16,15 @@
       "repo": "ugc-project",
       "slug": "ugc-platform",
       "title": "UGC Content Studio",
-      "commit": "3394b05ffc6a6d9c80b284f6927b2d97aebc72f3",
+      "commit": "5a19e9ba672b33763a58a9cf53674b28d0547044",
       "url": "https://github.com/harshgavandit/ugc-project",
-      "files": 4
+      "files": 7
     },
     {
       "repo": "Banking_App_SaaS",
       "slug": "banking-saas",
       "title": "LendFlow",
-      "commit": "ef597f8cd79a30d79db2ebf51c7b7816b5a2ac0a",
+      "commit": "bcfaff22237af8129dae8f2b2c5cc1d2bbe8f10d",
       "url": "https://github.com/harshgavandit/Banking_App_SaaS",
       "files": 3
     },
@@ -32,7 +32,7 @@
       "repo": "banking-agent-harness",
       "slug": "banking-agent-harness",
       "title": "Banking Agent Harness",
-      "commit": "2b8b094bc80bef18f75b1e50c5235c77d5a246c9",
+      "commit": "a374e2bb94028a88e4aaf0eb6be0536cda5a39c0",
       "url": "https://github.com/harshgavandit/banking-agent-harness",
       "files": 4
     },
@@ -40,7 +40,7 @@
       "repo": "rag-documentation-assistant",
       "slug": "hybrid-rag-documentation-assistant",
       "title": "Hybrid RAG Documentation Assistant",
-      "commit": "3d021d9d178d85a17e61bb22c92d18f65abcd284",
+      "commit": "a6bc569777aa83fc55c5e31e82e6db1f85991e22",
       "url": "https://github.com/harshgavandit/rag-documentation-assistant",
       "files": 3
     }

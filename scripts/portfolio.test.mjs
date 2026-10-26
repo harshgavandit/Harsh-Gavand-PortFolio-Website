@@ -93,9 +93,10 @@ test("curated archive retains eight distinct catalog projects and flagship stack
     assert.ok(catalog.some((project) => project.id === item.projectId));
   const stack = (id) =>
     catalog.find((project) => project.id === id).technologies;
-  for (const value of ["Prisma", "PostgreSQL", "Google AI"])
+  for (const value of ["Prisma", "PostgreSQL", "OpenAI"])
     assert.ok(stack(14).includes(value));
   assert.ok(!stack(14).includes("MongoDB"));
+  assert.ok(!stack(14).includes("Google AI"));
   assert.ok(stack(3).includes("Sequelize"));
   for (const value of ["Next.js", "Plaid", "Appwrite"])
     assert.ok(!stack(3).includes(value));

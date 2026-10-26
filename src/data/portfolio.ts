@@ -103,11 +103,11 @@ export const caseStudies: CaseStudy[] = [
     shortName: "UGC Content Studio — AI Media Generation Pipeline",
     problem: "From product assets to generated marketing content.",
     summary:
-      "Automated media pipeline that combines product and model references into campaign images and short videos through Google AI and Cloudinary CDN.",
+      "An authenticated image studio that combines product and person references through OpenAI image edits, persists project state in PostgreSQL, and retains output when Cloudinary storage is unavailable.",
     engineering: [
-      "Multimodal orchestration: Chained image synthesis and long-running video-operation polling, persisting processing state, media URLs, and failure diagnostics in PostgreSQL.",
+      "Reference-conditioned generation: Sent product and person uploads together to OpenAI image edits, persisting processing state, generated images, and failure diagnostics in PostgreSQL.",
       "Credit accounting & failure recovery: Applied Prisma credit mutations and restoration paths for caught generation failures, retaining project errors for recovery in the interface.",
-      "Identity-scoped media pipeline: Bound project access to Clerk identity while coordinating multipart reference uploads and generated-media persistence through Cloudinary.",
+      "Identity-scoped media persistence: Bound project access to Clerk identity, attempted Cloudinary uploads, and retained image data URLs in existing database fields when storage failed.",
     ],
     contributions: [
       {
@@ -118,12 +118,12 @@ export const caseStudies: CaseStudy[] = [
       {
         label: "Backend / APIs",
         description:
-          "Express project endpoints connect Clerk identity to Google AI image and video requests.",
+          "Express project endpoints connect Clerk identity to OpenAI image edits and reject unavailable video generation before charging credits.",
       },
       {
         label: "Data / integrations",
         description:
-          "Prisma/PostgreSQL project records, credit restoration, Clerk provisioning, and Cloudinary media.",
+          "Prisma/PostgreSQL project records, credit restoration, Clerk provisioning, and Cloudinary storage with a database fallback.",
       },
     ],
     previewNote: "Sign in with Clerk to create and manage generations.",
@@ -132,22 +132,22 @@ export const caseStudies: CaseStudy[] = [
       nodes: [
         "React asset upload",
         "Express + Clerk",
-        "Google AI generation",
-        "Cloudinary media",
+        "OpenAI image edits",
+        "Cloudinary / fallback",
         "Prisma / PostgreSQL",
       ],
       details: [
         "Product and model references, prompt fields, and generation UI state",
         "Authenticated identity, multipart inputs, and account-scoped project lookup",
-        "Image synthesis followed by video-operation polling",
-        "Uploaded reference assets and generated media URLs",
+        "Both reference images condition one low-quality image edit; new video generation is unavailable",
+        "Cloudinary delivery URLs, with image data URLs retained if uploads fail",
         "User/project relations, integer credits, and persisted error state",
       ],
       contracts: [
         "Product/model references + prompt → generation request",
         "Clerk identity + project identifier → account-scoped project",
-        "Reference media + prompt → image / video operation",
-        "Media upload → stored delivery URL",
+        "Two reference images + prompt → generated PNG",
+        "Media upload → delivery URL or database data URL",
         "Generation result → credits, media URL, processing/error state",
       ],
       chapterNodes: [[0], [1, 2], [3, 4]],
@@ -157,7 +157,7 @@ export const caseStudies: CaseStudy[] = [
     accessMode: "Clerk Auth · Live App",
     accessDescription: "Live Vercel deployment with Clerk authentication",
     takeaway:
-      "Provider operations, credit restoration, and relational project state across a multimodal media workflow.",
+      "Reference-conditioned image generation, credit restoration, and persisted output across provider and media-storage boundaries.",
     recovery:
       "Caught image-generation errors restore credits and persist project error state.",
   },

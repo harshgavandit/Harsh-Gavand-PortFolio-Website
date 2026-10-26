@@ -21,9 +21,12 @@ export const sourceAllowlist = [
     title: "UGC Content Studio",
     files: [
       "server/src/modules/projects/project.controller.ts",
+      "server/src/lib/openaiImage.ts",
+      "server/src/lib/imageStorage.ts",
       "server/src/middleware/requireAuth.ts",
       "server/prisma/schema.prisma",
       "server/tests/generation-error.test.mjs",
+      "server/tests/generation-controller.test.mjs",
     ],
   },
   {

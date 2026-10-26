@@ -21,6 +21,7 @@ export async function runtimeDigest() {
     "src/data/caseEvidence.ts",
     "scripts/ai-eval-cases.mjs",
     "scripts/evaluate-ai.mjs",
+    "scripts/evaluation-budget.mjs",
   ];
   const hash = createHash("sha256");
   for (const file of files) {

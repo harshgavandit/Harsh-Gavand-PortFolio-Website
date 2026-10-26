@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { aiEvalCases, gradeCase } from "./ai-eval-cases.mjs";
 import { runtimeDigest } from "./ai-runtime-digest.mjs";
 import { loadConfig } from "../server/config.mjs";
@@ -7,6 +7,9 @@ import { createServer } from "../server/app.mjs";
 import { retrieveCode, sourceSnapshot } from "../server/grounding.mjs";
 import { RedisQuota } from "../server/quota.mjs";
 import { randomUUID } from "node:crypto";
+import { buildRequest } from "../server/openai.mjs";
+import { buildTask } from "../server/ai-tools.mjs";
+import { EvaluationBudget } from "./evaluation-budget.mjs";
 
 if (!process.argv.includes("--live"))
   throw new Error(
@@ -25,6 +28,59 @@ if (remote && remote !== "https://harshgavand.dev")
     "Remote smoke checks are restricted to the canonical portfolio.",
   );
 const evaluatedRevision = await runtimeDigest();
+const cases = remote
+  ? [aiEvalCases[0], aiEvalCases[6], aiEvalCases[8]]
+  : aiEvalCases;
+const budgetPath = process.argv
+  .find((arg) => arg.startsWith("--request-budget-file="))
+  ?.slice("--request-budget-file=".length);
+if (!budgetPath)
+  throw new Error(
+    "Explicit paid evaluations require a new --request-budget-file=PATH.",
+  );
+for (const item of cases) {
+  const request =
+    item.kind === "guide"
+      ? buildRequest([{ role: "user", content: item.text }], "gpt-6-luna")
+      : buildTask(item.kind, { text: item.text }, "gpt-6-luna").request;
+  assert.equal(
+    request.max_output_tokens,
+    1000,
+    "Request exceeds the approved output cap.",
+  );
+}
+const budget = await EvaluationBudget.create(budgetPath, {
+  maxAttempts: cases.length * repeats,
+  maxOutputTokens: 1000,
+  runtimeDigest: evaluatedRevision,
+  sourceSnapshot: sourceSnapshot.digest,
+});
+// Preserve previous published measurements before any new request. Their
+// timestamps, source fingerprints, successes and failures must never be rebound.
+const archiveDirectory = new URL(
+  "../verification/release-evaluations/",
+  import.meta.url,
+);
+await mkdir(archiveDirectory, { recursive: true });
+const priorReport = await readFile(
+  new URL("../src/data/aiQuality.json", import.meta.url),
+  "utf8",
+);
+const prior = JSON.parse(priorReport);
+const priorArchive = new URL(
+  `${prior.evaluatedAt.replace(/[:.]/g, "-")}-${prior.runtimeDigest.slice(0, 12)}.json`,
+  archiveDirectory,
+);
+try {
+  await writeFile(priorArchive, priorReport, { flag: "wx" });
+} catch (error) {
+  if (error.code !== "EEXIST") throw error;
+  assert.equal(
+    await readFile(priorArchive, "utf8"),
+    priorReport,
+    "Historical evaluation archive changed.",
+  );
+}
 let server;
 let origin = remote;
 if (!origin) {
@@ -49,9 +105,6 @@ if (!origin) {
   await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
   origin = `http://127.0.0.1:${server.address().port}`;
 }
-const cases = remote
-  ? [aiEvalCases[0], aiEvalCases[6], aiEvalCases[8]]
-  : aiEvalCases;
 const results = [];
 try {
   for (let repetition = 1; repetition <= repeats; repetition++)
@@ -64,7 +117,8 @@ try {
       const started = performance.now();
       let response, data, grading;
       const transientAttempts = [];
-      for (let attempt = 1; attempt <= 2; attempt++) {
+      await budget.reserve({ id: item.id, repetition, maxOutputTokens: 1000 });
+      {
         response = undefined;
         data = undefined;
         try {
@@ -94,19 +148,6 @@ try {
             ],
           };
         }
-        const transient =
-          !response || [502, 503, 504].includes(response.status);
-        if (attempt === 1 && transient) {
-          transientAttempts.push({
-            status: response?.status ?? null,
-            failedChecks: grading.checks
-              .filter((check) => !check.passed)
-              .map((check) => check.name),
-          });
-          console.log(`RETRY ${item.id}: transient request failure`);
-          continue;
-        }
-        break;
       }
       const result = {
         id: item.id,
@@ -149,6 +190,13 @@ const report = {
   sourceSnapshot: sourceSnapshot.digest,
   runtimeDigest: evaluatedRevision,
   environment: remote ? "production-http-smoke" : "local-http-real-provider",
+  requestAllowance: {
+    maxAttempts: cases.length * repeats,
+    maxOutputTokens: 1000,
+    reservedAttempts: results.length,
+    automaticRetries: false,
+    isolatedQuotaBudgetCapUsd: remote ? null : 0.1,
+  },
   dataset: {
     uniqueCases: cases.length,
     repetitions: repeats,
@@ -212,7 +260,7 @@ await mkdir(new URL("../tmp/ai-evaluation/", import.meta.url), {
 });
 await writeFile(
   new URL(
-    `../tmp/ai-evaluation/${remote ? "production" : "local"}-outputs.json`,
+    `../tmp/ai-evaluation/${remote ? "production" : "local"}-${report.evaluatedAt.replace(/[:.]/g, "-")}-outputs.json`,
     import.meta.url,
   ),
   JSON.stringify(results, null, 2) + "\n",
@@ -222,14 +270,10 @@ if (!remote) {
     new URL("../src/data/aiQuality.json", import.meta.url),
     JSON.stringify(report, null, 2) + "\n",
   );
-  await mkdir(
-    new URL("../verification/audit-polish-2026-10-17/", import.meta.url),
-    { recursive: true },
-  );
   await writeFile(
     new URL(
-      "../verification/audit-polish-2026-10-17/evaluation.json",
-      import.meta.url,
+      `${report.evaluatedAt.replace(/[:.]/g, "-")}-${report.runtimeDigest.slice(0, 12)}.json`,
+      archiveDirectory,
     ),
     JSON.stringify(report, null, 2) + "\n",
   );

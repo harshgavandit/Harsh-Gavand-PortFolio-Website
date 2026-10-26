@@ -258,12 +258,12 @@
     "id": 14,
     "title": "UGC Content Studio — AI Media Generation Pipeline",
     "category": "Applied AI & Media Pipeline",
-    "overview": "Automated media pipeline that combines product and model references into campaign images and short videos through Google AI and Cloudinary CDN.",
+    "overview": "An authenticated image studio that combines product and person references through OpenAI image edits, persists project state in PostgreSQL, and retains output when Cloudinary storage is unavailable.",
     "features": [
-      "Clerk-authenticated image and video generation requests",
-      "Google AI generation and Cloudinary image/video storage",
+      "Clerk-authenticated image generation from two uploaded references",
+      "OpenAI image edits and Cloudinary storage with database data-URL fallback",
       "Prisma and PostgreSQL user, credit, and project records",
-      "Generation state and credit restoration after provider failures"
+      "Generation state and credit restoration after caught provider failures; unavailable video requests rejected before charging"
     ],
     "technologies": [
       "React",
@@ -274,9 +274,9 @@
       "PostgreSQL",
       "Clerk",
       "Cloudinary",
-      "Google AI"
+      "OpenAI"
     ],
-    "role": "Engineered authenticated generation endpoints, provider-operation polling, Cloudinary persistence, and failure-path credit restoration around account-scoped project records.",
+    "role": "Engineered authenticated image-generation endpoints, two-reference OpenAI requests, storage fallback, and failure-path credit restoration around account-scoped project records.",
     "challenges": "Coordinating generation, media uploads, and credit mutations while persisting output URLs, processing flags, and caught provider errors.",
     "impact": "Coordinated authenticated reference uploads, generated-media delivery, and recoverable project state in one pipeline, with credit restoration paths for caught generation failures.",
     "githubUrl": "https://github.com/harshgavandit/ugc-project",
