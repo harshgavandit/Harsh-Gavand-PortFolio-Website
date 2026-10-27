@@ -86,7 +86,8 @@ export function projectSlug(id: number) {
 export const aboutProfile = {
   summary:
     "I build full-stack applications, backend APIs, and applied AI workflows. My work connects React and TypeScript interfaces to Node.js and Python services, relational and document databases, and external model and media providers.",
-  experience: "2+ years",
+  experience:
+    "2+ years building applications across personal and professional work",
   education: {
     degree: "B.Tech · Information Technology",
     details: "Pillai University, Mumbai · July 2025 · CGPA 8.6",
@@ -300,11 +301,11 @@ export const caseStudies: CaseStudy[] = [
 
 // TODO: add verified GIS dataset formats, request scale, and measured SQL/load-test
 // results when available. Do not infer performance or business percentages.
-// TODO: confirm HRP employment arrangement during B.Tech studies (Jan 2024–Jul 2025).
+// TODO: confirm HRP employment arrangement during B.Tech studies (Jan 2025–Jul 2025).
 export const experience = [
   {
     company: "Globetrek Engineering Corporation",
-    role: "AI-Native Full-Stack Developer",
+    role: "Software Engineer (SDE I)",
     period: "Nov 2025 — Sep 2026",
     context: "Full-time",
     shipment:
@@ -336,7 +337,7 @@ export const experience = [
   {
     company: "HRP Enterprises",
     role: "Full-Stack Developer",
-    period: "Jan 2024 — Oct 2025",
+    period: "Jan 2025 — Oct 2025",
     context: "B.Tech completed July 2025 during this role.",
     shipment:
       "React product workflows backed by modular Node.js APIs, authentication, and database validation.",

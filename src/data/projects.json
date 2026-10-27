@@ -444,23 +444,25 @@
   {
     "id": 21,
     "title": "ASP.NET Core Project",
-    "category": "Enterprise Web Application",
-    "overview": "An ASP.NET Core application focused on structured backend development, database-backed workflows, and maintainable enterprise patterns.",
+    "category": "ASP.NET Core Website",
+    "overview": "A responsive ASP.NET Core 8 Razor Pages website with shared layouts and pages for company information, services, blog content, and contact details.",
     "features": [
-      "MVC-style architecture",
-      "Database-backed CRUD workflows",
-      "Server-side validation"
+      "Razor Pages routing and page models",
+      "Shared layouts and static assets",
+      "Responsive Bootstrap interface"
     ],
     "technologies": [
       "C#",
       "ASP.NET Core",
-      "Entity Framework",
-      "SQL Server",
-      "Razor"
+      "Razor Pages",
+      "HTML",
+      "CSS",
+      "Bootstrap",
+      "JavaScript"
     ],
-    "role": "I built backend controllers, database models, application views, and validation-aware user flows.",
-    "challenges": "Structured server-side logic and data access patterns for maintainability and predictable application behavior.",
-    "impact": "Organizes database-backed workflows through ASP.NET Core controllers, Entity Framework models, and validated application views.",
+    "role": "I built the Razor Pages website, page models, shared layouts, and responsive interfaces.",
+    "challenges": "Kept page structure, navigation, and shared presentation consistent across the site.",
+    "impact": "Presents company, service, blog, and contact information through a responsive server-rendered website.",
     "githubUrl": "https://github.com/harshgavandit/ASP.NET-CORE_Project",
     "slug": "asp-net-core-project"
   },
