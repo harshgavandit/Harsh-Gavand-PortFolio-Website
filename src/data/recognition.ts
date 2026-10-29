@@ -7,6 +7,7 @@ interface RecognitionItem {
   summary: string;
   href: string | null;
   linkLabel?: string;
+  repositoryHref?: string;
 }
 
 export const xerjRecognition = {
@@ -20,6 +21,7 @@ export const xerjRecognition = {
   corpusHref:
     "https://hub.xerj.org/corpus/harshgavandit--agri-samaj-community-platform",
   linkLabel: "View XERJ selection",
+  repositoryHref: "https://github.com/xerj-org/xerj",
 };
 
 export const recognitionItems: RecognitionItem[] = [

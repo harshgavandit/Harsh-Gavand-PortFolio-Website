@@ -98,14 +98,26 @@ export function About() {
               <p className="recognition-context">{item.context}</p>
               {item.summary && <p>{item.summary}</p>}
               {item.href && (
-                <a
-                  className="text-link"
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {item.linkLabel ?? "Explore the build"} ↗
-                </a>
+                <div className="recognition-links">
+                  <a
+                    className="text-link"
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {item.linkLabel ?? "Explore the build"} ↗
+                  </a>
+                  {item.repositoryHref && (
+                    <a
+                      className="text-link"
+                      href={item.repositoryHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      XERJ on GitHub ↗
+                    </a>
+                  )}
+                </div>
               )}
             </article>
           ))}

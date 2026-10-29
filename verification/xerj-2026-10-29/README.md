@@ -1,6 +1,6 @@
 # XERJ Corpus Hub selection
 
-Verified on 29 October 2026 against the public [contributor page](https://hub.xerj.org/contributors/harshgavandit) and [repository corpus](https://hub.xerj.org/corpus/harshgavandit--agri-samaj-community-platform).
+Verified on 29 October 2026 against the public [contributor page](https://hub.xerj.org/contributors/harshgavandit) and [repository corpus](https://hub.xerj.org/corpus/harshgavandit--agri-samaj-community-platform). The [official XERJ source repository](https://github.com/xerj-org/xerj) is linked beside the selection on every portfolio recognition placement.
 
 XERJ identifies Harsh Gavand's Agri Samaj work as selected for its Corpus Hub. The selected implementation is **“add bilingual AI chat and voice assistance”**, at [commit 8e94c8ca8409c93d08534357181ef96fa6d7a2c5](https://github.com/harshgavandit/agri-samaj-community-platform/commit/8e94c8ca8409c93d08534357181ef96fa6d7a2c5). GitHub confirms the author and commit title. The corpus page pins the whole repository at that revision and describes repository, commit and file-line attribution. It records inclusion under the repository's MIT licence and contributor consent on 23 October 2026.
 
