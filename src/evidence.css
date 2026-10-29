@@ -50,6 +50,40 @@
   color: var(--muted);
   font-size: 0.8rem;
 }
+.project-recognition {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  margin-block: 0 24px;
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  background: var(--surface);
+}
+.project-recognition > div {
+  flex: 1 1 28rem;
+  min-width: 0;
+}
+.flagship-card > .project-recognition {
+  margin-inline: var(--card-padding);
+}
+.project-recognition p {
+  margin: 8px 0 0;
+  max-width: 74ch;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+.project-recognition > a {
+  flex-shrink: 0;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
 @media (max-width: 1279px) {
   .mobile-menu {
     display: grid;

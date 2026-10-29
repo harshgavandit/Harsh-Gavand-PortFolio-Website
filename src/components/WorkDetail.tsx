@@ -4,6 +4,7 @@ import { caseEvidence } from "../data/caseEvidence";
 import { featuredStudies, sampleWorkspaceURLs } from "../data/workPresentation";
 import { ActionLink, LeadStatement, Tags } from "./Primitives";
 import { ProductEvidence } from "./ProductEvidence";
+import { ProjectRecognition } from "./ProjectRecognition";
 import { SystemFlow } from "./SystemFlow";
 import { Tabs } from "./Tabs";
 import { communityProjects } from "../data/portfolio";
@@ -56,6 +57,7 @@ export function WorkDetail() {
           </ActionLink>
         </div>
       </header>
+      <ProjectRecognition slug={project.slug} />
       <div className="work-context">
         <div>
           <h2>The problem</h2>

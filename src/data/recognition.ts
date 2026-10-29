@@ -1,7 +1,29 @@
 import { engineeringSprints } from "./portfolio";
 
-// Combine the established achievement figures with each project's architecture.
-export const recognitionItems = [
+interface RecognitionItem {
+  title: string;
+  badge: string;
+  context: string;
+  summary: string;
+  href: string | null;
+  linkLabel?: string;
+}
+
+export const xerjRecognition = {
+  projectSlug: "agri-samaj-community-platform",
+  title: "XERJ Corpus Hub — Agri Samaj",
+  badge: "Selected",
+  context: "Open-source reference · 23 October 2026",
+  summary:
+    "The bilingual AI chat and voice implementation was selected as a searchable reference for AI coding agents, with repository, commit and file-line attribution.",
+  href: "https://hub.xerj.org/contributors/harshgavandit",
+  corpusHref:
+    "https://hub.xerj.org/corpus/harshgavandit--agri-samaj-community-platform",
+  linkLabel: "View XERJ selection",
+};
+
+export const recognitionItems: RecognitionItem[] = [
+  xerjRecognition,
   {
     title: "Supervity Autopilot Hackathon",
     badge: "Top 5",

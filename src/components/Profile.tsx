@@ -104,7 +104,7 @@ export function About() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  Explore the build ↗
+                  {item.linkLabel ?? "Explore the build"} ↗
                 </a>
               )}
             </article>

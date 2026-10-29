@@ -4,6 +4,7 @@ import { privateProjects, type PrivateProject } from "../data/privateProjects";
 import { curatedArchive } from "../data/recruiter";
 import { ActionLink, LeadStatement, Tags } from "./Primitives";
 import { ProductEvidence } from "./ProductEvidence";
+import { ProjectRecognition } from "./ProjectRecognition";
 import {
   featuredStudies,
   primaryFeaturedStudies,
@@ -66,6 +67,7 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
         </a>
       </header>
       <p className="flagship-summary">{study.summary}</p>
+      <ProjectRecognition slug={project.slug} />
       <div className="flagship-body">
         <div className="flagship-visual">
           <ProductEvidence slug={project.slug} />
