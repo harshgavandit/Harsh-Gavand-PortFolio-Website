@@ -92,8 +92,9 @@ await writeFile(
   archive,
 );
 const workLocations = [];
-for (const study of workStudies) {
-  const project = projects.find((item) => item.id === study.projectId);
+for (const record of workStudies) {
+  const slug = projects.find((item) => item.id === record.projectId).slug;
+  const { project, study } = workPage(slug);
   const location = `/work/${project.slug}/`;
   const title = escapeHTML(`${study.shortName} | Harsh Gavand`);
   const content = documentFor(location)
@@ -114,7 +115,7 @@ for (const study of workStudies) {
       /(property="og:description"\s+content=")[^"]+"/,
       `$1${escapeHTML(study.summary)}"`,
     );
-  if (!workPage(project.slug) || !content.includes('id="engineering-title"'))
+  if (!content.includes('id="engineering-title"'))
     throw new Error("Missing project engineering content: " + location);
   await mkdir(new URL(`../dist${location}`, import.meta.url), {
     recursive: true,

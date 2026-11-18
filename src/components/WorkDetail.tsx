@@ -10,6 +10,7 @@ import { Tabs } from "./Tabs";
 import { communityProjects } from "../data/portfolio";
 import { BankingPolicyReplay } from "./BankingPolicyReplay";
 import { projectRecovery } from "../data/projectArchitecture";
+import { informaProjectId } from "../data/informaPresentation";
 
 export function WorkDetail() {
   const { slug } = useParams();
@@ -26,6 +27,7 @@ export function WorkDetail() {
     );
   const { project, study } = page;
   const evidence = caseEvidence[project.slug];
+  const isInforma = project.id === informaProjectId;
   const sampleURL = sampleWorkspaceURLs[project.slug];
   const community = communityProjects.some((item) => item.id === project.id);
   const publicWebsite = community || study.publicPreview === true;
@@ -46,7 +48,9 @@ export function WorkDetail() {
         <div className="actions">
           {project.demoUrl && (
             <ActionLink href={project.demoUrl} external primary>
-              Visit live website
+              {isInforma
+                ? "Try it at getinformdaily.com"
+                : "Visit live website"}
             </ActionLink>
           )}
           <ActionLink href="#walkthrough" primary={!project.demoUrl}>
@@ -61,7 +65,7 @@ export function WorkDetail() {
       <div className="work-context">
         <div>
           <h2>The problem</h2>
-          <p>{evidence.context}</p>
+          <p>{isInforma ? study.problem : evidence.context}</p>
         </div>
         <div>
           <h2>My contribution</h2>
@@ -95,11 +99,13 @@ export function WorkDetail() {
         </details>
       )}
       <section className="work-section" aria-labelledby="engineering-title">
-        <h2 id="engineering-title">Engineering work</h2>
+        <h2 id="engineering-title">
+          {isInforma ? "How AI helps" : "Engineering work"}
+        </h2>
         <ul className="engineering-bullets">
           {study.engineering.map((point) => (
             <li key={point}>
-              <LeadStatement text={point} />
+              {isInforma ? point : <LeadStatement text={point} />}
             </li>
           ))}
         </ul>
@@ -113,8 +119,14 @@ export function WorkDetail() {
         <div className="work-decision">
           <div>
             <h3>Design decision</h3>
-            <p>{evidence.decision.choice}</p>
-            <p>{evidence.decision.reason}</p>
+            {isInforma ? (
+              <p>{project.challenges}</p>
+            ) : (
+              <>
+                <p>{evidence.decision.choice}</p>
+                <p>{evidence.decision.reason}</p>
+              </>
+            )}
           </div>
           <div>
             <h3>Failure handling &amp; recovery</h3>

@@ -1,5 +1,6 @@
 import { projects } from "../data/portfolio.ts";
 import { workStudies } from "../data/workPresentation.ts";
+import { displayProject, displayStudy } from "../data/informaPresentation.ts";
 // Preserve existing shared links while exposing semantic URLs and DOM IDs.
 export function semanticFragment(fragment: string) {
   // Shared links to the removed field-notes section still reach relevant work.
@@ -14,7 +15,9 @@ export function workPage(slug: string | undefined) {
   const canonical = slug === "lendflow" ? "banking-saas" : slug;
   const project = projects.find((item) => item.slug === canonical);
   const study = workStudies.find((item) => item.projectId === project?.id);
-  return project && study ? { project, study } : null;
+  return project && study
+    ? { project: displayProject(project), study: displayStudy(study) }
+    : null;
 }
 
 export function workPath(slug: string) {

@@ -22,13 +22,6 @@ export const projectArchitecture: Record<number, string[]> = {
     "Execute the trained LSTM weights through batched NumPy inference in the deployed service.",
     "Present historical comparisons and evaluation metrics, with account-based watchlist management.",
   ],
-  17: [
-    "Fetch publisher RSS feeds concurrently and apply reader-selected source and time filters.",
-    "Normalize dates and excerpts, deduplicate story URLs, and retain cached records when feeds are unavailable.",
-    "Summarize selected excerpts with OpenAI while retaining their source identifiers.",
-    "Rank summaries against the reader's stated interests to compose the digest.",
-    "Render a source-linked preview, escape exported HTML, and validate owner access before configured Gmail delivery.",
-  ],
   30: [
     "Choose a profile in the browser explorer or submit an authenticated assistant question.",
     "Validate the request in FastAPI and authenticate access to protected assistant operations.",
@@ -84,7 +77,6 @@ export const projectRecovery: Record<number, string> = {
   41: "PDF and question limits are checked before paid requests. Returned source identifiers are validated against retrieved passages, and visitors can clear the session's document index.",
   42: "Empty, oversized, and unsupported phrases are rejected before inference. The saved tokenizer and model input shape remain aligned across reruns.",
   20: "Django validates stock tickers and caches market and prediction responses. Account-backed profiles and watchlists remain separate from the public landing page.",
-  17: "Cached source stories remain available when an RSS feed fails. Exported HTML is escaped, and owner access is checked before email delivery.",
   30: "Protected assistant requests require authentication. Tool loops and SQL queries are bounded, with database access restricted to read-only operations.",
   35: "A validated ticket determines specialist routing. Eligible refund requests use a separate human-review graph, and the conversation resumes with the recorded decision.",
   37: "Questions outside the indexed documentation return a document-boundary response. Citation labels must refer to passages retrieved for that request.",

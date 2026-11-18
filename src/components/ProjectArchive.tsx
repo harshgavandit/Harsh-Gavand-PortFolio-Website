@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
-import { archiveProjects as projects } from "../data/portfolio";
+import { archiveProjects } from "../data/portfolio";
+import { displayProject } from "../data/informaPresentation";
 import { ActionLink, Tags } from "./Primitives";
 import { ProjectNotes } from "./Work";
 import { workPath } from "../lib/projectNavigation";
@@ -8,6 +9,7 @@ import { matchesProjectCollection } from "../lib/portfolioActions";
 // The existing Render deployment returned HTTP 503 on 22 October 2026.
 // Keep its repository available without sending visitors to the offline host.
 const offlineDeployments = new Set(["zoom-clone"]);
+const projects = archiveProjects.map(displayProject);
 
 export function ProjectArchive() {
   const [query, setQuery] = useState("");

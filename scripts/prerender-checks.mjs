@@ -1,3 +1,4 @@
+import { displayProject } from "../src/data/informaPresentation.ts";
 import assert from "node:assert/strict";
 import {
   archiveProjects as projects,
@@ -124,7 +125,7 @@ export function assertArchive(html, origin = profile.site) {
   assert.ok(html.includes('href="' + origin + '/archive/"'));
   assert.equal((html.match(/<h1(?:\s|>)/g) || []).length, 1);
   assert.equal((html.match(/data-project-id=/g) || []).length, projects.length);
-  for (const project of projects) {
+  for (const project of projects.map(displayProject)) {
     for (const value of [
       project.title,
       project.overview,

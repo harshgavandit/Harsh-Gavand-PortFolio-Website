@@ -1,5 +1,10 @@
 import { deploymentShowcase } from "../data/deploymentShowcase";
 import { projects } from "../data/portfolio";
+import {
+  displayProject,
+  informaCapture,
+  informaSlug,
+} from "../data/informaPresentation";
 import { AgriConnectGallery } from "./AgriConnectGallery";
 
 const captures: Record<
@@ -23,6 +28,7 @@ const captures: Record<
       },
     ]),
   ),
+  [informaSlug]: informaCapture,
   "agri-samaj-community-platform": {
     src: "/evidence/agri-samaj-homepage-2026-10-22.png",
     alt: "Agri Samaj English homepage showing business search, community resources, and the Add your business registration link",
@@ -49,13 +55,14 @@ export function ProductEvidence({ slug }: { slug: string }) {
   if (slug === "agri-connect") return <AgriConnectGallery />;
   const capture = captures[slug];
   const project = projects.find((item) => item.slug === slug);
+  const projectTitle = project ? displayProject(project).title : slug;
   return capture ? (
     <figure className="capture-evidence">
       <a
         href={capture.src}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={`Enlarge ${project?.title ?? slug} website screenshot`}
+        aria-label={`Enlarge ${projectTitle} website screenshot`}
       >
         <img
           src={capture.src}

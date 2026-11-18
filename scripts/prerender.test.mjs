@@ -18,6 +18,12 @@ import {
 import { privateProjects } from "../src/data/privateProjects.ts";
 import { featuredStudies, workStudies } from "../src/data/workPresentation.ts";
 import { deploymentShowcase } from "../src/data/deploymentShowcase.ts";
+import {
+  displayProject,
+  informaAiSummary,
+  informaCapture,
+  informaSlug,
+} from "../src/data/informaPresentation.ts";
 import { agriConnectGallery } from "../src/data/agriConnectGallery.ts";
 import { createHash } from "node:crypto";
 import {
@@ -159,6 +165,42 @@ test("selected work leads with evidence and links to focused case studies", () =
   }
 });
 
+test("Informa AI is featured in Selected Work with a live link and plain AI explanation", async () => {
+  const [mainCards, extraCards] = html.split(
+    '<details id="more-deployed-work"',
+  );
+  const card = mainCards.match(
+    /<article[^>]*id="news-automation"[^>]*>[\s\S]*?<\/article>/,
+  )?.[0];
+  assert.ok(
+    card,
+    "Informa AI must be visible without expanding More deployed applications",
+  );
+  assert.ok(!extraCards.includes('id="news-automation"'));
+  assert.match(card, />Informa AI<\/h3>/);
+  assert.match(card, /href="https:\/\/getinformdaily\.com\/?"/);
+  assert.ok(card.includes(escapeHTML(informaAiSummary)));
+  assert.doesNotMatch(card, /owner-only|ADMIN_TOKEN|AI Brief —/);
+
+  const [page, screenshot] = await Promise.all([
+    fetch(origin + "/work/news-automation/").then((response) =>
+      response.text(),
+    ),
+    fetch(origin + informaCapture.src),
+  ]);
+  assert.match(page, /<title>Informa AI \| Harsh Gavand<\/title>/);
+  assert.match(page, /href="https:\/\/getinformdaily\.com\/?"/);
+  assert.doesNotMatch(page, /owner-only|ADMIN_TOKEN|AI Brief —/);
+  assert.equal(screenshot.status, 200);
+  assert.match(screenshot.headers.get("content-type"), /image\/jpeg/);
+  assert.equal(
+    Buffer.from(await screenshot.arrayBuffer())
+      .subarray(0, 3)
+      .toString("hex"),
+    "ffd8ff",
+  );
+});
+
 test("verified deployments have unique main cards, real capture assets, complete notes, and passing recorded links", async () => {
   const report = JSON.parse(
     await readFile(
@@ -179,7 +221,9 @@ test("verified deployments have unique main cards, real capture assets, complete
     /<details id="all-projects"[\s\S]*?<\/details>/,
   )?.[0];
   for (const item of deploymentShowcase) {
-    const project = projects.find((project) => project.id === item.projectId);
+    const project = displayProject(
+      projects.find((project) => project.id === item.projectId),
+    );
     assert.equal(
       featuredStudies.filter((study) => study.projectId === item.projectId)
         .length,
@@ -191,7 +235,11 @@ test("verified deployments have unique main cards, real capture assets, complete
       ),
     )?.[1];
     assert.ok(card, project.slug);
-    assert.ok(card.includes(`src="/evidence/${item.capture}"`));
+    const capturePath =
+      project.slug === informaSlug
+        ? informaCapture.src
+        : `/evidence/${item.capture}`;
+    assert.ok(card.includes(`src="${capturePath}"`));
     assert.ok(card.includes(`href="${project.demoUrl}"`));
     assert.ok(card.includes(`href="${project.githubUrl}"`));
     for (const text of [project.role, project.impact, ...project.features])
@@ -550,7 +598,9 @@ test("all portfolio routes use professional engineering copy, including accessib
     );
   }
   for (const study of featuredStudies) {
-    const project = projects.find((item) => item.id === study.projectId);
+    const project = displayProject(
+      projects.find((item) => item.id === study.projectId),
+    );
     const card = html.match(
       new RegExp(
         `<article[^>]*id="${project.slug}"[^>]*>([\\s\\S]*?)<\\/article>`,
@@ -974,7 +1024,11 @@ test("project pages show engineering work without source directories or preview 
       const page = await response.text();
       assert.equal((page.match(/<h1(?:\s|>)/g) || []).length, 1);
       assert.ok(page.includes(`href="${siteOrigin(canonical)}/work/${slug}/"`));
-      assert.match(page, /Engineering work/);
+      assert.ok(
+        page.includes(
+          slug === informaSlug ? "How AI helps" : "Engineering work",
+        ),
+      );
       assert.match(page, /Product features/);
       assert.match(page, /My contribution/);
       assert.match(page, /Architecture &amp; tech stack/);
@@ -988,7 +1042,9 @@ test("project pages show engineering work without source directories or preview 
         (page.match(/aria-pressed="true"/g) || []).length >= 1,
         true,
       );
-      const currentProject = projects.find((project) => project.slug === slug);
+      const currentProject = displayProject(
+        projects.find((project) => project.slug === slug),
+      );
       assert.ok(page.includes(`href="${currentProject.githubUrl}"`));
       for (const feature of currentProject.features)
         assert.ok(page.includes(escapeHTML(feature)), feature);

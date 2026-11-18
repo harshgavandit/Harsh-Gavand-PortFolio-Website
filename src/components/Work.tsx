@@ -11,6 +11,25 @@ import {
   secondaryFeaturedStudies,
 } from "../data/workPresentation";
 import { caseEvidence } from "../data/caseEvidence";
+import {
+  displayProject,
+  displayStudy,
+  informaAiSummary,
+  informaProjectId,
+} from "../data/informaPresentation";
+
+const informaStudy = secondaryFeaturedStudies.find(
+  (study) => study.projectId === informaProjectId,
+)!;
+const mainStudies = [
+  primaryFeaturedStudies[0],
+  informaStudy,
+  ...primaryFeaturedStudies.slice(1),
+];
+const moreStudies = secondaryFeaturedStudies.filter(
+  (study) => study.projectId !== informaProjectId,
+);
+
 export function ProjectNotes({ project }: { project: Project }) {
   const evidence = caseEvidence[project.slug];
   return (
@@ -49,8 +68,12 @@ export function ProjectNotes({ project }: { project: Project }) {
     </div>
   );
 }
-function CaseStudyCard({ study }: { study: CaseStudy }) {
-  const project = projects.find((item) => item.id === study.projectId)!;
+function CaseStudyCard({ study: record }: { study: CaseStudy }) {
+  const study = displayStudy(record);
+  const project = displayProject(
+    projects.find((item) => item.id === study.projectId)!,
+  );
+  const isInforma = project.id === informaProjectId;
   return (
     <article
       className={`flagship-card flagship-${project.slug}`}
@@ -74,14 +97,18 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
         </div>
         <div className="engineering-breakdown">
           <div className="project-focus">
-            <h4>Engineering focus</h4>
-            <ul className="engineering-bullets">
-              {study.engineering.slice(0, 1).map((point) => (
-                <li key={point}>
-                  <LeadStatement text={point} />
-                </li>
-              ))}
-            </ul>
+            <h4>{isInforma ? "How AI helps" : "Engineering focus"}</h4>
+            {isInforma ? (
+              <p>{informaAiSummary}</p>
+            ) : (
+              <ul className="engineering-bullets">
+                {study.engineering.slice(0, 1).map((point) => (
+                  <li key={point}>
+                    <LeadStatement text={point} />
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
           <div className="project-stack">
             <h4>Tech stack</h4>
@@ -90,7 +117,9 @@ function CaseStudyCard({ study }: { study: CaseStudy }) {
           <div className="actions project-actions">
             {project.demoUrl && (
               <ActionLink href={project.demoUrl} external primary>
-                Visit live website
+                {isInforma
+                  ? "Try it at getinformdaily.com"
+                  : "Visit live website"}
               </ActionLink>
             )}
             <ActionLink href={project.githubUrl} external>
@@ -116,7 +145,7 @@ export function FeaturedWork() {
       aria-label="Selected work"
     >
       <div className="flagship-list">
-        {primaryFeaturedStudies.map((study) => (
+        {mainStudies.map((study) => (
           <CaseStudyCard key={study.projectId} study={study} />
         ))}
         {privateProjects.map((project) => (
@@ -127,12 +156,11 @@ export function FeaturedWork() {
         <summary>
           More deployed applications{" "}
           <span>
-            {secondaryFeaturedStudies.length} AI, retrieval &amp; workflow
-            projects
+            {moreStudies.length} AI, retrieval &amp; workflow projects
           </span>
         </summary>
         <div className="flagship-list">
-          {secondaryFeaturedStudies.map((study) => (
+          {moreStudies.map((study) => (
             <CaseStudyCard key={study.projectId} study={study} />
           ))}
         </div>
