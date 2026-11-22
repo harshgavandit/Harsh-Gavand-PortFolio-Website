@@ -47,8 +47,7 @@ export interface CaseStudy {
 
 export const profile = {
   name: "Harsh Gavand",
-  email: "harshgavand2@gmail.com",
-  alternateEmail: "harsh.gavand.tech@gmail.com",
+  email: "harsh.gavand.tech@gmail.com",
   location: "Mumbai, India",
   workPreference: "Remote only",
   locationLabel: "Mumbai, India · Remote only",

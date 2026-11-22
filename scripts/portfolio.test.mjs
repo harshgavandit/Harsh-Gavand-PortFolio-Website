@@ -482,7 +482,7 @@ test("trace replay visits four stages at 150ms intervals and cancels stale callb
 
 test("availability, experience shipments and architectural skills carry concrete public proof", () => {
   assert.equal(profile.workPreference, "Remote only");
-  assert.equal(profile.email, "harshgavand2@gmail.com");
+  assert.equal(profile.email, "harsh.gavand.tech@gmail.com");
   assert.doesNotMatch(profile.availability, /relocat/i);
   assert.equal(skills.length, 4);
   for (const group of skills) {

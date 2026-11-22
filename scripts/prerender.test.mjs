@@ -932,7 +932,7 @@ test("home exposes branding, experience shipments, recognition and contact contr
   assert.equal((html.match(/class="shipment-banner"/g) || []).length, 2);
   assert.match(html, /PromptWars AI Engineering Competition/);
   assert.match(html, /Supervity Autopilot Hackathon/);
-  assert.match(html, /aria-label="Copy email harshgavand2@gmail.com"/);
+  assert.match(html, /aria-label="Copy email harsh.gavand.tech@gmail.com"/);
 });
 
 test("header branding, hero experience wording, and complete categorized logo stack are present", async () => {
@@ -1023,7 +1023,7 @@ test("primary card ordering, expandable projects, unified recognition, and direc
   );
   const contact = main.split('id="contact"')[1];
   assert.doesNotMatch(contact, /<form|Prepare email draft/);
-  assert.match(contact, /mailto:harshgavand2@gmail.com/);
+  assert.match(contact, /mailto:harsh.gavand.tech@gmail.com/);
 });
 
 test("project pages show engineering work without source directories or preview commentary", async () => {
