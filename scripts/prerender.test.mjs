@@ -41,6 +41,13 @@ import { resumeStackGroups, resumeStackCount } from "../src/data/heroStack.ts";
 let server;
 let origin;
 let html;
+// Projects are presented as cards in the featured reel (<li id="slug">).
+const reelCard = (slug) =>
+  html.match(
+    new RegExp(`<li[^>]*\\bid="${slug}"[^>]*>([\\s\\S]*?)<\\/li>`),
+  )?.[1];
+const workPageHtml = (slug) =>
+  readFile(new URL(`../dist/work/${slug}/index.html`, import.meta.url), "utf8");
 let archive;
 let canonical;
 before(async () => {
@@ -133,16 +140,14 @@ test("AI workspace directly loads as complete HTML with accessible tools, correc
 });
 
 test("selected work leads with evidence and links to focused case studies", () => {
-  const cards = [
-    ...html.matchAll(
-      /<article class="flagship-card(?:\s[^\"]*)?"[\s\S]*?<\/article>/g,
-    ),
-  ].map((match) => match[0]);
-  assert.equal(cards.length, featuredStudies.length);
-  for (const card of cards) {
-    assert.match(card, /Explore case study/);
-    assert.match(card, /href="\/work\/[a-z-]+\/"/);
-    assert.match(card, /GitHub source/);
+  assert.equal((html.match(/class="flagship-card/g) || []).length, 0);
+  for (const study of featuredStudies) {
+    const project = projects.find((item) => item.id === study.projectId);
+    const card = reelCard(project.slug);
+    assert.ok(card, project.slug);
+    assert.match(card, /Case study/);
+    assert.ok(card.includes(`href="/work/${project.slug}/"`), project.slug);
+    assert.ok(card.includes(`href="${project.githubUrl}"`), project.slug);
     assert.doesNotMatch(
       card,
       /System Impact &amp; Guarantees|Interface reconstruction/,
@@ -151,13 +156,8 @@ test("selected work leads with evidence and links to focused case studies", () =
   assert.match(html, /id="banking-agent-harness"/);
   assert.doesNotMatch(html, /class="additional-work"|Also built/);
   for (const project of communityProjects) {
-    const card = html.match(
-      new RegExp(
-        `<article[^>]*id="${project.slug}"[^>]*>([\\s\\S]*?)<\\/article>`,
-      ),
-    )?.[1];
+    const card = reelCard(project.slug);
     assert.ok(card, "Community project must be visible on the homepage");
-    assert.ok(card.includes(escapeHTML(project.overview)));
     assert.ok(card.includes(`href="${project.demoUrl}"`));
     assert.ok(card.includes(`href="${project.githubUrl}"`));
     assert.ok(
@@ -171,21 +171,16 @@ test("selected work leads with evidence and links to focused case studies", () =
 });
 
 test("Informa AI is featured in Selected Work with a live link and plain AI explanation", async () => {
-  const [mainCards, extraCards] = html.split(
-    '<details id="more-deployed-work"',
-  );
-  const card = mainCards.match(
-    /<article[^>]*id="news-automation"[^>]*>[\s\S]*?<\/article>/,
-  )?.[0];
-  assert.ok(
-    card,
-    "Informa AI must be visible without expanding More deployed applications",
-  );
-  assert.ok(!extraCards.includes('id="news-automation"'));
-  assert.match(card, />Informa AI<\/h3>/);
+  const card = reelCard("news-automation");
+  assert.ok(card, "Informa AI must be visible in the featured reel");
+  assert.match(card, />Informa AI<\/h4>/);
   assert.match(card, /href="https:\/\/getinformdaily\.com\/?"/);
-  assert.ok(card.includes(escapeHTML(informaAiSummary)));
   assert.doesNotMatch(card, /owner-only|ADMIN_TOKEN|AI Brief —/);
+  const reel = html.match(/<ol class="reel-track"[\s\S]*?<\/ol>/)[0];
+  assert.ok(
+    reel.indexOf('id="news-automation"') < reel.indexOf('id="ugc-platform"'),
+    "Informa AI leads the reel right after the community platform",
+  );
 
   const [page, screenshot] = await Promise.all([
     fetch(origin + "/work/news-automation/").then((response) =>
@@ -195,6 +190,7 @@ test("Informa AI is featured in Selected Work with a live link and plain AI expl
   ]);
   assert.match(page, /<title>Informa AI \| Harsh Gavand<\/title>/);
   assert.match(page, /href="https:\/\/getinformdaily\.com\/?"/);
+  assert.match(page, /How AI helps/);
   assert.doesNotMatch(page, /owner-only|ADMIN_TOKEN|AI Brief —/);
   assert.equal(screenshot.status, 200);
   assert.match(screenshot.headers.get("content-type"), /image\/jpeg/);
@@ -232,11 +228,7 @@ test("verified deployments have unique main cards, real capture assets, complete
         .length,
       1,
     );
-    const card = html.match(
-      new RegExp(
-        `<article[^>]*id="${project.slug}"[^>]*>([\\s\\S]*?)<\\/article>`,
-      ),
-    )?.[1];
+    const card = reelCard(project.slug);
     assert.ok(card, project.slug);
     const capturePath =
       project.slug === informaSlug
@@ -245,8 +237,10 @@ test("verified deployments have unique main cards, real capture assets, complete
     assert.ok(card.includes(`src="${capturePath}"`));
     assert.ok(card.includes(`href="${project.demoUrl}"`));
     assert.ok(card.includes(`href="${project.githubUrl}"`));
-    for (const text of [project.role, project.impact, ...project.features])
-      assert.ok(card.includes(escapeHTML(text)), text);
+    // Full notes live on the project's case study page.
+    const page = await workPageHtml(project.slug);
+    for (const text of [project.role, ...project.features])
+      assert.ok(page.includes(escapeHTML(text)), text);
     assert.ok(
       !curated?.includes(`/archive/#${project.slug}`),
       "Featured projects must not be repeated as repository cards",
@@ -320,16 +314,16 @@ test("hosted support and healthcare cards expose engineering work and working pr
       /AI Support Ticket Classifier|github\.com\/harshgavandit\/support-ticket-classifier/,
     );
   }
-  const healthcare = html.match(
-    /<article[^>]*id="healthcare-mcp-openai"[^>]*>([\s\S]*?)<\/article>/,
-  )?.[1];
-  const support = html.match(
-    /<article[^>]*id="multi-agent-customer-support"[^>]*>([\s\S]*?)<\/article>/,
-  )?.[1];
+  const healthcare = await workPageHtml("healthcare-mcp-openai");
+  const support = await workPageHtml("multi-agent-customer-support");
   assert.match(healthcare, /read-only SQLite data through four MCP tools/);
   assert.match(support, /human-review queue/);
   assert.doesNotMatch(healthcare + support, /class="project-boundary"/);
   assert.match(support, /harsh-multi-agent-customer-support\.streamlit\.app/);
+  assert.match(
+    reelCard("multi-agent-customer-support"),
+    /harsh-multi-agent-customer-support\.streamlit\.app/,
+  );
   assert.match(
     await readFile(new URL("../dist/ai/index.html", import.meta.url), "utf8"),
     /Portfolio triage source/,
@@ -338,9 +332,7 @@ test("hosted support and healthcare cards expose engineering work and working pr
 
 test("AgriConnect renders a public case study, screenshot, complete stack, and crawlable links", async () => {
   const project = projects.find((item) => item.slug === "agri-connect");
-  const card = html.match(
-    /<article[^>]*id="agri-connect"[^>]*>([\s\S]*?)<\/article>/,
-  )?.[1];
+  const card = reelCard("agri-connect");
   assert.ok(card);
   assert.ok(card.includes('src="/evidence/agri-connect-admin.jpg"'));
   assert.ok(card.includes('height="910"'));
@@ -370,8 +362,10 @@ test("AgriConnect renders a public case study, screenshot, complete stack, and c
   );
   assert.equal(agriConnectGallery.length, 5);
   assert.equal(new Set(agriConnectGallery.map((item) => item.src)).size, 5);
+  // The reel card shows the first capture; the case study has the gallery.
+  assert.ok(card.includes(`src="${agriConnectGallery[0].src}"`));
   for (const capture of agriConnectGallery) {
-    for (const surface of [card, page]) {
+    for (const surface of [page]) {
       assert.ok(surface.includes(`src="${capture.src}"`));
       assert.ok(surface.includes(`href="${capture.src}"`));
       assert.ok(surface.includes(escapeHTML(capture.alt)));
@@ -396,34 +390,39 @@ test("AgriConnect renders a public case study, screenshot, complete stack, and c
       await readFile(new URL("../public" + capture.src, import.meta.url)),
     );
   }
-  assert.match(card, /Admin dashboard/);
-  assert.match(card, /2FA &amp; security/);
-  assert.match(card, /Catalogue operations/);
-  assert.match(card, /AI assistance/);
-  assert.match(card, /Marketplace &amp; map/);
-  assert.match(card, /TOTP authenticator status, session controls/);
+  // The interactive gallery now lives on the case study page.
+  assert.match(page, /Admin dashboard/);
+  assert.match(page, /2FA &amp; security/);
+  assert.match(page, /Catalogue operations/);
+  assert.match(page, /AI assistance/);
+  assert.match(page, /Marketplace &amp; map/);
+  assert.match(page, /TOTP authenticator status, session controls/);
   assert.doesNotMatch(
-    card,
+    page,
     /Live app captures|Admin areas require authorised access|not independent security results|not adoption metrics/,
   );
+  // Scope tab checks to the gallery (the page also has architecture tabs).
+  const gallery = page
+    .split('class="project-gallery"')[1]
+    .split('id="work-agri-connect-tab-0"')[0];
   assert.equal(
-    [...card.matchAll(/role="tab"/g)].length,
+    [...gallery.matchAll(/role="tab"/g)].length,
     agriConnectGallery.length,
   );
   assert.equal(
-    [...card.matchAll(/role="tabpanel"/g)].length,
+    [...gallery.matchAll(/role="tabpanel"/g)].length,
     agriConnectGallery.length,
   );
-  assert.equal([...card.matchAll(/aria-selected="true"/g)].length, 1);
+  assert.equal([...gallery.matchAll(/aria-selected="true"/g)].length, 1);
   const tabs = [
-    ...card.matchAll(
+    ...gallery.matchAll(
       /id="([^"]+)"[^>]*role="tab"[^>]*aria-selected="(true|false)"[^>]*aria-controls="([^"]+)"[^>]*tabindex="(0|-1)"/g,
     ),
   ];
   assert.equal(tabs.length, agriConnectGallery.length);
   for (const [, id, selected, panel, tabIndex] of tabs) {
     assert.ok(
-      card.includes(`id="${panel}" role="tabpanel" aria-labelledby="${id}"`),
+      gallery.includes(`id="${panel}" role="tabpanel" aria-labelledby="${id}"`),
     );
     assert.equal(tabIndex, selected === "true" ? "0" : "-1");
   }
@@ -450,12 +449,25 @@ test("private internal project exposes the approved summary, features and stack 
       projectPosition > firstPublicPosition,
       "Private internal work remains after the primary public case studies",
     );
+    // The reel card links to the full write-up kept with the Globetrek role.
+    const reelLinks = [
+      ...reelCard(project.slug).matchAll(/<a[^>]*href="([^"]+)"/g),
+    ].map((match) => match[1]);
+    assert.deepEqual(reelLinks, [
+      ...(project.preview ? [project.preview.src] : []),
+      `#${project.slug}-details`,
+    ]);
     const card = html.match(
       new RegExp(
-        `<article[^>]*id="${project.slug}"[^>]*>([\\s\\S]*?)<\\/article>`,
+        `<details[^>]*id="${project.slug}-details"[^>]*>([\\s\\S]*?)<\\/details>`,
       ),
     )?.[1];
     assert.ok(card);
+    assert.ok(
+      html.indexOf(`id="${project.slug}-details"`) <
+        html.indexOf('id="projects"'),
+      "Details sit with the Globetrek experience entry",
+    );
     for (const text of [
       project.title,
       project.overview,
@@ -505,12 +517,9 @@ test("remaining pages have connected ARIA relationships and predictable keyboard
       for (const id of match[1].split(" "))
         assert.ok(ids.has(id), "Missing ARIA target: " + id);
   }
-  // AgriConnect gallery + the AI engineering flow explorer.
-  assert.equal((html.match(/role="tablist"/g) || []).length, 2);
-  assert.equal(
-    (html.match(/role="tabpanel"/g) || []).length,
-    agriConnectGallery.length + aiFlows.length,
-  );
+  // The AI engineering flow explorer (project galleries live on case studies).
+  assert.equal((html.match(/role="tablist"/g) || []).length, 1);
+  assert.equal((html.match(/role="tabpanel"/g) || []).length, aiFlows.length);
   assert.equal(nextTabIndex("ArrowLeft", 0, agriConnectGallery.length), 4);
   assert.equal(nextTabIndex("ArrowRight", 4, agriConnectGallery.length), 0);
   assert.equal((ai.match(/role="tablist"/g) || []).length, 1);
@@ -613,20 +622,13 @@ test("all portfolio routes use professional engineering copy, including accessib
     const project = displayProject(
       projects.find((item) => item.id === study.projectId),
     );
-    const card = html.match(
-      new RegExp(
-        `<article[^>]*id="${project.slug}"[^>]*>([\\s\\S]*?)<\\/article>`,
-      ),
-    )?.[1];
-    assert.ok(card, project.slug);
-    assert.doesNotMatch(card, /class="project-boundary"/);
+    assert.ok(reelCard(project.slug), project.slug);
+    const page = pages.find(([name]) => name === project.slug)?.[1];
+    assert.ok(page, project.slug + " case study");
+    assert.doesNotMatch(page, /class="project-boundary"/);
     assert.ok(
-      card.includes(escapeHTML(project.role)),
+      page.includes(escapeHTML(project.role)),
       project.slug + " contribution",
-    );
-    assert.ok(
-      card.includes(escapeHTML(project.impact)),
-      project.slug + " outcome",
     );
   }
   assert.doesNotMatch(
@@ -1018,10 +1020,8 @@ test("primary card ordering, expandable projects, unified recognition, and direc
     projectSection.indexOf('id="agri-samaj-community-platform"') <
       projectSection.indexOf('id="ugc-platform"'),
   );
-  assert.match(
-    projectSection,
-    /<details id="more-deployed-work" class="secondary-work">/,
-  );
+  assert.match(projectSection, /<ol class="reel-track"/);
+  assert.doesNotMatch(projectSection, /more-deployed-work|flagship-card/);
   assert.equal((main.match(/Supervity Autopilot Hackathon/g) || []).length, 1);
   assert.doesNotMatch(main, /Hackathons &amp; Engineering Sprints/);
   assert.match(main, /Top 5/);

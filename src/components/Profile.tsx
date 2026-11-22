@@ -11,6 +11,7 @@ import { availability } from "../data/availability";
 import { HeroStack } from "./HeroStack";
 import { AIEngineering } from "./AIEngineering";
 import { LeadStatement, Tags } from "./Primitives";
+import { privateProjects } from "../data/privateProjects";
 
 export function Experience() {
   return (
@@ -65,6 +66,64 @@ export function Experience() {
                     <h4>Core technologies</h4>
                     <Tags items={job.tech} />
                   </div>
+                  {index === 0 &&
+                    privateProjects.map((project) => (
+                      <details
+                        className="role-project"
+                        id={`${project.slug}-details`}
+                        key={project.slug}
+                      >
+                        <summary>
+                          <span className="eyebrow">
+                            Private internal project
+                          </span>
+                          {project.title}
+                        </summary>
+                        <div className="role-project-body">
+                          <p>{project.overview}</p>
+                          {project.preview && (
+                            <figure>
+                              <a
+                                href={project.preview.src}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`View full-size ${project.title} screenshot`}
+                              >
+                                <img
+                                  src={project.preview.src}
+                                  alt={project.preview.alt}
+                                  width={project.preview.width}
+                                  height={project.preview.height}
+                                  loading="lazy"
+                                />
+                              </a>
+                              <figcaption>{project.preview.caption}</figcaption>
+                            </figure>
+                          )}
+                          <h4>Features</h4>
+                          <ul className="engineering-bullets">
+                            {project.features.map((feature) => (
+                              <li key={feature}>{feature}</li>
+                            ))}
+                          </ul>
+                          <h4>My contribution</h4>
+                          <p>{project.role}</p>
+                          <h4>Business impact</h4>
+                          <p>{project.impact}</p>
+                          <h4>Tech stack</h4>
+                          <Tags items={project.technologies} />
+                          <h4>Keywords</h4>
+                          <ul className="tags" aria-label="Project keywords">
+                            {project.keywords.map((keyword) => (
+                              <li key={keyword}>{keyword}</li>
+                            ))}
+                          </ul>
+                          <p className="project-boundary">
+                            Source code and application access are not public.
+                          </p>
+                        </div>
+                      </details>
+                    ))}
                 </div>
               </article>
             </li>

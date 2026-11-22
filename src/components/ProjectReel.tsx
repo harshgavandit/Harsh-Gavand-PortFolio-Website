@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { projects, type CaseStudy } from "../data/portfolio";
 import { curatedArchive } from "../data/recruiter";
+import type { PrivateProject } from "../data/privateProjects";
 import { displayProject, displayStudy } from "../data/informaPresentation";
 import { projectImage } from "../data/projectCaptures";
 import { useMotionEnabled } from "./MotionPreferences";
@@ -30,9 +31,17 @@ type ReelItem = {
   stack: string;
   technologies: string[];
   year?: string;
+  imageHref?: string;
+  note?: string;
 };
 
-export function ProjectReel({ studies }: { studies: CaseStudy[] }) {
+export function ProjectReel({
+  studies,
+  privateWork = [],
+}: {
+  studies: CaseStudy[];
+  privateWork?: PrivateProject[];
+}) {
   const motion = useMotionEnabled();
   const root = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(0);
@@ -52,8 +61,10 @@ export function ProjectReel({ studies }: { studies: CaseStudy[] }) {
       summary: study.summary.split(/(?<=\.)\s/)[0],
       image: projectImage(project.slug),
       live: project.demoUrl,
+      github: project.githubUrl,
       details: `/work/${project.slug}/`,
       detailsLabel: "Case study",
+      imageHref: `/work/${project.slug}/`,
       stack: project.technologies.slice(0, 3).join(" · "),
       technologies: project.technologies,
     };
@@ -82,8 +93,30 @@ export function ProjectReel({ studies }: { studies: CaseStudy[] }) {
         year: entry.year,
       };
     });
-  const items = [...featured, ...repositories];
+  // Private professional work: real capture, no public source or site.
+  const internal: ReelItem[] = privateWork.map((project) => ({
+    slug: project.slug,
+    title: project.title,
+    kind: "Private internal project",
+    summary: project.role,
+    image: project.preview
+      ? {
+          src: project.preview.src,
+          alt: project.preview.alt,
+          width: project.preview.width,
+          height: project.preview.height,
+        }
+      : null,
+    details: `#${project.slug}-details`,
+    detailsLabel: "Details",
+    stack: project.technologies.slice(0, 3).join(" · "),
+    technologies: project.technologies,
+    imageHref: project.preview?.src,
+    note: "Source code and application access are not public.",
+  }));
+  const items = [...featured, ...internal, ...repositories];
   const count = items.length;
+  const slugs = items.map((item) => item.slug).join("|");
 
   useEffect(() => {
     const element = root.current;
@@ -91,6 +124,7 @@ export function ProjectReel({ studies }: { studies: CaseStudy[] }) {
     if (!window.matchMedia("(min-width: 1024px)").matches) return;
     let disposed = false;
     let revert = () => {};
+    let removeHash = () => {};
     void loadMotionKit().then(({ gsap, ScrollTrigger }) => {
       if (disposed) return;
       setEnhanced(true);
@@ -120,16 +154,26 @@ export function ProjectReel({ studies }: { studies: CaseStudy[] }) {
           if (lenis) lenis.scrollTo(target, { duration: 1.1 });
           else window.scrollTo({ top: target, behavior: "smooth" });
         };
+        // Shared links to a project (/#slug) turn the reel to that card.
+        const openHash = () => {
+          const slug = decodeURIComponent(window.location.hash.slice(1));
+          const index = slugs.split("|").indexOf(slug);
+          if (index >= 0) requestAnimationFrame(() => jump.current(index));
+        };
+        openHash();
+        window.addEventListener("hashchange", openHash);
+        removeHash = () => window.removeEventListener("hashchange", openHash);
       }, element);
       revert = () => context.revert();
     });
     return () => {
       disposed = true;
+      removeHash();
       revert();
       setEnhanced(false);
       jump.current = () => {};
     };
-  }, [motion, count]);
+  }, [motion, count, slugs]);
 
   return (
     <div
@@ -153,6 +197,8 @@ export function ProjectReel({ studies }: { studies: CaseStudy[] }) {
           {items.map((item, index) => (
             <li
               key={item.slug}
+              id={item.slug}
+              tabIndex={-1}
               className="reel-card"
               style={{ ["--i" as string]: index }}
               data-active={enhanced && index === active ? "true" : undefined}
@@ -162,12 +208,12 @@ export function ProjectReel({ studies }: { studies: CaseStudy[] }) {
             >
               <a
                 className={`reel-media${item.image ? "" : " reel-cover"}`}
-                href={item.image ? `#${item.slug}` : item.details}
-                data-cursor="Details"
+                href={item.imageHref ?? item.details}
+                data-cursor={item.note ? "Enlarge" : "Open"}
                 aria-label={
-                  item.image
-                    ? `${item.title}: jump to project details`
-                    : `${item.title}: open repository details`
+                  item.note
+                    ? `View full-size ${item.title} screenshot`
+                    : `${item.title}: ${item.detailsLabel.toLowerCase()}`
                 }
               >
                 {item.image ? (
@@ -225,10 +271,39 @@ export function ProjectReel({ studies }: { studies: CaseStudy[] }) {
                       GitHub <ArrowUpRight size={14} aria-hidden="true" />
                     </a>
                   )}
-                  <a href={item.details}>
-                    {item.detailsLabel}{" "}
-                    <ArrowUpRight size={14} aria-hidden="true" />
-                  </a>
+                  {item.detailsLabel && (
+                    <a
+                      href={item.details}
+                      onClick={(event) => {
+                        // In-page details (private work): open, then scroll.
+                        if (!item.details.startsWith("#")) return;
+                        const target = document.getElementById(
+                          item.details.slice(1),
+                        );
+                        if (!(target instanceof HTMLDetailsElement)) return;
+                        event.preventDefault();
+                        event.stopPropagation();
+                        target.open = true;
+                        window.history.replaceState(null, "", item.details);
+                        requestAnimationFrame(() => {
+                          const lenis = getLenis();
+                          if (lenis) lenis.scrollTo(target, { offset: -110 });
+                          else
+                            target.scrollIntoView({
+                              behavior: "smooth",
+                              block: "start",
+                            });
+                          target.querySelector("summary")?.focus({
+                            preventScroll: true,
+                          });
+                        });
+                      }}
+                    >
+                      {item.detailsLabel}{" "}
+                      <ArrowUpRight size={14} aria-hidden="true" />
+                    </a>
+                  )}
+                  {item.note && <p className="reel-note">{item.note}</p>}
                 </div>
               </div>
             </li>

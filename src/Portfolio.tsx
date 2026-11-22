@@ -133,6 +133,7 @@ export default function Portfolio({
       );
     const target = document.getElementById(fragment.slice(1));
     // Reveal native disclosures before scrolling to a previously shared link.
+    if (target instanceof HTMLDetailsElement) target.open = true;
     for (
       let parent = target?.parentElement;
       parent;

@@ -3148,3 +3148,70 @@ html[data-motion="on"] .stack-meter:not(.is-inview) .stack-meter-fill {
 .reel.is-3d .reel-card {
   min-height: 0;
 }
+
+/* Private internal project, kept with the role it belongs to. */
+.role-project {
+  margin-top: 18px;
+  border-radius: 18px;
+  border: 1px solid var(--glass-border);
+  background: var(--card);
+  overflow: hidden;
+  scroll-margin-top: 110px;
+}
+.role-project > summary {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 20px;
+  cursor: pointer;
+  font:
+    600 1.02rem "Space Grotesk Variable",
+    sans-serif;
+  color: var(--text);
+  list-style: none;
+}
+.role-project > summary::-webkit-details-marker {
+  display: none;
+}
+.role-project > summary::after {
+  content: "View details ↓";
+  font:
+    500 0.78rem "Inter Variable",
+    sans-serif;
+  color: var(--accent);
+}
+.role-project[open] > summary::after {
+  content: "Hide details ↑";
+}
+.role-project-body {
+  display: grid;
+  gap: 10px;
+  padding: 0 20px 20px;
+}
+.role-project-body > p {
+  color: var(--muted);
+}
+.role-project-body h4 {
+  margin-top: 8px;
+  font: 600 0.72rem/1.4 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.role-project-body figure img {
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+}
+.role-project-body figcaption {
+  margin-top: 6px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+.reel-note {
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+.reel-links {
+  flex-wrap: wrap;
+  align-items: center;
+}

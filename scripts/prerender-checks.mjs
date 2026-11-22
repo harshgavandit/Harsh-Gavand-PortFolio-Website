@@ -6,6 +6,7 @@ import {
   profile,
 } from "../src/data/portfolio.ts";
 import { featuredStudies } from "../src/data/workPresentation.ts";
+import { privateProjects } from "../src/data/privateProjects.ts";
 import { chapters, curatedArchive } from "../src/data/recruiter.ts";
 
 export function siteOrigin(value) {
@@ -94,10 +95,8 @@ export function assertHomepage(html, origin = profile.site) {
     !html.includes("data-chapter-number="),
     "Decorative chapter numbers must stay removed",
   );
-  assert.equal(
-    (html.match(/class="flagship-card(?:\s[^\"]*)?"/g) || []).length,
-    featuredStudies.length,
-  );
+  // Projects are presented only in the featured reel (no separate cards).
+  assert.equal((html.match(/class="flagship-card/g) || []).length, 0);
   // The curated repositories now live in the featured reel instead of a
   // separate archive table.
   const additional = curatedArchive.filter(
@@ -109,8 +108,8 @@ export function assertHomepage(html, origin = profile.site) {
   const reel = html.match(/<ol class="reel-track"[\s\S]*?<\/ol>/)?.[0] || "";
   assert.equal(
     (reel.match(/class="reel-card"/g) || []).length,
-    featuredStudies.length + additional.length,
-    "Every featured and curated project appears in the reel",
+    featuredStudies.length + additional.length + privateProjects.length,
+    "Every featured, private and curated project appears in the reel",
   );
   for (const entry of additional) {
     const project = projects.find((item) => item.id === entry.projectId);
