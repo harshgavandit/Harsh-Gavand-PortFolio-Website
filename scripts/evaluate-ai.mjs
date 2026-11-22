@@ -10,6 +10,7 @@ import { randomUUID } from "node:crypto";
 import { buildRequest } from "../server/openai.mjs";
 import { buildTask } from "../server/ai-tools.mjs";
 import { EvaluationBudget } from "./evaluation-budget.mjs";
+import { evaluationBudgetCap, shouldStopEvaluation } from "./evaluation-policy.mjs";
 
 if (!process.argv.includes("--live"))
   throw new Error(
@@ -94,7 +95,7 @@ if (!origin) {
       token: config.quotaToken,
       namespace: `portfolio-ai:eval:${randomUUID()}`,
       dailyLimit: aiEvalCases.length * repeats + 5,
-      monthlyBudgetMicros: Math.min(config.monthlyBudgetMicros, 100000),
+      monthlyBudgetMicros: evaluationBudgetCap(config.monthlyBudgetMicros),
     }),
     clientLimit: aiEvalCases.length * repeats + 5,
     globalLimit: aiEvalCases.length * repeats + 5,
@@ -107,7 +108,7 @@ if (!origin) {
 }
 const results = [];
 try {
-  for (let repetition = 1; repetition <= repeats; repetition++)
+  evaluation: for (let repetition = 1; repetition <= repeats; repetition++) {
     for (const item of cases) {
       const path = item.kind === "guide" ? "/api/chat" : `/api/ai/${item.kind}`;
       const body =
@@ -169,7 +170,14 @@ try {
       console.log(
         `${result.passed ? "PASS" : "FAIL"} ${result.id}${result.failedChecks.length ? ": " + result.failedChecks.join(", ") : ""}`,
       );
+      if (shouldStopEvaluation(result)) {
+        console.error(
+          "Stopping evaluation after provider configuration failure; remaining approved request slots were not used.",
+        );
+        break evaluation;
+      }
     }
+  }
 } finally {
   if (server) {
     server.closeAllConnections();
@@ -195,7 +203,7 @@ const report = {
     maxOutputTokens: 1000,
     reservedAttempts: results.length,
     automaticRetries: false,
-    isolatedQuotaBudgetCapUsd: remote ? null : 0.1,
+    isolatedQuotaBudgetCapUsd: remote ? null : 1,
   },
   dataset: {
     uniqueCases: cases.length,
