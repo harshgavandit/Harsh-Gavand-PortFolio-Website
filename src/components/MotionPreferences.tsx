@@ -1,5 +1,6 @@
 import {
   createContext,
+  startTransition,
   useContext,
   useEffect,
   useState,
@@ -19,7 +20,10 @@ export function MotionPreferencesProvider({
   const [systemReduced, setSystemReduced] = useState(false);
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const update = () => setSystemReduced(preference.matches);
+    // A transition lets React finish hydrating Suspense boundaries before
+    // applying the preference instead of discarding their server HTML.
+    const update = () =>
+      startTransition(() => setSystemReduced(preference.matches));
     update();
     preference.addEventListener("change", update);
     return () => preference.removeEventListener("change", update);

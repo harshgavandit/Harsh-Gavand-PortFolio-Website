@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 import { applyTheme, getCurrentTheme, type Theme } from "../lib/theme.mjs";
 
@@ -7,7 +7,7 @@ export function ThemeToggle() {
   const [theme, setTheme] = useState<Theme>("light");
 
   useEffect(() => {
-    setTheme(getCurrentTheme());
+    startTransition(() => setTheme(getCurrentTheme()));
   }, []);
 
   const nextTheme = theme === "light" ? "dark" : "light";

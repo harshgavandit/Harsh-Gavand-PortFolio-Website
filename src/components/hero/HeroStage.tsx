@@ -94,6 +94,12 @@ export function HeroStage() {
           <Scene onReady={() => setReady(true)} />
         </div>
       )}
+      {Scene && (
+        <p className="hero-hint">
+          <span>Drag a module</span>
+          <span>Click the core</span>
+        </p>
+      )}
     </div>
   );
 }

@@ -52,6 +52,11 @@ The site uses a light engineering theme (white / light-blue palette, glass surfa
 - **Scroll and pointer motion (`src/motion/kit.ts`)** — GSAP, ScrollTrigger and Lenis load after hydration and share one ticker. They handle `[data-reveal]` / `[data-reveal-group]` reveals, `[data-parallax]`, the experience timeline rail, the header reading-progress bar, magnetic buttons, `[data-tilt]` surfaces and the custom cursor (fine pointers only). Content is only hidden just before it animates in, never inside closed disclosures, and is revealed for printing.
 - **Component motion (`src/motion/MotionProvider.tsx`)** — Motion (`motion/react`) with `LazyMotion` handles state-driven UI only: the navigation indicator, AI-flow tabs and inspector, and the stack filter. It never animates the same properties as GSAP.
 - **AI engineering explorer** — `src/components/AIEngineering.tsx` with data in `src/data/aiEngineering.ts`. Each flow restates documented features of the linked deployed projects.
+- **Ambient field (`src/motion/AmbientField.tsx`)** — a page-wide raw-WebGL light field (domain-warped noise) that drifts, shifts with scroll and brightens around the cursor; half resolution, 30 fps cap, paused in background tabs, tablets and desktops only.
+- **Hero playground** — particles converge and the camera dollies in on load; technology modules can be dragged and thrown (spring physics returns them to orbit); clicking the core sends a shockwave through the scene.
+- **3D scenes (`src/three/`)** — tech constellation (Skills), Informa AI laptop spotlight (Projects) and remote-work globe (Contact), each mounted by `LazyScene` only near the viewport on desktop and paused off-screen.
+- **Featured reel (`src/components/ProjectReel.tsx`)** — real captures on a CSS 3D cylinder, pinned and turned by scroll on desktop; a snap-scroll row elsewhere. Focusing a card turns the reel to it.
+- **Page transitions** — CSS cross-document view transitions between the homepage, case studies, archive and AI workspace.
 - **Reduced motion** — with `prefers-reduced-motion`, no animation code loads, CSS keyframes are disabled and all content is static.
 
 ## Development

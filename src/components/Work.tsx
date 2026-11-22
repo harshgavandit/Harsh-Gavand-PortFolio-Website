@@ -4,6 +4,7 @@ import { privateProjects, type PrivateProject } from "../data/privateProjects";
 import { curatedArchive } from "../data/recruiter";
 import { ActionLink, LeadStatement, Tags } from "./Primitives";
 import { LazyScene } from "../three/LazyScene";
+import { ProjectReel } from "./ProjectReel";
 import { ProductEvidence } from "./ProductEvidence";
 import { ProjectRecognition } from "./ProjectRecognition";
 import {
@@ -253,6 +254,7 @@ export function FeaturedWork() {
           </ul>
         </nav>
       </div>
+      <ProjectReel studies={[...mainStudies, ...moreStudies.slice(0, 4)]} />
       <InformaSpotlight />
       <div className="flagship-list">
         {mainStudies.map((study) => (

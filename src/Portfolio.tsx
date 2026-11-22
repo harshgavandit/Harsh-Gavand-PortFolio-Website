@@ -14,6 +14,7 @@ import { AssistantEntry } from "./components/AssistantEntry";
 import { DemoWarmup } from "./components/DemoWarmup";
 import { MotionProvider } from "./motion/MotionProvider";
 import { MotionRuntime } from "./motion/MotionRuntime";
+import { AmbientField } from "./motion/AmbientField";
 const Telemetry = lazy(() => import("./components/Telemetry"));
 const LazyWork = lazy(() =>
   import("./components/WorkDetail").then((module) => ({
@@ -144,6 +145,7 @@ export default function Portfolio({
     <MotionPreferencesProvider>
       <MotionProvider>
         <MotionRuntime />
+        <AmbientField />
         <a className="skip-link" href="#main">
           Skip to content
         </a>

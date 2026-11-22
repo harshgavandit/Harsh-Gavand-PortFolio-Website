@@ -1,6 +1,18 @@
 /* eslint-disable @eslint-react/dom-no-unknown-property -- React Three Fiber intrinsic elements are three.js objects, not DOM nodes. */
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import {
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  type RefObject,
+} from "react";
+import {
+  Canvas,
+  useFrame,
+  useThree,
+  type ThreeEvent,
+} from "@react-three/fiber";
 import * as THREE from "three";
 import { heroNodes, type HeroNode } from "./heroNodes";
 
@@ -30,6 +42,10 @@ const RINGS = [
 ];
 
 const pointer = { x: 0, y: 0 };
+// Interaction state shared by the rig, modules, core and particles.
+const drag = { index: -1 };
+const shock = { time: -10, id: 0 };
+const intro = { value: 0 };
 
 function ringPoint(ring: number, angle: number, target: THREE.Vector3) {
   const { radius, tilt } = RINGS[ring];
@@ -43,6 +59,8 @@ const pulse = { value: 0 };
 
 function Core() {
   const colors = useContext(PaletteContext);
+  const wave = useRef<THREE.Mesh>(null);
+  const { camera, clock } = useThree();
   const shell = useRef<THREE.Mesh>(null);
   const cage = useRef<THREE.LineSegments>(null);
   const heart = useRef<THREE.Mesh>(null);
@@ -76,7 +94,24 @@ function Core() {
       const s = 1 + Math.sin(t * 1.4) * 0.04 + pulse.value * 0.08;
       halo.current.scale.setScalar(s);
     }
+    if (wave.current) {
+      const since = t - shock.time;
+      const material = wave.current.material as THREE.MeshBasicMaterial;
+      wave.current.visible = since < 1.4;
+      if (wave.current.visible) {
+        const k = since / 1.4;
+        wave.current.scale.setScalar(1 + k * 5.5);
+        material.opacity = (1 - k) * (1 - k) * 0.45;
+        wave.current.quaternion.copy(camera.quaternion);
+      }
+    }
   });
+  const fire = (event: ThreeEvent<MouseEvent>) => {
+    event.stopPropagation();
+    shock.time = clock.elapsedTime;
+    shock.id += 1;
+    pulse.value = 1;
+  };
   return (
     <group>
       <mesh ref={halo}>
@@ -103,7 +138,25 @@ function Core() {
             }`}
         />
       </mesh>
-      <mesh ref={shell}>
+      <mesh ref={wave} visible={false}>
+        <ringGeometry args={[1.2, 1.225, 128]} />
+        <meshBasicMaterial
+          color={colors.accent}
+          transparent
+          depthWrite={false}
+          side={THREE.DoubleSide}
+        />
+      </mesh>
+      <mesh
+        ref={shell}
+        onClick={fire}
+        onPointerOver={() => {
+          if (drag.index < 0) document.body.style.cursor = "pointer";
+        }}
+        onPointerOut={() => {
+          if (drag.index < 0) document.body.style.cursor = "";
+        }}
+      >
         <icosahedronGeometry args={[1.18, 0]} />
         <meshPhysicalMaterial
           color={colors.core}
@@ -160,32 +213,145 @@ function Chip({
 }) {
   const sprite = useRef<THREE.Sprite>(null);
   const texture = useChipTexture(node);
-  useFrame((state) => {
+  const body = useMemo(
+    () => ({
+      target: new THREE.Vector3(),
+      velocity: new THREE.Vector3(),
+      ready: false,
+      shockId: 0,
+      hovered: false,
+    }),
+    [],
+  );
+  useFrame((state, delta) => {
+    const dt = Math.min(delta, 1 / 30);
     const t = state.clock.elapsedTime;
     const angle = node.phase + t * RINGS[node.ring].speed;
-    const position = ringPoint(node.ring, angle, positions[index]);
-    position.y += Math.sin(t * 0.9 + index) * 0.08;
+    ringPoint(node.ring, angle, body.target);
+    body.target.y += Math.sin(t * 0.9 + index) * 0.08;
+    const position = positions[index];
+    if (!body.ready) {
+      position.copy(body.target);
+      body.ready = true;
+    }
+    // A click on the core sends every module outward; springs pull them home.
+    if (shock.id !== body.shockId) {
+      body.shockId = shock.id;
+      const push = position
+        .clone()
+        .normalize()
+        .multiplyScalar(7 + Math.random() * 3);
+      body.velocity.add(push);
+    }
+    if (thrown.index === index) {
+      body.velocity.copy(thrown.velocity);
+      thrown.index = -1;
+    }
+    if (drag.index !== index) {
+      // Under-damped spring back to the orbit: a thrown module overshoots,
+      // wobbles and settles.
+      const ax = (body.target.x - position.x) * 26 - body.velocity.x * 5.5;
+      const ay = (body.target.y - position.y) * 26 - body.velocity.y * 5.5;
+      const az = (body.target.z - position.z) * 26 - body.velocity.z * 5.5;
+      body.velocity.x += ax * dt;
+      body.velocity.y += ay * dt;
+      body.velocity.z += az * dt;
+      position.addScaledVector(body.velocity, dt);
+    }
     if (!sprite.current) return;
     sprite.current.position.copy(position);
-    // Staggered entrance and depth cue: modules behind the core recede.
     const appear = THREE.MathUtils.smoothstep(
       t,
-      0.5 + index * 0.12,
-      1.3 + index * 0.12,
+      0.9 + index * 0.12,
+      1.7 + index * 0.12,
     );
     const depth = THREE.MathUtils.mapLinear(position.z, -4, 4, 0.55, 1);
     const material = sprite.current.material as THREE.SpriteMaterial;
     material.opacity = appear * THREE.MathUtils.clamp(depth, 0.45, 1);
-    const scale = 0.58 * (0.85 + depth * 0.25) * (0.7 + appear * 0.3);
+    const lift = drag.index === index ? 1.18 : body.hovered ? 1.08 : 1;
+    const scale = 0.58 * (0.85 + depth * 0.25) * (0.7 + appear * 0.3) * lift;
     sprite.current.scale.set(1.6 * scale, 0.5 * scale, 1);
-    sprite.current.renderOrder = Math.round(position.z * 10) + 100;
+    sprite.current.renderOrder =
+      drag.index === index ? 999 : Math.round(position.z * 10) + 100;
   });
   return (
-    <sprite ref={sprite}>
+    <sprite
+      ref={sprite}
+      onPointerOver={(event: ThreeEvent<PointerEvent>) => {
+        event.stopPropagation();
+        body.hovered = true;
+        if (drag.index < 0) document.body.style.cursor = "grab";
+      }}
+      onPointerOut={() => {
+        body.hovered = false;
+        if (drag.index < 0) document.body.style.cursor = "";
+      }}
+      onPointerDown={(event: ThreeEvent<PointerEvent>) => {
+        event.stopPropagation();
+        drag.index = index;
+        body.velocity.set(0, 0, 0);
+        document.body.style.cursor = "grabbing";
+      }}
+    >
       <spriteMaterial map={texture} transparent depthWrite={false} />
     </sprite>
   );
 }
+
+// Moves the grabbed module along a camera-facing plane through its position,
+// tracking velocity so releasing it throws the module.
+function DragController({
+  group,
+  positions,
+}: {
+  group: RefObject<THREE.Group | null>;
+  positions: THREE.Vector3[];
+}) {
+  const { camera, raycaster, pointer: ndc } = useThree();
+  const plane = useMemo(() => new THREE.Plane(), []);
+  const world = useMemo(() => new THREE.Vector3(), []);
+  const normal = useMemo(() => new THREE.Vector3(), []);
+  const hit = useMemo(() => new THREE.Vector3(), []);
+  const previous = useMemo(() => new THREE.Vector3(), []);
+  const velocity = useRef(new THREE.Vector3());
+  useEffect(() => {
+    const release = () => {
+      if (drag.index < 0) return;
+      // Hand the measured throw velocity to the module's spring body.
+      thrown.index = drag.index;
+      thrown.velocity.copy(velocity.current);
+      drag.index = -1;
+      document.body.style.cursor = "";
+    };
+    window.addEventListener("pointerup", release);
+    window.addEventListener("pointercancel", release);
+    return () => {
+      window.removeEventListener("pointerup", release);
+      window.removeEventListener("pointercancel", release);
+    };
+  }, []);
+  useFrame((_, delta) => {
+    const g = group.current;
+    if (drag.index < 0 || !g) return;
+    const position = positions[drag.index];
+    world.copy(position);
+    g.localToWorld(world);
+    camera.getWorldDirection(normal);
+    plane.setFromNormalAndCoplanarPoint(normal, world);
+    raycaster.setFromCamera(ndc, camera);
+    if (!raycaster.ray.intersectPlane(plane, hit)) return;
+    g.worldToLocal(hit);
+    previous.copy(position);
+    position.lerp(hit, 0.55);
+    velocity.current
+      .copy(position)
+      .sub(previous)
+      .divideScalar(Math.max(delta, 1 / 120))
+      .clampLength(0, 18);
+  });
+  return null;
+}
+const thrown = { index: -1, velocity: new THREE.Vector3() };
 
 function Links({ positions }: { positions: THREE.Vector3[] }) {
   const colors = useContext(PaletteContext);
@@ -257,7 +423,17 @@ function Particles({ count }: { count: number }) {
     const positions = new Float32Array(count * 3);
     const scales = new Float32Array(count);
     const tint = new Float32Array(count);
+    const starts = new Float32Array(count * 3);
+    const delays = new Float32Array(count);
     for (let i = 0; i < count; i++) {
+      // Intro: every particle streams in from a wide shell toward its place.
+      const far = 16 + Math.random() * 10;
+      const a = Math.random() * Math.PI * 2;
+      const b = Math.acos(2 * Math.random() - 1);
+      starts[i * 3] = far * Math.sin(b) * Math.cos(a);
+      starts[i * 3 + 1] = far * Math.cos(b);
+      starts[i * 3 + 2] = far * Math.sin(b) * Math.sin(a);
+      delays[i] = Math.random() * 0.45;
       const radius = 3.2 + Math.pow(Math.random(), 0.7) * 9;
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(2 * Math.random() - 1);
@@ -271,6 +447,8 @@ function Particles({ count }: { count: number }) {
     result.setAttribute("position", new THREE.BufferAttribute(positions, 3));
     result.setAttribute("aScale", new THREE.BufferAttribute(scales, 1));
     result.setAttribute("aTint", new THREE.BufferAttribute(tint, 1));
+    result.setAttribute("aStart", new THREE.BufferAttribute(starts, 3));
+    result.setAttribute("aDelay", new THREE.BufferAttribute(delays, 1));
     return result;
   }, [count]);
   const uniforms = useMemo(
@@ -280,6 +458,8 @@ function Particles({ count }: { count: number }) {
       uBlue: { value: BLUE.clone() },
       uAlpha: { value: 0.5 },
       uSky: { value: SKY },
+      uIntro: { value: 0 },
+      uShock: { value: 0 },
     }),
     [gl],
   );
@@ -289,6 +469,10 @@ function Particles({ count }: { count: number }) {
     uniforms.uTime.value = state.clock.elapsedTime;
     uniforms.uBlue.value.copy(colors.accent);
     uniforms.uAlpha.value = colors.particleAlpha;
+    uniforms.uIntro.value = intro.value;
+    const since = state.clock.elapsedTime - shock.time;
+    uniforms.uShock.value =
+      since < 1.6 ? Math.sin((since / 1.6) * Math.PI) * (1 - since / 1.6) : 0;
   });
   return (
     <points geometry={geometry}>
@@ -299,10 +483,15 @@ function Particles({ count }: { count: number }) {
         uniforms={uniforms}
         vertexShader={`
           uniform float uTime; uniform float uPixelRatio;
+          uniform float uIntro; uniform float uShock;
           attribute float aScale; attribute float aTint;
+          attribute vec3 aStart; attribute float aDelay;
           varying float vTint; varying float vFade;
           void main(){
-            vec3 p = position;
+            float k = clamp((uIntro - aDelay) / (1.0 - aDelay * 0.9), 0.0, 1.0);
+            k = 1.0 - pow(1.0 - k, 3.0);
+            vec3 p = mix(aStart, position, k);
+            p *= 1.0 + uShock * 0.35;
             p.y += sin(uTime * 0.35 + position.x * 0.6) * 0.18;
             p.x += cos(uTime * 0.25 + position.z * 0.5) * 0.14;
             vec4 mv = modelViewMatrix * vec4(p, 1.0);
@@ -378,6 +567,9 @@ function Rig({ compact }: { compact: boolean }) {
   useFrame((state, delta) => {
     const g = group.current;
     if (!g) return;
+    // Cinematic entrance: the camera dollies in while particles converge.
+    intro.value = Math.min(1, state.clock.elapsedTime / 2.6);
+    const entrance = 1 - Math.pow(1 - intro.value, 3);
     const wide = viewport.aspect > 1.15;
     const baseX = wide ? viewport.width * 0.25 : 0;
     const baseY = wide ? 0.15 : -0.9;
@@ -388,14 +580,21 @@ function Rig({ compact }: { compact: boolean }) {
     const k = 1 - Math.pow(0.0015, delta);
     g.position.x += (baseX - g.position.x) * k;
     g.position.y += (baseY + scroll * 2.4 - g.position.y) * k;
-    g.rotation.y += (pointer.x * 0.38 + scroll * 0.6 - g.rotation.y) * k;
-    g.rotation.x += (-pointer.y * 0.18 + 0.12 - g.rotation.x) * k;
+    // Hold the rig still while a module is being dragged.
+    const follow = drag.index < 0 ? 1 : 0;
+    g.rotation.y +=
+      (pointer.x * 0.38 * follow +
+        scroll * 0.6 -
+        (1 - entrance) * 0.9 -
+        g.rotation.y) *
+      k;
+    g.rotation.x += (-pointer.y * 0.18 * follow + 0.12 - g.rotation.x) * k;
     const scale = (wide ? 1 : 0.78) * (1 - scroll * 0.12);
     g.scale.setScalar(scale);
     camera.position.x += (pointer.x * 0.55 - camera.position.x) * k;
     camera.position.y += (pointer.y * 0.35 + 0.4 - camera.position.y) * k;
+    camera.position.z = 13 + (1 - entrance) * 7;
     camera.lookAt(baseX * 0.35, 0, 0);
-    void state;
   });
   return (
     <group ref={group}>
@@ -411,6 +610,7 @@ function Rig({ compact }: { compact: boolean }) {
         />
       ))}
       <Particles count={compact ? 380 : 760} />
+      <DragController group={group} positions={positions} />
     </group>
   );
 }
