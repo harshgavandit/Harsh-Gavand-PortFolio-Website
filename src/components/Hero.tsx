@@ -27,7 +27,7 @@ function SplitWords({ text, offset = 0 }: { text: string; offset?: number }) {
 }
 
 const heroSignals = [
-  { value: "2+ yrs", label: "Hands-on engineering experience" },
+  { value: "2+ years", label: "Hands-on engineering experience" },
   { value: "15+", label: "Live, deployed projects" },
 ];
 
