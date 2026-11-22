@@ -84,8 +84,11 @@ try {
 }
 let server;
 let origin = remote;
+let isolatedQuotaBudgetCapUsd = null;
 if (!origin) {
   const config = loadConfig();
+  const evaluationCapMicros = evaluationBudgetCap(config.monthlyBudgetMicros);
+  isolatedQuotaBudgetCapUsd = evaluationCapMicros / 1_000_000;
   // Keep the explicitly paid fixed dataset separate from visitors' allowance.
   // Every run still uses atomic reservations, settlement, and a bounded budget.
   server = createServer({
@@ -95,7 +98,7 @@ if (!origin) {
       token: config.quotaToken,
       namespace: `portfolio-ai:eval:${randomUUID()}`,
       dailyLimit: aiEvalCases.length * repeats + 5,
-      monthlyBudgetMicros: evaluationBudgetCap(config.monthlyBudgetMicros),
+      monthlyBudgetMicros: evaluationCapMicros,
     }),
     clientLimit: aiEvalCases.length * repeats + 5,
     globalLimit: aiEvalCases.length * repeats + 5,
@@ -203,7 +206,7 @@ const report = {
     maxOutputTokens: 1000,
     reservedAttempts: results.length,
     automaticRetries: false,
-    isolatedQuotaBudgetCapUsd: remote ? null : 1,
+    isolatedQuotaBudgetCapUsd,
   },
   dataset: {
     uniqueCases: cases.length,

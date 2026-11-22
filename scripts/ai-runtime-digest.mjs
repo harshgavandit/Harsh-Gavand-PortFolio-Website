@@ -22,6 +22,7 @@ export async function runtimeDigest() {
     "scripts/ai-eval-cases.mjs",
     "scripts/evaluate-ai.mjs",
     "scripts/evaluation-budget.mjs",
+    "scripts/evaluation-policy.mjs",
   ];
   const hash = createHash("sha256");
   for (const file of files) {

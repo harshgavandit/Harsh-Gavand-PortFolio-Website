@@ -1,4 +1,4 @@
-const approvedEvaluationCapMicros = 1_000_000;
+const approvedEvaluationCapMicros = 100_000;
 
 export function evaluationBudgetCap(configuredBudgetMicros) {
   if (!Number.isSafeInteger(configuredBudgetMicros) || configuredBudgetMicros < 1)
