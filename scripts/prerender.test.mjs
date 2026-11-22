@@ -1,3 +1,4 @@
+import { aiFlows } from "../src/data/aiEngineering.ts";
 import assert from "node:assert/strict";
 import { test, before, after } from "node:test";
 import { readFile, readdir, stat } from "node:fs/promises";
@@ -495,10 +496,11 @@ test("remaining pages have connected ARIA relationships and predictable keyboard
       for (const id of match[1].split(" "))
         assert.ok(ids.has(id), "Missing ARIA target: " + id);
   }
-  assert.equal((html.match(/role="tablist"/g) || []).length, 1);
+  // AgriConnect gallery + the AI engineering flow explorer.
+  assert.equal((html.match(/role="tablist"/g) || []).length, 2);
   assert.equal(
     (html.match(/role="tabpanel"/g) || []).length,
-    agriConnectGallery.length,
+    agriConnectGallery.length + aiFlows.length,
   );
   assert.equal(nextTabIndex("ArrowLeft", 0, agriConnectGallery.length), 4);
   assert.equal(nextTabIndex("ArrowRight", 4, agriConnectGallery.length), 0);

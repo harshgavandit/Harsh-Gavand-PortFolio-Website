@@ -2,32 +2,28 @@ import {
   createContext,
   useContext,
   useEffect,
-  useSyncExternalStore,
+  useState,
   type ReactNode,
 } from "react";
 
 const MotionPreferences = createContext(true);
-
-function subscribeReducedMotion(onChange: () => void) {
-  const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
-  preference.addEventListener("change", onChange);
-  return () => preference.removeEventListener("change", onChange);
-}
-
-function getReducedMotion() {
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-}
 
 export function MotionPreferencesProvider({
   children,
 }: {
   children: ReactNode;
 }) {
-  const systemReduced = useSyncExternalStore(
-    subscribeReducedMotion,
-    getReducedMotion,
-    () => false,
-  );
+  // Read the media query after hydration: a value that differs from the
+  // server render during hydration would force React to discard the
+  // pre-rendered HTML inside Suspense boundaries (React error #421).
+  const [systemReduced, setSystemReduced] = useState(false);
+  useEffect(() => {
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setSystemReduced(preference.matches);
+    update();
+    preference.addEventListener("change", update);
+    return () => preference.removeEventListener("change", update);
+  }, []);
   const enabled = !systemReduced;
   useEffect(() => {
     document.documentElement.dataset.motion = enabled ? "on" : "off";

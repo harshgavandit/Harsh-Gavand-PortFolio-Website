@@ -52,10 +52,10 @@
   border: 1px solid var(--line);
   border-radius: 50%;
   background:
-    radial-gradient(circle at 40% 30%, #c5f17a20, transparent 65%),
+    radial-gradient(circle at 40% 30%, #1d5bd820, transparent 65%),
     var(--raised);
   color: var(--accent);
-  box-shadow: 0 0 50px #b6e57309;
+  box-shadow: 0 0 50px #1d5bd809;
 }
 .voice-bars {
   display: flex;
@@ -133,7 +133,7 @@
 }
 .voice-actions .voice-primary {
   background: var(--accent);
-  color: #11160c;
+  color: #ffffff;
   border-color: var(--accent);
 }
 .voice-actions button:disabled {
@@ -154,7 +154,7 @@
 .voice-error {
   margin: 12px 0 0;
   font-size: 13px;
-  color: #f3c6a4;
+  color: #8a4b00;
 }
 .voice-transcript {
   margin: 12px auto 0;

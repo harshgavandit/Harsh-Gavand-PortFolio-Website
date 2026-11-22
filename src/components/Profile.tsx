@@ -1,8 +1,15 @@
+import {
+  ArrowUpRight,
+  BriefcaseBusiness,
+  GraduationCap,
+  MapPin,
+} from "lucide-react";
 import { aboutProfile, profile } from "../data/portfolio";
 import { experienceForDisplay as experience } from "../data/experiencePresentation";
 import { recognitionItems } from "../data/recognition";
 import { availability } from "../data/availability";
 import { HeroStack } from "./HeroStack";
+import { AIEngineering } from "./AIEngineering";
 import { LeadStatement, Tags } from "./Primitives";
 
 export function Experience() {
@@ -14,44 +21,77 @@ export function Experience() {
       tabIndex={-1}
       aria-label="Experience & Impact"
     >
-      <h2 className="section-title">Experience &amp; Impact</h2>
-      <div className="experience-list">
-        {experience.map((job, index) => (
-          <article
-            className="experience-card"
-            id={`experience-${index}`}
-            key={job.company}
-          >
-            <div className="experience-meta">
-              <span className="eyebrow">{job.company}</span>
-              <p>{job.period}</p>
-              <p>{job.context}</p>
-              <p>{profile.location}</p>
-            </div>
-            <div>
-              <h3>{job.role}</h3>
-              <p className="shipment-banner">
-                <span>Delivered</span>
-                {job.shipment}
-              </p>
-              <ul className="engineering-bullets">
-                {job.points.map((point) => (
-                  <li key={point}>
-                    <LeadStatement text={point} />
-                  </li>
-                ))}
-              </ul>
-              <details className="role-context">
-                <summary>Core technologies</summary>
-                <Tags items={job.tech} />
-              </details>
-            </div>
-          </article>
-        ))}
+      <div className="section-intro" data-reveal>
+        <p className="eyebrow">Career</p>
+        <h2 className="section-title">Experience &amp; Impact</h2>
+        <p className="section-lede">
+          Production roles across full-stack delivery, backend APIs and
+          AI-assisted business workflows.
+        </p>
+      </div>
+      <div className="timeline">
+        <div className="timeline-rail" aria-hidden="true">
+          <span className="timeline-progress" />
+        </div>
+        <ol className="experience-list">
+          {experience.map((job, index) => (
+            <li className="timeline-item" key={job.company}>
+              <span className="timeline-node" aria-hidden="true" />
+              <article
+                className="experience-card"
+                id={`experience-${index}`}
+                data-reveal
+              >
+                <div className="experience-meta">
+                  <span className="eyebrow">{job.company}</span>
+                  <p className="experience-period">{job.period}</p>
+                  <p>{job.context}</p>
+                  <p>{profile.location}</p>
+                </div>
+                <div className="experience-body">
+                  <h3>{job.role}</h3>
+                  <p className="shipment-banner">
+                    <span>Delivered</span>
+                    {job.shipment}
+                  </p>
+                  <ul className="engineering-bullets">
+                    {job.points.map((point) => (
+                      <li key={point}>
+                        <LeadStatement text={point} />
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="role-context">
+                    <h4>Core technologies</h4>
+                    <Tags items={job.tech} />
+                  </div>
+                </div>
+              </article>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );
 }
+
+const journey = [
+  {
+    icon: BriefcaseBusiness,
+    date: experience[1].period.split(" — ")[0],
+    title: `${experience[1].role} · ${experience[1].company}`,
+  },
+  {
+    icon: GraduationCap,
+    date: "Jul 2025",
+    title: aboutProfile.education.degree,
+  },
+  {
+    icon: BriefcaseBusiness,
+    date: experience[0].period.split(" — ")[0],
+    title: `${experience[0].role} · ${experience[0].company}`,
+  },
+];
 
 export function About() {
   return (
@@ -63,25 +103,52 @@ export function About() {
       aria-label="About & Recognition"
     >
       <div className="profile-brief">
-        <div className="about-summary">
-          <img
-            className="profile-photo"
-            src="/portrait/harsh-profile.webp"
-            width={270}
-            height={600}
-            loading="lazy"
-            alt="Harsh Gavand"
-          />
+        <figure className="about-portrait" data-reveal>
+          <div className="about-portrait-frame" data-tilt="5">
+            <img
+              className="profile-photo"
+              src="/portrait/harsh-studio.jpg"
+              width={335}
+              height={745}
+              loading="lazy"
+              alt="Harsh Gavand"
+            />
+          </div>
+          <figcaption>
+            <span className="about-badge">
+              <GraduationCap size={15} aria-hidden="true" />
+              {aboutProfile.education.degree}
+            </span>
+            <span className="about-badge">
+              <MapPin size={15} aria-hidden="true" />
+              Mumbai · Remote worldwide
+            </span>
+          </figcaption>
+        </figure>
+        <div className="about-summary" data-reveal>
           <span className="eyebrow">About me</span>
           <h2 className="section-title">Curious about the whole system.</h2>
           <p>{aboutProfile.summary}</p>
-        </div>
-        <div className="education-card">
-          <span className="eyebrow">Education</span>
-          <h3>{aboutProfile.education.degree}</h3>
-          <p>{aboutProfile.education.details}</p>
-          <span className="eyebrow">Based in</span>
-          <p>{availability.about}</p>
+          <ol className="journey" aria-label="Career and education milestones">
+            {journey.map((step) => (
+              <li key={step.title}>
+                <step.icon size={16} aria-hidden="true" />
+                <span className="journey-date">{step.date}</span>
+                <span>{step.title}</span>
+              </li>
+            ))}
+          </ol>
+          <div className="education-card">
+            <div>
+              <span className="eyebrow">Education</span>
+              <h3>{aboutProfile.education.degree}</h3>
+              <p>{aboutProfile.education.details}</p>
+            </div>
+            <div>
+              <span className="eyebrow">Based in</span>
+              <p>{availability.about}</p>
+            </div>
+          </div>
         </div>
       </div>
       <div
@@ -89,8 +156,10 @@ export function About() {
         id="hackathon-recognition"
         aria-labelledby="recognition-title"
       >
-        <h3 id="recognition-title">Hackathons &amp; recognition</h3>
-        <div className="recognition-grid">
+        <h3 id="recognition-title" data-reveal>
+          Hackathons &amp; recognition
+        </h3>
+        <div className="recognition-grid" data-reveal-group>
           {recognitionItems.map((item) => (
             <article key={item.title}>
               <strong>{item.badge}</strong>
@@ -136,25 +205,35 @@ export function Skills() {
       data-chapter="skills"
       aria-label="Skills"
     >
-      <aside className="ai-workspace-teaser">
+      <div className="section-intro" data-reveal>
+        <p className="eyebrow">Capabilities</p>
+        <h2 className="section-title">Architecture &amp; Skills</h2>
+        <p className="section-lede">
+          How the AI systems are wired, and the stack used to build and ship
+          them.
+        </p>
+      </div>
+      <AIEngineering />
+      <details className="full-stack-disclosure" id="workflow" open>
+        <summary>
+          Technology ecosystem{" "}
+          <span>Core languages, frameworks &amp; infrastructure</span>
+        </summary>
+        <HeroStack />
+      </details>
+      <aside className="ai-workspace-teaser" data-reveal>
         <div>
-          <h2 className="section-title">Architecture &amp; Skills</h2>
+          <span className="eyebrow">Interactive</span>
+          <h3>Try the AI workspace</h3>
           <p>
             Explore the code, compare a role, or inspect structured ticket
             routing.
           </p>
         </div>
-        <a className="button button-secondary" href="/ai/">
-          Explore AI tools ↗
+        <a className="button button-primary" href="/ai/">
+          Explore AI tools <ArrowUpRight size={16} aria-hidden="true" />
         </a>
       </aside>
-      <details className="full-stack-disclosure" id="workflow">
-        <summary>
-          View full stack{" "}
-          <span>Core languages, frameworks &amp; infrastructure</span>
-        </summary>
-        <HeroStack />
-      </details>
     </section>
   );
 }
