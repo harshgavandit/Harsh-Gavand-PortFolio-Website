@@ -1,0 +1,17 @@
+#!/bin/sh
+# Runs the fast CI checks before a push so a failing "Verify portfolio"
+# workflow is caught locally. Enable once with: npm run hooks:install
+# (skip a single push with: git push --no-verify)
+set -e
+echo "pre-push: lint, types, unit tests and AI release gate…"
+npm run --silent lint
+npm run --silent type-check
+npm test --silent > /dev/null 2>&1 || { echo "pre-push: unit tests failed — run npm test"; exit 1; }
+if ! node scripts/check-ai-release.mjs; then
+  echo ""
+  echo "pre-push: the AI release gate would fail in CI."
+  echo "The AI runtime or the portfolio content it is evaluated on changed since"
+  echo "src/data/aiQuality.json was recorded. Run the live evaluation and commit"
+  echo "the refreshed report (see README → OpenAI assistant), then push again."
+  exit 1
+fi

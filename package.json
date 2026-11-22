@@ -20,7 +20,10 @@
     "ai:index": "node scripts/sync-source-index.mjs",
     "ai:eval": "node scripts/evaluate-ai.mjs",
     "format": "prettier --write src scripts/*.mjs index.html vite.config.js tsconfig.json eslint.config.js vercel.json",
-    "ai:sources:check": "node scripts/check-source-freshness.mjs"
+    "ai:sources:check": "node scripts/check-source-freshness.mjs",
+    "release:check": "node scripts/check-ai-release.mjs",
+    "verify": "npm run lint && npm run type-check && npm test && npm run build && npm run test:prerender && npm run seo:check && npm run release:check",
+    "hooks:install": "git config core.hooksPath .githooks"
   },
   "dependencies": {
     "@fontsource-variable/inter": "^5.3.0",

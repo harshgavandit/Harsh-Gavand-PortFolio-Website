@@ -63,6 +63,12 @@ The site uses a light engineering theme (white / light-blue palette, glass surfa
 
 Use Node.js **24.x LTS**, pinned in `package.json` and `.nvmrc`. This supports the server's shared TypeScript data and keeps deployments on one major version while receiving patch updates. Install with `npm ci`, then run `npm run dev`. This starts the API at `127.0.0.1:3001` and Vite at `127.0.0.1:5173`; both ports must be available. Vite proxies `/api`. The UI and API can also run separately through `npm run dev:ui` and `npm run dev:api`.
 
+### Checking before you push
+
+`npm run verify` runs exactly what the **Verify portfolio** GitHub workflow runs (lint, types, unit tests, build, pre-render tests, SEO audit and the AI release gate). `npm run hooks:install` enables a pre-push hook (`.githooks/pre-push`) that runs the fast part of it, including the AI release gate, so a push that would fail CI is stopped locally (`git push --no-verify` skips it once).
+
+The AI release gate (`npm run release:check`) compares `src/data/aiQuality.json` with a fingerprint of the AI runtime, graders **and** the portfolio data files the assistant answers from (`scripts/ai-runtime-digest.mjs`). Editing any of those files — including copy such as the contact email or a project description in `src/data/portfolio.ts` or `src/data/*.json` — requires a fresh live evaluation (below) before CI passes.
+
 ## OpenAI assistant
 
 ### AI workspace
