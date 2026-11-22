@@ -1,55 +1,7 @@
-import { deploymentShowcase } from "../data/deploymentShowcase";
 import { projects } from "../data/portfolio";
-import {
-  displayProject,
-  informaCapture,
-  informaSlug,
-} from "../data/informaPresentation";
+import { displayProject } from "../data/informaPresentation";
+import { captures } from "../data/projectCaptures";
 import { AgriConnectGallery } from "./AgriConnectGallery";
-
-const captures: Record<
-  string,
-  {
-    src: string;
-    alt: string;
-    width?: number;
-    height?: number;
-    caption?: string;
-  }
-> = {
-  ...Object.fromEntries(
-    deploymentShowcase.map((item) => [
-      projects.find((project) => project.id === item.projectId)!.slug,
-      {
-        src: `/evidence/${item.capture}`,
-        alt: item.alt,
-        width: item.captureWidth ?? 1265,
-        height: item.captureHeight ?? 712,
-      },
-    ]),
-  ),
-  [informaSlug]: informaCapture,
-  "agri-samaj-community-platform": {
-    src: "/evidence/agri-samaj-homepage-2026-10-22.png",
-    alt: "Agri Samaj English homepage showing business search, community resources, and the Add your business registration link",
-    width: 1917,
-    height: 1102,
-    caption:
-      "Community homepage with business discovery, resources, and entrepreneur registration.",
-  },
-  "ugc-platform": {
-    src: "/evidence/ugc-workspace.png",
-    alt: "UGC Content Studio generation workspace showing reference inputs, saved output, and generation status",
-  },
-  "banking-saas": {
-    src: "/evidence/lendflow-workspace.png",
-    alt: "LendFlow lending workspace showing borrower records and loan review",
-  },
-  "github-replica": {
-    src: "/evidence/devgraph-workspace.png",
-    alt: "DevGraph repository explorer showing repository discovery and issue records",
-  },
-};
 
 export function ProductEvidence({ slug }: { slug: string }) {
   if (slug === "agri-connect") return <AgriConnectGallery />;

@@ -42,7 +42,7 @@ export const agriConnectGallery = [
   {
     id: "marketplace",
     label: "Marketplace & map",
-    src: "/evidence/agri-connect-marketplace.png",
+    src: "/evidence/agri-connect-marketplace-full.webp",
     alt: "AgriConnect marketplace home with produce discovery, a regional map, and quick access to seller and platform tools",
     width: 1917,
     height: 1097,

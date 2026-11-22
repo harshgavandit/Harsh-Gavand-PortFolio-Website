@@ -325,7 +325,8 @@
   gap: 12px;
   min-width: 0;
 }
-.engineering-breakdown h4 {
+.engineering-breakdown h4,
+.engineering-breakdown .card-label {
   font-size: 0.9rem;
   line-height: 1.5;
   margin: 0;
@@ -454,7 +455,8 @@
   padding-top: 24px;
   border-top: 1px solid var(--line);
 }
-.private-project-card h4 {
+.private-project-card h4,
+.private-project-card .card-label {
   margin-bottom: 12px;
   font-size: 0.9rem;
   line-height: 1.5;
@@ -464,13 +466,15 @@
   font-size: 0.95rem;
   line-height: 1.75;
 }
-.private-project-details p + h4 {
+.private-project-details p + h4,
+.private-project-details p + .card-label {
   margin-top: 24px;
 }
 .private-project-stack {
   padding: var(--card-padding);
 }
-.private-project-stack .tags + h4 {
+.private-project-stack .tags + h4,
+.private-project-stack .tags + .card-label {
   margin-top: 24px;
 }
 .private-project-stack .project-boundary {

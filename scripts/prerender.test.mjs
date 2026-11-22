@@ -110,7 +110,7 @@ test("AI workspace directly loads as complete HTML with accessible tools, correc
     const response = await fetch(origin + path);
     assert.equal(response.status, 200);
     const page = await response.text();
-    assert.match(page, /<title>AI Workspace \| Harsh Gavand<\/title>/);
+    assert.match(page, /<title>AI Workspace[^<]*\| Harsh Gavand<\/title>/);
     assert.match(page, /rel="canonical"[^>]+\/ai\//);
     assert.match(page, /id="code-question"/);
     assert.match(page, /id="role-description"/);
@@ -370,15 +370,16 @@ test("AgriConnect renders a public case study, screenshot, complete stack, and c
     }
     const image = await fetch(origin + capture.src);
     assert.equal(image.status, 200, capture.src);
-    const isPNG = capture.src.endsWith(".png");
-    assert.match(
-      image.headers.get("content-type"),
-      isPNG ? /image\/png/ : /image\/jpeg/,
-    );
+    const format = capture.src.endsWith(".png")
+      ? { mime: /image\/png/, magic: "89504e470d0a1a0a" }
+      : capture.src.endsWith(".webp")
+        ? { mime: /image\/webp/, magic: "52494646" }
+        : { mime: /image\/jpeg/, magic: "ffd8ff" };
+    assert.match(image.headers.get("content-type"), format.mime);
     const bytes = Buffer.from(await image.arrayBuffer());
     assert.equal(
-      bytes.subarray(0, isPNG ? 8 : 3).toString("hex"),
-      isPNG ? "89504e470d0a1a0a" : "ffd8ff",
+      bytes.subarray(0, format.magic.length / 2).toString("hex"),
+      format.magic,
     );
     assert.deepEqual(
       bytes,
@@ -684,7 +685,7 @@ test("archive route serves all projects and responds to HEAD without a body", as
     assert.equal(head.status, 200);
     assert.equal(await head.text(), "");
   }
-  assert.match(archive, /<title>Project Archive/);
+  assert.match(archive, /<title>Projects: [^<]+\| Harsh Gavand<\/title>/);
 });
 
 test("production HTML includes complete portfolio content before executing JavaScript", () => {
@@ -854,7 +855,15 @@ test("robots, sitemap, canonical, structured data, and social metadata agree on 
   const schema = JSON.parse(
     html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1],
   );
-  assert.equal(schema.url, url + "/");
+  const types = schema["@graph"].map((node) => node["@type"]);
+  for (const type of ["Person", "WebSite", "ProfilePage"])
+    assert.ok(types.includes(type), type);
+  const person = schema["@graph"].find((node) => node["@type"] === "Person");
+  assert.equal(person.url, url + "/");
+  assert.deepEqual(
+    schema["@graph"].find((node) => node["@type"] === "ProfilePage").mainEntity,
+    { "@id": url + "/#person" },
+  );
   for (const property of ["og:url", "og:image"])
     assert.ok(
       html
@@ -916,7 +925,8 @@ test("project fragments stay semantic and remote-only availability is consistent
 
 test("home exposes branding, experience shipments, recognition and contact controls", () => {
   assert.match(html, /class="brand-logo"[^>]*src="\/brand\/hg-icon.webp"/);
-  assert.match(html, /href="\/favicon.png"/);
+  assert.match(html, /href="\/favicon-96x96.png"/);
+  assert.match(html, /href="\/favicon.ico"/);
   assert.equal((html.match(/class="shipment-banner"/g) || []).length, 2);
   assert.match(html, /PromptWars AI Engineering Competition/);
   assert.match(html, /Supervity Autopilot Hackathon/);

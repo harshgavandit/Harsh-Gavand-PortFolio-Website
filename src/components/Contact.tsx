@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { notes } from "../data/notes";
 import { ArrowUp, ArrowUpRight, Check, Copy } from "lucide-react";
 import { profile } from "../data/portfolio";
 import { availability } from "../data/availability";
@@ -75,7 +76,17 @@ export function Footer({ year }: { year: number }) {
         </span>
         <span className="footer-role">Full-Stack &amp; AI Engineer</span>
       </a>
-      <p>© {year} Harsh Gavand. All rights reserved.</p>
+      <p>
+        © {year} Harsh Gavand. All rights reserved.
+        {notes.length > 0 && (
+          <>
+            {" "}
+            <a href="/notes/" className="footer-notes">
+              Engineering notes
+            </a>
+          </>
+        )}
+      </p>
       <a href="/#hero" className="footer-top">
         <span>Back to top</span>
         <span className="footer-top-icon">

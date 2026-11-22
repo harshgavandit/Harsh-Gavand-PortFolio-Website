@@ -426,8 +426,9 @@ test("SEO files use the canonical production origin and valid structured data", 
   const schema = JSON.parse(
     html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1],
   );
+  assert.equal(schema["@type"], "Person");
   assert.equal(schema.name, "Harsh Gavand");
-  assert.equal(schema.email, profile.email);
+  assert.equal(schema.email, "mailto:" + profile.email);
   for (const path of ["robots.txt", "sitemap.xml"])
     assert.ok(
       readFileSync(
@@ -496,7 +497,13 @@ test("availability, experience shipments and architectural skills carry concrete
     assert.ok(job.shipment.length > 40);
     assert.ok(job.points.every((point) => point.includes(": ")));
   }
-  for (const file of ["brand/hg-icon.webp", "favicon.png"])
+  for (const file of [
+    "brand/hg-icon.webp",
+    "favicon.png",
+    "favicon.ico",
+    "favicon-96x96.png",
+    "apple-touch-icon.png",
+  ])
     assert.ok(existsSync(new URL("../public/" + file, import.meta.url)));
 });
 

@@ -1,8 +1,8 @@
-import { lazy, Suspense, useEffect, type ComponentType } from "react";
+import { lazy, Suspense, useEffect, useState, type ComponentType } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/react";
-import { semanticFragment, workPage, workPath } from "./lib/projectNavigation";
+import { semanticFragment } from "./lib/projectNavigation";
+import { pageSeo } from "./lib/seo";
+import { notes } from "./data/notes";
 import { profile } from "./data/portfolio";
 import { Navigation } from "./components/Navigation";
 import { Hero } from "./components/Hero";
@@ -12,6 +12,7 @@ import { MotionPreferencesProvider } from "./components/MotionPreferences";
 import { Contact, Footer } from "./components/Contact";
 import { AssistantEntry } from "./components/AssistantEntry";
 import { DemoWarmup } from "./components/DemoWarmup";
+const Telemetry = lazy(() => import("./components/Telemetry"));
 const LazyWork = lazy(() =>
   import("./components/WorkDetail").then((module) => ({
     default: module.WorkDetail,
@@ -20,6 +21,16 @@ const LazyWork = lazy(() =>
 const LazyArchive = lazy(() =>
   import("./components/ProjectArchive").then((module) => ({
     default: module.ProjectArchive,
+  })),
+);
+const LazyNotes = lazy(() =>
+  import("./components/Notes").then((module) => ({
+    default: module.NotesIndex,
+  })),
+);
+const LazyNote = lazy(() =>
+  import("./components/Notes").then((module) => ({
+    default: module.NoteArticle,
   })),
 );
 const LazyAI = lazy(() =>
@@ -31,6 +42,8 @@ export type PageComponents = {
   Work: ComponentType;
   Archive: ComponentType;
   AI: ComponentType;
+  Notes?: ComponentType;
+  Note?: ComponentType;
 };
 
 function NotFound() {
@@ -59,66 +72,52 @@ export default function Portfolio({
   const Work = pages?.Work || LazyWork;
   const Archive = pages?.Archive || LazyArchive;
   const AI = pages?.AI || LazyAI;
+  const Notes = pages?.Notes || LazyNotes;
+  const Note = pages?.Note || LazyNote;
   const { pathname, hash } = useLocation();
+  // Analytics and Speed Insights load after the page is interactive.
+  const [telemetry, setTelemetry] = useState(false);
   useEffect(() => {
-    const slug = pathname.match(/^\/work\/([^/]+)\/?$/)?.[1];
-    const page = workPage(slug);
-    const ai = pathname.replace(/\/$/, "") === "/ai";
-    const known =
-      pathname === "/" ||
-      pathname.replace(/\/$/, "") === "/archive" ||
-      ai ||
-      !!page;
-    const title = ai
-      ? "AI Workspace | Harsh Gavand"
-      : page
-        ? `${page.study.shortName} | Harsh Gavand`
-        : pathname.replace(/\/$/, "") === "/archive"
-          ? "Project Archive | Harsh Gavand — Full-Stack & AI Engineer"
-          : known
-            ? "Harsh Gavand | Full-Stack & AI Engineer"
-            : "Page not found | Harsh Gavand";
-    document.title = title;
-    const canonical =
-      profile.site +
-      (ai
-        ? "/ai/"
-        : page
-          ? workPath(page.project.slug)
-          : pathname.replace(/\/$/, "") === "/archive"
-            ? "/archive/"
-            : "/");
-    document
-      .querySelector('link[rel="canonical"]')
-      ?.setAttribute("href", canonical);
-    document
-      .querySelector('meta[property="og:url"]')
-      ?.setAttribute("content", canonical);
-    document
-      .querySelector('meta[property="og:title"]')
-      ?.setAttribute("content", title);
-    document
-      .querySelector('meta[name="twitter:title"]')
-      ?.setAttribute("content", title);
-    const description =
-      (ai
-        ? "Explore a source-grounded technical guide, evidence-based role comparison, and live AI support-ticket triage by Harsh Gavand."
-        : page?.study.summary) ||
-      "Harsh Gavand — Full-Stack & AI Engineer in Mumbai. Explore full-stack products, Python services, AI systems, engineering contributions, and source code.";
+    const start = () => setTelemetry(true);
+    if ("requestIdleCallback" in window) {
+      const id = window.requestIdleCallback(start, { timeout: 4000 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const timer = setTimeout(start, 2000);
+    return () => clearTimeout(timer);
+  }, []);
+  useEffect(() => {
+    // Keep head metadata identical to the pre-rendered values after
+    // client-side navigation (see src/lib/seo.ts).
+    const seo = pageSeo(pathname);
+    document.title = seo.title;
+    const setMeta = (selector: string, value: string) =>
+      document.querySelector(selector)?.setAttribute("content", value);
+    const canonical = seo.path ? profile.site + seo.path : null;
+    let link = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+    if (canonical && !link) {
+      link = document.createElement("link");
+      link.rel = "canonical";
+      document.head.append(link);
+    }
+    if (canonical) link!.href = canonical;
+    else link?.remove();
+    if (canonical) setMeta('meta[property="og:url"]', canonical);
+    setMeta('meta[property="og:title"]', seo.title);
+    setMeta('meta[name="twitter:title"]', seo.title);
     for (const selector of [
       'meta[name="description"]',
       'meta[property="og:description"]',
       'meta[name="twitter:description"]',
     ])
-      document.querySelector(selector)?.setAttribute("content", description);
+      setMeta(selector, seo.description);
     let robots = document.querySelector<HTMLMetaElement>('meta[name="robots"]');
-    if (!known && !robots) {
+    if (!robots) {
       robots = document.createElement("meta");
       robots.name = "robots";
       document.head.append(robots);
     }
-    if (!known && robots) robots.content = "noindex, follow";
-    if (known && robots) robots.remove();
+    robots.content = seo.robots;
   }, [pathname]);
   useEffect(() => {
     const fragment = semanticFragment(hash);
@@ -174,17 +173,22 @@ export default function Portfolio({
           <Route path="/archive" element={<Archive />} />
           <Route path="/ai" element={<AI />} />
           <Route path="/work/:slug" element={<Work />} />
+          {notes.length > 0 && (
+            <>
+              <Route path="/notes" element={<Notes />} />
+              <Route path="/notes/:slug" element={<Note />} />
+            </>
+          )}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
       <Footer year={year} />
       <AssistantEntry />
-      <Analytics
-        mode={import.meta.env.DEV ? "development" : "production"}
-        route={pathname}
-        path={pathname}
-      />
-      <SpeedInsights route={pathname} />
+      {telemetry && (
+        <Suspense fallback={null}>
+          <Telemetry pathname={pathname} />
+        </Suspense>
+      )}
     </MotionPreferencesProvider>
   );
 }

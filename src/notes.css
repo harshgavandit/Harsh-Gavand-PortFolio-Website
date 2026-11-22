@@ -1,0 +1,102 @@
+/* Engineering notes: reuses the case-study page shell and design tokens. */
+.notes-list {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0 0;
+  max-width: 920px;
+  display: grid;
+  gap: 16px;
+}
+.notes-list article {
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+  padding: clamp(20px, 2.5vw, 32px);
+}
+.notes-list h2 {
+  font-size: 1.35rem;
+  line-height: 1.3;
+}
+.notes-list h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+.notes-list h2 a:hover,
+.notes-list h2 a:focus-visible {
+  color: var(--accent);
+}
+.notes-list p {
+  color: var(--muted);
+  margin-top: 10px;
+}
+.note-meta,
+.note-byline {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+.work-intro > .note-byline,
+.work-intro > .note-meta {
+  font-size: 0.85rem;
+  margin-top: 10px;
+}
+.note-byline a,
+.note-footer a {
+  color: var(--accent);
+}
+.note-draft {
+  color: var(--accent);
+}
+.note-article {
+  max-width: 760px;
+}
+.note-body h2,
+.note-footer h2 {
+  font-size: 1.45rem;
+  margin: 40px 0 12px;
+}
+.note-body p,
+.note-body li,
+.note-footer p,
+.note-footer li {
+  color: var(--muted);
+  font-size: 1.02rem;
+  line-height: 1.8;
+}
+.note-body p + p {
+  margin-top: 16px;
+}
+.note-body ul,
+.note-footer ul {
+  padding-left: 20px;
+  margin: 12px 0;
+  display: grid;
+  gap: 8px;
+}
+.note-code {
+  margin: 20px 0;
+  padding: 18px 20px;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--raised);
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  line-height: 1.65;
+  color: var(--text);
+}
+.note-footer {
+  margin-top: 48px;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+.note-footer p {
+  margin-top: 12px;
+}
+.footer-notes {
+  color: inherit;
+  text-underline-offset: 3px;
+}
+.footer-notes:hover,
+.footer-notes:focus-visible {
+  color: var(--accent);
+}

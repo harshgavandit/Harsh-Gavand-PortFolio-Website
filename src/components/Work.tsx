@@ -35,11 +35,11 @@ export function ProjectNotes({ project }: { project: Project }) {
   return (
     <div className="project-notes">
       <div>
-        <h4>My contribution</h4>
+        <strong className="card-label">My contribution</strong>
         <p>{project.role}</p>
       </div>
       <div>
-        <h4>Features implemented</h4>
+        <strong className="card-label">Features implemented</strong>
         <ul>
           {project.features.map((feature) => (
             <li key={feature}>{feature}</li>
@@ -47,11 +47,11 @@ export function ProjectNotes({ project }: { project: Project }) {
         </ul>
       </div>
       <div>
-        <h4>Engineering challenge</h4>
+        <strong className="card-label">Engineering challenge</strong>
         <p>{project.challenges}</p>
       </div>
       <div>
-        <h4>Outcome</h4>
+        <strong className="card-label">Outcome</strong>
         <p>{project.impact}</p>
         {evidence && (
           <>
@@ -62,7 +62,7 @@ export function ProjectNotes({ project }: { project: Project }) {
         )}
       </div>
       <div className="project-complete-stack">
-        <h4>Complete tech stack</h4>
+        <strong className="card-label">Complete tech stack</strong>
         <Tags items={project.technologies} />
       </div>
     </div>
@@ -97,7 +97,9 @@ function CaseStudyCard({ study: record }: { study: CaseStudy }) {
         </div>
         <div className="engineering-breakdown">
           <div className="project-focus">
-            <h4>{isInforma ? "How AI helps" : "Engineering focus"}</h4>
+            <strong className="card-label">
+              {isInforma ? "How AI helps" : "Engineering focus"}
+            </strong>
             {isInforma ? (
               <p>{informaAiSummary}</p>
             ) : (
@@ -111,7 +113,7 @@ function CaseStudyCard({ study: record }: { study: CaseStudy }) {
             )}
           </div>
           <div className="project-stack">
-            <h4>Tech stack</h4>
+            <strong className="card-label">Tech stack</strong>
             <Tags items={project.technologies.slice(0, 5)} />
           </div>
           <div className="actions project-actions">
@@ -215,7 +217,7 @@ function PrivateProjectCard({ project }: { project: PrivateProject }) {
         )}
         <div className="private-project-details">
           <div>
-            <h4>Features</h4>
+            <strong className="card-label">Features</strong>
             <ul className="engineering-bullets">
               {project.features.map((feature) => (
                 <li key={feature}>{feature}</li>
@@ -223,16 +225,16 @@ function PrivateProjectCard({ project }: { project: PrivateProject }) {
             </ul>
           </div>
           <div>
-            <h4>My contribution</h4>
+            <strong className="card-label">My contribution</strong>
             <p>{project.role}</p>
-            <h4>Business impact</h4>
+            <strong className="card-label">Business impact</strong>
             <p>{project.impact}</p>
           </div>
         </div>
         <div className="private-project-stack">
-          <h4>Tech stack</h4>
+          <strong className="card-label">Tech stack</strong>
           <Tags items={project.technologies} />
-          <h4>Keywords</h4>
+          <strong className="card-label">Keywords</strong>
           <ul className="tags" aria-label="Project keywords">
             {project.keywords.map((keyword) => (
               <li key={keyword}>{keyword}</li>
@@ -297,7 +299,7 @@ export function MoreWork() {
                 <tr key={project.id}>
                   <td>{entry.year}</td>
                   <th scope="row">
-                    <a href={`/archive#${project.slug}`}>{project.title}</a>
+                    <a href={`/archive/#${project.slug}`}>{project.title}</a>
                   </th>
                   <td>{project.technologies.slice(0, 3).join(" · ")}</td>
                   <td>{entry.feature}</td>
@@ -326,7 +328,7 @@ export function MoreWork() {
           </tbody>
         </table>
       </div>
-      <a className="archive-complete-link" href="/archive">
+      <a className="archive-complete-link" href="/archive/">
         Browse the complete project catalog{" "}
         <ArrowRight size={16} aria-hidden="true" />
       </a>

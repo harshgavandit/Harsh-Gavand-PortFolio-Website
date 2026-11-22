@@ -10,7 +10,11 @@ const __dirname = path.dirname(__filename);
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  define: { __AI_RUNTIME_DIGEST__: JSON.stringify(await runtimeDigest()) },
+  define: {
+    __AI_RUNTIME_DIGEST__: JSON.stringify(await runtimeDigest()),
+    // Draft engineering notes are previewable only with NOTES_DRAFTS=1.
+    __NOTES_DRAFTS__: JSON.stringify(process.env.NOTES_DRAFTS === "1"),
+  },
   plugins: [react()],
   server: {
     proxy: { "/api": "http://127.0.0.1:3001" },

@@ -27,6 +27,7 @@ export default [
         ...globals.browser,
         ...globals.es2022,
         __AI_RUNTIME_DIGEST__: "readonly",
+        __NOTES_DRAFTS__: "readonly",
       },
       parserOptions: { ecmaFeatures: { jsx: true } },
     },

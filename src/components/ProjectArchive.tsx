@@ -33,11 +33,12 @@ export function ProjectArchive() {
       <span className="eyebrow">
         Project catalog / {projects.length} repositories
       </span>
-      <h1>Engineering project catalog.</h1>
+      <h1>Full-stack, Python &amp; AI project catalog.</h1>
       <p className="archive-intro">
-        Full-stack applications, backend APIs, and applied AI systems. Explore
-        the architecture, technical contributions, and outcomes behind each
-        project.
+        Full-stack web applications (MERN, Next.js, Django), Python and Node.js
+        backend APIs, and applied AI systems including RAG assistants and LLM
+        agents. Explore the architecture, technical contributions, and outcomes
+        behind each project.
       </p>
       <div className="archive-controls">
         <label htmlFor="archive-search">

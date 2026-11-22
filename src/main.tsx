@@ -9,6 +9,7 @@ import "./evidence.css";
 import "./voice.css";
 import "./ai-workspace.css";
 import "./audit-polish.css";
+import "./notes.css";
 
 const root = document.getElementById("root")!;
 const prerendered = root.dataset.prerendered === "true";

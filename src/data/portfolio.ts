@@ -85,7 +85,7 @@ export function projectSlug(id: number) {
 // Shared published About content for the page and assistant knowledge.
 export const aboutProfile = {
   summary:
-    "I build full-stack applications, backend APIs, and applied AI workflows. My work connects React and TypeScript interfaces to Node.js and Python services, relational and document databases, and external model and media providers.",
+    "I build full-stack applications, backend APIs, and applied AI workflows. My work connects React, Next.js and TypeScript interfaces to Node.js and Python (FastAPI, Django, Flask) services, relational and document databases, and external model and media providers—from MERN-stack products to retrieval-augmented generation (RAG) assistants and LLM agents built with LangChain, LangGraph and Google ADK.",
   experience:
     "2+ years building applications across personal and professional work",
   education: {
