@@ -16,13 +16,13 @@
   border-top: 2px solid var(--accent);
 }
 .flagship-banking-saas {
-  border-top: 2px solid #a4c8ed;
+  border-top: 2px solid #5b8fe0;
 }
 .flagship-agri-samaj-community-platform {
-  border-top: 2px solid #edc6a4;
+  border-top: 2px solid #b8741a;
 }
 .flagship-agri-samaj-community-platform .category-badge {
-  color: #edc6a4;
+  color: #b8741a;
 }
 .route-loading {
   min-height: 70vh;

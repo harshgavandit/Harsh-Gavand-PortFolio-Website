@@ -68,6 +68,18 @@ export function ProjectNotes({ project }: { project: Project }) {
     </div>
   );
 }
+const AI_SIGNALS =
+  /OpenAI|LangChain|LangGraph|Google ADK|RAG|LLM|TensorFlow|LSTM|MCP/i;
+function projectKind(project: Project) {
+  const ai = project.technologies.some((item) => AI_SIGNALS.test(item));
+  const web = project.technologies.some((item) =>
+    /React|Next\.js|PostgreSQL|Express/.test(item),
+  );
+  if (ai && web) return "Full-stack · Applied AI";
+  if (ai) return "Applied AI";
+  return "Full-stack product";
+}
+
 function CaseStudyCard({ study: record }: { study: CaseStudy }) {
   const study = displayStudy(record);
   const project = displayProject(
@@ -80,9 +92,11 @@ function CaseStudyCard({ study: record }: { study: CaseStudy }) {
       id={project.slug}
       tabIndex={-1}
       aria-labelledby={`${project.slug}-title`}
+      data-reveal
     >
       <header className="flagship-header">
         <div>
+          <p className="project-kind">{projectKind(project)}</p>
           <h3 id={`${project.slug}-title`}>{study.shortName}</h3>
         </div>
         <a className="text-link" href={`/work/${project.slug}/`}>
@@ -92,7 +106,7 @@ function CaseStudyCard({ study: record }: { study: CaseStudy }) {
       <p className="flagship-summary">{study.summary}</p>
       <ProjectRecognition slug={project.slug} />
       <div className="flagship-body">
-        <div className="flagship-visual">
+        <div className="flagship-visual" data-tilt="4">
           <ProductEvidence slug={project.slug} />
         </div>
         <div className="engineering-breakdown">
@@ -146,6 +160,42 @@ export function FeaturedWork() {
       tabIndex={-1}
       aria-label="Selected work"
     >
+      <div className="section-intro section-intro-split" data-reveal>
+        <div>
+          <p className="eyebrow">Selected work</p>
+          <h2 className="section-title">
+            Products I designed, built &amp; shipped
+          </h2>
+          <p className="section-lede">
+            Deployed full-stack products and AI systems. Each card shows the
+            real application, what I built, the stack, and links to the live
+            site, source code and a detailed case study.
+          </p>
+        </div>
+        <nav className="project-index" aria-label="Jump to a project">
+          <ul>
+            {[
+              ...mainStudies.map((study) => {
+                const project = displayProject(
+                  projects.find((item) => item.id === study.projectId)!,
+                );
+                return {
+                  slug: project.slug,
+                  name: displayStudy(study).shortName,
+                };
+              }),
+              ...privateProjects.map((project) => ({
+                slug: project.slug,
+                name: project.title,
+              })),
+            ].map((item) => (
+              <li key={item.slug}>
+                <a href={`#${item.slug}`}>{item.name.split(" — ")[0]}</a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
       <div className="flagship-list">
         {mainStudies.map((study) => (
           <CaseStudyCard key={study.projectId} study={study} />
@@ -176,6 +226,7 @@ function PrivateProjectCard({ project }: { project: PrivateProject }) {
   return (
     <article
       className="private-project-card"
+      data-reveal
       id={project.slug}
       tabIndex={-1}
       aria-labelledby={`${project.slug}-title`}

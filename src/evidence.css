@@ -100,7 +100,7 @@
     max-height: calc(100dvh - 112px);
     overflow-y: auto;
     overscroll-behavior: contain;
-    border-top: 1px solid rgba(221, 237, 205, 0.12);
+    border-top: 1px solid rgba(15, 40, 80, 0.12);
   }
   .mobile-menu nav {
     display: grid;
@@ -118,8 +118,8 @@
   }
   .mobile-menu nav a:hover {
     color: var(--accent);
-    border-color: rgba(208, 245, 157, 0.25);
-    background: rgba(208, 245, 157, 0.08);
+    border-color: rgba(29, 91, 216, 0.25);
+    background: rgba(29, 91, 216, 0.08);
   }
   .mobile-menu > button {
     min-height: 44px;
@@ -230,7 +230,7 @@
   border: 1px solid var(--line);
   border-radius: 24px;
   background: var(--surface);
-  box-shadow: 0 20px 50px rgb(0 0 0 / 15%);
+  box-shadow: 0 20px 50px rgb(20 45 90 / 12%);
 }
 .hero-portrait img {
   display: block;

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { ArrowUpRight, Menu, X } from "lucide-react";
+import { m } from "motion/react";
 import { profile } from "../data/portfolio";
 import { chapters } from "../data/recruiter";
 import { GitHubMark, LinkedInMark } from "./CornerSocials";
@@ -114,6 +115,7 @@ export function Navigation() {
   return (
     <>
       <header className="site-header">
+        <span className="scroll-progress" aria-hidden="true" />
         <div className="header-inner">
           <a
             href={target("hero")}
@@ -142,6 +144,14 @@ export function Navigation() {
                   home && active === chapter.id ? "location" : undefined
                 }
               >
+                {home && active === chapter.id && (
+                  <m.span
+                    layoutId="nav-indicator"
+                    className="nav-indicator"
+                    aria-hidden="true"
+                    transition={{ type: "spring", stiffness: 380, damping: 34 }}
+                  />
+                )}
                 {chapter.navLabel}
               </a>
             ))}
@@ -176,6 +186,7 @@ export function Navigation() {
           id="mobile-navigation"
           ref={menuRef}
           hidden={!open}
+          data-lenis-prevent
         >
           <nav aria-label="Mobile navigation">
             {chapters.map((chapter) => (

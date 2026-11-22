@@ -12,6 +12,8 @@ import { MotionPreferencesProvider } from "./components/MotionPreferences";
 import { Contact, Footer } from "./components/Contact";
 import { AssistantEntry } from "./components/AssistantEntry";
 import { DemoWarmup } from "./components/DemoWarmup";
+import { MotionProvider } from "./motion/MotionProvider";
+import { MotionRuntime } from "./motion/MotionRuntime";
 const Telemetry = lazy(() => import("./components/Telemetry"));
 const LazyWork = lazy(() =>
   import("./components/WorkDetail").then((module) => ({
@@ -140,55 +142,58 @@ export default function Portfolio({
   }, [pathname, hash]);
   return (
     <MotionPreferencesProvider>
-      <a className="skip-link" href="#main">
-        Skip to content
-      </a>
-      <Navigation />
-      <DemoWarmup />
-      <Suspense
-        fallback={
-          <main
-            id="main"
-            className="section-container route-loading"
-            role="status"
-          >
-            Opening the page…
-          </main>
-        }
-      >
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <main id="main" tabIndex={-1}>
-                <Hero />
-                <Experience />
-                <FeaturedWork />
-                <Skills />
-                <About />
-                <Contact />
-              </main>
-            }
-          />
-          <Route path="/archive" element={<Archive />} />
-          <Route path="/ai" element={<AI />} />
-          <Route path="/work/:slug" element={<Work />} />
-          {notes.length > 0 && (
-            <>
-              <Route path="/notes" element={<Notes />} />
-              <Route path="/notes/:slug" element={<Note />} />
-            </>
-          )}
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Suspense>
-      <Footer year={year} />
-      <AssistantEntry />
-      {telemetry && (
-        <Suspense fallback={null}>
-          <Telemetry pathname={pathname} />
+      <MotionProvider>
+        <MotionRuntime />
+        <a className="skip-link" href="#main">
+          Skip to content
+        </a>
+        <Navigation />
+        <DemoWarmup />
+        <Suspense
+          fallback={
+            <main
+              id="main"
+              className="section-container route-loading"
+              role="status"
+            >
+              Opening the page…
+            </main>
+          }
+        >
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <main id="main" tabIndex={-1}>
+                  <Hero />
+                  <Experience />
+                  <FeaturedWork />
+                  <Skills />
+                  <About />
+                  <Contact />
+                </main>
+              }
+            />
+            <Route path="/archive" element={<Archive />} />
+            <Route path="/ai" element={<AI />} />
+            <Route path="/work/:slug" element={<Work />} />
+            {notes.length > 0 && (
+              <>
+                <Route path="/notes" element={<Notes />} />
+                <Route path="/notes/:slug" element={<Note />} />
+              </>
+            )}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
         </Suspense>
-      )}
+        <Footer year={year} />
+        <AssistantEntry />
+        {telemetry && (
+          <Suspense fallback={null}>
+            <Telemetry pathname={pathname} />
+          </Suspense>
+        )}
+      </MotionProvider>
     </MotionPreferencesProvider>
   );
 }

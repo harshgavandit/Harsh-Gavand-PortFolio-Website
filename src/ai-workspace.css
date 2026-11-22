@@ -234,10 +234,10 @@
 .ai-request-error {
   margin-top: 20px;
   padding: 14px;
-  border: 1px solid #765c3d;
-  background: #312719;
+  border: 1px solid #e0b070;
+  background: #fff6e8;
   border-radius: 8px;
-  color: #f3d2a6;
+  color: #8a4b00;
   font-size: 14px;
 }
 .ai-result {
@@ -336,10 +336,10 @@
 }
 .ai-assessment.is-supported {
   color: var(--accent);
-  background: #d0f59d0a;
+  background: #1d5bd80a;
 }
 .ai-assessment.is-partial {
-  color: #edcf9d;
+  color: #8a4b00;
 }
 .ai-assessment.is-not_shown {
   color: var(--muted);
@@ -448,7 +448,7 @@
   padding: 24px;
   border: 1px solid var(--line);
   border-radius: 12px;
-  background: linear-gradient(120deg, #d0f59d08, transparent);
+  background: linear-gradient(120deg, #1d5bd808, transparent);
 }
 .ai-workspace-teaser h3 {
   margin-block: 10px;

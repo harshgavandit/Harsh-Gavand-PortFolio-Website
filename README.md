@@ -44,6 +44,16 @@ Quota lifecycle handling remains implemented in `server/quota-lifecycle.mjs`. An
 
 Render-hosted applications receive best-effort background GET requests after browser idle, with a 500ms fallback. Origins come only from HTTPS Render application URLs in the catalog and are deduplicated. Requests omit credentials and referrers, failures stay isolated, and cleanup cancels pending work. Visitors using Save-Data are excluded. Warm-up helps sleeping applications become available sooner; no third-party requests run during server rendering.
 
+## Visual design and motion
+
+The site uses a light engineering theme (white / light-blue palette, glass surfaces, a faint blueprint grid). Tokens live at the top of `src/recruiter.css` (text, muted and accent keep at least 7:1 contrast, enforced by `npm run test:prerender`); the design system and chapter layouts are in `src/theme.css`, loaded last.
+
+- **Hero (`src/components/hero/`)** — `HeroStage` renders a lightweight CSS/SVG composition in the pre-rendered HTML. On screens ≥768px with WebGL, and only when the visitor has not asked for reduced motion or reduced data, it lazy-loads `HeroScene` (three.js + React Three Fiber, separate chunk): a glass AI core, technology modules on three orbits, data packets, particles and a blueprint floor. It follows the cursor, drifts with scroll and pauses rendering when off-screen. The heading reveals word by word in pure CSS, so it paints before JavaScript runs.
+- **Scroll and pointer motion (`src/motion/kit.ts`)** — GSAP, ScrollTrigger and Lenis load after hydration and share one ticker. They handle `[data-reveal]` / `[data-reveal-group]` reveals, `[data-parallax]`, the experience timeline rail, the header reading-progress bar, magnetic buttons, `[data-tilt]` surfaces and the custom cursor (fine pointers only). Content is only hidden just before it animates in, never inside closed disclosures, and is revealed for printing.
+- **Component motion (`src/motion/MotionProvider.tsx`)** — Motion (`motion/react`) with `LazyMotion` handles state-driven UI only: the navigation indicator, AI-flow tabs and inspector, and the stack filter. It never animates the same properties as GSAP.
+- **AI engineering explorer** — `src/components/AIEngineering.tsx` with data in `src/data/aiEngineering.ts`. Each flow restates documented features of the linked deployed projects.
+- **Reduced motion** — with `prefers-reduced-motion`, no animation code loads, CSS keyframes are disabled and all content is static.
+
 ## Development
 
 Use Node.js **24.x LTS**, pinned in `package.json` and `.nvmrc`. This supports the server's shared TypeScript data and keeps deployments on one major version while receiving patch updates. Install with `npm ci`, then run `npm run dev`. This starts the API at `127.0.0.1:3001` and Vite at `127.0.0.1:5173`; both ports must be available. Vite proxies `/api`. The UI and API can also run separately through `npm run dev:ui` and `npm run dev:api`.

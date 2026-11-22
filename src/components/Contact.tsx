@@ -22,10 +22,20 @@ export function Contact() {
       tabIndex={-1}
       aria-labelledby="contact-title"
     >
-      <div className="section-container contact-direct">
+      <div className="contact-aurora" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+      </div>
+      <div className="section-container contact-direct" data-reveal>
+        <p className="eyebrow">Let’s build something reliable</p>
         <ChapterHeading id="contact" title={availability.contactHeadline} />
         <p className="body-copy">{availability.collaboration}</p>
-        <a className="contact-email" href={`mailto:${profile.email}`}>
+        <a
+          className="contact-email"
+          href={`mailto:${profile.email}`}
+          data-magnetic
+        >
           {profile.email}
           <ArrowUpRight size={22} aria-hidden="true" />
         </a>

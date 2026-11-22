@@ -10,6 +10,7 @@ import "./voice.css";
 import "./ai-workspace.css";
 import "./audit-polish.css";
 import "./notes.css";
+import "./theme.css";
 
 const root = document.getElementById("root")!;
 const prerendered = root.dataset.prerendered === "true";
