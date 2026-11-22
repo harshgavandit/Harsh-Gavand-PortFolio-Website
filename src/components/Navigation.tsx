@@ -5,6 +5,7 @@ import { m } from "motion/react";
 import { profile } from "../data/portfolio";
 import { chapters } from "../data/recruiter";
 import { GitHubMark, LinkedInMark } from "./CornerSocials";
+import { ThemeToggle } from "./ThemeToggle";
 
 function SocialLinks() {
   return (
@@ -168,6 +169,7 @@ export function Navigation() {
             >
               Resume <ArrowUpRight size={14} aria-hidden="true" />
             </a>
+            <ThemeToggle />
             <SocialLinks />
             <button
               className="menu-toggle"
