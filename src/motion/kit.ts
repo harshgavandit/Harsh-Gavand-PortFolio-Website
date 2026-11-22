@@ -174,12 +174,12 @@ function createKit(
           });
       }
 
-      // Hero copy eases away as the scene scrolls out.
+      // Hero copy drifts up (parallax) as the scene scrolls out; it never fades,
+      // so its text keeps full contrast.
       const heroCopy = document.querySelector<HTMLElement>(".hero-copy");
       if (heroCopy)
         gsap.to(heroCopy, {
           y: -60,
-          opacity: 0.25,
           ease: "none",
           scrollTrigger: {
             trigger: "#hero",
