@@ -2,8 +2,7 @@ import { Fragment } from "react";
 import { ArrowDown } from "lucide-react";
 import { ActionLink } from "./Primitives";
 import { HeroStage } from "./hero/HeroStage";
-import { profile, archiveProjects } from "../data/portfolio";
-import { featuredStudies } from "../data/workPresentation";
+import { profile } from "../data/portfolio";
 import { availability } from "../data/availability";
 
 // Words rise in sequence through CSS alone, so the pre-rendered heading is the
@@ -29,11 +28,7 @@ function SplitWords({ text, offset = 0 }: { text: string; offset?: number }) {
 
 const heroSignals = [
   { value: "2+ yrs", label: "Hands-on engineering experience" },
-  { value: String(featuredStudies.length), label: "Live, deployed projects" },
-  {
-    value: String(archiveProjects.length),
-    label: "Repositories in the catalog",
-  },
+  { value: "15+", label: "Live, deployed projects" },
 ];
 
 export function Hero() {
