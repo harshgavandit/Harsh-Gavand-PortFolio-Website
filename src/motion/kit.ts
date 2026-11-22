@@ -5,6 +5,7 @@
 type Gsap = typeof import("gsap").gsap;
 type ScrollTriggerType = typeof import("gsap/ScrollTrigger").ScrollTrigger;
 type LenisType = import("lenis").default;
+type SplitTextType = typeof import("gsap/SplitText").SplitText;
 
 export type MotionKit = {
   gsap: Gsap;
@@ -25,12 +26,15 @@ export function loadMotionKit() {
   kitPromise ??= Promise.all([
     import("gsap"),
     import("gsap/ScrollTrigger"),
+    import("gsap/SplitText"),
     import("lenis"),
-  ]).then(([{ gsap }, { ScrollTrigger }, { default: Lenis }]) => {
-    gsap.registerPlugin(ScrollTrigger);
-    gsap.defaults({ ease: "power3.out" });
-    return createKit(gsap, ScrollTrigger, Lenis);
-  });
+  ]).then(
+    ([{ gsap }, { ScrollTrigger }, { SplitText }, { default: Lenis }]) => {
+      gsap.registerPlugin(ScrollTrigger, SplitText);
+      gsap.defaults({ ease: "power3.out" });
+      return createKit(gsap, ScrollTrigger, SplitText, Lenis);
+    },
+  );
   return kitPromise;
 }
 
@@ -39,6 +43,7 @@ const REVEAL_START = "top 90%";
 function createKit(
   gsap: Gsap,
   ScrollTrigger: ScrollTriggerType,
+  SplitText: SplitTextType,
   Lenis: typeof import("lenis").default,
 ): MotionKit {
   function startSmoothScroll() {
@@ -120,6 +125,68 @@ function createKit(
               stagger: 0.07,
               clearProps: "transform,opacity",
             }),
+        });
+      }
+
+      // Headings rise line by line from behind a mask.
+      for (const heading of gsap.utils.toArray<HTMLElement>(
+        ".section-title, .ai-engineering-head h3, #about .recognition > h3, .spotlight h3, #contact h2",
+      )) {
+        if (!belowFold(heading)) continue;
+        SplitText.create(heading, {
+          type: "lines",
+          mask: "lines",
+          autoSplit: true,
+          onSplit: (self) =>
+            gsap.from(self.lines, {
+              yPercent: 105,
+              duration: 0.95,
+              stagger: 0.09,
+              ease: "expo.out",
+              scrollTrigger: {
+                trigger: heading,
+                start: REVEAL_START,
+                once: true,
+              },
+            }),
+        });
+      }
+
+      // Eyebrow rules draw in as each chapter arrives.
+      for (const intro of gsap.utils.toArray<HTMLElement>(
+        ".section-intro, .about-summary, .contact-direct",
+      ))
+        ScrollTrigger.create({
+          trigger: intro,
+          start: "top 92%",
+          once: true,
+          onEnter: () => intro.classList.add("is-inview"),
+        });
+
+      // Bars in the stack meter fill when they become visible.
+      for (const meter of gsap.utils.toArray<HTMLElement>(".stack-meter"))
+        ScrollTrigger.create({
+          trigger: meter,
+          start: "top 85%",
+          once: true,
+          onEnter: () => meter.classList.add("is-inview"),
+        });
+
+      // Hero figures count up once, after the heading has landed.
+      for (const value of gsap.utils.toArray<HTMLElement>(".hero-signal dd")) {
+        const match = value.textContent?.match(/^(\d+)(.*)$/);
+        if (!match) continue;
+        const target = Number(match[1]);
+        const suffix = match[2];
+        const counter = { n: 0 };
+        gsap.to(counter, {
+          n: target,
+          duration: 1.6,
+          delay: 1.15,
+          ease: "power2.out",
+          onUpdate: () => {
+            value.textContent = Math.round(counter.n) + suffix;
+          },
         });
       }
 
@@ -274,8 +341,33 @@ function createKit(
       element.style.removeProperty("--glare-opacity");
     };
 
+    // Live collection: picks up depth layers on routes rendered later.
+    const depthLayers = document.getElementsByClassName("depth-layer");
+    const movers = new WeakMap<
+      Element,
+      { x: (value: number) => void; y: (value: number) => void }
+    >();
+    const moverFor = (element: Element) => {
+      let mover = movers.get(element);
+      if (!mover) {
+        mover = {
+          x: gsap.quickTo(element, "x", { duration: 1.1, ease: "power3" }),
+          y: gsap.quickTo(element, "y", { duration: 1.1, ease: "power3" }),
+        };
+        movers.set(element, mover);
+      }
+      return mover;
+    };
     const move = (event: PointerEvent) => {
       if (event.pointerType !== "mouse") return;
+      const nx = event.clientX / window.innerWidth - 0.5;
+      const ny = event.clientY / window.innerHeight - 0.5;
+      for (const element of depthLayers) {
+        const depth = Number((element as HTMLElement).dataset.depth) || 0.5;
+        const mover = moverFor(element);
+        mover.x(nx * 40 * depth);
+        mover.y(ny * 30 * depth);
+      }
       dot.style.opacity = "1";
       ringX(event.clientX);
       ringY(event.clientY);

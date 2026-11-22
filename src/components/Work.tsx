@@ -3,6 +3,7 @@ import { projects, type CaseStudy, type Project } from "../data/portfolio";
 import { privateProjects, type PrivateProject } from "../data/privateProjects";
 import { curatedArchive } from "../data/recruiter";
 import { ActionLink, LeadStatement, Tags } from "./Primitives";
+import { LazyScene } from "../three/LazyScene";
 import { ProductEvidence } from "./ProductEvidence";
 import { ProjectRecognition } from "./ProjectRecognition";
 import {
@@ -16,7 +17,63 @@ import {
   displayStudy,
   informaAiSummary,
   informaProjectId,
+  informaCapture,
 } from "../data/informaPresentation";
+
+const loadDevice = () =>
+  import("../three/DeviceShowcase").then((module) => module.DeviceShowcase);
+
+// Spotlight for the flagship live product. The 3D laptop shows the same real
+// capture as the card below; phones and reduced motion keep a CSS 3D frame.
+function InformaSpotlight() {
+  const project = displayProject(
+    projects.find((item) => item.id === informaProjectId)!,
+  );
+  return (
+    <aside className="spotlight" aria-labelledby="spotlight-title" data-reveal>
+      <div className="spotlight-copy">
+        <p className="eyebrow">Spotlight · Live product</p>
+        <h3 id="spotlight-title">{project.title}</h3>
+        <p className="spotlight-lede">{project.overview}</p>
+        <ol className="spotlight-steps">
+          <li>
+            <strong>Collect</strong> live technology news from many sources
+          </li>
+          <li>
+            <strong>Summarise</strong> the stories that match your topics
+          </li>
+          <li>
+            <strong>Deliver</strong> a short, source-linked brief
+          </li>
+        </ol>
+        <Tags items={project.technologies.slice(0, 6)} />
+        <div className="actions">
+          {project.demoUrl && (
+            <ActionLink href={project.demoUrl} external primary>
+              Try it at getinformdaily.com
+            </ActionLink>
+          )}
+          <ActionLink href={`/work/${project.slug}/`}>Case study</ActionLink>
+        </div>
+      </div>
+      <LazyScene
+        className="spotlight-stage"
+        load={loadDevice}
+        fallback={
+          <div className="spotlight-device">
+            <img
+              src={informaCapture.src}
+              width={informaCapture.width}
+              height={informaCapture.height}
+              loading="lazy"
+              alt={informaCapture.alt}
+            />
+          </div>
+        }
+      />
+    </aside>
+  );
+}
 
 const informaStudy = secondaryFeaturedStudies.find(
   (study) => study.projectId === informaProjectId,
@@ -196,6 +253,7 @@ export function FeaturedWork() {
           </ul>
         </nav>
       </div>
+      <InformaSpotlight />
       <div className="flagship-list">
         {mainStudies.map((study) => (
           <CaseStudyCard key={study.projectId} study={study} />

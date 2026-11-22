@@ -4,6 +4,10 @@ import { ArrowUp, ArrowUpRight, Check, Copy } from "lucide-react";
 import { profile } from "../data/portfolio";
 import { availability } from "../data/availability";
 import { ActionLink, ChapterHeading } from "./Primitives";
+import { LazyScene } from "../three/LazyScene";
+
+const loadGlobe = () =>
+  import("../three/RemoteGlobe").then((module) => module.RemoteGlobe);
 
 export function Contact() {
   const [notice, setNotice] = useState("");
@@ -27,6 +31,7 @@ export function Contact() {
         <span />
         <span />
       </div>
+      <LazyScene className="contact-globe" load={loadGlobe} />
       <div className="section-container contact-direct" data-reveal>
         <p className="eyebrow">Let’s build something reliable</p>
         <ChapterHeading id="contact" title={availability.contactHeadline} />

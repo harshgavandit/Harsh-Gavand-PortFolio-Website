@@ -93,6 +93,15 @@ const journey = [
   },
 ];
 
+// Technologies from the summary beside the portrait, drifting in depth.
+const aboutFloaters = [
+  { label: "React", brand: "react", depth: 0.9 },
+  { label: "Python", brand: "python", depth: -0.7 },
+  { label: "LangGraph", brand: "langgraph", depth: 1.2 },
+  { label: "FastAPI", brand: "fastapi", depth: -1 },
+  { label: "Next.js", brand: "nextdotjs", depth: 0.6 },
+];
+
 export function About() {
   return (
     <section
@@ -104,6 +113,26 @@ export function About() {
     >
       <div className="profile-brief">
         <figure className="about-portrait" data-reveal>
+          <div className="about-floaters" aria-hidden="true">
+            {aboutFloaters.map((item, index) => (
+              <span
+                key={item.label}
+                className="about-floater depth-layer"
+                data-depth={item.depth}
+                style={{ ["--f" as string]: index }}
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width={16}
+                  height={16}
+                  focusable="false"
+                >
+                  <use href={`/stack/technology-logos.svg#${item.brand}`} />
+                </svg>
+                {item.label}
+              </span>
+            ))}
+          </div>
           <div className="about-portrait-frame" data-tilt="5">
             <img
               className="profile-photo"
