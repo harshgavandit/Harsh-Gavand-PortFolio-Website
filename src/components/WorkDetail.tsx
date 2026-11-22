@@ -8,7 +8,6 @@ import { ProjectRecognition } from "./ProjectRecognition";
 import { SystemFlow } from "./SystemFlow";
 import { Tabs } from "./Tabs";
 import { communityProjects } from "../data/portfolio";
-import { BankingPolicyReplay } from "./BankingPolicyReplay";
 import { projectRecovery } from "../data/projectArchitecture";
 import { informaProjectId } from "../data/informaPresentation";
 
@@ -92,12 +91,6 @@ export function WorkDetail() {
           )}
         </div>
       </section>
-      {project.slug === "banking-agent-harness" && (
-        <details className="work-section">
-          <summary>Explore recorded transfer policy scenarios</summary>
-          <BankingPolicyReplay />
-        </details>
-      )}
       <section className="work-section" aria-labelledby="engineering-title">
         <h2 id="engineering-title">
           {isInforma ? "How AI helps" : "Engineering work"}

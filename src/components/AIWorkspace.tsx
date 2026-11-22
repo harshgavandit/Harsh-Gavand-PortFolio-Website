@@ -1,12 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import {
-  ArrowUpRight,
-  BookOpen,
-  FlaskConical,
-  GitBranch,
-  Play,
-  Square,
-} from "lucide-react";
+import { ArrowUpRight, BookOpen, Play, Square } from "lucide-react";
 import { Tabs } from "./Tabs";
 import { CodeEvidence } from "./CodeEvidence";
 import {
@@ -15,22 +8,10 @@ import {
   ticketSamples,
 } from "../lib/aiWorkspace";
 import type {
-  Execution,
   GuideResult,
   RecruiterResult,
   TriageResult,
 } from "../lib/aiWorkspace";
-import sourceSummary from "../data/sourceSummary.json";
-import quality from "../data/aiQuality.json";
-import { Operations } from "./AIOperations";
-
-const indiaDate = (value: string) =>
-  new Intl.DateTimeFormat("en-IN", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-    timeZone: "Asia/Kolkata",
-  }).format(new Date(value));
 
 function useAIRequest<T>(endpoint: string) {
   const request = useRef<AbortController | null>(null);
@@ -106,53 +87,6 @@ function useAIRequest<T>(endpoint: string) {
     }
   }
   return { result, busy, error, run, stop };
-}
-
-function ExecutionDetails({ data }: { data?: Execution }) {
-  if (!data) return null;
-  return (
-    <details className="ai-execution">
-      <summary>Request details</summary>
-      <dl>
-        <div>
-          <dt>Model</dt>
-          <dd>{data.model}</dd>
-        </div>
-        {data.cache && (
-          <div>
-            <dt>Execution</dt>
-            <dd>
-              {data.cache === "hit" ? "Cached answer" : "Live model request"}
-            </dd>
-          </div>
-        )}
-        <div>
-          <dt>Server time</dt>
-          <dd>{(data.elapsedMs / 1000).toFixed(2)}s</dd>
-        </div>
-        <div>
-          <dt>Tokens</dt>
-          <dd>
-            {data.inputTokens ?? "Unavailable"} in ·{" "}
-            {data.outputTokens ?? "Unavailable"} out
-          </dd>
-        </div>
-        <div>
-          <dt>Budget used</dt>
-          <dd>${data.allowanceCostUsd.toFixed(6)}</dd>
-        </div>
-        <div>
-          <dt>Code revision</dt>
-          <dd>{data.sourceSnapshot}</dd>
-        </div>
-        <div>
-          <dt>Request ID</dt>
-          <dd>{data.requestId}</dd>
-        </div>
-      </dl>
-      <p>Budget usage includes the service’s pricing margin.</p>
-    </details>
-  );
 }
 
 function RequestState({ busy, error }: { busy: boolean; error: string }) {
@@ -290,7 +224,6 @@ function TechnicalGuide() {
                 ))}
               </div>
             )}
-            <ExecutionDetails data={api.result.execution} />
           </div>
         )}
       </div>
@@ -382,7 +315,6 @@ function RecruiterWorkspace() {
                 </article>
               ))}
             </div>
-            <ExecutionDetails data={api.result.execution} />
           </div>
         )}
       </div>
@@ -492,7 +424,6 @@ function TicketWorkbench() {
                   : "No configured identifier patterns found."}
               </small>
             </details>
-            <ExecutionDetails data={api.result.execution} />
           </div>
         )}
       </div>
@@ -517,14 +448,6 @@ export function AIWorkspace() {
           Ask about a project, match a role to my experience, or classify a
           support ticket.
         </p>
-        <div className="ai-workspace-facts">
-          <span>
-            <GitBranch size={15} aria-hidden="true" />
-            {sourceSummary.repositories.length} repositories
-          </span>
-          <span>{sourceSummary.fileCount} source files</span>
-          <span>File &amp; line references</span>
-        </div>
       </div>
       <Tabs
         id="ai-workspace"
@@ -535,122 +458,6 @@ export function AIWorkspace() {
           { label: "Ticket triage", content: <TicketWorkbench /> },
         ]}
       />
-      <Operations />
-      <section className="ai-quality" aria-labelledby="ai-quality-title">
-        <div>
-          <span className="eyebrow">
-            <FlaskConical size={15} aria-hidden="true" /> Evaluation
-          </span>
-          <h2 id="ai-quality-title">Evaluation results.</h2>
-          <p>
-            Code answers, role comparisons, and ticket routing tested against a
-            fixed set of example requests.
-          </p>
-          {quality.status === "completed" &&
-            quality.runtimeDigest !== __AI_RUNTIME_DIGEST__ && (
-              <p className="ai-request-error">
-                Evaluation update pending for this release.
-              </p>
-            )}
-        </div>
-        {quality.status === "completed" ? (
-          <>
-            <div className="ai-quality-stats">
-              <div>
-                <strong>
-                  {quality.summary.passed}/{quality.summary.total}
-                </strong>
-                <span>Response checks passed</span>
-              </div>
-              <div>
-                <strong>
-                  {quality.retrieval.passed}/{quality.retrieval.total}
-                </strong>
-                <span>Retrieval checks passed</span>
-              </div>
-              <div>
-                <strong>
-                  {(quality.summary.medianLatencyMs / 1000).toFixed(2)}s
-                </strong>
-                <span>Median test request</span>
-              </div>
-            </div>
-            <p className="ai-quality-meta">
-              Model: {quality.model} · Run:{" "}
-              {quality.evaluatedAt
-                ? `${indiaDate(quality.evaluatedAt)} IST`
-                : "Not run"}{" "}
-            </p>
-            {"dataset" in quality && (
-              <p className="ai-tool-note">
-                {
-                  (
-                    quality.dataset as {
-                      uniqueCases: number;
-                      repetitions: number;
-                    }
-                  ).uniqueCases
-                }{" "}
-                test cases ·{" "}
-                {(quality.dataset as { repetitions: number }).repetitions} runs
-                per case
-              </p>
-            )}
-            <details>
-              <summary>Test cases and methodology</summary>
-              <ul>
-                {(
-                  quality.cases as {
-                    id: string;
-                    passed: boolean;
-                    checks: string[];
-                    elapsedMs: number;
-                  }[]
-                ).map((item, index) => (
-                  <li key={`${item.id}-${index}`}>
-                    <strong>
-                      {item.passed ? "Pass" : "Fail"} · {item.id}
-                    </strong>
-                    <span>
-                      {item.checks.join(" · ")} ·{" "}
-                      {(item.elapsedMs / 1000).toFixed(2)}s
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              <p>
-                Controlled evaluation cases covering source references, expected
-                facts, ticket categories, refusals, and unsupported
-                requirements. Build revision:{" "}
-                <code>{quality.runtimeDigest.slice(0, 12)}</code>.
-              </p>
-            </details>
-          </>
-        ) : (
-          <p>
-            Live evaluation results have not been published for this version.
-          </p>
-        )}
-        <details>
-          <summary>Source repositories</summary>
-          <ul>
-            {sourceSummary.repositories.map((repo) => (
-              <li key={repo.repo}>
-                <a
-                  href={`${repo.url}/tree/${repo.commit}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {repo.title} ↗
-                </a>
-                <span>
-                  {repo.files} files · {repo.commit.slice(0, 7)}
-                </span>
-              </li>
-            ))}
-          </ul>
-        </details>
-      </section>
       <details className="ai-page-privacy">
         <summary>Privacy</summary>
         <p>

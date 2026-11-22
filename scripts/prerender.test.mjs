@@ -118,7 +118,10 @@ test("AI workspace directly loads as complete HTML with accessible tools, correc
     assert.match(page, /id="ticket-input"/);
     assert.equal((page.match(/role="tabpanel"/g) || []).length, 3);
     assert.match(page, /Classify ticket/);
-    assert.match(page, /Source repositories/);
+    assert.doesNotMatch(
+      page,
+      /Evaluation results|Service metrics|Request details|Build revision/,
+    );
     assert.ok(!page.includes('<div id="root"></div>'));
   }
   assert.equal(
