@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import { projects, type CaseStudy } from "../data/portfolio";
+import { curatedArchive } from "../data/recruiter";
 import { displayProject, displayStudy } from "../data/informaPresentation";
 import { projectImage } from "../data/projectCaptures";
 import { useMotionEnabled } from "./MotionPreferences";
 import { getLenis, loadMotionKit } from "../motion/kit";
 
-const AI = /OpenAI|LangChain|LangGraph|Google ADK|RAG|LLM|TensorFlow|MCP/i;
+const AI =
+  /OpenAI|LangChain|LangGraph|Google ADK|RAG|LLM|TensorFlow|MCP|Claude|Anthropic|Whisper/i;
 
 /*
  * Featured reel: the real application captures on a 3D cylinder. On desktop
@@ -15,6 +17,21 @@ const AI = /OpenAI|LangChain|LangGraph|Google ADK|RAG|LLM|TensorFlow|MCP/i;
  * Every card is ordinary HTML with real links, so the reel is fully keyboard
  * and screen-reader accessible: focusing a card turns the reel to it.
  */
+type ReelItem = {
+  slug: string;
+  title: string;
+  kind: string;
+  summary: string;
+  image: ReturnType<typeof projectImage>;
+  live?: string;
+  github?: string;
+  details: string;
+  detailsLabel: string;
+  stack: string;
+  technologies: string[];
+  year?: string;
+};
+
 export function ProjectReel({ studies }: { studies: CaseStudy[] }) {
   const motion = useMotionEnabled();
   const root = useRef<HTMLDivElement>(null);
@@ -22,7 +39,7 @@ export function ProjectReel({ studies }: { studies: CaseStudy[] }) {
   const [enhanced, setEnhanced] = useState(false);
   const jump = useRef<(index: number) => void>(() => {});
 
-  const items = studies.map((record) => {
+  const featured: ReelItem[] = studies.map((record) => {
     const study = displayStudy(record);
     const project = displayProject(
       projects.find((item) => item.id === study.projectId)!,
@@ -35,9 +52,37 @@ export function ProjectReel({ studies }: { studies: CaseStudy[] }) {
       summary: study.summary.split(/(?<=\.)\s/)[0],
       image: projectImage(project.slug),
       live: project.demoUrl,
+      details: `/work/${project.slug}/`,
+      detailsLabel: "Case study",
       stack: project.technologies.slice(0, 3).join(" · "),
+      technologies: project.technologies,
     };
   });
+  // Repositories from the curated archive join the reel with a generated
+  // cover (they have no deployed capture) and link to source and catalog.
+  const repositories: ReelItem[] = curatedArchive
+    .filter(
+      (entry) => !studies.some((study) => study.projectId === entry.projectId),
+    )
+    .map((entry) => {
+      const project = projects.find((item) => item.id === entry.projectId)!;
+      const ai = project.technologies.some((item) => AI.test(item));
+      return {
+        slug: project.slug,
+        title: project.title.split(" — ")[0],
+        kind: ai ? "AI repository" : "Engineering repository",
+        summary: entry.feature,
+        image: null,
+        live: project.demoUrl,
+        github: project.githubUrl,
+        details: `/archive/#${project.slug}`,
+        detailsLabel: "Details",
+        stack: project.technologies.slice(0, 3).join(" · "),
+        technologies: project.technologies,
+        year: entry.year,
+      };
+    });
+  const items = [...featured, ...repositories];
   const count = items.length;
 
   useEffect(() => {
@@ -56,7 +101,7 @@ export function ProjectReel({ studies }: { studies: CaseStudy[] }) {
         const trigger = ScrollTrigger.create({
           trigger: element,
           start: "top top+=104",
-          end: () => `+=${(count - 1) * window.innerHeight * 0.38}`,
+          end: () => `+=${(count - 1) * window.innerHeight * 0.24}`,
           pin: true,
           scrub: 0.6,
           anticipatePin: 1,
@@ -116,12 +161,16 @@ export function ProjectReel({ studies }: { studies: CaseStudy[] }) {
               }}
             >
               <a
-                className="reel-media"
-                href={`#${item.slug}`}
+                className={`reel-media${item.image ? "" : " reel-cover"}`}
+                href={item.image ? `#${item.slug}` : item.details}
                 data-cursor="Details"
-                aria-label={`${item.title}: jump to project details`}
+                aria-label={
+                  item.image
+                    ? `${item.title}: jump to project details`
+                    : `${item.title}: open repository details`
+                }
               >
-                {item.image && (
+                {item.image ? (
                   <img
                     src={item.image.src}
                     width={item.image.width}
@@ -129,6 +178,26 @@ export function ProjectReel({ studies }: { studies: CaseStudy[] }) {
                     alt={item.image.alt}
                     loading="lazy"
                   />
+                ) : (
+                  <span className="reel-cover-art" aria-hidden="true">
+                    <span className="reel-cover-mark">
+                      {item.title
+                        .split(/[\s&-]+/)
+                        .filter(Boolean)
+                        .slice(0, 2)
+                        .map((word) => word[0])
+                        .join("")
+                        .toUpperCase()}
+                    </span>
+                    <span className="reel-cover-tags">
+                      {item.technologies.slice(0, 4).map((tech) => (
+                        <span key={tech}>{tech}</span>
+                      ))}
+                    </span>
+                    {item.year && (
+                      <span className="reel-cover-year">{item.year}</span>
+                    )}
+                  </span>
                 )}
               </a>
               <div className="reel-meta">
@@ -146,8 +215,19 @@ export function ProjectReel({ studies }: { studies: CaseStudy[] }) {
                       Live site <ArrowUpRight size={14} aria-hidden="true" />
                     </a>
                   )}
-                  <a href={`/work/${item.slug}/`}>
-                    Case study <ArrowUpRight size={14} aria-hidden="true" />
+                  {item.github && (
+                    <a
+                      href={item.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`GitHub source for ${item.title}`}
+                    >
+                      GitHub <ArrowUpRight size={14} aria-hidden="true" />
+                    </a>
+                  )}
+                  <a href={item.details}>
+                    {item.detailsLabel}{" "}
+                    <ArrowUpRight size={14} aria-hidden="true" />
                   </a>
                 </div>
               </div>

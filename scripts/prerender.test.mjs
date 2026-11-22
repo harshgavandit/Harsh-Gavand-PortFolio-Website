@@ -29,6 +29,7 @@ import { agriConnectGallery } from "../src/data/agriConnectGallery.ts";
 import { createHash } from "node:crypto";
 import {
   chapters,
+  curatedArchive,
   productionCode,
   pythonQuotaCode,
 } from "../src/data/recruiter.ts";
@@ -221,9 +222,7 @@ test("verified deployments have unique main cards, real capture assets, complete
     new Set(featuredStudies.map((study) => study.projectId)).size,
     featuredStudies.length,
   );
-  const curated = html.match(
-    /<details id="all-projects"[\s\S]*?<\/details>/,
-  )?.[0];
+  const curated = html.match(/<ol class="reel-track"[\s\S]*?<\/ol>/)?.[0];
   for (const item of deploymentShowcase) {
     const project = displayProject(
       projects.find((project) => project.id === item.projectId),
@@ -249,8 +248,8 @@ test("verified deployments have unique main cards, real capture assets, complete
     for (const text of [project.role, project.impact, ...project.features])
       assert.ok(card.includes(escapeHTML(text)), text);
     assert.ok(
-      !curated?.includes(`/archive#${project.slug}`),
-      "Featured projects must not be repeated as additional work",
+      !curated?.includes(`/archive/#${project.slug}`),
+      "Featured projects must not be repeated as repository cards",
     );
     const itemReport = item.reviewPath
       ? JSON.parse(
@@ -300,10 +299,17 @@ test("hosted support and healthcare cards expose engineering work and working pr
   );
   assert.equal(report.publicApiChecks.length, 7);
   assert.ok(report.publicApiChecks.every((check) => check.passed === true));
-  assert.ok(
-    html.includes('id="all-projects"'),
-    "The eight distinct curated repositories must remain discoverable",
-  );
+  const reel = html.match(/<ol class="reel-track"[\s\S]*?<\/ol>/)?.[0];
+  for (const entry of curatedArchive.filter(
+    (item) =>
+      !featuredStudies.some((study) => study.projectId === item.projectId),
+  ))
+    assert.ok(
+      reel?.includes(
+        `/archive/#${projects.find((project) => project.id === entry.projectId).slug}`,
+      ),
+      "The eight distinct curated repositories must remain discoverable",
+    );
   for (const document of [
     html,
     archive,

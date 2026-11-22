@@ -172,8 +172,8 @@ function HomeLabel({ position }: { position: THREE.Vector3 }) {
       position
         .clone()
         .normalize()
-        .multiplyScalar(RADIUS * 1.2)
-        .add(new THREE.Vector3(0, 0.35, 0)),
+        .multiplyScalar(RADIUS * 1.06)
+        .add(new THREE.Vector3(-0.35, 0.42, 0)),
     [position],
   );
   return (

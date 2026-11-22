@@ -1,14 +1,17 @@
-import { ArrowDown, ArrowRight, ArrowUpRight, LockKeyhole } from "lucide-react";
-import { projects, type CaseStudy, type Project } from "../data/portfolio";
+import { ArrowRight, ArrowUpRight, LockKeyhole } from "lucide-react";
+import {
+  archiveProjects,
+  projects,
+  type CaseStudy,
+  type Project,
+} from "../data/portfolio";
 import { privateProjects, type PrivateProject } from "../data/privateProjects";
-import { curatedArchive } from "../data/recruiter";
 import { ActionLink, LeadStatement, Tags } from "./Primitives";
 import { LazyScene } from "../three/LazyScene";
 import { ProjectReel } from "./ProjectReel";
 import { ProductEvidence } from "./ProductEvidence";
 import { ProjectRecognition } from "./ProjectRecognition";
 import {
-  featuredStudies,
   primaryFeaturedStudies,
   secondaryFeaturedStudies,
 } from "../data/workPresentation";
@@ -254,7 +257,11 @@ export function FeaturedWork() {
           </ul>
         </nav>
       </div>
-      <ProjectReel studies={[...mainStudies, ...moreStudies.slice(0, 4)]} />
+      <ProjectReel studies={[...mainStudies, ...moreStudies]} />
+      <a className="reel-catalog-link" href="/archive/">
+        Browse the complete catalog of {archiveProjects.length} repositories{" "}
+        <ArrowRight size={16} aria-hidden="true" />
+      </a>
       <InformaSpotlight />
       <div className="flagship-list">
         {mainStudies.map((study) => (
@@ -277,7 +284,6 @@ export function FeaturedWork() {
           ))}
         </div>
       </details>
-      <MoreWork />
     </section>
   );
 }
@@ -358,91 +364,5 @@ function PrivateProjectCard({ project }: { project: PrivateProject }) {
         </div>
       </div>
     </article>
-  );
-}
-
-export function MoreWork() {
-  const additional = curatedArchive.filter(
-    (entry) =>
-      !featuredStudies.some((study) => study.projectId === entry.projectId),
-  );
-  if (additional.length === 0) return null;
-  return (
-    <details id="all-projects" className="curated-archive">
-      <summary>
-        <span>
-          <span className="eyebrow">Curated archive</span>
-          <strong>{additional.length} more engineering projects.</strong>
-        </span>
-        <span>
-          Browse repositories <ArrowDown size={17} aria-hidden="true" />
-        </span>
-      </summary>
-      <div
-        className="archive-table-scroll"
-        tabIndex={0}
-        role="region"
-        aria-label="Curated engineering repositories"
-      >
-        <table>
-          <caption>
-            Selected AI, API, retrieval, and workflow repositories
-          </caption>
-          <thead>
-            <tr>
-              {[
-                "Year",
-                "Project",
-                "Built with",
-                "Key engineering feature",
-                "Links",
-              ].map((label) => (
-                <th scope="col" key={label}>
-                  {label}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {additional.map((entry) => {
-              const project = projects.find((p) => p.id === entry.projectId)!;
-              return (
-                <tr key={project.id}>
-                  <td>{entry.year}</td>
-                  <th scope="row">
-                    <a href={`/archive/#${project.slug}`}>{project.title}</a>
-                  </th>
-                  <td>{project.technologies.slice(0, 3).join(" · ")}</td>
-                  <td>{entry.feature}</td>
-                  <td>
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`GitHub source for ${project.title}`}
-                    >
-                      GitHub <ArrowUpRight size={13} aria-hidden="true" />
-                    </a>
-                    {project.demoUrl && (
-                      <a
-                        href={project.demoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Live <ArrowUpRight size={13} aria-hidden="true" />
-                      </a>
-                    )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      <a className="archive-complete-link" href="/archive/">
-        Browse the complete project catalog{" "}
-        <ArrowRight size={16} aria-hidden="true" />
-      </a>
-    </details>
   );
 }

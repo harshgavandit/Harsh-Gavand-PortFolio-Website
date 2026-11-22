@@ -2941,8 +2941,8 @@ html[data-motion="on"] .stack-meter:not(.is-inview) .stack-meter-fill {
 
 /* Desktop: a 3D cylinder turned by scroll while the reel is pinned. */
 .reel.is-3d {
-  height: calc(100svh - 120px);
-  min-height: 600px;
+  height: min(calc(100svh - 120px), 700px);
+  min-height: 560px;
   display: flex;
   flex-direction: column;
 }
@@ -3049,4 +3049,102 @@ html[data-motion="on"] .stack-meter:not(.is-inview) .stack-meter-fill {
 }
 .reel.is-3d {
   padding-top: 8px;
+}
+
+/* Generated covers for repositories without a deployed capture. */
+.reel-cover {
+  position: relative;
+  background:
+    radial-gradient(
+      circle at 78% 18%,
+      rgba(var(--blue-rgb), 0.22),
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at 10% 100%,
+      rgba(99, 102, 241, 0.18),
+      transparent 60%
+    ),
+    var(--raised);
+}
+.reel-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(var(--blue-rgb), 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--blue-rgb), 0.08) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.reel-cover-art {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+}
+.reel-cover-mark {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: var(--gradient-brand);
+  color: #fff;
+  font:
+    600 1.4rem "Space Grotesk Variable",
+    sans-serif;
+  letter-spacing: -0.03em;
+  box-shadow: 0 14px 30px rgba(var(--blue-rgb), 0.3);
+}
+.reel-cover-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.reel-cover-tags span {
+  padding: 4px 9px;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: var(--card-strong);
+  font: 500 0.7rem var(--mono);
+  color: var(--ink-2);
+}
+.reel-cover-year {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font: 600 0.75rem var(--mono);
+  color: var(--accent);
+}
+.reel-catalog-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  width: fit-content;
+  margin: -24px auto 48px;
+  padding: 10px 18px;
+  min-height: 44px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-border);
+  background: var(--card-strong);
+  box-shadow: var(--shadow-sm);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+.reel-catalog-link:hover {
+  border-color: rgba(var(--blue-rgb), 0.4);
+}
+/* 24 cards: a narrower card keeps the cylinder within the stage. */
+.reel.is-3d .reel-track {
+  --card-w: min(370px, 27vw);
+}
+.reel.is-3d .reel-stage {
+  perspective: 1300px;
+}
+.reel.is-3d .reel-card {
+  min-height: 0;
 }

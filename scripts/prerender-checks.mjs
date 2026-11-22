@@ -98,16 +98,24 @@ export function assertHomepage(html, origin = profile.site) {
     (html.match(/class="flagship-card(?:\s[^\"]*)?"/g) || []).length,
     featuredStudies.length,
   );
+  // The curated repositories now live in the featured reel instead of a
+  // separate archive table.
   const additional = curatedArchive.filter(
     (entry) =>
       !featuredStudies.some((study) => study.projectId === entry.projectId),
   );
-  assert.equal(html.includes('id="all-projects"'), additional.length > 0);
+  assert.ok(!html.includes('id="all-projects"'), "Archive table removed");
+  assert.equal((html.match(/<tr>/g) || []).length, 0);
+  const reel = html.match(/<ol class="reel-track"[\s\S]*?<\/ol>/)?.[0] || "";
   assert.equal(
-    (html.match(/<tr>/g) || []).length,
-    additional.length ? additional.length + 1 : 0,
-    "Expected only additional curated repositories and a table header",
+    (reel.match(/class="reel-card"/g) || []).length,
+    featuredStudies.length + additional.length,
+    "Every featured and curated project appears in the reel",
   );
+  for (const entry of additional) {
+    const project = projects.find((item) => item.id === entry.projectId);
+    assert.ok(reel.includes(`href="${project.githubUrl}"`), project.slug);
+  }
   assert.ok(
     !html.includes('class="additional-work"'),
     "The removed Also built strip must stay absent",
