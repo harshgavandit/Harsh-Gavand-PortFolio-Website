@@ -1,6 +1,5 @@
 import {
   ArrowUpRight,
-  BriefcaseBusiness,
   GraduationCap,
   MapPin,
 } from "lucide-react";
@@ -134,24 +133,6 @@ export function Experience() {
   );
 }
 
-const journey = [
-  {
-    icon: BriefcaseBusiness,
-    date: experience[1].period.split(" — ")[0],
-    title: `${experience[1].role} · ${experience[1].company}`,
-  },
-  {
-    icon: GraduationCap,
-    date: "Jul 2025",
-    title: aboutProfile.education.degree,
-  },
-  {
-    icon: BriefcaseBusiness,
-    date: experience[0].period.split(" — ")[0],
-    title: `${experience[0].role} · ${experience[0].company}`,
-  },
-];
-
 // Technologies from the summary beside the portrait, drifting in depth.
 const aboutFloaters = [
   { label: "React", brand: "react", depth: 0.9 },
@@ -217,15 +198,6 @@ export function About() {
           <span className="eyebrow">About me</span>
           <h2 className="section-title">Curious about the whole system.</h2>
           <p>{aboutProfile.summary}</p>
-          <ol className="journey" aria-label="Career and education milestones">
-            {journey.map((step) => (
-              <li key={step.title}>
-                <step.icon size={16} aria-hidden="true" />
-                <span className="journey-date">{step.date}</span>
-                <span>{step.title}</span>
-              </li>
-            ))}
-          </ol>
           <div className="education-card">
             <div>
               <span className="eyebrow">Education</span>
