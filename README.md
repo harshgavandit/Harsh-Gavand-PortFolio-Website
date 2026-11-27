@@ -63,6 +63,8 @@ The site uses a light engineering theme (white / light-blue palette, glass surfa
 
 Use Node.js **24.x LTS**, pinned in `package.json` and `.nvmrc`. This supports the server's shared TypeScript data and keeps deployments on one major version while receiving patch updates. Install with `npm ci`, then run `npm run dev`. This starts the API at `127.0.0.1:3001` and Vite at `127.0.0.1:5173`; both ports must be available. Vite proxies `/api`. The UI and API can also run separately through `npm run dev:ui` and `npm run dev:api`.
 
+To run the site exactly as it behaves in production, use `npm run preview:prod` and open http://localhost:4173. It builds and pre-renders the site, then serves it with the production server, the live assistant, voice and AI tools, rate limits and usage allowance. Local questions use a separate `portfolio-ai:local-preview` Redis namespace, so they never consume visitors' allowance; production metrics and cached public answers are read but never written. `npm run preview:prod -- --no-build` serves the existing `dist/`, and `PREVIEW_PORT` changes the port.
+
 ### Checking before you push
 
 `npm run verify` runs exactly what the **Verify portfolio** GitHub workflow runs (lint, types, unit tests, build, pre-render tests, SEO audit and the AI release gate). `npm run hooks:install` enables a pre-push hook (`.githooks/pre-push`) that runs the fast part of it, including the AI release gate, so a push that would fail CI is stopped locally (`git push --no-verify` skips it once).
