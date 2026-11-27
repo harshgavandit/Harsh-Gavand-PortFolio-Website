@@ -208,6 +208,17 @@ export function ProjectReel({
             >
               <a
                 className={`reel-media${item.image ? "" : " reel-cover"}`}
+                onPointerMove={(event) => {
+                  if (!motion || event.pointerType !== "mouse") return;
+                  const frame = event.currentTarget;
+                  const bounds = frame.getBoundingClientRect();
+                  if (!bounds.width || !bounds.height) return;
+                  const x = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
+                  const y = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height));
+                  frame.style.setProperty("--preview-yaw", `${(x - 0.5) * 8}deg`);
+                  frame.style.setProperty("--preview-pitch", `${(0.5 - y) * 6}deg`);
+                  frame.style.setProperty("--preview-light", `${x * 100}% ${y * 100}%`);
+                }}
                 href={item.imageHref ?? item.details}
                 data-cursor={item.note ? "Enlarge" : "Open"}
                 aria-label={
