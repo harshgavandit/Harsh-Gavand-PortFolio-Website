@@ -314,6 +314,32 @@
   gap: 12px;
   margin-top: 20px;
 }
+.ai-agent-steps {
+  list-style: none;
+  padding: 0;
+}
+.ai-agent-steps li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 12px;
+  padding: 10px 12px;
+  border-left: 2px solid var(--line);
+  background: var(--raised);
+}
+.ai-agent-steps li:has([data-step-status="running"]) {
+  border-color: var(--accent);
+}
+.ai-agent-steps span {
+  color: var(--muted);
+}
+.ai-agent-steps p {
+  flex-basis: 100%;
+  margin: 0;
+}
+.ai-result #recruiter-intro-email {
+  margin-block: 8px 12px;
+}
 .ai-requirements article {
   padding: 18px;
   border: 1px solid var(--line);

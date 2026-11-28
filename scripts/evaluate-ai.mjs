@@ -10,7 +10,10 @@ import { randomUUID } from "node:crypto";
 import { buildRequest } from "../server/openai.mjs";
 import { buildTask } from "../server/ai-tools.mjs";
 import { EvaluationBudget } from "./evaluation-budget.mjs";
-import { evaluationBudgetCap, shouldStopEvaluation } from "./evaluation-policy.mjs";
+import {
+  evaluationBudgetCap,
+  shouldStopEvaluation,
+} from "./evaluation-policy.mjs";
 
 if (!process.argv.includes("--live"))
   throw new Error(
@@ -22,8 +25,8 @@ const repeats = remote
   : Number(
       process.argv.find((arg) => arg.startsWith("--repeat="))?.slice(9) || 2,
     );
-if (!Number.isInteger(repeats) || repeats < 1 || repeats > 3)
-  throw new Error("Use one to three explicit benchmark repetitions.");
+if (!Number.isInteger(repeats) || repeats < 1 || repeats > 2)
+  throw new Error("Use one or two explicit benchmark repetitions.");
 if (remote && remote !== "https://harshgavand.dev")
   throw new Error(
     "Remote smoke checks are restricted to the canonical portfolio.",
@@ -40,6 +43,7 @@ if (!budgetPath)
     "Explicit paid evaluations require a new --request-budget-file=PATH.",
   );
 for (const item of cases) {
+  if (item.kind === "agent") continue; // Both stages are checked at dispatch.
   const request =
     item.kind === "guide"
       ? buildRequest([{ role: "user", content: item.text }], "gpt-6-luna")
@@ -50,8 +54,11 @@ for (const item of cases) {
     "Request exceeds the approved output cap.",
   );
 }
+const maxAttempts =
+  repeats *
+  cases.reduce((sum, item) => sum + (item.kind === "agent" ? 2 : 1), 0);
 const budget = await EvaluationBudget.create(budgetPath, {
-  maxAttempts: cases.length * repeats,
+  maxAttempts,
   maxOutputTokens: 1000,
   runtimeDigest: evaluatedRevision,
   sourceSnapshot: sourceSnapshot.digest,
@@ -85,6 +92,8 @@ try {
 let server;
 let origin = remote;
 let isolatedQuotaBudgetCapUsd = null;
+let measuredAgent;
+let reservedAttempts = 0;
 if (!origin) {
   const config = loadConfig();
   const evaluationCapMicros = evaluationBudgetCap(config.monthlyBudgetMicros);
@@ -97,14 +106,18 @@ if (!origin) {
       url: config.quotaUrl,
       token: config.quotaToken,
       namespace: `portfolio-ai:eval:${randomUUID()}`,
-      dailyLimit: aiEvalCases.length * repeats + 5,
+      dailyLimit: maxAttempts + 5,
       monthlyBudgetMicros: evaluationCapMicros,
     }),
     clientLimit: aiEvalCases.length * repeats + 5,
     globalLimit: aiEvalCases.length * repeats + 5,
     // Repetitions measure fresh provider output, never a previous sample answer.
     guideCache: { get: async () => null, put: async () => {} },
-    metrics: { record: async () => {} },
+    metrics: {
+      record: async (event) => {
+        if (event.kind === "agent") measuredAgent?.(event);
+      },
+    },
   });
   await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
   origin = `http://127.0.0.1:${server.address().port}`;
@@ -122,6 +135,22 @@ try {
       let response, data, grading;
       const transientAttempts = [];
       await budget.reserve({ id: item.id, repetition, maxOutputTokens: 1000 });
+      reservedAttempts++;
+      if (item.kind === "agent") {
+        await budget.reserve({
+          id: item.id + "-assess",
+          repetition,
+          maxOutputTokens: 1000,
+        });
+        reservedAttempts++;
+      }
+      const agentAccounting =
+        item.kind === "agent"
+          ? new Promise((resolve) => {
+              measuredAgent = resolve;
+            })
+          : null;
+      let execution;
       {
         response = undefined;
         data = undefined;
@@ -130,20 +159,33 @@ try {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(body),
-            signal: AbortSignal.timeout(35000),
+            signal: AbortSignal.timeout(item.kind === "agent" ? 50000 : 35000),
           });
-          data = await response.json();
-          grading = response.ok
-            ? gradeCase(item, data)
-            : {
-                passed: false,
-                checks: [
-                  {
-                    name: `HTTP ${response.status} (${data.code || "unavailable"})`,
-                    passed: false,
-                  },
-                ],
-              };
+          data = response.headers
+            .get("content-type")
+            ?.includes("application/x-ndjson")
+            ? (await response.text()).trim().split("\n").map(JSON.parse).at(-1)
+            : await response.json();
+          if (agentAccounting && data.type === "result") {
+            const event = await agentAccounting;
+            execution = {
+              inputTokens: event.inputTokens,
+              outputTokens: event.outputTokens,
+              allowanceCostUsd: event.allowanceMicros / 1e6,
+            };
+          }
+          grading =
+            response.ok && data.type !== "error"
+              ? gradeCase(item, data)
+              : {
+                  passed: false,
+                  checks: [
+                    {
+                      name: `HTTP ${response.status} (${data.code || "unavailable"})`,
+                      passed: false,
+                    },
+                  ],
+                };
         } catch {
           grading = {
             passed: false,
@@ -153,6 +195,8 @@ try {
           };
         }
       }
+      measuredAgent = undefined;
+      execution ??= data?.execution;
       const result = {
         id: item.id,
         kind: item.kind,
@@ -166,7 +210,9 @@ try {
           .map((check) => check.name),
         elapsedMs: Math.round(performance.now() - started),
         transientAttempts,
-        allowanceCostUsd: data?.execution?.allowanceCostUsd || 0,
+        allowanceCostUsd: execution?.allowanceCostUsd || 0,
+        inputTokens: execution?.inputTokens || 0,
+        outputTokens: execution?.outputTokens || 0,
         output: data,
       };
       results.push(result);
@@ -202,9 +248,9 @@ const report = {
   runtimeDigest: evaluatedRevision,
   environment: remote ? "production-http-smoke" : "local-http-real-provider",
   requestAllowance: {
-    maxAttempts: cases.length * repeats,
+    maxAttempts,
     maxOutputTokens: 1000,
-    reservedAttempts: results.length,
+    reservedAttempts,
     automaticRetries: false,
     isolatedQuotaBudgetCapUsd,
   },
@@ -213,7 +259,7 @@ const report = {
     repetitions: repeats,
     labelSource:
       "Source-derived expectations and synthetic fixtures; not independently human-labelled",
-    graderVersion: 3,
+    graderVersion: 4,
   },
   cases: results.map(({ output: _output, ...result }) => result),
   retrieval: { passed: retrievalPassed, total: retrievalCases.length },
@@ -229,14 +275,8 @@ const report = {
       latencies[
         Math.min(latencies.length - 1, Math.ceil(latencies.length * 0.95) - 1)
       ],
-    inputTokens: results.reduce(
-      (sum, row) => sum + (row.output?.execution?.inputTokens || 0),
-      0,
-    ),
-    outputTokens: results.reduce(
-      (sum, row) => sum + (row.output?.execution?.outputTokens || 0),
-      0,
-    ),
+    inputTokens: results.reduce((sum, row) => sum + row.inputTokens, 0),
+    outputTokens: results.reduce((sum, row) => sum + row.outputTokens, 0),
     allowanceCostUsd:
       Math.round(
         results.reduce((sum, result) => sum + result.allowanceCostUsd, 0) *
@@ -303,6 +343,6 @@ console.log(
 );
 assert.equal(
   report.summary.passed,
-  report.summary.total,
+  cases.length * repeats,
   "Inspect failed evaluation cases; do not publish a fabricated success rate.",
 );

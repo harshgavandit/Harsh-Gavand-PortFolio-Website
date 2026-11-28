@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { workPage } from "../lib/projectNavigation";
+import { openPortfolioAssistant } from "../lib/portfolioActions";
 import { caseEvidence } from "../data/caseEvidence";
 import { featuredStudies, sampleWorkspaceURLs } from "../data/workPresentation";
 import { ActionLink, LeadStatement, Tags } from "./Primitives";
@@ -58,6 +59,17 @@ export function WorkDetail() {
           <ActionLink href={project.githubUrl} external>
             GitHub
           </ActionLink>
+          <button
+            type="button"
+            className="button button-secondary"
+            onClick={() =>
+              openPortfolioAssistant(
+                `How was ${study.shortName} built, and what did Harsh contribute?`,
+              )
+            }
+          >
+            Ask AI about this project
+          </button>
         </div>
       </header>
       <ProjectRecognition slug={project.slug} />

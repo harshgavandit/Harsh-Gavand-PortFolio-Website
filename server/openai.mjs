@@ -62,13 +62,10 @@ export function validateMessages(body) {
   return clean;
 }
 
-export function knowledgeFor(messages) {
-  const query = messages
-    .filter((m) => m.role === "user")
-    .map((m) => m.content)
-    .join(" ")
-    .toLowerCase();
-  const tokens = [...new Set(query.match(/[a-z0-9+#.]{2,}/g) || [])].filter(
+export function rankProjects(query) {
+  const tokens = [
+    ...new Set(query.toLowerCase().match(/[a-z0-9+#.]{2,}/g) || []),
+  ].filter(
     (t) =>
       ![
         "the",
@@ -86,7 +83,7 @@ export function knowledgeFor(messages) {
         "projects",
       ].includes(t),
   );
-  const ranked = projects
+  return projects
     .map((p) => {
       const title = p.title.toLowerCase();
       const stack = p.technologies.join(" ").toLowerCase();
@@ -105,6 +102,14 @@ export function knowledgeFor(messages) {
       };
     })
     .sort((a, b) => b.score - a.score);
+}
+
+export function knowledgeFor(messages) {
+  const query = messages
+    .filter((m) => m.role === "user")
+    .map((m) => m.content)
+    .join(" ");
+  const ranked = rankProjects(query);
   return {
     caseEvidence: Object.fromEntries(
       ranked

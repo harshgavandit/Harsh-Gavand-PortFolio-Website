@@ -135,7 +135,9 @@ export class AIMetrics {
     const integer = (value) =>
       Number.isSafeInteger(value) && value >= 0 ? value : 0;
     const day = new Date(this.clock()).toISOString().slice(0, 10);
-    const kind = ["guide", "voice", "recruiter", "triage"].includes(event.kind)
+    const kind = ["guide", "voice", "recruiter", "triage", "agent"].includes(
+      event.kind,
+    )
       ? event.kind
       : "guide";
     const status = [
@@ -179,7 +181,7 @@ export class AIMetrics {
       "outputTokens",
       "allowanceMicros",
       ...bounds.map((value) => "latency:" + value),
-      ...["guide", "voice", "recruiter", "triage"].map(
+      ...["guide", "voice", "recruiter", "triage", "agent"].map(
         (kind) => "kind:" + kind,
       ),
     ];
@@ -234,7 +236,7 @@ export class AIMetrics {
       allowanceCostUsd: totals.allowanceMicros / 1000000,
       uncachedP95UpperMs: p95UpperMs,
       byTool: Object.fromEntries(
-        ["guide", "voice", "recruiter", "triage"].map((kind) => [
+        ["guide", "voice", "recruiter", "triage", "agent"].map((kind) => [
           kind,
           totals["kind:" + kind],
         ]),

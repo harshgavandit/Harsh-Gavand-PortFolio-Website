@@ -1,4 +1,5 @@
 import { open, readFile, unlink } from "node:fs/promises";
+export const MAX_EVALUATION_ATTEMPTS = 64;
 
 // This operator-side ledger bounds one explicitly approved evaluation. It is
 // deliberately separate from the public application's visitor allowance.
@@ -12,7 +13,7 @@ export class EvaluationBudget {
     if (
       !Number.isSafeInteger(header.maxAttempts) ||
       header.maxAttempts < 1 ||
-      header.maxAttempts > 48 ||
+      header.maxAttempts > MAX_EVALUATION_ATTEMPTS ||
       header.maxOutputTokens !== 1000 ||
       !/^[a-f0-9]{64}$/.test(header.runtimeDigest) ||
       !/^[a-f0-9]{64}$/.test(header.sourceSnapshot)
