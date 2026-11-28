@@ -189,9 +189,15 @@ const agentCapabilities = {
   evals: /\bevals?\b|\bmodel evaluation\b/i,
   guardrails: /\bguardrails?\b/i,
 };
+const relationalDesign =
+  /\brelational (?:database design|data modell?ing)\b|\bsql schema design\b/i;
+const schemaImplementation =
+  /\b(?:designed|modell?ed) relational\b|\bschema design\b|\bpostgresql data modell?ing\b/i;
+
 function agentSkills(text) {
   return [
     ...capabilityKeys(text),
+    ...(relationalDesign.test(text) ? ["relational-design"] : []),
     ...Object.entries(agentCapabilities)
       .filter(([, pattern]) => pattern.test(text))
       .map(([name]) => name),
@@ -212,7 +218,7 @@ function skillAlternatives(text) {
 }
 
 const straightforwardStack =
-  /^(?:(?:experience (?:with|in)|proficiency in|knowledge of)\s+)?(?:node(?:[.\s-]?js)?|python|react(?:\.js)?|typescript|javascript|express(?:\.js)?|fastapi|django|flask|next(?:\.js)?|postgres(?:ql)?|mongodb|redis|docker|sql|openai|langchain|langgraph|rag|mcp|ruby(?: on rails)?|go(?:lang)?|rust|java|kubernetes|kafka)(?:\s+(?:back[ -]?end|front[ -]?end|full[ -]?stack|rest|api|apis|services?|applications?|development|integration|experience|projects?|work))*[.!]?$/i;
+  /^(?:(?:experience (?:with|in)|proficiency in|knowledge of)\s+)?(?:node(?:[.\s-]?js)?|python|react(?:\.js)?|typescript|javascript|express(?:\.js)?|fastapi|django|flask|next(?:\.js)?|postgres(?:ql)?|mongodb|redis|docker|sql|openai|langchain|langgraph|rag|mcp|ruby(?: on rails)?|go(?:lang)?|rust|java|kubernetes|kafka|relational database design|relational data modell?ing|sql schema design)(?:\s+(?:back[ -]?end|front[ -]?end|full[ -]?stack|rest|api|apis|services?|applications?|development|integration|experience|projects?|work))*[.!]?$/i;
 
 function isStraightforwardStack(text) {
   if (conjunction.test(text) && alternativeSeparator.test(text)) return false;
@@ -222,14 +228,28 @@ function isStraightforwardStack(text) {
 }
 
 function source(id, label, href, kind, skills, text) {
+  const capabilities = agentSkills(skills + " " + text);
+  const implementationCapabilities = agentSkills(text);
+  // SQL use is distinct from designing a schema for a relational database.
+  if (
+    schemaImplementation.test(text) &&
+    /\b(?:postgres(?:ql)?|mysql|sqlite|sql|sequelize|sqlalchemy|prisma)\b/i.test(
+      skills + " " + text,
+    )
+  ) {
+    if (!capabilities.includes("relational-design"))
+      capabilities.push("relational-design");
+    if (!implementationCapabilities.includes("relational-design"))
+      implementationCapabilities.push("relational-design");
+  }
   return {
     id,
     label,
     href,
     kind,
     text,
-    capabilities: agentSkills(skills + " " + text),
-    implementationCapabilities: agentSkills(text),
+    capabilities,
+    implementationCapabilities,
   };
 }
 
@@ -392,15 +412,20 @@ function finalize(value, requirements, evidence, matches) {
     const alternatives = skillAlternatives(requirement.text);
     const scores = { supported: 2, partial: 1, not_shown: 0 };
     const options = (alternatives.length ? alternatives : [requested]).map(
-      (skills) =>
-        supportedEvidence(
+      (skills) => {
+        // This narrower capability already implies a relational data store.
+        const required = skills.includes("relational-design")
+          ? skills.filter((skill) => skill !== "sql")
+          : skills;
+        return supportedEvidence(
           {
             requirement: requirement.text,
             assessment: directStack ? "supported" : row.verdict,
           },
           work,
-          skills,
-        ),
+          required,
+        );
+      },
     );
     const checked = options.sort(
       (a, b) => scores[b.assessment] - scores[a.assessment],

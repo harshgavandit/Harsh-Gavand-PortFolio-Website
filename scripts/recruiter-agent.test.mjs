@@ -193,6 +193,36 @@ test("an omitted model citation cannot hide published stack matches", async (t) 
   assert.equal(result.evidence.length <= 12, true);
 });
 
+test("relational design links to schema work instead of SQL-only examples", async (t) => {
+  const requirements = [
+    "React",
+    "Node.js or Python",
+    "relational database design",
+  ].map((text, index) => ({
+    id: `r${index + 1}`,
+    text,
+    category: "backend",
+    queries: [text],
+  }));
+  const { post } = await fixture(t, { requirements, verdict: "not_shown" });
+  const output = await events(
+    await post(requirements.map(({ text }) => text).join(". ")),
+  );
+  const result = output.at(-1);
+  const row = result.assessments.find(
+    ({ requirementId }) => requirementId === "r3",
+  );
+  assert.equal(row.verdict, "supported");
+  assert.ok(
+    row.evidence.some(
+      ({ href }) => href === "/work/banking-saas/" || href === "/#experience-0",
+    ),
+  );
+  assert.ok(
+    row.evidence.every(({ href }) => href !== "/work/healthcare-mcp-openai/"),
+  );
+});
+
 test("role check streams progress, sends redacted input and reconstructs evidence links", async (t) => {
   const { post, activity } = await fixture(t, {
     onRead: (text) => {
