@@ -185,9 +185,10 @@ aiEvalCases.push(
   {
     id: "agent-backend-ai",
     kind: "agent",
-    text: "Backend and AI engineer. Required: Node.js or Python. Required: React application delivery. Required: OpenAI API integration.",
+    text: "Backend and AI engineer. Required: Node.js or Python. Required: React application delivery. Required: relational database design. Required: OpenAI API integration.",
     matches: /python|react|openai/i,
     alternative: /node\.js or python/i,
+    schema: /relational database design/i,
   },
   {
     id: "agent-unsupported",
@@ -272,6 +273,18 @@ function gradeAgent(item, result) {
       "either-or requirement stays together and links to supported work",
       review(item.alternative).some(
         (row) => row.verdict === "supported" && row.evidence.length > 0,
+      ),
+    );
+  if (item.schema)
+    check(
+      "relational database design is backed by schema work",
+      review(item.schema).some(
+        (row) =>
+          row.verdict === "supported" &&
+          row.evidence.some(
+            ({ href }) =>
+              href === "/work/banking-saas/" || href === "/#experience-0",
+          ),
       ),
     );
   if (item.gaps) {
