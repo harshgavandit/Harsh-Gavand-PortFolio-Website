@@ -144,6 +144,28 @@ test("a source link alone cannot make an irrelevant guide answer pass", () => {
     false,
   );
 });
+test("UGC crash grading accepts equivalent descriptions of a stopped process", () => {
+  const item = aiEvalCases.find(({ id }) => id === "guide-ugc-interruption");
+  const result = {
+    execution: { elapsedMs: 1, model: "gpt-6-luna" },
+    evidence: retrieveCode(item.text),
+  };
+  assert.equal(
+    gradeCase(item, {
+      ...result,
+      answer:
+        "Credit updates and provider requests are separate operations. If the server process stops after dispatch, compensation may not run, so restoration is not guaranteed.",
+    }).passed,
+    true,
+  );
+  assert.equal(
+    gradeCase(item, {
+      ...result,
+      answer: "No. Credits can be restored after provider failures.",
+    }).passed,
+    false,
+  );
+});
 test("admission retrieval includes the atomic enforcement, not only constructor defaults", () => {
   const item = aiEvalCases.find((item) => item.id === "guide-auth-admission");
   const evidence = retrieveCode(item.text);

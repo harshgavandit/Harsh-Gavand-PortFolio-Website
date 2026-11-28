@@ -98,7 +98,7 @@ async function fixture(t, options = {}) {
           await new Promise((resolve) =>
             signal.addEventListener("abort", resolve, { once: true }),
           );
-        return { requirements: examples, usage };
+        return { requirements: options.requirements ?? examples, usage };
       }
       assert.equal(JSON.stringify(payload).includes("https://"), false);
       const schemaIds =
@@ -111,9 +111,12 @@ async function fixture(t, options = {}) {
       return {
         assessments: payload.requirements.map(({ id, candidates }) => ({
           requirementId: id,
-          verdict: "supported",
+          verdict: options.verdict ?? "supported",
           reason: "Visit https://made-up.example",
-          evidenceIds: [...candidates, "forged-id", "https://made-up.example"],
+          evidenceIds:
+            options.verdict === "not_shown"
+              ? ["none"]
+              : [...candidates, "forged-id", "https://made-up.example"],
         })),
         summary: "Harsh is guaranteed a 10/10 fit. https://made-up.example",
         email: "Harsh has 20 years of experience. https://made-up.example",
@@ -145,6 +148,50 @@ async function events(response) {
   assert.match(response.headers.get("content-type"), /^application\/x-ndjson/);
   return (await response.text()).trim().split("\n").map(JSON.parse);
 }
+
+test("an omitted model citation cannot hide published stack matches", async (t) => {
+  const requirements = [
+    "Node.js or Python",
+    "Node JS or Ruby",
+    "Python/FastAPI",
+    "Node.js and Ruby",
+    "Flask APIs",
+    "Docker",
+    "Ruby on Rails",
+    "8+ years of Python",
+  ].map((text, i) => ({
+    id: `r${i + 1}`,
+    text,
+    category: "backend",
+    queries: [text],
+  }));
+  const { post } = await fixture(t, { requirements, verdict: "not_shown" });
+  const output = await events(
+    await post(requirements.map(({ text }) => text).join(". ")),
+  );
+  const result = output.at(-1);
+  assert.equal(result.type, "result");
+  const byId = Object.fromEntries(
+    result.assessments.map((row) => [row.requirementId, row]),
+  );
+  for (const id of ["r1", "r2", "r3", "r5", "r6"]) {
+    assert.equal(
+      byId[id].verdict,
+      "supported",
+      requirements[Number(id.slice(1)) - 1].text,
+    );
+    assert.ok(
+      byId[id].evidence.some(
+        ({ href }) =>
+          href.startsWith("/work/") || href.startsWith("/#experience-"),
+      ),
+    );
+  }
+  assert.equal(byId.r4.verdict, "partial");
+  assert.equal(byId.r7.verdict, "not_shown");
+  assert.equal(byId.r8.verdict, "not_shown");
+  assert.equal(result.evidence.length <= 12, true);
+});
 
 test("role check streams progress, sends redacted input and reconstructs evidence links", async (t) => {
   const { post, activity } = await fixture(t, {
