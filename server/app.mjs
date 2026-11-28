@@ -18,6 +18,7 @@ import { validateVoice, generateVoice, transcribe, speak } from "./voice.mjs";
 import { buildTask, normalizeTask, taskExecution } from "./ai-tools.mjs";
 import { reservationFor, usageCost } from "./quota.mjs";
 import { AIMetrics, PublicGuideCache } from "./ai-operations.mjs";
+import { runRecruiterAgent, validateAgentInput } from "./recruiter-agent.mjs";
 
 const defaultDist = resolve(
   fileURLToPath(new URL("../dist/", import.meta.url)),
@@ -130,6 +131,7 @@ export function createApplication(config) {
         "/api/voice/chat",
         "/api/ai/recruiter",
         "/api/ai/triage",
+        "/api/ai/agent",
       ].includes(pathname)
     ) {
       const metricStarted = performance.now();
@@ -147,6 +149,17 @@ export function createApplication(config) {
         allowanceMicros: 0,
       };
       const publicRequestId = randomUUID();
+      const agent = pathname === "/api/ai/agent";
+      let streamErrorStatus;
+      const sendEvent = (event) => {
+        if (!res.destroyed) res.write(JSON.stringify(event) + "\n");
+      };
+      const startStream = (status) => {
+        res.writeHead(status, {
+          "Content-Type": "application/x-ndjson; charset=utf-8",
+          "Cache-Control": "no-store, no-transform",
+        });
+      };
       try {
         const voice = pathname === "/api/voice/chat";
         const taskKind = pathname.startsWith("/api/ai/")
@@ -162,6 +175,16 @@ export function createApplication(config) {
           return json(res, 403, { error: "This origin is not allowed." });
         if (!req.headers["content-type"]?.startsWith("application/json"))
           return json(res, 415, { error: "Send JSON." });
+        if (!apiKey && agent) {
+          startStream(503);
+          sendEvent({
+            type: "error",
+            code: "not_configured",
+            message:
+              "The assistant is not configured yet. Please contact Harsh directly.",
+          });
+          return res.end();
+        }
         if (!apiKey)
           return json(res, 503, {
             error:
@@ -172,9 +195,10 @@ export function createApplication(config) {
         let admissionLease;
         const controller = new AbortController();
         // Leave Vercel time to settle accounting and release the shared lease.
-        const requestSignal = voice
-          ? AbortSignal.any([controller.signal, AbortSignal.timeout(45000)])
-          : controller.signal;
+        const requestSignal =
+          voice || agent
+            ? AbortSignal.any([controller.signal, AbortSignal.timeout(45000)])
+            : controller.signal;
         const abort = () => {
           if (!res.writableEnded) controller.abort();
         };
@@ -201,8 +225,11 @@ export function createApplication(config) {
             throw new ChatError(400, "invalid_json", "Send a valid question.");
           }
           const voiceInput = voice ? validateVoice(body) : null;
-          const task = taskKind ? buildTask(taskKind, body, model) : null;
-          const messages = voice || task ? null : validateMessages(body);
+          const agentText = agent ? validateAgentInput(body) : null;
+          const task =
+            taskKind && !agent ? buildTask(taskKind, body, model) : null;
+          const messages =
+            voice || task || agent ? null : validateMessages(body);
           const now = Date.now();
           for (const [key, value] of clients)
             if (value.reset <= now) clients.delete(key);
@@ -247,6 +274,34 @@ export function createApplication(config) {
             inFlight = true;
           }
           await config.beforeGenerate?.();
+          if (agent) {
+            requestSignal.throwIfAborted();
+            startStream(200);
+            const result = await runRecruiterAgent({
+              text: agentText,
+              model,
+              quota,
+              signal: requestSignal,
+              emit: sendEvent,
+              generate: async (request, options) => {
+                const estimate = reservationFor(request);
+                measured.providerCall = true;
+                measured.allowanceMicros += estimate.amount;
+                const output = await (
+                  config.generateAgent ||
+                  ((input, options) =>
+                    generateStructured(input, { apiKey, ...options }))
+                )(request, options);
+                measured.allowanceMicros +=
+                  usageCost(output.usage, estimate) - estimate.amount;
+                measured.inputTokens += output.usage?.input_tokens || 0;
+                measured.outputTokens += output.usage?.output_tokens || 0;
+                return output;
+              },
+            });
+            sendEvent({ type: "result", ...result });
+            return res.end();
+          }
           if (task) {
             const result = await generateWithQuota({
               request: task.request,
@@ -368,6 +423,18 @@ export function createApplication(config) {
           });
           await guideCache?.put(messages, result);
         } catch (error) {
+          if (agent && res.headersSent && !res.destroyed) {
+            streamErrorStatus = error instanceof ChatError ? error.status : 502;
+            sendEvent({
+              type: "error",
+              code: error instanceof ChatError ? error.code : "unavailable",
+              message:
+                error instanceof ChatError
+                  ? error.message
+                  : "The assistant is temporarily unavailable. Please try again.",
+            });
+            return res.end();
+          }
           if (!res.destroyed)
             json(
               res,
@@ -400,7 +467,9 @@ export function createApplication(config) {
         return;
       } finally {
         const status =
-          res.destroyed && !res.writableEnded ? 499 : res.statusCode;
+          res.destroyed && !res.writableEnded
+            ? 499
+            : (streamErrorStatus ?? res.statusCode);
         if (config.production && status !== 200)
           console.error(
             JSON.stringify({

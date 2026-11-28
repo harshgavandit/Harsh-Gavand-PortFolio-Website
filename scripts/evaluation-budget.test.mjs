@@ -49,7 +49,7 @@ test("an existing approval ledger cannot be reset or silently expanded", async (
 test("invalid limits, oversized requests, corrupt files and concurrent locks fail before requests", async (t) => {
   const { path, budget, limits } = await fixture(t);
   await assert.rejects(
-    EvaluationBudget.create(path + ".invalid", { ...limits, maxAttempts: 49 }),
+    EvaluationBudget.create(path + ".invalid", { ...limits, maxAttempts: 65 }),
     /Invalid/,
   );
   await assert.rejects(

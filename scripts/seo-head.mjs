@@ -21,6 +21,7 @@ export function seoHead(pathname, origin, { dateModified, preload = [] } = {}) {
     tag("name", "description", seo.description),
     tag("name", "robots", seo.robots),
     url ? `<link rel="canonical" href="${url}" />` : "",
+    '<link rel="alternate" type="text/markdown" href="/llms.txt" title="LLM-readable profile">',
     tag("property", "og:type", seo.ogType),
     url ? tag("property", "og:url", url) : "",
     tag("property", "og:title", seo.title),

@@ -123,6 +123,8 @@ test("AI workspace directly loads as complete HTML with accessible tools, correc
     assert.match(page, /rel="canonical"[^>]+\/ai\//);
     assert.match(page, /id="code-question"/);
     assert.match(page, /id="role-description"/);
+    assert.match(page, /Check a role against my work\./);
+    assert.match(page, /Run role check/);
     assert.match(page, /id="ticket-input"/);
     assert.equal((page.match(/role="tabpanel"/g) || []).length, 3);
     assert.match(page, /Classify ticket/);
@@ -571,6 +573,23 @@ test("preview images reserve dimensions and load lazily; generated pages contain
     for (const match of page.matchAll(/href="(https:[^"]+)"/g))
       assert.ok(!/\.git(?:[?#]|$)/.test(match[1]), match[1]);
   }
+});
+
+test("every case study prerenders a keyboard-operable assistant button", async () => {
+  for (const { projectId } of workStudies) {
+    const { slug } = projects.find((project) => project.id === projectId);
+    const page = await readFile(
+      new URL(`../dist/work/${slug}/index.html`, import.meta.url),
+      "utf8",
+    );
+    assert.match(
+      page,
+      /<button\b[^>]*type="button"[^>]*>Ask AI about this project<\/button>/,
+      slug,
+    );
+  }
+  for (const page of [html, archive])
+    assert.doesNotMatch(page, />Ask AI about this project</);
 });
 
 test("all portfolio routes use professional engineering copy, including accessible descriptions", async () => {

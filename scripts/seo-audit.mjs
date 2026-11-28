@@ -144,9 +144,25 @@ for (const file of pages) {
 }
 
 const sitemap = await readFile(join(dist, "sitemap.xml"), "utf8");
+for (const file of ["llms.txt", "llms-full.txt"])
+  if (!(await exists(join(dist, file)))) fail(file, "missing from build");
 const listed = new Set(
   [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]),
 );
+if (await exists(join(dist, "llms.txt"))) {
+  const profile = await readFile(join(dist, "llms.txt"), "utf8");
+  const projectUrls = new Set(
+    [...profile.matchAll(/\]\((https?:\/\/[^)]+\/work\/[^)]+)\)/g)].map(
+      (match) => match[1],
+    ),
+  );
+  for (const url of projectUrls)
+    if (!listed.has(url))
+      fail("llms.txt", `case study absent from sitemap: ${url}`);
+  for (const url of listed)
+    if (new URL(url).pathname.startsWith("/work/") && !projectUrls.has(url))
+      fail("llms.txt", `missing case study: ${url}`);
+}
 for (const url of indexable)
   if (!listed.has(url)) fail("sitemap.xml", `missing ${url}`);
 for (const url of listed)

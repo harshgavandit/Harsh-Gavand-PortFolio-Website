@@ -127,6 +127,66 @@ async function fixture(t, overrides = {}) {
   };
 }
 
+test("rewritten recruiter agent streams through the Vercel handler", async (t) => {
+  const { chat, events } = await fixture(t, {
+    generateAgent: async (request) => {
+      const input = JSON.parse(request.input[0].content);
+      const usage = { input_tokens: 10, output_tokens: 5 };
+      if (request.metadata.agent_stage === "read")
+        return {
+          requirements: [
+            {
+              id: "r1",
+              text: "React",
+              category: "frontend",
+              queries: ["React"],
+            },
+            {
+              id: "r2",
+              text: "Node.js",
+              category: "backend",
+              queries: ["Node.js"],
+            },
+            {
+              id: "r3",
+              text: "Python",
+              category: "backend",
+              queries: ["Python"],
+            },
+          ],
+          usage,
+        };
+      return {
+        assessments: input.requirements.map(({ id }) => ({
+          requirementId: id,
+          verdict: "not_shown",
+          reason: "No direct match.",
+          evidenceIds: ["none"],
+        })),
+        summary: "Sources were checked.",
+        email: "Hi Harsh, I would like to connect.",
+        usage,
+      };
+    },
+  });
+  const response = await chat({
+    path: "/api/index?__path=ai/agent",
+    body: JSON.stringify({ text: "Required: React, Node.js, and Python." }),
+  });
+  assert.equal(response.status, 200);
+  assert.match(response.headers.get("content-type"), /^application\/x-ndjson/);
+  const stream = (await response.text()).trim().split("\n").map(JSON.parse);
+  assert.deepEqual(
+    stream
+      .filter(({ type, status }) => type === "step" && status === "done")
+      .map(({ step }) => step),
+    ["read", "search", "assess", "draft"],
+  );
+  assert.equal(stream.at(-1).type, "result");
+  assert.equal(events.filter((event) => event === "settle").length, 2);
+  assert.equal(events.at(-1), "release");
+});
+
 test("production defaults to the Vercel custom domain", () => {
   assert.equal(profile.site, "https://harshgavand.dev");
 });

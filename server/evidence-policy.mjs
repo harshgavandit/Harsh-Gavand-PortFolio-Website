@@ -45,8 +45,11 @@ export const capabilityKeys = (text) =>
   Object.entries(catalogue)
     .filter(([, pattern]) => pattern.test(String(text)))
     .map(([key]) => key);
-export function supportedEvidence(row, sources) {
-  const requested = capabilityKeys(row.requirement);
+export function supportedEvidence(
+  row,
+  sources,
+  requested = capabilityKeys(row.requirement),
+) {
   const relevant = sources.filter(
     (source) =>
       requested.length &&

@@ -4,16 +4,22 @@ import { Tabs } from "./Tabs";
 import { CodeEvidence } from "./CodeEvidence";
 import {
   codeSampleGroups,
+  agentSteps,
+  readAgentStream,
   roleSample,
   ticketSamples,
 } from "../lib/aiWorkspace";
 import type {
   GuideResult,
-  RecruiterResult,
+  AgentResult,
+  AgentStep,
   TriageResult,
 } from "../lib/aiWorkspace";
 
-function useAIRequest<T>(endpoint: string) {
+function useAIRequest<T>(
+  endpoint: string,
+  read?: (response: Response, active: () => boolean) => Promise<T>,
+) {
   const request = useRef<AbortController | null>(null);
   const generation = useRef(0);
   const [result, setResult] = useState<T | null>(null);
@@ -45,11 +51,15 @@ function useAIRequest<T>(endpoint: string) {
     return () => document.removeEventListener("visibilitychange", hidden);
   }, []);
   async function run(body: unknown) {
-    if (request.current) return;
+    if (request.current && !read) return;
+    request.current?.abort();
     const id = ++generation.current;
     const controller = new AbortController();
     request.current = controller;
-    const timer = window.setTimeout(() => controller.abort(), 32000);
+    const timer = window.setTimeout(
+      () => controller.abort(),
+      read ? 50000 : 32000,
+    );
     setBusy(true);
     setError("");
     setResult(null);
@@ -60,6 +70,11 @@ function useAIRequest<T>(endpoint: string) {
         body: JSON.stringify(body),
         signal: controller.signal,
       });
+      if (read) {
+        const data = await read(response, () => id === generation.current);
+        if (id === generation.current) setResult(data);
+        return;
+      }
       if (!response.headers.get("content-type")?.includes("application/json"))
         throw new Error(
           "This tool is temporarily unavailable. Please try again.",
@@ -233,7 +248,19 @@ function TechnicalGuide() {
 
 function RecruiterWorkspace() {
   const [text, setText] = useState("");
-  const api = useAIRequest<RecruiterResult>("/api/ai/recruiter");
+  const [steps, setSteps] = useState<
+    Partial<Record<AgentStep["step"], AgentStep>>
+  >({});
+  const [notice, setNotice] = useState("");
+  const [copyNotice, setCopyNotice] = useState("");
+  const api = useAIRequest<AgentResult>("/api/ai/agent", (response, active) =>
+    readAgentStream(response, (event) => {
+      if (active()) {
+        setSteps((previous) => ({ ...previous, [event.step]: event }));
+        setNotice(`${agentSteps[event.step]}. ${event.detail}`);
+      }
+    }),
+  );
   const labels = {
     supported: "Experience match",
     partial: "Related experience",
@@ -243,7 +270,7 @@ function RecruiterWorkspace() {
     <div className="ai-tool-layout">
       <div className="ai-tool-intro">
         <span className="eyebrow">Requirements → relevant work</span>
-        <h2>Compare a role.</h2>
+        <h2>Check a role against my work.</h2>
         <p>
           Compare a role’s technical requirements with my experience and
           projects, with links to the relevant work.
@@ -262,6 +289,9 @@ function RecruiterWorkspace() {
         <form
           onSubmit={(event) => {
             event.preventDefault();
+            setSteps({});
+            setNotice("Role check started.");
+            setCopyNotice("");
             void api.run({ text });
           }}
         >
@@ -275,6 +305,7 @@ function RecruiterWorkspace() {
             onChange={(event) => setText(event.target.value)}
             placeholder="React, Python, relational databases, AI integration…"
             required
+            disabled={api.busy}
           />
           <div className="ai-form-actions">
             <button
@@ -282,29 +313,76 @@ function RecruiterWorkspace() {
               className="button button-primary"
               disabled={api.busy || text.trim().length < 12}
             >
-              Compare requirements <ArrowUpRight size={16} aria-hidden="true" />
+              Run role check <ArrowUpRight size={16} aria-hidden="true" />
             </button>
             {api.busy && (
-              <button type="button" className="button" onClick={api.stop}>
+              <button
+                type="button"
+                className="button"
+                onClick={() => {
+                  api.stop();
+                  setSteps({});
+                  setNotice("Role check stopped.");
+                }}
+              >
                 Stop
               </button>
             )}
             <span>{text.length.toLocaleString()}/6,000</span>
           </div>
         </form>
-        <RequestState busy={api.busy} error={api.error} />
+        <p className="ai-request-status" role="status" aria-live="polite">
+          {notice}
+        </p>
+        {(api.busy || Object.keys(steps).length > 0) && (
+          <ol
+            className="ai-requirements ai-agent-steps"
+            aria-label="Role check progress"
+          >
+            {(Object.keys(agentSteps) as AgentStep["step"][]).map((step) => {
+              const event = steps[step];
+              const status =
+                event?.status === "running" && !api.busy
+                  ? "error"
+                  : (event?.status ?? "waiting");
+              return (
+                <li key={step}>
+                  <strong>{agentSteps[step]}</strong>
+                  <span data-step-status={status}>
+                    {
+                      {
+                        waiting: "Waiting",
+                        running: "In progress",
+                        done: "Done",
+                        error: "Could not finish",
+                      }[status]
+                    }
+                  </span>
+                  {event && status !== "error" && <p>{event.detail}</p>}
+                </li>
+              );
+            })}
+          </ol>
+        )}
+        <RequestState busy={false} error={api.error} />
         {api.result && (
-          <div className="ai-result" aria-live="polite">
-            <h3>Role comparison</h3>
+          <div className="ai-result">
+            <h3>Fit summary</h3>
             <p>{api.result.summary}</p>
             <div className="ai-requirements">
-              {api.result.requirements.map((row, i) => (
-                <article key={`${row.requirement}-${i}`}>
-                  <span className={`ai-assessment is-${row.assessment}`}>
-                    {labels[row.assessment]}
+              {api.result.assessments.map((row) => (
+                <article key={row.requirementId}>
+                  <span className={`ai-assessment is-${row.verdict}`}>
+                    {labels[row.verdict]}
                   </span>
-                  <h4>{row.requirement}</h4>
-                  <p>{row.explanation}</p>
+                  <h4>
+                    {
+                      api.result?.requirements.find(
+                        ({ id }) => id === row.requirementId,
+                      )?.text
+                    }
+                  </h4>
+                  <p>{row.reason}</p>
                   <div className="ai-result-links">
                     {row.evidence.map((source) => (
                       <a href={source.href} key={source.id}>
@@ -315,6 +393,32 @@ function RecruiterWorkspace() {
                 </article>
               ))}
             </div>
+            <label htmlFor="recruiter-intro-email">Intro email</label>
+            <textarea
+              id="recruiter-intro-email"
+              value={api.result.email}
+              readOnly
+              rows={8}
+            />
+            <button
+              type="button"
+              className="button button-secondary"
+              onClick={async () => {
+                if (!api.result) return;
+                try {
+                  await navigator.clipboard.writeText(api.result.email);
+                  setCopyNotice("Email copied to clipboard.");
+                } catch {
+                  document.getElementById("recruiter-intro-email")?.focus();
+                  setCopyNotice("Select and copy the email from the text box.");
+                }
+              }}
+            >
+              Copy email
+            </button>
+            <p className="ai-request-status" role="status">
+              {copyNotice}
+            </p>
           </div>
         )}
       </div>

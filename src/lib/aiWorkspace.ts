@@ -37,6 +37,68 @@ export type RecruiterResult = {
   }[];
   execution: Execution;
 };
+export const agentSteps = {
+  read: "Reading the role",
+  search: "Searching my projects and code",
+  assess: "Assessing the fit",
+  draft: "Preparing an intro email",
+} as const;
+export type AgentStep = {
+  type: "step";
+  step: keyof typeof agentSteps;
+  status: "running" | "done" | "error";
+  detail: string;
+};
+export type AgentResult = {
+  type: "result";
+  summary: string;
+  email: string;
+  requirements: { id: string; text: string }[];
+  assessments: {
+    requirementId: string;
+    verdict: "supported" | "partial" | "not_shown";
+    reason: string;
+    evidence: { id: string; label: string; href: string }[];
+  }[];
+};
+
+export async function readAgentStream(
+  response: Response,
+  onStep: (event: AgentStep) => void,
+): Promise<AgentResult> {
+  const contentType = response.headers.get("content-type") || "";
+  if (contentType.includes("application/json")) {
+    const error = await response.json();
+    throw new Error(
+      error.error || "The role check is temporarily unavailable.",
+    );
+  }
+  if (!contentType.includes("application/x-ndjson") || !response.body)
+    throw new Error("The role check is temporarily unavailable.");
+  const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
+  let pending = "";
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      const lines = (pending + value).split("\n");
+      pending = lines.pop() || "";
+      for (const line of lines) {
+        if (!line.trim()) continue;
+        const event = JSON.parse(line) as
+          AgentStep | AgentResult | { type: "error"; message: string };
+        if (event.type === "error") throw new Error(event.message);
+        if (event.type === "result") return event;
+        if (event.type === "step" && Object.hasOwn(agentSteps, event.step))
+          onStep(event);
+      }
+    }
+    throw new Error("The connection ended before the role check finished.");
+  } finally {
+    void reader.cancel().catch(() => {});
+    reader.releaseLock();
+  }
+}
 export type TriageResult = {
   category: string;
   priority: string;

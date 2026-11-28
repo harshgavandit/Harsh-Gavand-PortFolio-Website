@@ -11,6 +11,7 @@ import { workStudies } from "../src/data/workPresentation.ts";
 import { workPage } from "../src/lib/projectNavigation.ts";
 import { profile, projects, archiveProjects } from "../src/data/portfolio.ts";
 import { applySeo } from "./seo-head.mjs";
+import { writeLlmProfiles } from "./llms.mjs";
 import { notes, noteModified } from "../src/data/notes.ts";
 import { escapeHTML } from "./prerender-checks.mjs";
 
@@ -164,6 +165,7 @@ await writeFile(
     sitemapEntry("/ai/", "0.6"),
   ].join("\n")}\n</urlset>\n`,
 );
+await writeLlmProfiles(new URL("../dist/", import.meta.url), origin);
 console.log(
   `Pre-rendered home, archive (${archiveProjects.length} projects), ${workLocations.length} case studies, ${notes.length} engineering notes (${noteLocations.length} published), and 404. Canonical origin: ${origin}`,
 );
