@@ -28,7 +28,7 @@ export function displayProject(project: Project): Project {
       "Choose topics or pin stories, preview your brief, and send it to your verified email address.",
       "Ask the Research Desk a question and follow the source links in its answer.",
     ],
-    role: "I built the site, the news collection and AI brief features, and the email delivery flow. I launched it at getinformdaily.com so anyone can try it.",
+    role: "I built the Python and FastAPI backend for news collection, AI briefs, and email delivery, along with the reading interface. I launched it at getinformdaily.com so anyone can try it.",
     challenges:
       "The same story often appears in several places. I grouped related coverage and kept the publisher and original link visible so readers can check what each source actually said.",
     impact:
