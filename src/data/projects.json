@@ -34,7 +34,7 @@
     "challenges": "Handled real-time connection state, peer negotiation, and graceful updates when users join or leave sessions.",
     "impact": "Connects participants through room-based WebRTC sessions, with signaling and media controls organized around each meeting’s lifecycle.",
     "githubUrl": "https://github.com/harshgavandit/Zoom_Clone",
-    "demoUrl": "https://zoom-clone-xkdj.onrender.com/",
+    "demoUrl": "https://zoom-clone-blue-pi.vercel.app/",
     "slug": "zoom-clone",
     "aliases": ["Zoom Clone"]
   },

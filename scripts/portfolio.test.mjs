@@ -105,6 +105,12 @@ test("curated archive retains eight distinct catalog projects and flagship stack
   assert.equal(caseStudies.length, 3);
   for (const study of caseStudies) assert.equal(study.engineering.length, 3);
 });
+
+test("the video conferencing project links to Vercel without a Render warmup", () => {
+  const zoom = catalog.find((project) => project.slug === "zoom-clone");
+  assert.equal(zoom?.demoUrl, "https://zoom-clone-blue-pi.vercel.app/");
+  assert.deepEqual(renderDemoOrigins([zoom]), []);
+});
 test("preserves all original project identities while correcting editorial copy", () => {
   const identities = JSON.parse(
     readFileSync(
