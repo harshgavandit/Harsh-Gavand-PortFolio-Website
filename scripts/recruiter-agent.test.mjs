@@ -187,6 +187,16 @@ test("an omitted model citation cannot hide published stack matches", async (t) 
       ),
     );
   }
+  const links = (id) => byId[id].evidence.map(({ href }) => href);
+  assert.ok(links("r1").includes("/work/agri-connect/"));
+  assert.ok(links("r1").includes("/work/news-automation/"));
+  assert.ok(links("r2").includes("/work/agri-connect/"));
+  assert.ok(links("r3").includes("/work/news-automation/"));
+  assert.equal(
+    byId.r1.evidence.find(({ href }) => href === "/work/news-automation/")
+      ?.label,
+    "Informa AI",
+  );
   assert.equal(byId.r4.verdict, "partial");
   assert.equal(byId.r7.verdict, "not_shown");
   assert.equal(byId.r8.verdict, "not_shown");

@@ -1,5 +1,5 @@
 import { aboutProfile, experience, projects } from "../src/data/portfolio.ts";
-import { workPath } from "../src/lib/projectNavigation.ts";
+import { workPage } from "../src/lib/projectNavigation.ts";
 import { redactInput } from "./ai-tools.mjs";
 import { capabilityKeys, supportedEvidence } from "./evidence-policy.mjs";
 import { retrieveCode } from "./grounding.mjs";
@@ -253,21 +253,32 @@ function source(id, label, href, kind, skills, text) {
   };
 }
 
-const caseStudySources = projects.flatMap((project) => {
-  const href = workPath(project.slug);
-  return href
-    ? [
-        source(
-          "project-" + project.id,
-          project.title,
-          href,
-          "project",
-          project.technologies.join(" "),
-          [project.overview, project.role, ...project.features].join("\n"),
-        ),
-      ]
-    : [];
+const caseStudySources = projects.flatMap(({ slug }) => {
+  const page = workPage(slug);
+  if (!page) return [];
+  const { project } = page;
+  return [
+    source(
+      "project-" + project.id,
+      project.title,
+      `/work/${project.slug}/`,
+      "project",
+      project.technologies.join(" "),
+      [project.overview, project.role, ...project.features].join("\n"),
+    ),
+  ];
 });
+
+const featuredBackendWork = {
+  node: "/work/agri-connect/",
+  python: "/work/news-automation/",
+};
+const isFeaturedBackendMatch = (wanted, item) =>
+  wanted.some(
+    (skill) =>
+      featuredBackendWork[skill] === item.href &&
+      item.implementationCapabilities.includes(skill),
+  );
 
 export function searchAgentEvidence(requirements) {
   const roles = experience.map((role, index) =>
@@ -306,6 +317,8 @@ export function searchAgentEvidence(requirements) {
               matchScore(wanted, a.implementationCapabilities) ||
             matchScore(wanted, b.capabilities) -
               matchScore(wanted, a.capabilities) ||
+            Number(isFeaturedBackendMatch(wanted, b)) -
+              Number(isFeaturedBackendMatch(wanted, a)) ||
             (ranked.get(b.id) ?? 0) - (ranked.get(a.id) ?? 0),
         );
     const primary = rank(skills)[0];

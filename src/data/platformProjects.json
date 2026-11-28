@@ -5,7 +5,7 @@
     "aliases": ["AgriConnect", "Agri-Connect", "agricultural marketplace"],
     "title": "AgriConnect — Agricultural Platform",
     "category": "Full-Stack Platform",
-    "overview": "A full-stack agricultural platform connecting marketplace discovery, buyer and seller workflows, catalogue moderation, and a role-based administrator control centre. React and TypeScript interfaces connect to an Express API, hosted PostgreSQL, and OpenAI assistance.",
+    "overview": "A full-stack agricultural platform connecting marketplace discovery, buyer and seller workflows, catalogue moderation, and a role-based administrator control centre. React and TypeScript interfaces connect to a Node.js and Express API backed by hosted PostgreSQL, with OpenAI assistance.",
     "features": [
       "Category-based product discovery, search, seller profiles, and map-based browsing",
       "Guest and authenticated carts, saved addresses, orders, and seller workflows",
