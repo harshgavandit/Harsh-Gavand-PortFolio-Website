@@ -471,6 +471,11 @@ test("deployment config bundles the API and data, enables cancellation and uses 
   assert.equal(config.functions["api/index.mjs"].maxDuration, 60);
   assert.equal(typeof config.functions["api/index.mjs"].includeFiles, "string");
   assert.match(config.functions["api/index.mjs"].includeFiles, /src\/data/);
+  assert.match(
+    config.functions["api/index.mjs"].includeFiles,
+    /(?:^|[{,])src\/lib\/projectNavigation\.ts(?:[},]|$)/,
+    "The Node function must include the recruiter agent's shared route module.",
+  );
   assert.deepEqual(config.crons, [
     { path: "/api/quota-reconcile", schedule: "15 4 * * *" },
   ]);
