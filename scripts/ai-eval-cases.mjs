@@ -125,7 +125,7 @@ export const aiEvalCases = [
     anchor: /credit|refund/i,
     facts: [
       /not|no |cannot|can.t|doesn.t|separate/i,
-      /crash|interrupt|transaction|atomic/i,
+      /crash|interrupt|transaction|atomic|\b(?:server|process)\b.{0,40}\b(?:stops?|dies|terminates|exits)\b/i,
     ],
     path: /project\.controller\.ts$/,
   },
@@ -185,8 +185,9 @@ aiEvalCases.push(
   {
     id: "agent-backend-ai",
     kind: "agent",
-    text: "Backend and AI engineer. Required: Python backend services. Required: React application delivery. Required: OpenAI API integration.",
+    text: "Backend and AI engineer. Required: Node.js or Python. Required: React application delivery. Required: OpenAI API integration.",
     matches: /python|react|openai/i,
+    alternative: /node\.js or python/i,
   },
   {
     id: "agent-unsupported",
@@ -248,7 +249,7 @@ function gradeAgent(item, result) {
             return (
               retrieved?.href === source.href &&
               retrieved.label === source.label &&
-              /^(?:\/#experience$|\/work\/[a-z0-9-]+\/$|https:\/\/github\.com\/harshgavandit\/.+\/blob\/[a-f0-9]{40}\/.+#L\d+-L\d+$)/.test(
+              /^(?:\/#experience(?:-[01])?$|\/work\/[a-z0-9-]+\/$|https:\/\/github\.com\/harshgavandit\/.+\/blob\/[a-f0-9]{40}\/.+#L\d+-L\d+$)/.test(
                 source.href,
               )
             );
@@ -265,6 +266,13 @@ function gradeAgent(item, result) {
     check(
       "published capabilities are recognized",
       review(item.matches).some((row) => row.verdict === "supported"),
+    );
+  if (item.alternative)
+    check(
+      "either-or requirement stays together and links to supported work",
+      review(item.alternative).some(
+        (row) => row.verdict === "supported" && row.evidence.length > 0,
+      ),
     );
   if (item.gaps) {
     const gaps = review(item.gaps);
